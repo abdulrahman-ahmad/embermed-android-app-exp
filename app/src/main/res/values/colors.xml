@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#0bacf4</color>
+    <color name="colorPrimaryDark">#16a0de</color>
+    <color name="colorAccent">@android:color/black</color>
+    <color name="white">@android:color/white</color>
+    <array name="progress_bar_color">
+        <item>@android:color/white</item>
+        <!--<item>@color/blue</item>
+        <item>@color/violet</item>
+        <item>@color/red</item>
+        <item>@color/magenta</item>-->
+    </array>
+
+    <color name="btn_bg_color">@color/colorPrimary</color>
+    <color name="text_hint_color">#4a4a4a</color>
+    <color name="state_pressed_text_color">#7b7b7b</color>
+    <color name="text_color">#1a1a1a</color>
+
+    <color name="verification_code_text_color">#2f2f2f</color>
+</resources>

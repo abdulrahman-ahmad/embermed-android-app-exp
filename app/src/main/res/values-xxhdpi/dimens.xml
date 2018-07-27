@@ -1,0 +1,8 @@
+<!--Device
+1)Samsung S8-->
+
+<resources>
+
+    <dimen name="login_logo_margin_top">90dp</dimen>
+    <dimen name="login_edit_text_margin_top">4dp</dimen>
+</resources>

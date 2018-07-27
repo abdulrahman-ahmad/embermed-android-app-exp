@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="@string/title_forgot_password"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/toolbar_title_text_size"
+                tools:ignore="SpUsage" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="125dp"
+                    android:layout_marginTop="30dp"
+                    android:contentDescription="@null"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/bg_forgot_password" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/default_left_right_margin"
+                    android:layout_marginRight="@dimen/default_left_right_margin"
+                    android:layout_marginTop="50dp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="center"
+                    android:text="@string/verification_otp_send_text"
+                    android:textColor="@color/verification_code_text_color"
+                    android:textSize="@dimen/verification_code_text_size"
+                    tools:ignore="SpUsage" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edt_otp"
+                        style="@style/EditTextStyle"
+                        android:layout_marginTop="20dp"
+                        android:digits="0123456789"
+                        android:hint="@string/otp_hint"
+                        android:imeOptions="actionDone"
+                        android:inputType="numberDecimal"
+                        android:maxLength="4"
+                        android:paddingEnd="10dp"
+                        android:paddingStart="10dp" />
+
+                    <TextView
+                        android:id="@+id/txt_resend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/default_left_right_margin"
+                        android:layout_marginTop="22dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:padding="12dp"
+                        android:text="@string/resend"
+                        android:textColor="@drawable/selector_text_color_primary"
+                        android:textSize="14dp"
+                        tools:ignore="RelativeOverlap,SpUsage" />
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/btn_verify_otp"
+                    style="@style/BtnStyle"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="56dp"
+                    android:text="@string/verify" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>
