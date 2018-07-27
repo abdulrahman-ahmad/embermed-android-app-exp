@@ -1,43 +1,27 @@
 {
   "project_info": {
-    "project_number": "1009658615412",
-    "firebase_url": "https://rekon-speed-limit.firebaseio.com",
-    "project_id": "rekon-speed-limit",
-    "storage_bucket": "rekon-speed-limit.appspot.com"
+    "project_number": "999514034669",
+    "firebase_url": "https://osirisbio-57a95.firebaseio.com",
+    "project_id": "osirisbio-57a95",
+    "storage_bucket": "osirisbio-57a95.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1009658615412:android:cc82e69cc4513c8d",
+        "mobilesdk_app_id": "1:999514034669:android:cf765996035507fa",
         "android_client_info": {
-          "package_name": "com.autognome.rekon"
+          "package_name": "com.osiris.osirisbio"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1009658615412-bt5gvon4anki6o473i7tuou4e3fllpu5.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.autognome.rekon",
-            "certificate_hash": "a8ea7d0ebabc136968e5cd9205e41c068495d810"
-          }
-        },
-        {
-          "client_id": "1009658615412-kfi1jvtt4qke73mpf8mclu8ef2u5uj2h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.autognome.rekon",
-            "certificate_hash": "7e99e653b48d38fd96c9eefe97dcb3c7e08bcc2b"
-          }
-        },
-        {
-          "client_id": "1009658615412-pf67hilprs9j4hgo4r19jv77iqv60cgu.apps.googleusercontent.com",
+          "client_id": "999514034669-9iioo8e5i1eat3tuvmbgpi6ss4aug2j0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUWMKRWDt6saEn2nFhEWyJ51h3LyhEbwE"
+          "current_key": "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"
         }
       ],
       "services": {
@@ -45,21 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1009658615412-pf67hilprs9j4hgo4r19jv77iqv60cgu.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "1009658615412-6k44osm0b4jsv1r69heoqk4s0un9eas5.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.autognome.Rekon",
-                "app_store_id": "1328933067"
-              }
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

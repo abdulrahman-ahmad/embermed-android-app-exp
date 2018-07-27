@@ -8,14 +8,13 @@ android {
         versionCode 1
         versionName "1.0.0"
         flavorDimensions "default"
-        //applicationId "com.osiris.osirisbio"
-        applicationId "com.autognome.rekon"
+        applicationId "com.osiris.osirisbio"
 
         def addConstant = { constantName, constantValue ->
             manifestPlaceholders = [(constantName): constantValue]
             buildConfigField "String", "${constantName}", "\"${constantValue}\""
         }
-        addConstant("GOOGLE_API_KEY", "AIzaSyDUWMKRWDt6saEn2nFhEWyJ51h3LyhEbwE")
+        addConstant("GOOGLE_API_KEY", "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M")
     }
     signingConfigs {
         debug {
