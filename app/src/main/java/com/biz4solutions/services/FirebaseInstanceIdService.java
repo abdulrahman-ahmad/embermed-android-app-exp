@@ -34,7 +34,10 @@ public class FirebaseInstanceIdService extends com.google.firebase.iid.FirebaseI
         }
         HashMap<String, Object> body = new HashMap<>();
         body.put("fcmToken", token);
-        //new ApiServices().setFcmToken(context, body);
+        if(true){
+            return;
+        }
+        new ApiServices().setFcmToken(context, body);
     }
 
     public static void setFcmToken(Context context) {

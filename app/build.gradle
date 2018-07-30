@@ -16,6 +16,7 @@ android {
         }
         addConstant("GOOGLE_API_KEY", "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M")
     }
+
     signingConfigs {
         debug {
             storeFile file('..\\biz4solutions.jks')
@@ -64,20 +65,21 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation 'com.google.code.gson:gson:2.8.5'              // Retrofit web service call
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'        // Retrofit web service call
-    implementation 'com.squareup.retrofit2:converter-gson:2.4.0'  // Retrofit web service call
-    implementation 'com.github.castorflex.smoothprogressbar:library-circular:1.3.0'  // App loader
-    implementation 'com.google.android.gms:play-services-maps:15.0.1'    // Google Map Integration
+    implementation 'com.google.code.gson:gson:2.8.5'       // Retrofit web service call
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0' // Retrofit web service call
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0' // Retrofit web service call
+    implementation 'com.github.castorflex.smoothprogressbar:library-circular:1.3.0' // App loader
+    implementation 'com.google.android.gms:play-services-maps:15.0.1' // Google Map Integration
     implementation 'com.google.android.gms:play-services-location:15.0.1'// Google Map Integration
-    implementation 'com.google.firebase:firebase-messaging:17.1.0'       // Firebase notification
-    implementation 'com.google.firebase:firebase-auth:16.0.2'            // Firebase Authentication
-    implementation 'com.google.firebase:firebase-database:16.0.1'        // Firebase Database
+    implementation 'com.google.firebase:firebase-messaging:17.1.0' // Firebase notification
+    implementation 'com.google.firebase:firebase-auth:16.0.2'      // Firebase Authentication
+    implementation 'com.google.firebase:firebase-database:16.0.1'  // Firebase Database
+    implementation project(':socialmedialib')
 }
 apply plugin: 'com.google.gms.google-services'                    // Firebase push notification

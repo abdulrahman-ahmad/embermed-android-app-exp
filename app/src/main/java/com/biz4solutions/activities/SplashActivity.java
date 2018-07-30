@@ -34,8 +34,7 @@ public class SplashActivity extends AppCompatActivity {
         if ((userAuthKey != null && !userAuthKey.isEmpty()) || isSkipLogin) {
             navigateToHomeScreen();
         } else {
-            //navigateToLoginScreen();
-            navigateToHomeScreen();
+            navigateToLoginScreen();
         }
     }
 

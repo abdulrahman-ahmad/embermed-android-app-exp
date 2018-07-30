@@ -26,6 +26,9 @@ import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 
+import osiris.com.socialmedialib.utilities.FacebookUtil;
+import osiris.com.socialmedialib.utilities.GoogleUtil;
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public NavigationView navigationView;
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -53,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_track_the_car).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_settings).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
         } else {
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
@@ -112,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
         ApiServiceUtil.resetInstance();
+        FacebookUtil.getInstance().doLogout();
+        GoogleUtil.getInstance().doLogout();
         finish();
     }
 

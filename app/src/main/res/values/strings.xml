@@ -48,6 +48,8 @@
     <string name="track_the_car">Track the Car</string>
     <string name="ok" tools:ignore="ButtonCase,Typos">Ok</string>
     <string name="coming_soon">Coming Soon…</string>
+    <string name="facebook_login">Facebook Login</string>
+    <string name="google_login">Google Login</string>
     <!--<string name="error_location">"Current location is unavailable"</string>
     <string name="bluetooth_info_notification_title">Rekon is running. App is using Bluetooth</string>
     <string name="bluetooth_info_notification_message">Bluetooth monitor is running</string>-->

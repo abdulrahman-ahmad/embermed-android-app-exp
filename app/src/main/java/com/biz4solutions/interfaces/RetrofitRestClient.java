@@ -8,6 +8,7 @@ import com.biz4solutions.models.SignUpRequest;
 
 import java.util.HashMap;
 
+import osiris.com.socialmedialib.models.SocialMediaUserData;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -16,6 +17,9 @@ public interface RetrofitRestClient {
 
     @POST("v1/users/login")
     Call<LoginResponseDTO> doLogin(@Body LoginRequest loginRequest);
+
+    @POST("v1/users/socialAppLogin")
+    Call<LoginResponseDTO> socialAppLogin(@Body SocialMediaUserData socialSignInDTO);
 
     @POST("v1/users/signup")
     Call<LoginResponseDTO> signUp(@Body SignUpRequest signUpRequest);
