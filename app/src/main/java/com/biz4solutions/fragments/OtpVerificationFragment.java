@@ -27,20 +27,17 @@ import java.util.HashMap;
 public class OtpVerificationFragment extends Fragment implements View.OnClickListener {
     public final static String fragmentName = "OtpVerificationFragment";
     private final static String EMAIL_ID = "EMAIL_ID";
-    private final static String TRANSACTION_ID = "TRANSACTION_ID";
     private FragmentOtpVerificationBinding binding;
     private String emailId;
-    private String transactionId;
 
     public OtpVerificationFragment() {
         // Required empty public constructor
     }
 
-    public static OtpVerificationFragment newInstance(String emailId, String transactionId) {
+    public static OtpVerificationFragment newInstance(String emailId) {
         OtpVerificationFragment fragment = new OtpVerificationFragment();
         Bundle args = new Bundle();
         args.putString(EMAIL_ID, emailId);
-        args.putString(TRANSACTION_ID, transactionId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +47,6 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             emailId = getArguments().getString(EMAIL_ID);
-            transactionId = getArguments().getString(TRANSACTION_ID);
         }
     }
 
@@ -125,16 +121,13 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("transactionId", transactionId);
+        hashMap.put("signupType", "APPUSER");
         new ApiServices().resendOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 OtpResponseDTO otpResponseDTO = (OtpResponseDTO) response;
                 Toast.makeText(getActivity(), otpResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
-                if (otpResponseDTO.getData() != null) {
-                    transactionId = otpResponseDTO.getData().getTransactionId();
-                }
             }
 
             @Override
@@ -157,7 +150,8 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("otp", Integer.parseInt(binding.edtOtp.getText().toString().trim()));
-        hashMap.put("transactionId", transactionId);
+        hashMap.put("email", emailId);
+        hashMap.put("signupType", "APPUSER");
         new ApiServices().verifyOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
@@ -182,7 +176,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
             getActivity().getSupportFragmentManager().executePendingTransactions();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.container, ResetPasswordFragment.newInstance(emailId, transactionId))
+                    .replace(R.id.container, ResetPasswordFragment.newInstance(emailId,Integer.parseInt(binding.edtOtp.getText().toString().trim())))
                     .addToBackStack(ResetPasswordFragment.fragmentName)
                     .commitAllowingStateLoss();
         }

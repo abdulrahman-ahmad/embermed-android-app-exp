@@ -11,6 +11,5 @@
 
 <resources>
 
-    <dimen name="login_logo_margin_top">75dp</dimen>
     <dimen name="login_edit_text_margin_top">0dp</dimen>
 </resources>

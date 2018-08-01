@@ -45,7 +45,7 @@ public class ApiServices {
                 .verifyOtp(body));
     }
 
-    public void resetPassword(final Context context, HashMap<String, String> body, final RestClientResponse restClientResponse) {
+    public void resetPassword(final Context context, HashMap<String, Object> body, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .resetPassword(body));
     }

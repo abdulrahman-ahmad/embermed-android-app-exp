@@ -17,7 +17,6 @@ import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentForgotPasswordBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.models.OtpResponseDTO;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
@@ -92,17 +91,12 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", binding.edtEmail.getText().toString().trim());
+        hashMap.put("signupType", "APPUSER");
         new ApiServices().requestOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
-                OtpResponseDTO otpResponseDTO = (OtpResponseDTO) response;
-                //Toast.makeText(getActivity(), otpResponseDTO.getMessage(), Toast.LENGTH_LONG).show();
-                String transactionId = "";
-                if (otpResponseDTO.getData() != null) {
-                    transactionId = otpResponseDTO.getData().getTransactionId();
-                }
-                showOtpVerificationFragment(binding.edtEmail.getText().toString().trim(), transactionId);
+                showOtpVerificationFragment(binding.edtEmail.getText().toString().trim());
             }
 
             @Override
@@ -125,12 +119,12 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
         return true;
     }
 
-    private void showOtpVerificationFragment(String emailId, String transactionId) {
+    private void showOtpVerificationFragment(String emailId) {
         if (getActivity() != null) {
             getActivity().getSupportFragmentManager().executePendingTransactions();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.container, OtpVerificationFragment.newInstance(emailId, transactionId))
+                    .replace(R.id.container, OtpVerificationFragment.newInstance(emailId))
                     .addToBackStack(OtpVerificationFragment.fragmentName)
                     .commitAllowingStateLoss();
         }

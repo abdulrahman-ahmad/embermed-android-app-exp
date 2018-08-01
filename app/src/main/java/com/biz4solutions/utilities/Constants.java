@@ -10,7 +10,7 @@ public class Constants implements Serializable {
     public static final String SUPPORT_LOG_EXTRA_SUBJECT = "Rekon Support Log file";
     public static final String SUPPORT_LOG_EXTRA_TEXT = "Log file attached.";
 
-    public static final int SPLASH_TIMEOUT = 3000;
+    public static final int SPLASH_TIMEOUT = 1200;
 
     public static final int SEND_LOG_EMAIL = 100;
     public static final int INTERNAL_SERVER_ERROR_CODE = 999;

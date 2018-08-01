@@ -56,6 +56,15 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 return true;
             }
         });
+        binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setEnabled(false);
+                if (getActivity() != null) {
+                    getActivity().onBackPressed();
+                }
+            }
+        });
         return binding.getRoot();
     }
 
@@ -63,9 +72,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_sign_up:
-                if (isValidName(binding.edtUserName.getText().toString().trim())) {
+                if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
                     if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
-                        if (isPasswordValid(binding.edtPassword.getText().toString().trim())) {
+                        if (isPasswordValid(binding.edtPassword.getText().toString().trim(), binding.edtConfirmPassword.getText().toString().trim())) {
                             //call sign web service
                             signUpWebServiceCall();
                         }
@@ -94,20 +103,24 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
 
-        SignUpRequest signUpRequest = new SignUpRequest("APP");
+        SignUpRequest signUpRequest = new SignUpRequest("APPUSER", "USER");
         signUpRequest.setEmail(binding.edtEmail.getText().toString().trim());
-        signUpRequest.setName(binding.edtUserName.getText().toString().trim());
+        signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
+        signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
         signUpRequest.setPassword(binding.edtPassword.getText().toString().trim());
+        signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
 
         new ApiServices().signUp(getActivity(), signUpRequest, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 LoginResponseDTO loginResponseDTO = (LoginResponseDTO) response;
-                SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponseDTO.getToken());
-                SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponseDTO.getData());
-                SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY,false);
                 CommonFunctions.getInstance().dismissProgressDialog();
-                openMainActivity();
+                if (loginResponseDTO.getData() != null) {
+                    SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponseDTO.getData().getAuthToken());
+                    SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponseDTO.getData());
+                    SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
+                    openMainActivity();
+                }
             }
 
             @Override
@@ -127,12 +140,18 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private boolean isPasswordValid(String password) {
+    private boolean isPasswordValid(String password, String confirmPassword) {
         if (password.isEmpty()) {
             Toast.makeText(getActivity(), R.string.error_empty_password, Toast.LENGTH_SHORT).show();
             return false;
         } else if (password.length() < 8 || password.length() > 20) {
             Toast.makeText(getActivity(), R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (confirmPassword.isEmpty()) {
+            Toast.makeText(getActivity(), R.string.error_empty_confirm_password, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!password.equals(confirmPassword)) {
+            Toast.makeText(getActivity(), R.string.error_invalid_confirm_password, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -149,9 +168,12 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         return true;
     }
 
-    private boolean isValidName(String firstName) {
+    private boolean isValidName(String firstName, String lastName) {
         if (firstName.isEmpty()) {
-            Toast.makeText(getActivity(), R.string.error_empty_name, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_empty_first_name, Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (lastName.isEmpty()) {
+            Toast.makeText(getActivity(), R.string.error_empty_last_name, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

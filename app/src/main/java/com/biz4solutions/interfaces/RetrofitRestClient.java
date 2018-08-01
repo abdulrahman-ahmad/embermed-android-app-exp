@@ -33,11 +33,9 @@ public interface RetrofitRestClient {
     @POST("v1/otp/verify")
     Call<EmptyResponse> verifyOtp(@Body HashMap<String, Object> body);
 
-    @POST("v1/user/forgotPasswordEmail")
-    Call<EmptyResponse> resetPassword(@Body HashMap<String, String> body);
+    @POST("v1/user/resetPassword")
+    Call<EmptyResponse> resetPassword(@Body HashMap<String, Object> body);
 
     @POST("v1/users/fcmToken")
     Call<EmptyResponse> setFcmToken(@Body HashMap<String, Object> body);
-
 }
-

@@ -5,7 +5,6 @@ package com.biz4solutions.models;
  */
 public class LoginResponseDTO extends EmptyResponse {
     private UserDTO data;
-    private String token;
 
     public UserDTO getData() {
         return data;
@@ -15,19 +14,10 @@ public class LoginResponseDTO extends EmptyResponse {
         this.data = data;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
     @Override
     public String toString() {
         return "LoginResponseDTO{" +
                 "data=" + data +
-                ", token='" + token + '\'' +
                 '}';
     }
 }

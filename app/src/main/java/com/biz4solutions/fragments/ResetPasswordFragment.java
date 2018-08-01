@@ -27,19 +27,19 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
     public static String fragmentName = "ResetPasswordFragment";
     private FragmentResetPasswordBinding binding;
     private final static String EMAIL_ID = "EMAIL_ID";
-    private final static String TRANSACTION_ID = "TRANSACTION_ID";
+    private final static String OTP = "OTP";
     private String emailId;
-    private String transactionId;
+    private int otp;
 
     public ResetPasswordFragment() {
         // Required empty public constructor
     }
 
-    public static ResetPasswordFragment newInstance(String emailId, String transactionId) {
+    public static ResetPasswordFragment newInstance(String emailId, int otp) {
         ResetPasswordFragment fragment = new ResetPasswordFragment();
         Bundle args = new Bundle();
         args.putString(EMAIL_ID, emailId);
-        args.putString(TRANSACTION_ID, transactionId);
+        args.putInt(OTP, otp);
         fragment.setArguments(args);
         return fragment;
     }
@@ -49,7 +49,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             emailId = getArguments().getString(EMAIL_ID);
-            transactionId = getArguments().getString(TRANSACTION_ID);
+            otp = getArguments().getInt(OTP);
         }
     }
 
@@ -107,9 +107,10 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
 
-        HashMap<String, String> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("transactionId", transactionId);
+        hashMap.put("signupType", "APPUSER");
+        hashMap.put("otp", otp);
         hashMap.put("password", binding.edtPassword.getText().toString().trim());
         new ApiServices().resetPassword(getActivity(), hashMap, new RestClientResponse() {
             @Override

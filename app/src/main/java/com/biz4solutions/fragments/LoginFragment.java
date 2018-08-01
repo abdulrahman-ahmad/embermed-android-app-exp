@@ -223,11 +223,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     @Override
     public void onSuccess(Object response, int statusCode) {
         LoginResponseDTO loginResponseDTO = (LoginResponseDTO) response;
-        SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponseDTO.getToken());
-        SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponseDTO.getData());
-        SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
         CommonFunctions.getInstance().dismissProgressDialog();
-        openMainActivity();
+        if (loginResponseDTO.getData() != null) {
+            SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponseDTO.getData().getAuthToken());
+            SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponseDTO.getData());
+            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
+            openMainActivity();
+        }
     }
 
     @Override

@@ -23,9 +23,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ActivitySplashBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_splash);
 
-        Animation slide_up = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slide_up);
-        binding.splashFooter.startAnimation(slide_up);
-
         Animation scale_anim = AnimationUtils.loadAnimation(this, R.anim.scale);
         binding.splashLogo.startAnimation(scale_anim);
 

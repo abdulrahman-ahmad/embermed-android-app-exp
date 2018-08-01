@@ -5,12 +5,16 @@ package com.biz4solutions.models;
  */
 public class SignUpRequest {
     private String email;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String password;
+    private String confirmPassword;
     private String signupType;
+    private String roleName;
 
-    public SignUpRequest(String signupType) {
+    public SignUpRequest(String signupType, String roleName) {
         this.signupType = signupType;
+        this.roleName = roleName;
     }
 
     public String getEmail() {
@@ -21,12 +25,20 @@ public class SignUpRequest {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getPassword() {
@@ -37,6 +49,14 @@ public class SignUpRequest {
         this.password = password;
     }
 
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
     public String getSignupType() {
         return signupType;
     }
@@ -45,14 +65,12 @@ public class SignUpRequest {
         this.signupType = signupType;
     }
 
-    @Override
-    public String toString() {
-        return "SignUpRequest{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", password='" + password + '\'' +
-                ", signupType='" + signupType + '\'' +
-                '}';
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 }
 

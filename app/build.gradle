@@ -41,11 +41,11 @@ android {
         }
         debug {
             debuggable true
-            minifyEnabled true
-            shrinkResources true
-            useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.debug
+            //minifyEnabled true
+            //shrinkResources true
+            //useProguard true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.debug
         }
     }
     dataBinding {
@@ -53,7 +53,7 @@ android {
     }
     productFlavors {
         dev {
-            buildConfigField 'String', 'HOST', '"http://../api/"'
+            buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
         }
         qaTest {
             buildConfigField 'String', 'HOST', '"http://../api/"'
