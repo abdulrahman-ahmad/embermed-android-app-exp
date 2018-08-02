@@ -9,3 +9,6 @@
 /captures
 .externalNativeBuild
 .idea
+/socialmedialib/build
+socialmedialib/build
+/socialmedialib/build/*
