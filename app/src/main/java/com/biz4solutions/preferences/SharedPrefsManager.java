@@ -3,7 +3,7 @@ package com.biz4solutions.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.biz4solutions.models.UserDTO;
+import com.biz4solutions.models.User;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -29,7 +29,7 @@ public class SharedPrefsManager implements Serializable {
         editor.apply();
     }
 
-    public void storeUserPreference(Context context, String preferenceName, String key, UserDTO user) {
+    public void storeUserPreference(Context context, String preferenceName, String key, User user) {
         SharedPreferences settings = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         String userJson = new Gson().toJson(user);
@@ -37,9 +37,9 @@ public class SharedPrefsManager implements Serializable {
         editor.apply();
     }
 
-    public UserDTO retrieveUserPreference(Context context, String preferenceName, String key) {
+    public User retrieveUserPreference(Context context, String preferenceName, String key) {
         SharedPreferences settings = context.getSharedPreferences(preferenceName, Context.MODE_PRIVATE);
-        return new Gson().fromJson(settings.getString(key, ""), UserDTO.class);
+        return new Gson().fromJson(settings.getString(key, ""), User.class);
     }
 
     public void storeBooleanPreference(Context context, String preferenceName, String key, boolean value) {

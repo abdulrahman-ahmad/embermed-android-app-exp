@@ -3,20 +3,20 @@ package com.biz4solutions.models;
 /*
  * Created by ketan on 12/11/2017.
  */
-public class UserDTO {
+public class User {
 
-    private long userId;
+    private String userId;
     private String firstName = "";
     private String lastName = "";
     private String authToken = "";
     private String email = "";
     private String roleName = "";
 
-    public long getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
@@ -62,7 +62,7 @@ public class UserDTO {
 
     @Override
     public String toString() {
-        return "UserDTO{" +
+        return "User{" +
                 "userId=" + userId +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +

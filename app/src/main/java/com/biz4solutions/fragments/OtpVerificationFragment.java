@@ -18,7 +18,7 @@ import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentOtpVerificationBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.models.EmptyResponse;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.HashMap;

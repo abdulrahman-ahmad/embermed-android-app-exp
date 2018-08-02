@@ -14,6 +14,7 @@
 
     <color name="btn_bg_color">@color/colorPrimary</color>
     <color name="text_hint_color">#c4c4c4</color>
-    <color name="state_pressed_text_color">#7b7b7b</color>
+    <color name="state_pressed_text_color">#7b7b7b7b</color>
     <color name="text_color">#4b565b</color>
+    <color name="secondary_text_color">#839096</color>
 </resources>

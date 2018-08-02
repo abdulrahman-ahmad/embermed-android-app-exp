@@ -68,7 +68,7 @@
 
     <style name="EditTextStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">@dimen/edit_text_height</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginEnd">@dimen/default_left_right_margin</item>
         <item name="android:layout_marginStart">@dimen/default_left_right_margin</item>
         <item name="android:fontFamily">sans-serif</item>

@@ -33,10 +33,12 @@
                     tools:ignore="SpUsage" />
 
                 <TextView
+                    android:id="@+id/skip_login"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
+                    android:background="@drawable/ripple_default_bg"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
                     android:paddingEnd="16dp"
@@ -46,7 +48,6 @@
                     android:textSize="@dimen/toolbar_title_text_size"
                     tools:ignore="RelativeOverlap,SpUsage" />
             </RelativeLayout>
-
         </android.support.v7.widget.Toolbar>
 
 
@@ -60,11 +61,11 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="75dp"
+                    android:layout_width="@dimen/login_image_width"
+                    android:layout_height="@dimen/login_image_height"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/login_image_margin_top"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_logo"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -74,7 +75,7 @@
                 <EditText
                     android:id="@+id/edt_first_name"
                     style="@style/EditTextStyle"
-                    android:layout_marginTop="30dp"
+                    android:layout_marginTop="@dimen/login_image_margin_top"
                     android:drawableStart="@drawable/ic_user_name"
                     android:hint="@string/first_name"
                     android:inputType="textWebEmailAddress"
@@ -169,7 +170,7 @@
                 <Button
                     android:id="@+id/btn_sign_up"
                     style="@style/BtnStyle"
-                    android:layout_marginTop="26dp"
+                    android:layout_marginTop="@dimen/sign_up_btn_margin_top"
                     android:text="@string/sign_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +182,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="@dimen/sign_up_link_margin_top"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -193,26 +194,25 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif"
                         android:text="@string/already_have_an_account"
-                        android:textColor="@drawable/selector_text_color"
-                        android:textSize="12dp"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/sign_up_link_text_size"
                         tools:ignore="SpUsage" />
 
                     <TextView
                         android:id="@+id/btn_back_to_login"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="sans-serif-medium"
-                        android:padding="8dp"
+                        android:background="@drawable/ripple_default_bg"
+                        android:fontFamily="sans-serif"
+                        android:padding="@dimen/sign_up_link_padding"
                         android:text="@string/back_to_login"
-                        android:textColor="@drawable/selector_text_color_primary"
-                        android:textSize="14dp"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/sign_up_link_text_size"
+                        android:textStyle="bold"
                         tools:ignore="SpUsage" />
 
                 </LinearLayout>
-
-
             </android.support.constraint.ConstraintLayout>
         </ScrollView>
-
     </LinearLayout>
 </layout>

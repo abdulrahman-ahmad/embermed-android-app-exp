@@ -3,8 +3,8 @@ package com.biz4solutions.apiservices;
 import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.models.LoginRequest;
-import com.biz4solutions.models.SignUpRequest;
+import com.biz4solutions.models.request.LoginRequest;
+import com.biz4solutions.models.request.SignUpRequest;
 
 import java.util.HashMap;
 

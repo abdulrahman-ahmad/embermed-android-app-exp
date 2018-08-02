@@ -1,4 +1,4 @@
-package com.biz4solutions.models;
+package com.biz4solutions.models.response;
 
 import java.io.Serializable;
 

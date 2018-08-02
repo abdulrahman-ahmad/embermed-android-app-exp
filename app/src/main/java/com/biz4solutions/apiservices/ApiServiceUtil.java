@@ -10,7 +10,7 @@ import com.biz4solutions.BuildConfig;
 import com.biz4solutions.R;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.interfaces.RetrofitRestClient;
-import com.biz4solutions.models.EmptyResponse;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.Constants;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.biz4solutions.models;
+package com.biz4solutions.models.request;
 
 /*
  * Created by ketan on 12/6/2017.
