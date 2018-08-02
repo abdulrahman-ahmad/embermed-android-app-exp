@@ -3,12 +3,10 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="nav_header_height">176dp</dimen>
-    <dimen name="edit_text_height">46dp</dimen>
-    <dimen name="edit_text_size">16dp</dimen>
-    <dimen name="default_left_right_margin">42dp</dimen>
-    <dimen name="btn_height">36dp</dimen>
-    <dimen name="btn_text_size">18dp</dimen>
-    <dimen name="toolbar_title_text_size">18dp</dimen>
-    <dimen name="verification_code_text_size">14dp</dimen>
+
+
+
+
+
     <dimen name="nav_view_width">220dp</dimen>
 </resources>

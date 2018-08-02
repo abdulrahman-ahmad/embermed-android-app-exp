@@ -3,7 +3,6 @@ package com.biz4solutions.interfaces;
 import com.biz4solutions.models.EmptyResponse;
 import com.biz4solutions.models.LoginRequest;
 import com.biz4solutions.models.LoginResponseDTO;
-import com.biz4solutions.models.OtpResponseDTO;
 import com.biz4solutions.models.SignUpRequest;
 
 import java.util.HashMap;
@@ -25,10 +24,10 @@ public interface RetrofitRestClient {
     Call<LoginResponseDTO> signUp(@Body SignUpRequest signUpRequest);
 
     @POST("v1/otp/requestOtp")
-    Call<OtpResponseDTO> requestOtp(@Body HashMap<String, String> body);
+    Call<EmptyResponse> requestOtp(@Body HashMap<String, String> body);
 
     @POST("v1/otp/resendOtp")
-    Call<OtpResponseDTO> resendOtp(@Body HashMap<String, String> body);
+    Call<EmptyResponse> resendOtp(@Body HashMap<String, String> body);
 
     @POST("v1/otp/verify")
     Call<EmptyResponse> verifyOtp(@Body HashMap<String, Object> body);

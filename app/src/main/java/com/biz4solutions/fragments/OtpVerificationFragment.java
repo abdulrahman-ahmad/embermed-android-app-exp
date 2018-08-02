@@ -19,7 +19,6 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentOtpVerificationBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmptyResponse;
-import com.biz4solutions.models.OtpResponseDTO;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.HashMap;
@@ -126,8 +125,8 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
             @Override
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
-                OtpResponseDTO otpResponseDTO = (OtpResponseDTO) response;
-                Toast.makeText(getActivity(), otpResponseDTO.getMessage(), Toast.LENGTH_SHORT).show();
+                EmptyResponse emptyResponse = (EmptyResponse) response;
+                Toast.makeText(getActivity(), emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -176,7 +175,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
             getActivity().getSupportFragmentManager().executePendingTransactions();
             getActivity().getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.container, ResetPasswordFragment.newInstance(emailId,Integer.parseInt(binding.edtOtp.getText().toString().trim())))
+                    .replace(R.id.container, ResetPasswordFragment.newInstance(emailId, Integer.parseInt(binding.edtOtp.getText().toString().trim())))
                     .addToBackStack(ResetPasswordFragment.fragmentName)
                     .commitAllowingStateLoss();
         }

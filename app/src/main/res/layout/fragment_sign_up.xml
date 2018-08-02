@@ -28,7 +28,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center_vertical"
                     android:text="@string/sign_up"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/toolbar_title_text_size"
                     tools:ignore="SpUsage" />
 
@@ -78,6 +78,8 @@
                     android:drawableStart="@drawable/ic_user_name"
                     android:hint="@string/first_name"
                     android:inputType="textWebEmailAddress"
+                    android:maxLength="50"
+                    android:theme="@style/EditTextHint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView" />
@@ -89,6 +91,8 @@
                     android:drawableStart="@drawable/ic_user_name"
                     android:hint="@string/last_name"
                     android:inputType="textWebEmailAddress"
+                    android:maxLength="50"
+                    android:theme="@style/EditTextHint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edt_first_name" />
@@ -100,6 +104,8 @@
                     android:drawableStart="@drawable/ic_email"
                     android:hint="@string/email"
                     android:inputType="textWebEmailAddress"
+                    android:maxLength="256"
+                    android:theme="@style/EditTextHint"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/edt_last_name" />
@@ -108,6 +114,7 @@
                     android:id="@+id/login_password_input_layout"
                     style="@style/EditTextStyle"
                     android:layout_marginTop="@dimen/login_edit_text_margin_top"
+                    android:theme="@style/EditTextHint"
                     app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,13 +134,15 @@
                         android:imeOptions="actionDone"
                         android:inputType="textWebPassword"
                         android:maxLength="20"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/login_confirm_password_input_layout"
                     style="@style/EditTextStyle"
                     android:layout_marginTop="@dimen/login_edit_text_margin_top"
+                    android:theme="@style/EditTextHint"
                     app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -153,7 +162,8 @@
                         android:imeOptions="actionDone"
                         android:inputType="textWebPassword"
                         android:maxLength="20"
-                        android:maxLines="1" />
+                        android:maxLines="1"
+                        android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
                 <Button

@@ -3,6 +3,17 @@
  -->
 <resources>
 
-
+    <dimen name="toolbar_title_text_size">18dp</dimen>
+    <dimen name="default_left_right_margin">42dp</dimen>
+    <dimen name="edit_text_height">46dp</dimen>
+    <dimen name="edit_text_size">16dp</dimen>
+    <dimen name="btn_height">36dp</dimen>
+    <dimen name="btn_text_size">18dp</dimen>
     <dimen name="login_edit_text_margin_top">0dp</dimen>
+    <dimen name="forgot_password_image_height">125dp</dimen>
+    <dimen name="forgot_password_image_margin_top">30dp</dimen>
+    <dimen name="verification_code_text_size">14dp</dimen>
+    <dimen name="forgot_password_btn_margin_top">56dp</dimen>
+    <dimen name="forgot_password_edt_margin_top">20dp</dimen>
+    <dimen name="resend_otp_test_size">14dp</dimen>
 </resources>
