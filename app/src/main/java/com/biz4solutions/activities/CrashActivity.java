@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.biz4solutions.R;
-import com.biz4solutions.application.Application;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
@@ -30,8 +29,12 @@ public class CrashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(CrashActivity.this, MainActivity.class);
-                startActivity(intent);
+                Intent startMain = new Intent(Intent.ACTION_MAIN);
+                startMain.addCategory(Intent.CATEGORY_HOME);
+                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(startMain);
+                /*Intent intent = new Intent(CrashActivity.this, MainActivity.class);
+                startActivity(intent);*/
                 finish();
             }
         }, 200);
@@ -43,7 +46,7 @@ public class CrashActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.SEND_LOG_EMAIL_ADDRESS1/*, Constants.SEND_LOG_EMAIL_ADDRESS2*/});
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, Constants.SUPPORT_LOG_EXTRA_SUBJECT);
         emailIntent.putExtra(Intent.EXTRA_TEXT, Constants.SUPPORT_LOG_EXTRA_TEXT);
-        File file = new File(((Application) getApplication()).getSupportDirectoryPath(), Constants.SUPPORT_FILE_NAME);
+        File file = new File(CommonFunctions.getSupportDirectoryPath(), Constants.SUPPORT_FILE_NAME);
         Uri uri = Uri.fromFile(file);
         emailIntent.putExtra(Intent.EXTRA_STREAM, uri);
         emailIntent.setData(Uri.parse("mailto:"));

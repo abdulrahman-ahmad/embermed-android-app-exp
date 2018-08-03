@@ -22,12 +22,12 @@ import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
-import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.ExceptionHandler;
 
-import osiris.com.socialmedialib.utilities.FacebookUtil;
-import osiris.com.socialmedialib.utilities.GoogleUtil;
+import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

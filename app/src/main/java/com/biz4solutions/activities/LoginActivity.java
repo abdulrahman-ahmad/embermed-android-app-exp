@@ -10,8 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import com.biz4solutions.R;
 import com.biz4solutions.fragments.LoginFragment;
 
-import osiris.com.socialmedialib.utilities.FacebookUtil;
-import osiris.com.socialmedialib.utilities.GoogleUtil;
+import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.GoogleUtil;
 
 /*
  * Created by ketan on 11/30/2017.

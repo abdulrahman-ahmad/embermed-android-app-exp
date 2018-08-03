@@ -7,7 +7,15 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "GOOGLE_AUTH_CLIENT_ID", '"999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com"'
+        flavorDimensions "default"
+    }
+    productFlavors {
+        dev {
+        }
+        qaTest {
+        }
+        prod {
+        }
     }
 }
 
@@ -15,4 +23,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.android.gms:play-services-auth:15.0.1'   // Google+ Login
     implementation 'com.facebook.android:facebook-login:4.34.0'         // FaceBook Login
+    api project(':apiservices')
 }

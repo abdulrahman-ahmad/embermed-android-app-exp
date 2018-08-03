@@ -20,8 +20,8 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentSignUpBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -122,7 +122,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (loginResponse.getData() != null) {
                     SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
-                    SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
+                    //SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                     SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
                     openMainActivity();
                 }

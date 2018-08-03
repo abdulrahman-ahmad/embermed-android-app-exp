@@ -14,22 +14,22 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biz4solutions.BuildConfig;
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentLoginBinding;
+import com.biz4solutions.interfaces.CallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-
-import osiris.com.socialmedialib.interfaces.CallbackListener;
-import osiris.com.socialmedialib.models.SocialMediaUserData;
-import osiris.com.socialmedialib.utilities.FacebookUtil;
-import osiris.com.socialmedialib.utilities.GoogleUtil;
+import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.GoogleUtil;
 
 /*
  * Created by ketan on 12/1/2017.
@@ -46,7 +46,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
-        GoogleUtil.getInstance().initGoogleConfig(getActivity());
+        GoogleUtil.getInstance().initGoogleConfig(getActivity(), BuildConfig.GOOGLE_AUTH_CLIENT_ID);
         return binding.getRoot();
     }
 
@@ -226,7 +226,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         CommonFunctions.getInstance().dismissProgressDialog();
         if (loginResponse.getData() != null) {
             SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
-            SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
+            //SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
             SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
             openMainActivity();
         }
