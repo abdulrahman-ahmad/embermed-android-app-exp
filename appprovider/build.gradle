@@ -1,0 +1,84 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0.0"
+        flavorDimensions "default"
+        applicationId "com.osiris.osirisbio"
+        multiDexEnabled true
+
+        def addConstant = { constantName, constantValue ->
+            manifestPlaceholders = [(constantName): constantValue]
+            buildConfigField "String", "${constantName}", "\"${constantValue}\""
+        }
+        addConstant("GOOGLE_API_KEY", "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M")
+    }
+
+    signingConfigs {
+        debug {
+            storeFile file('..\\biz4solutions.jks')
+            keyAlias 'biz4solutions'
+            keyPassword 'biz4solutions'
+            storePassword 'biz4solutions'
+        }
+        release {
+            storeFile file('..\\biz4solutions.jks')
+            keyAlias 'biz4solutions'
+            keyPassword 'biz4solutions'
+            storePassword 'biz4solutions'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            debuggable true
+            //minifyEnabled true
+            //shrinkResources true
+            //useProguard true
+            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.debug
+        }
+    }
+    dataBinding {
+        enabled = true
+    }
+    productFlavors {
+        dev {
+            //buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
+        }
+        qaTest {
+            //buildConfigField 'String', 'HOST', '"http://../api/"'
+        }
+        prod {
+            //buildConfigField 'String', 'HOST', '"http://../api/"'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:multidex:1.0.3'
+
+    implementation 'com.google.android.gms:play-services-maps:15.0.1' // Google Map Integration
+    implementation 'com.google.android.gms:play-services-location:15.0.1'// Google Map Integration
+    implementation 'com.google.firebase:firebase-messaging:17.1.0' // Firebase notification
+    implementation 'com.google.firebase:firebase-auth:16.0.2'      // Firebase Authentication
+    implementation 'com.google.firebase:firebase-database:16.0.1'  // Firebase Database
+
+    api project(':loginlib')
+}
+apply plugin: 'com.google.gms.google-services'                    // Firebase push notification
