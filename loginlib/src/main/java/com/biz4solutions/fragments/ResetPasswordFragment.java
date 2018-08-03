@@ -14,12 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentResetPasswordBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.R;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.loginlib.databinding.FragmentResetPasswordBinding;
 
 import java.util.HashMap;
 
@@ -89,12 +89,11 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_reset_password:
-                if (isPasswordValid(binding.edtPassword.getText().toString().trim())) {
-                    resetPassword();
-                }
-                break;
+        int i = view.getId();
+        if (i == R.id.btn_reset_password) {
+            if (isPasswordValid(binding.edtPassword.getText().toString().trim())) {
+                resetPassword();
+            }
         }
     }
 

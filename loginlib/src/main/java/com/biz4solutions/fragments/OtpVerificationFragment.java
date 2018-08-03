@@ -14,12 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentOtpVerificationBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.R;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.loginlib.databinding.FragmentOtpVerificationBinding;
 
 import java.util.HashMap;
 
@@ -86,15 +86,13 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_verify_otp:
-                if (isOtpValid(binding.edtOtp.getText().toString().trim())) {
-                    verifyOtp();
-                }
-                break;
-            case R.id.txt_resend:
-                resendOtp();
-                break;
+        int i = view.getId();
+        if (i == R.id.btn_verify_otp) {
+            if (isOtpValid(binding.edtOtp.getText().toString().trim())) {
+                verifyOtp();
+            }
+        } else if (i == R.id.txt_resend) {
+            resendOtp();
         }
     }
 

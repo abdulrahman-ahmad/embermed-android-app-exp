@@ -50,8 +50,8 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="222.075dp"
-                    android:layout_height="104.625dp"
+                    android:layout_width="@dimen/login_image_width"
+                    android:layout_height="@dimen/login_image_height"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="24dp"

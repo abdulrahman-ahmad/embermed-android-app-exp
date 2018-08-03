@@ -7,9 +7,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
-import com.biz4solutions.R;
 import com.biz4solutions.fragments.LoginFragment;
-
+import com.biz4solutions.loginlib.R;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 

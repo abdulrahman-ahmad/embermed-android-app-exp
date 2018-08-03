@@ -16,7 +16,6 @@ android {
             buildConfigField "String", "${constantName}", "\"${constantValue}\""
         }
         addConstant("GOOGLE_API_KEY", "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M")
-        buildConfigField "String", "GOOGLE_AUTH_CLIENT_ID", '"999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com"'
     }
 
     signingConfigs {

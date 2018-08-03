@@ -7,16 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
-import com.biz4solutions.socialmedialib.BuildConfig;
+import com.biz4solutions.interfaces.CallbackListener;
+import com.biz4solutions.models.SocialMediaUserData;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-
-import com.biz4solutions.interfaces.CallbackListener;
-import com.biz4solutions.models.SocialMediaUserData;
 
 /*
  * Created by ketan on 12/4/2017.
@@ -38,7 +36,7 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
         return instance;
     }
 
-    public void initGoogleConfig(Activity activity,String googleAuthClientId) {
+    public void initGoogleConfig(Activity activity, String googleAuthClientId) {
         if (mGoogleApiClient == null) {
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(googleAuthClientId)

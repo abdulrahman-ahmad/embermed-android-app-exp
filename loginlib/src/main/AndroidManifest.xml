@@ -3,6 +3,10 @@
     package="com.biz4solutions.loginlib">
 
     <application>
+        <activity
+            android:name="com.biz4solutions.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
         <meta-data
             android:name="aia-compat-api-min-version"
             android:value="1" />

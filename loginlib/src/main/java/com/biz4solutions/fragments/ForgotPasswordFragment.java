@@ -13,13 +13,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentForgotPasswordBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.R;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-
+import com.biz4solutions.loginlib.databinding.FragmentForgotPasswordBinding;
 import java.util.HashMap;
 
 public class ForgotPasswordFragment extends Fragment implements View.OnClickListener {
@@ -71,12 +70,12 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_send_otp:
-                if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
-                    requestOtp();
-                }
-                break;
+        int i = view.getId();
+        if (i == R.id.btn_send_otp) {
+            if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
+                requestOtp();
+            }
+
         }
     }
 

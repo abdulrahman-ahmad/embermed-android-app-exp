@@ -37,10 +37,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
-        <activity
-            android:name="com.biz4solutions.activities.LoginActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateHidden" />
+
         <activity
             android:name="com.biz4solutions.activities.CrashActivity"
             android:screenOrientation="portrait"

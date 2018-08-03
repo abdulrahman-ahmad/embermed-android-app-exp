@@ -14,17 +14,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentSignUpBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.R;
 import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.loginlib.databinding.FragmentSignUpBinding;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
 
@@ -71,27 +70,24 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_sign_up:
-                if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
-                    if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
-                        if (isPasswordValid(binding.edtPassword.getText().toString().trim(), binding.edtConfirmPassword.getText().toString().trim())) {
-                            //call sign web service
-                            signUpWebServiceCall();
-                        }
+        int i = view.getId();
+        if (i == R.id.btn_sign_up) {
+            if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
+                if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
+                    if (isPasswordValid(binding.edtPassword.getText().toString().trim(), binding.edtConfirmPassword.getText().toString().trim())) {
+                        //call sign web service
+                        signUpWebServiceCall();
                     }
                 }
-                break;
-            case R.id.btn_back_to_login:
-                view.setEnabled(false);
-                if (getFragmentManager() != null) {
-                    getFragmentManager().popBackStack();
-                }
-                break;
-            case R.id.skip_login:
-                SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
-                openMainActivity();
-                break;
+            }
+        } else if (i == R.id.btn_back_to_login) {
+            view.setEnabled(false);
+            if (getFragmentManager() != null) {
+                getFragmentManager().popBackStack();
+            }
+        } else if (i == R.id.skip_login) {
+            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
+            openMainActivity();
         }
     }
 
@@ -138,11 +134,11 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     private void openMainActivity() {
         ApiServiceUtil.resetInstance();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        /*Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) {
             getActivity().finish();
-        }
+        }*/
     }
 
     private boolean isPasswordValid(String password, String confirmPassword) {

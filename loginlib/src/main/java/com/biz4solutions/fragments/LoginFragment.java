@@ -14,14 +14,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.BuildConfig;
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentLoginBinding;
 import com.biz4solutions.interfaces.CallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.loginlib.R;
+import com.biz4solutions.loginlib.databinding.FragmentLoginBinding;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.response.LoginResponse;
@@ -75,11 +74,11 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
     private void openMainActivity() {
         ApiServiceUtil.resetInstance();
-        Intent intent = new Intent(getActivity(), MainActivity.class);
+        /*Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
         if (getActivity() != null) {
             getActivity().finish();
-        }
+        }*/
     }
 
     //Login web service integration
@@ -101,26 +100,20 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn_sign_in:
-                signInWithEmailOrPhoneNo();
-                break;
-            case R.id.btn_sign_in_facebook:
-                signInWithFB();
-                break;
-            case R.id.btn_sign_in_google:
-                signInWithGoogle();
-                break;
-            case R.id.btn_sign_up:
-                showSignUpFragment();
-                break;
-            case R.id.txt_forgot_password:
-                showForgotPasswordFragment();
-                break;
-            case R.id.skip_login:
-                SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
-                openMainActivity();
-                break;
+        int i = view.getId();
+        if (i == R.id.btn_sign_in) {
+            signInWithEmailOrPhoneNo();
+        } else if (i == R.id.btn_sign_in_facebook) {
+            signInWithFB();
+        } else if (i == R.id.btn_sign_in_google) {
+            signInWithGoogle();
+        } else if (i == R.id.btn_sign_up) {
+            showSignUpFragment();
+        } else if (i == R.id.txt_forgot_password) {
+            showForgotPasswordFragment();
+        } else if (i == R.id.skip_login) {
+            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
+            openMainActivity();
         }
     }
 

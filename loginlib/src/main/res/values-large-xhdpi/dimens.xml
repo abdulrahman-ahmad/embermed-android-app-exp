@@ -1,0 +1,20 @@
+<!--dimens-large-hdpi used for
+    1)Nexus 7 tablet
+ -->
+<resources>
+    <dimen name="login_edit_text_margin_top">8dp</dimen>
+    <dimen name="forgot_password_image_height">215dp</dimen>
+    <dimen name="forgot_password_image_margin_top">40dp</dimen>
+    <dimen name="verification_code_text_size">20dp</dimen>
+    <dimen name="forgot_password_btn_margin_top">84dp</dimen>
+    <dimen name="forgot_password_edt_margin_top">34dp</dimen>
+    <dimen name="resend_otp_test_size">16dp</dimen>
+    <dimen name="login_image_margin_top">40dp</dimen>
+    <dimen name="sign_up_btn_margin_top">50dp</dimen>
+    <dimen name="sign_up_link_margin_top">12dp</dimen>
+    <dimen name="sign_up_link_text_size">20dp</dimen>
+    <dimen name="sign_up_link_padding">12dp</dimen>
+    <dimen name="login_image_width">411.25dp</dimen>
+    <dimen name="login_image_height">193.75dp</dimen>
+
+</resources>
