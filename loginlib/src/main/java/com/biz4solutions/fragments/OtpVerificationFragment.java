@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.R;
@@ -28,6 +29,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
     private final static String EMAIL_ID = "EMAIL_ID";
     private FragmentOtpVerificationBinding binding;
     private String emailId;
+    private LoginActivity loginActivity;
 
     public OtpVerificationFragment() {
         // Required empty public constructor
@@ -44,6 +46,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginActivity = (LoginActivity) getActivity();
         if (getArguments() != null) {
             emailId = getArguments().getString(EMAIL_ID);
         }
@@ -118,7 +121,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("roleName", "USER");
+        hashMap.put("roleName", loginActivity.roleName);
         new ApiServices().resendOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
@@ -148,7 +151,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("otp", Integer.parseInt(binding.edtOtp.getText().toString().trim()));
         hashMap.put("email", emailId);
-        hashMap.put("roleName", "USER");
+        hashMap.put("roleName", loginActivity.roleName);
         new ApiServices().verifyOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {

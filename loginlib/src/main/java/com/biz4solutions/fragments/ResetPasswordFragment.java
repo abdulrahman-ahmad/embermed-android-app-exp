@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.R;
@@ -30,6 +31,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
     private final static String OTP = "OTP";
     private String emailId;
     private int otp;
+    private LoginActivity loginActivity;
 
     public ResetPasswordFragment() {
         // Required empty public constructor
@@ -47,6 +49,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        loginActivity = (LoginActivity) getActivity();
         if (getArguments() != null) {
             emailId = getArguments().getString(EMAIL_ID);
             otp = getArguments().getInt(OTP);
@@ -108,7 +111,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("roleName", "USER");
+        hashMap.put("roleName", loginActivity.roleName);
         hashMap.put("otp", otp);
         hashMap.put("password", binding.edtPassword.getText().toString().trim());
         new ApiServices().resetPassword(getActivity(), hashMap, new RestClientResponse() {
@@ -140,5 +143,4 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
         }
         return true;
     }
-
 }

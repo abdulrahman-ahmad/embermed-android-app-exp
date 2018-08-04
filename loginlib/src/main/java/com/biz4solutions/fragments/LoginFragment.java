@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.apiservices.ApiServiceUtil;
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.CallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -30,6 +30,8 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
+import static android.app.Activity.RESULT_OK;
+
 /*
  * Created by ketan on 12/1/2017.
  */
@@ -37,6 +39,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
     public static String fragmentName = "LoginFragment";
     private FragmentLoginBinding binding;
+    private LoginActivity loginActivity;
 
     public static LoginFragment newInstance() {
         return new LoginFragment();
@@ -45,6 +48,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+        loginActivity = (LoginActivity) getActivity();
         GoogleUtil.getInstance().initGoogleConfig(getActivity(), BuildConfig.GOOGLE_AUTH_CLIENT_ID);
         return binding.getRoot();
     }
@@ -72,15 +76,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         });
     }
 
-    private void openMainActivity() {
-        ApiServiceUtil.resetInstance();
-        /*Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-        if (getActivity() != null) {
-            getActivity().finish();
-        }*/
-    }
-
     //Login web service integration
     private void loginWithEmail(String email) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
@@ -88,7 +83,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
-        LoginRequest loginRequest = new LoginRequest("EMAIL", "USER");
+        LoginRequest loginRequest = new LoginRequest("EMAIL", loginActivity.roleName);
         loginRequest.setEmail(email);
         loginRequest.setPassword(binding.edtPassword.getText().toString().trim());
         new ApiServices().doLogin(getActivity(), loginRequest, this);
@@ -96,19 +91,24 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
     @Override
     public void onClick(View view) {
+        CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
         int i = view.getId();
         if (i == R.id.btn_sign_in) {
+            //SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer ");
+            //loginActivity.finishActivityWithResult(RESULT_OK);
             signInWithEmail();
         } else if (i == R.id.btn_sign_in_facebook) {
-            signInWithFB();
+            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+            //signInWithFB();
         } else if (i == R.id.btn_sign_in_google) {
-            signInWithGoogle();
+            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+            //signInWithGoogle();
         } else if (i == R.id.btn_sign_up) {
             showSignUpFragment();
         } else if (i == R.id.txt_forgot_password) {
             showForgotPasswordFragment();
         } else if (i == R.id.skip_login) {
-            openMainActivity();
+            loginActivity.finishActivityWithResult(RESULT_OK);
         }
     }
 
@@ -215,7 +215,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         if (loginResponse.getData() != null) {
             SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
             SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
-            openMainActivity();
+            loginActivity.finishActivityWithResult(RESULT_OK);
         }
     }
 

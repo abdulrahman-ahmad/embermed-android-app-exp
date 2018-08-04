@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.fragments.LoginFragment;
 import com.biz4solutions.loginlib.R;
+import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
@@ -17,10 +19,13 @@ import com.biz4solutions.utilities.GoogleUtil;
  */
 public class LoginActivity extends AppCompatActivity {
 
+    public String roleName;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        roleName = getIntent().getStringExtra(Constants.ROLE_NAME);
         showLoginFragment();
     }
 
@@ -42,6 +47,13 @@ public class LoginActivity extends AppCompatActivity {
                 .commitAllowingStateLoss();
     }
 
+    public void finishActivityWithResult(int resultCode) {
+        ApiServiceUtil.resetInstance();
+        Intent intent = new Intent();
+        setResult(resultCode, intent);
+        finish();
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -51,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onBackPressed() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.container);
         if (currentFragment instanceof LoginFragment) {
-            finish();
+            finishActivityWithResult(RESULT_CANCELED);
             //android.os.Process.killProcess(android.os.Process.myPid());
         } else {
             // If not manage back key according fragment stack
@@ -61,6 +73,5 @@ public class LoginActivity extends AppCompatActivity {
                 super.onBackPressed();
             }
         }
-
     }
 }

@@ -50,19 +50,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
+        initView();
+
+        if (binding.appBarMain != null) {
+            toolbarTitle = binding.appBarMain.toolbarTitle;
+        }
+    }
+
+    private void initView() {
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
         if (userAuthKey == null || userAuthKey.isEmpty()) {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
             openNewsFeedFragment();
         } else {
+            navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
             openDashBoardFragment();
-        }
-        if (binding.appBarMain != null) {
-            toolbarTitle = binding.appBarMain.toolbarTitle;
         }
     }
 
@@ -111,11 +120,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void doLogOut() {
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
         SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
-        startActivity(new Intent(MainActivity.this, LoginActivity.class));
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
-        finish();
+        Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+        intent.putExtra(Constants.ROLE_NAME,"USER");
+        startActivityForResult(intent, 149);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 149) {
+            initView();
+        }
     }
 
     private void openDashBoardFragment() {

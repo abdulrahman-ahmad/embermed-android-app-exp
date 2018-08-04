@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.R;
@@ -24,6 +25,7 @@ import java.util.HashMap;
 public class ForgotPasswordFragment extends Fragment implements View.OnClickListener {
     public static String fragmentName = "ForgotPasswordFragment";
     private FragmentForgotPasswordBinding binding;
+    private LoginActivity loginActivity;
     //private FragmentForgotPasswordBinding binding;
 
     public ForgotPasswordFragment() {
@@ -38,6 +40,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_forgot_password, container, false);
         binding.btnSendOtp.setOnClickListener(this);
+        loginActivity = (LoginActivity) getActivity();
         binding.toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +93,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", binding.edtEmail.getText().toString().trim());
-        hashMap.put("roleName", "USER");
+        hashMap.put("roleName", loginActivity.roleName);
         new ApiServices().requestOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {

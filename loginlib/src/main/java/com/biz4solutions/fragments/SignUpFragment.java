@@ -1,5 +1,6 @@
 package com.biz4solutions.fragments;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.apiservices.ApiServiceUtil;
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.R;
@@ -28,6 +29,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     public static String fragmentName = "SignUpFragment";
     private FragmentSignUpBinding binding;
+    private LoginActivity loginActivity;
 
     public SignUpFragment() {
         // Required empty public constructor
@@ -40,6 +42,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_sign_up, container, false);
+        loginActivity = (LoginActivity) getActivity();
         binding.btnSignUp.setOnClickListener(this);
         binding.btnBackToLogin.setOnClickListener(this);
         binding.skipLogin.setOnClickListener(this);
@@ -85,7 +88,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 getFragmentManager().popBackStack();
             }
         } else if (i == R.id.skip_login) {
-            openMainActivity();
+            loginActivity.finishActivityWithResult(Activity.RESULT_OK);
         }
     }
 
@@ -102,7 +105,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
 
-        SignUpRequest signUpRequest = new SignUpRequest("EMAIL", "USER");
+        SignUpRequest signUpRequest = new SignUpRequest("EMAIL", loginActivity.roleName);
         signUpRequest.setEmail(binding.edtEmail.getText().toString().trim());
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
@@ -117,7 +120,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 if (loginResponse.getData() != null) {
                     SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
                     SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
-                    openMainActivity();
+                    loginActivity.finishActivityWithResult(Activity.RESULT_OK);
                 }
             }
 
@@ -127,15 +130,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 CommonFunctions.getInstance().dismissProgressDialog();
             }
         });
-    }
-
-    private void openMainActivity() {
-        ApiServiceUtil.resetInstance();
-        /*Intent intent = new Intent(getActivity(), MainActivity.class);
-        startActivity(intent);
-        if (getActivity() != null) {
-            getActivity().finish();
-        }*/
     }
 
     private boolean isPasswordValid(String password, String confirmPassword) {

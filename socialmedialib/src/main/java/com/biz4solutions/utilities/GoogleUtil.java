@@ -62,20 +62,22 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
 
     public void doLogout() {
         try {
-            mGoogleApiClient.connect();
-            mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-                @Override
-                public void onConnected(@Nullable Bundle bundle) {
+            if(mGoogleApiClient != null) {
+                mGoogleApiClient.connect();
+                mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
 
-                    if (mGoogleApiClient.isConnected()) {
-                        Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        if (mGoogleApiClient.isConnected()) {
+                            Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+                        }
                     }
-                }
 
-                @Override
-                public void onConnectionSuspended(int i) {
-                }
-            });
+                    @Override
+                    public void onConnectionSuspended(int i) {
+                    }
+                });
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
