@@ -108,7 +108,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("signupType", "APPUSER");
+        hashMap.put("roleName", "USER");
         hashMap.put("otp", otp);
         hashMap.put("password", binding.edtPassword.getText().toString().trim());
         new ApiServices().resetPassword(getActivity(), hashMap, new RestClientResponse() {

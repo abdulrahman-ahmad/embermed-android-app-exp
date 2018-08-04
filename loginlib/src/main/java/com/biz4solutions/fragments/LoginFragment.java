@@ -82,18 +82,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     }
 
     //Login web service integration
-    private void loginWithEmailOrPhoneNo(String email) {
+    private void loginWithEmail(String email) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setAppVersion(ApiServiceUtil.getInstance().getAppVersion());
-        loginRequest.setDeviceId(ApiServiceUtil.getInstance().getDeviceID(getContext()));
-        loginRequest.setDeviceName(ApiServiceUtil.getInstance().getDeviceName());
+        LoginRequest loginRequest = new LoginRequest("EMAIL", "USER");
         loginRequest.setEmail(email);
-        loginRequest.setDeviceType(ApiServiceUtil.getInstance().getDeviceType());
         loginRequest.setPassword(binding.edtPassword.getText().toString().trim());
         new ApiServices().doLogin(getActivity(), loginRequest, this);
     }
@@ -102,7 +98,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     public void onClick(View view) {
         int i = view.getId();
         if (i == R.id.btn_sign_in) {
-            signInWithEmailOrPhoneNo();
+            signInWithEmail();
         } else if (i == R.id.btn_sign_in_facebook) {
             signInWithFB();
         } else if (i == R.id.btn_sign_in_google) {
@@ -112,15 +108,14 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         } else if (i == R.id.txt_forgot_password) {
             showForgotPasswordFragment();
         } else if (i == R.id.skip_login) {
-            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
             openMainActivity();
         }
     }
 
-    private void signInWithEmailOrPhoneNo() {
+    private void signInWithEmail() {
         if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
             if (isPasswordValid(binding.edtPassword.getText().toString().trim())) {
-                loginWithEmailOrPhoneNo(binding.edtEmail.getText().toString().trim());
+                loginWithEmail(binding.edtEmail.getText().toString().trim());
             }
         }
     }
@@ -219,8 +214,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         CommonFunctions.getInstance().dismissProgressDialog();
         if (loginResponse.getData() != null) {
             SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
-            //SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
-            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
+            SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
             openMainActivity();
         }
     }

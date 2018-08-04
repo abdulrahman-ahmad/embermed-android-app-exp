@@ -118,7 +118,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", emailId);
-        hashMap.put("signupType", "APPUSER");
+        hashMap.put("roleName", "USER");
         new ApiServices().resendOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
@@ -148,7 +148,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("otp", Integer.parseInt(binding.edtOtp.getText().toString().trim()));
         hashMap.put("email", emailId);
-        hashMap.put("signupType", "APPUSER");
+        hashMap.put("roleName", "USER");
         new ApiServices().verifyOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
@@ -164,9 +164,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
                 CommonFunctions.getInstance().dismissProgressDialog();
             }
         });
-
     }
-
 
     private void showResetPasswordFragment() {
         if (getActivity() != null) {

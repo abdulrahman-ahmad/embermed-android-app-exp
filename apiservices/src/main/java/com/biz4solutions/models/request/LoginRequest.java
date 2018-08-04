@@ -5,43 +5,14 @@ package com.biz4solutions.models.request;
  */
 
 public class LoginRequest {
-    private String appVersion;
-    private String deviceId;
-    private String deviceName;
-    private String deviceType;
     private String email;
     private String password;
+    private String signupType;
+    private String roleName;
 
-    public String getAppVersion() {
-        return appVersion;
-    }
-
-    public void setAppVersion(String appVersion) {
-        this.appVersion = appVersion;
-    }
-
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getDeviceName() {
-        return deviceName;
-    }
-
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
+    public LoginRequest(String signupType, String roleName) {
+        this.signupType = signupType;
+        this.roleName = roleName;
     }
 
     public String getEmail() {
@@ -60,15 +31,29 @@ public class LoginRequest {
         this.password = password;
     }
 
+    public String getSignupType() {
+        return signupType;
+    }
+
+    public void setSignupType(String signupType) {
+        this.signupType = signupType;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
     @Override
     public String toString() {
         return "LoginRequest{" +
-                "appVersion='" + appVersion + '\'' +
-                ", deviceId='" + deviceId + '\'' +
-                ", deviceName='" + deviceName + '\'' +
-                ", deviceType='" + deviceType + '\'' +
-                ", email='" + email + '\'' +
+                "email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", signupType='" + signupType + '\'' +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

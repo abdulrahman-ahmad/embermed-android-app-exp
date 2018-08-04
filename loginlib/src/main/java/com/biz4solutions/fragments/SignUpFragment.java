@@ -1,6 +1,5 @@
 package com.biz4solutions.fragments;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,12 +17,12 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.R;
+import com.biz4solutions.loginlib.databinding.FragmentSignUpBinding;
 import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.loginlib.databinding.FragmentSignUpBinding;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
 
@@ -86,7 +85,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 getFragmentManager().popBackStack();
             }
         } else if (i == R.id.skip_login) {
-            SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, true);
             openMainActivity();
         }
     }
@@ -104,7 +102,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
 
-        SignUpRequest signUpRequest = new SignUpRequest("APPUSER", "USER");
+        SignUpRequest signUpRequest = new SignUpRequest("EMAIL", "USER");
         signUpRequest.setEmail(binding.edtEmail.getText().toString().trim());
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
@@ -118,8 +116,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (loginResponse.getData() != null) {
                     SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
-                    //SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
-                    SharedPrefsManager.getInstance().storeBooleanPreference(getContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY, false);
+                    SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                     openMainActivity();
                 }
             }

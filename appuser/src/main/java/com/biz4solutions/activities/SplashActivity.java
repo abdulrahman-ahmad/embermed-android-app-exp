@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.ActivitySplashBinding;
-import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.Constants;
 
 /*
@@ -25,25 +24,7 @@ public class SplashActivity extends AppCompatActivity {
 
         Animation scale_anim = AnimationUtils.loadAnimation(this, R.anim.scale);
         binding.splashLogo.startAnimation(scale_anim);
-
-        String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(getBaseContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
-        boolean isSkipLogin = SharedPrefsManager.getInstance().retrieveBooleanPreference(getBaseContext(), Constants.USER_PREFERENCE, Constants.SKIP_LOGIN_KEY);
-        if ((userAuthKey != null && !userAuthKey.isEmpty()) || isSkipLogin) {
-            navigateToHomeScreen();
-        } else {
-            navigateToLoginScreen();
-        }
-    }
-
-    private void navigateToLoginScreen() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Intent intent = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }, Constants.SPLASH_TIMEOUT);
+        navigateToHomeScreen();
     }
 
     private void navigateToHomeScreen() {

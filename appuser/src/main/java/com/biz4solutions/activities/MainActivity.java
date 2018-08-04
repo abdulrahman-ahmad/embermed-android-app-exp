@@ -20,12 +20,12 @@ import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
+import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
-import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
-
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
@@ -52,19 +52,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
         if (userAuthKey == null || userAuthKey.isEmpty()) {
-            navigationView.getMenu().findItem(R.id.nav_driving_records).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_track_the_car).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_settings).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
+            openNewsFeedFragment();
         } else {
+            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            openDashBoardFragment();
         }
-        navigationView.getMenu().findItem(R.id.nav_test).setVisible(false);
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
         }
-        openDashBoardFragment();
     }
 
     @Override
@@ -127,6 +126,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    private void openNewsFeedFragment() {
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, NewsFeedFragment.newInstance())
+                .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void reOpenDashBoardFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
@@ -148,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             switch (fragmentName) {
+                case NewsFeedFragment.fragmentName:
                 case DashboardFragment.fragmentName:
                     if (doubleBackToExitPressedOnce) {
                         finish();

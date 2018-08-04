@@ -90,7 +90,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
         HashMap<String, String> hashMap = new HashMap<>();
         hashMap.put("email", binding.edtEmail.getText().toString().trim());
-        hashMap.put("signupType", "APPUSER");
+        hashMap.put("roleName", "USER");
         new ApiServices().requestOtp(getActivity(), hashMap, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {

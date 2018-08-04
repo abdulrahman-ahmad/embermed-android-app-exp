@@ -8,7 +8,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         flavorDimensions "default"
-        applicationId "com.osiris.osirisbio"
+        applicationId "com.osiris.osirisbio.provider"
         multiDexEnabled true
 
         def addConstant = { constantName, constantValue ->
