@@ -54,6 +54,13 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        binding.edtEmail.setText("");
+        binding.edtPassword.setText("");
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.btnSignIn.setOnClickListener(this);
