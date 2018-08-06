@@ -94,8 +94,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
         int i = view.getId();
         if (i == R.id.btn_sign_in) {
-            //SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer ");
-            //loginActivity.finishActivityWithResult(RESULT_OK);
             signInWithEmail();
         } else if (i == R.id.btn_sign_in_facebook) {
             Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();

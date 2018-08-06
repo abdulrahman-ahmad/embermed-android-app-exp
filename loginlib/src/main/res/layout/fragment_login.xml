@@ -146,9 +146,11 @@
                     android:background="@drawable/ripple_fb_button"
                     android:fontFamily="sans-serif"
                     android:text="@string/facebook_login"
+                    android:textSize="@dimen/sub_btn_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/login_divider" />
+                    app:layout_constraintTop_toBottomOf="@+id/login_divider"
+                    tools:ignore="SpUsage" />
 
                 <Button
                     android:id="@+id/btn_sign_in_google"
@@ -158,9 +160,11 @@
                     android:background="@drawable/ripple_gp_button"
                     android:fontFamily="sans-serif"
                     android:text="@string/google_login"
+                    android:textSize="@dimen/sub_btn_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_sign_in_facebook" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_sign_in_facebook"
+                    tools:ignore="SpUsage" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"

@@ -11,4 +11,5 @@
     <dimen name="btn_height">54dp</dimen>
     <dimen name="sub_btn_height">48dp</dimen>
     <dimen name="btn_text_size">22dp</dimen>
+    <dimen name="sub_btn_text_size">19dp</dimen>
 </resources>

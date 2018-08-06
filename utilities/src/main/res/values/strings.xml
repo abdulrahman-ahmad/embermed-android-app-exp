@@ -8,7 +8,6 @@
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="sign_up_with_underline"><u>Sign Up</u></string>
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot Password ?</string>
     <string name="error_empty_password">Please enter password.</string>
@@ -37,14 +36,10 @@
     <string name="new_password">New Password</string>
     <string name="reset_password">Reset Password</string>
     <string name="dashboard">Home</string>
-    <string name="driving_records">Driving Records</string>
-    <string name="settings">Settings</string>
     <string name="log_out">Log Out</string>
     <string name="back_btn_message">Please click BACK again to exit</string>
     <string name="enter_new_password">Enter new password.</string>
     <string name="log_in">Log In</string>
-    <string name="test">Test</string>
-    <string name="track_the_car">Track the Car</string>
     <string name="ok" tools:ignore="ButtonCase,Typos">Ok</string>
     <string name="coming_soon">Coming Soon…</string>
     <string name="facebook_login">Facebook Login</string>

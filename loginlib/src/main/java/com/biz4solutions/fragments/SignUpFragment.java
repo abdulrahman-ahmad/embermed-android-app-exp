@@ -72,6 +72,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
         int i = view.getId();
         if (i == R.id.btn_sign_up) {
             if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
