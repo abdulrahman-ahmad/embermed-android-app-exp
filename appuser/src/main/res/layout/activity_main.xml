@@ -21,7 +21,7 @@
             android:layout_width="@dimen/nav_view_width"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="@drawable/shape_nav_view_bg"
+            android:background="#dfffffff"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
             app:itemBackground="@drawable/selector_drawer_item"

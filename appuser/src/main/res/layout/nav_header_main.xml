@@ -14,14 +14,11 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="match_parent"
-        android:paddingTop="48dp"
+        android:paddingTop="58dp"
         android:layout_marginStart="16dp"
-        app:srcCompat="@mipmap/ic_launcher_round"
+        app:srcCompat="@drawable/ic_logo"
         android:contentDescription="@null" />
-<!--
-    app:srcCompat="@drawable/ic_logo"
--->
 
 </LinearLayout>

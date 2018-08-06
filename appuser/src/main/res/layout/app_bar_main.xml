@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context="com.biz4solutions.activities.MainActivity">
-        <!--android:background="@drawable/bg_dashboard"-->
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
