@@ -92,6 +92,7 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
+        CommonFunctions.getInstance().hideSoftKeyBoard(loginActivity);
         int i = view.getId();
         if (i == R.id.btn_reset_password) {
             if (isPasswordValid(binding.edtPassword.getText().toString().trim())) {

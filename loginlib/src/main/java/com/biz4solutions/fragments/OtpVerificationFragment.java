@@ -89,6 +89,7 @@ public class OtpVerificationFragment extends Fragment implements View.OnClickLis
 
     @Override
     public void onClick(View view) {
+        CommonFunctions.getInstance().hideSoftKeyBoard(loginActivity);
         int i = view.getId();
         if (i == R.id.btn_verify_otp) {
             if (isOtpValid(binding.edtOtp.getText().toString().trim())) {

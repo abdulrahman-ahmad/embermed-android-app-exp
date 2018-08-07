@@ -26,7 +26,8 @@ import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 public class CommonFunctions implements Serializable {
 
     private static CommonFunctions instance = null;
-    private AppCompatDialog mProgressBar;
+    private ProgressDialog mProgressBar;
+    private AppCompatDialog cProgressBar;
 
     private CommonFunctions() {
     }
@@ -67,17 +68,7 @@ public class CommonFunctions implements Serializable {
             if (activity == null) {
                 return;
             }
-            activity.getWindow().setSoftInputMode(
-                    WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-            );
-
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null) {
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
-            }
+            hideSoftKeyBoard(activity, activity.getCurrentFocus());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,27 +102,6 @@ public class CommonFunctions implements Serializable {
     public void loadProgressDialog(Context context) {
         try {
             if (mProgressBar != null && mProgressBar.isShowing()) {
-                return;
-            }
-            mProgressBar = new AppCompatDialog(context);
-            mProgressBar.setCancelable(false);
-            if(mProgressBar.getWindow() != null) {
-                mProgressBar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            }
-            mProgressBar.setContentView(R.layout.progress_loading);
-            mProgressBar.show();
-
-            final ImageView img_loading_frame = mProgressBar.findViewById(R.id.iv_frame_loading);
-            if(img_loading_frame != null) {
-                final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
-                img_loading_frame.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        frameAnimation.start();
-                    }
-                });
-            }
-            /*if (mProgressBar != null && mProgressBar.isShowing()) {
                 dismissProgressDialog();
             }
             mProgressBar = new ProgressDialog(context, R.style.CustomProgressBarStyle);
@@ -142,9 +112,36 @@ public class CommonFunctions implements Serializable {
                     .style(CircularProgressDrawable.STYLE_ROUNDED)
                     .build());
             mProgressBar.show();
-            mProgressBar.setCancelable(false);*/
+            mProgressBar.setCancelable(false);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    /*
+     * method used to show loader.
+     */
+    public void loadCustomProgressDialog(Context context) {
+        if ((cProgressBar != null && cProgressBar.isShowing()) || (mProgressBar != null && mProgressBar.isShowing())) {
+            return;
+        }
+        cProgressBar = new AppCompatDialog(context);
+        cProgressBar.setCancelable(false);
+        if (cProgressBar.getWindow() != null) {
+            cProgressBar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        cProgressBar.setContentView(R.layout.progress_loading);
+        cProgressBar.show();
+
+        final ImageView img_loading_frame = cProgressBar.findViewById(R.id.iv_frame_loading);
+        if (img_loading_frame != null) {
+            final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
+            img_loading_frame.post(new Runnable() {
+                @Override
+                public void run() {
+                    frameAnimation.start();
+                }
+            });
         }
     }
 
@@ -158,25 +155,26 @@ public class CommonFunctions implements Serializable {
     }
 
     public void showAlertDialog(Context context, int messageId) {
-        showAlertDialog(context, messageId, R.string.ok, 0,false, null);
+        showAlertDialog(context, messageId, R.string.ok, 0, false, null);
     }
 
     public void showAlertDialog(Context context, int messageId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, R.string.ok, R.string.cancel,true, callBackListener);
+        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, true, callBackListener);
     }
 
     public void showAlertDialog(Context context, int messageId, int ptBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, ptBtnTextId, R.string.cancel,true, callBackListener);
+        showAlertDialog(context, messageId, ptBtnTextId, R.string.cancel, true, callBackListener);
     }
 
-    public void showAlertDialog(Context context, int messageId, int ptBtnTextId,int ntBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, ptBtnTextId,ntBtnTextId, true, callBackListener);
+    public void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
+        showAlertDialog(context, messageId, ptBtnTextId, ntBtnTextId, true, callBackListener);
     }
 
-    private void showAlertDialog(Context context, int messageId, int ptBtnTextId,int ntBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
+    private void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
+
         // On pressing the Settings button.
         alertDialog.setPositiveButton(ptBtnTextId, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {

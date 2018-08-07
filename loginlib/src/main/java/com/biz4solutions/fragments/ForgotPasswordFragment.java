@@ -73,6 +73,7 @@ public class ForgotPasswordFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
+        CommonFunctions.getInstance().hideSoftKeyBoard(loginActivity);
         int i = view.getId();
         if (i == R.id.btn_send_otp) {
             if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
