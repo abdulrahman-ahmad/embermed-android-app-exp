@@ -110,7 +110,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
                             @Override
                             public void onClose(Boolean result) {
-                                doLogOut();
+                                if (result) {
+                                    doLogOut();
+                                }
                             }
                         });
                         break;

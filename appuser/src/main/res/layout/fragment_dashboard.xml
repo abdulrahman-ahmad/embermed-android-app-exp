@@ -17,8 +17,8 @@
 
         <ImageView
             android:id="@+id/alert_btn"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerInParent="true"
             android:background="@drawable/selector_home_alert_btn"
             android:contentDescription="@null" />

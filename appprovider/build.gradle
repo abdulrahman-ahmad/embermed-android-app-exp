@@ -54,13 +54,12 @@ android {
     }
     productFlavors {
         dev {
-            //buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
+        }
+        local{
         }
         qaTest {
-            //buildConfigField 'String', 'HOST', '"http://../api/"'
         }
         prod {
-            //buildConfigField 'String', 'HOST', '"http://../api/"'
         }
     }
 }

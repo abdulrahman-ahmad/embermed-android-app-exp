@@ -12,6 +12,8 @@ android {
     productFlavors {
         dev {
         }
+        local{
+        }
         qaTest {
         }
         prod {
