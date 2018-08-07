@@ -9,6 +9,19 @@ android {
         versionName "1.0"
         flavorDimensions "default"
     }
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            /*minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+        }
+    }
     productFlavors {
         dev {
             buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
@@ -17,10 +30,10 @@ android {
             buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
         }
         qaTest {
-            buildConfigField 'String', 'HOST', '"http://../api/"'
+            buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
         }
         prod {
-            buildConfigField 'String', 'HOST', '"http://../api/"'
+            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com/api/"'
         }
     }
 }

@@ -158,6 +158,18 @@
 #firebase
 -keep class com.google.firebase.** { *; }
 -dontwarn com.google.firebase.**
+#arch
+-keep class android.arch.** { *; }
+-keep interface android.arch.** { *; }
+-dontwarn android.arch.**
+#parce bolts
+-keep class com.parce.bolts.** { *; }
+-keep interface com.parce.bolts.** { *; }
+-dontwarn com.parce.bolts.**
+#google
+-keep class com.google.** { *; }
+-keep interface com.google.** { *; }
+-dontwarn com.google.**
 
 ##########################External Lib####################
 #GSON
@@ -194,6 +206,10 @@
 #smoothprogressbar:library-circular
 -keep class com.github.castorflex.** { *; }
 
+#facebook
+-keep class com.facebook.** { *; }
+-keep interface com.facebook.** { *; }
+-dontwarn com.facebook.**
 
 
 

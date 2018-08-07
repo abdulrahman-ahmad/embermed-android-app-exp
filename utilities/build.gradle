@@ -7,6 +7,30 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        flavorDimensions "default"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            /*minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+        }
+    }
+    productFlavors {
+        dev {
+        }
+        local{
+        }
+        qaTest {
+        }
+        prod {
+        }
     }
 }
 

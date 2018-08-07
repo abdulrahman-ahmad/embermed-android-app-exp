@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 1
-        versionName "0.0.1"
+        versionCode 3
+        versionName "0.0.3"
         flavorDimensions "default"
         applicationId "com.osiris.osirisbio.provider"
         multiDexEnabled true
@@ -42,15 +42,22 @@ android {
         }
         debug {
             debuggable true
-            //minifyEnabled true
-            //shrinkResources true
-            //useProguard true
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            //signingConfig signingConfigs.debug
+            /*minifyEnabled true
+            shrinkResources true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug*/
         }
     }
     dataBinding {
         enabled = true
+    }
+    lintOptions {
+        abortOnError false
+    }
+    dexOptions {
+        preDexLibraries = false
+        javaMaxHeapSize "4g" // 2g should be also OK
     }
     productFlavors {
         dev {
