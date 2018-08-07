@@ -46,7 +46,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         binding.btnSignUp.setOnClickListener(this);
         binding.btnBackToLogin.setOnClickListener(this);
         binding.skipLogin.setOnClickListener(this);
-        binding.edtPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        binding.edtConfirmPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 int result = actionId & EditorInfo.IME_MASK_ACTION;
@@ -123,6 +123,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                     SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                     loginActivity.finishActivityWithResult(Activity.RESULT_OK);
                 }
+                Toast.makeText(loginActivity, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

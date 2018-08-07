@@ -135,10 +135,10 @@ public class ResetPasswordFragment extends Fragment implements View.OnClickListe
 
     private boolean isPasswordValid(String password) {
         if (password.isEmpty()) {
-            Toast.makeText(getActivity(), R.string.error_empty_password, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_empty_new_password, Toast.LENGTH_SHORT).show();
             return false;
         } else if (password.length() < 8 || password.length() > 20) {
-            Toast.makeText(getActivity(), R.string.error_invalid_password, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_invalid_new_password, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

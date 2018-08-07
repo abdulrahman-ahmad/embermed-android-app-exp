@@ -5,12 +5,16 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
@@ -22,7 +26,7 @@ import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 public class CommonFunctions implements Serializable {
 
     private static CommonFunctions instance = null;
-    private ProgressDialog mProgressBar;
+    private AppCompatDialog mProgressBar;
 
     private CommonFunctions() {
     }
@@ -107,6 +111,27 @@ public class CommonFunctions implements Serializable {
     public void loadProgressDialog(Context context) {
         try {
             if (mProgressBar != null && mProgressBar.isShowing()) {
+                return;
+            }
+            mProgressBar = new AppCompatDialog(context);
+            mProgressBar.setCancelable(false);
+            if(mProgressBar.getWindow() != null) {
+                mProgressBar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+            mProgressBar.setContentView(R.layout.progress_loading);
+            mProgressBar.show();
+
+            final ImageView img_loading_frame = mProgressBar.findViewById(R.id.iv_frame_loading);
+            if(img_loading_frame != null) {
+                final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
+                img_loading_frame.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        frameAnimation.start();
+                    }
+                });
+            }
+            /*if (mProgressBar != null && mProgressBar.isShowing()) {
                 dismissProgressDialog();
             }
             mProgressBar = new ProgressDialog(context, R.style.CustomProgressBarStyle);
@@ -117,7 +142,7 @@ public class CommonFunctions implements Serializable {
                     .style(CircularProgressDrawable.STYLE_ROUNDED)
                     .build());
             mProgressBar.show();
-            mProgressBar.setCancelable(false);
+            mProgressBar.setCancelable(false);*/
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -133,18 +158,22 @@ public class CommonFunctions implements Serializable {
     }
 
     public void showAlertDialog(Context context, int messageId) {
-        showAlertDialog(context, messageId, R.string.ok, false, null);
+        showAlertDialog(context, messageId, R.string.ok, 0,false, null);
     }
 
     public void showAlertDialog(Context context, int messageId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, R.string.ok, true, callBackListener);
+        showAlertDialog(context, messageId, R.string.ok, R.string.cancel,true, callBackListener);
     }
 
     public void showAlertDialog(Context context, int messageId, int ptBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, ptBtnTextId, true, callBackListener);
+        showAlertDialog(context, messageId, ptBtnTextId, R.string.cancel,true, callBackListener);
     }
 
-    private void showAlertDialog(Context context, int messageId, int ptBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
+    public void showAlertDialog(Context context, int messageId, int ptBtnTextId,int ntBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
+        showAlertDialog(context, messageId, ptBtnTextId,ntBtnTextId, true, callBackListener);
+    }
+
+    private void showAlertDialog(Context context, int messageId, int ptBtnTextId,int ntBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
@@ -158,7 +187,7 @@ public class CommonFunctions implements Serializable {
             }
         });
         if (isNtBtn) {
-            alertDialog.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(ntBtnTextId, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     // add callback here
                     if (callBackListener != null) {

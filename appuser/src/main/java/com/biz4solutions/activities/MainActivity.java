@@ -21,6 +21,7 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -106,7 +107,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         reOpenDashBoardFragment();
                         break;
                     case R.id.nav_log_out:
-                        doLogOut();
+                        CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                            @Override
+                            public void onClose(Boolean result) {
+                                doLogOut();
+                            }
+                        });
                         break;
                     case R.id.nav_log_in:
                         doLogOut();
@@ -124,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        intent.putExtra(Constants.ROLE_NAME,"USER");
+        intent.putExtra(Constants.ROLE_NAME, Constants.ROLE_NAME_USER);
         startActivityForResult(intent, 149);
     }
 

@@ -45,23 +45,6 @@ public class DashboardFragment extends Fragment {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.dashboard);
         }
-        binding.mainRippleBackground.startRippleAnimation();
-        final Vibrator vibrator = (Vibrator) mainActivity.getSystemService(Context.VIBRATOR_SERVICE);
-        binding.alertBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                // Vibrate for 300 milliseconds
-                if (vibrator != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        vibrator.vibrate(VibrationEffect.createOneShot(300, VibrationEffect.DEFAULT_AMPLITUDE));
-                    } else {
-                        //deprecated in API 26
-                        vibrator.vibrate(300);
-                    }
-                }
-            }
-        });
 
         return binding.getRoot();
     }

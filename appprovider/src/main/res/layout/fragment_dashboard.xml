@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <com.biz4solutions.customs.RippleBackground
-        android:id="@+id/main_ripple_background"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="35dp"
-        app:rb_color="#8bd10000"
-        app:rb_duration="5000"
-        app:rb_radius="32dp"
-        app:rb_rippleAmount="6"
-        app:rb_scale="6"
-        tools:context="com.biz4solutions.activities.MainActivity">
-
-        <ImageView
-            android:id="@+id/alert_btn"
-            android:layout_width="170dp"
-            android:layout_height="170dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/selector_home_alert_btn"
-            android:contentDescription="@null" />
-
-
-    </com.biz4solutions.customs.RippleBackground>
+        android:gravity="center"
+        android:text="@string/provider_home_n_coming_soon"
+        android:textSize="30dp" />
 </layout>

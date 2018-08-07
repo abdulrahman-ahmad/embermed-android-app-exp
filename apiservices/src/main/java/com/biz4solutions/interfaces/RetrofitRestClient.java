@@ -17,6 +17,9 @@ public interface RetrofitRestClient {
     @POST("v1/users/login")
     Call<LoginResponse> doLogin(@Body LoginRequest loginRequest);
 
+    @POST("v1/provider/login")
+    Call<LoginResponse> doProviderLogin(@Body LoginRequest loginRequest);
+
     @POST("v1/users/socialAppLogin")
     Call<LoginResponse> socialAppLogin(@Body SocialMediaUserData socialSignInDTO);
 

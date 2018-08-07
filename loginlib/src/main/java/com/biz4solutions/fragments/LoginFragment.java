@@ -222,6 +222,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
             loginActivity.finishActivityWithResult(RESULT_OK);
         }
+        Toast.makeText(loginActivity, loginResponse.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
