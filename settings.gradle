@@ -1,1 +1,1 @@
-include ':app', ':socialmedialib'
+include ':appuser', ':socialmedialib', ':apiservices', ':utilities', ':loginlib', ':appprovider'

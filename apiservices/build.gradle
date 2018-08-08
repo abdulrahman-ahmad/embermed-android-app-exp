@@ -1,0 +1,48 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        minSdkVersion 19
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        flavorDimensions "default"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            /*minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+        }
+    }
+    productFlavors {
+        dev {
+            buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
+        }
+        local{
+            buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
+        }
+        qaTest {
+            buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
+        }
+        prod {
+            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com/api/"'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.google.code.gson:gson:2.8.5'       // Retrofit web service call
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0' // Retrofit web service call
+    implementation 'com.squareup.retrofit2:converter-gson:2.4.0' // Retrofit web service call
+    api project(':utilities')
+}

@@ -7,12 +7,36 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
-        buildConfigField "String", "GOOGLE_AUTH_CLIENT_ID", '"999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com"'
+        flavorDimensions "default"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            useProguard false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            /*minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
+        }
+    }
+    productFlavors {
+        dev {
+        }
+        local{
+        }
+        qaTest {
+        }
+        prod {
+        }
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.android.gms:play-services-auth:15.0.1'   // Google+ Login
+    api 'com.google.android.gms:play-services-auth:15.0.1'   // Google+ Login
     implementation 'com.facebook.android:facebook-login:4.34.0'         // FaceBook Login
+    api project(':apiservices')
 }
