@@ -1,0 +1,15 @@
+<!--dimens-large-mdpi used for
+    1)Samsung Tab GTP3100
+ -->
+<resources>
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="toolbar_title_text_size">24dp</dimen>
+    <dimen name="default_left_right_margin">62dp</dimen>
+    <dimen name="edit_text_height">62dp</dimen>
+    <dimen name="edit_text_size">20dp</dimen>
+    <dimen name="btn_height">54dp</dimen>
+    <dimen name="sub_btn_height">48dp</dimen>
+    <dimen name="btn_text_size">22dp</dimen>
+    <dimen name="sub_btn_text_size">19dp</dimen>
+</resources>

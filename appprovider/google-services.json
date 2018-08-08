@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "999514034669",
+    "firebase_url": "https://osirisbio-57a95.firebaseio.com",
+    "project_id": "osirisbio-57a95",
+    "storage_bucket": "osirisbio-57a95.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999514034669:android:cf765996035507fa",
+        "android_client_info": {
+          "package_name": "com.osiris.osirisbio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999514034669-9iioo8e5i1eat3tuvmbgpi6ss4aug2j0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:999514034669:android:0491f66a7b77da72",
+        "android_client_info": {
+          "package_name": "com.osiris.osirisbio.provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "999514034669-9iioo8e5i1eat3tuvmbgpi6ss4aug2j0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

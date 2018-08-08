@@ -1,0 +1,6 @@
+<!--dimens-large-mdpi used for
+    1)Samsung Tab GTP3100
+ -->
+<resources>
+    <dimen name="nav_header_height">176dp</dimen>
+</resources>

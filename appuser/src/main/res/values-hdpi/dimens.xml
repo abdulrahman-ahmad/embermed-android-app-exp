@@ -1,0 +1,14 @@
+<!--dimens-hdpi used for
+    1)Moto E (white)
+    2)Moto E (Black)
+    3)Samsung duos
+    4)Samsung Grand GT - 19082
+	4)HTC - Desire 210
+	5)Lenovo - A369i (new)
+	6)Sony Xperia - D2005
+	7)Micromax Canvas - A111
+ -->
+
+<resources>
+    <dimen name="nav_header_height">176dp</dimen>
+</resources>

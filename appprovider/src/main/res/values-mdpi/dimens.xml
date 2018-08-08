@@ -1,0 +1,6 @@
+<!--dimens-mdpi used for
+    1)Nexus5 3.2 inch 320x480
+ -->
+<resources>
+    <dimen name="nav_header_height">176dp</dimen>
+</resources>
