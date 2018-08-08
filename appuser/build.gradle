@@ -52,13 +52,13 @@ android {
     dataBinding {
         enabled = true
     }
-    lintOptions {
+    /*lintOptions {
         abortOnError false
     }
     dexOptions {
         preDexLibraries = false
         javaMaxHeapSize "4g" // 2g should be also OK
-    }
+    }*/
     productFlavors {
         dev {
         }

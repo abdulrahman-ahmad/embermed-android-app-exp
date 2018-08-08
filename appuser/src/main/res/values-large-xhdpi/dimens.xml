@@ -3,4 +3,10 @@
  -->
 <resources>
     <dimen name="nav_header_height">176dp</dimen>
+    <dimen name="unconscious_text_size">32dp</dimen>
+    <dimen name="unconscious_btn_width">150dp</dimen>
+    <dimen name="unconscious_btn_end_margin">26dp</dimen>
+    <dimen name="unconscious_btn_margin_top">16dp</dimen>
+    <dimen name="home_btn_height_width">340dp</dimen>
+    <dimen name="home_ripple_radius">52dp</dimen>
 </resources>
