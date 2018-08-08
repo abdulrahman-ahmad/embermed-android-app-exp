@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
-import com.biz4solutions.databinding.FragmentNewsfeedBinding;
+import com.biz4solutions.databinding.FragmentNewsFeedBinding;
 
 public class NewsFeedFragment extends Fragment {
 
@@ -34,11 +34,11 @@ public class NewsFeedFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentNewsfeedBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_newsfeed, container, false);
+        FragmentNewsFeedBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_feed, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_news_feed);
-            mainActivity.toolbarTitle.setText(R.string.newsfeed);
+            mainActivity.toolbarTitle.setText(R.string.news_feed);
         }
         return binding.getRoot();
     }

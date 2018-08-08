@@ -50,7 +50,8 @@ public class DashboardFragment extends Fragment {
         binding.alertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                openEmsAlertUnconsciousFragment();
                 // Vibrate for 300 milliseconds
                 if (vibrator != null) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -64,5 +65,13 @@ public class DashboardFragment extends Fragment {
         });
 
         return binding.getRoot();
+    }
+
+    private void openEmsAlertUnconsciousFragment() {
+        mainActivity.getSupportFragmentManager().executePendingTransactions();
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, EmsAlertUnconsciousFragment.newInstance())
+                .addToBackStack(EmsAlertUnconsciousFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 }

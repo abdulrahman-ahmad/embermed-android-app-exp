@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">OsirisBio</string>
-    <string name="newsfeed">News Feed</string>
-    <string name="newsfeed_coming_soon">News Feed \n coming soon…</string>
+    <string name="news_feed">News Feed</string>
+    <string name="ems_alert">EMS Alert</string>
+    <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
 
 </resources>

@@ -11,19 +11,19 @@ import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
-import com.biz4solutions.databinding.FragmentNewsFeedBinding;
+import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
 
-public class NewsFeedFragment extends Fragment {
+public class EmsAlertUnconsciousFragment extends Fragment {
 
-    public static final String fragmentName = "NewsFeedFragment";
+    public static final String fragmentName = "EmsAlertUnconsciousFragment";
     private MainActivity mainActivity;
 
-    public NewsFeedFragment() {
+    public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
     }
 
-    public static NewsFeedFragment newInstance() {
-        return new NewsFeedFragment();
+    public static EmsAlertUnconsciousFragment newInstance() {
+        return new EmsAlertUnconsciousFragment();
     }
 
     @Override
@@ -34,10 +34,10 @@ public class NewsFeedFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentNewsFeedBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_news_feed, container, false);
+        FragmentEmsAlertUnconsciousBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_unconscious, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_news_feed);
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.news_feed);
         }
         return binding.getRoot();
