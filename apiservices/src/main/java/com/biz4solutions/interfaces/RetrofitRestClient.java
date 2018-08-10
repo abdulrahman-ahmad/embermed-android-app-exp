@@ -11,6 +11,7 @@ import java.util.HashMap;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 
 public interface RetrofitRestClient {
 
@@ -38,6 +39,6 @@ public interface RetrofitRestClient {
     @POST("v1/user/resetPassword")
     Call<EmptyResponse> resetPassword(@Body HashMap<String, Object> body);
 
-    @POST("v1/users/fcmToken")
+    @PUT("v1/users/updateFcmToken")
     Call<EmptyResponse> setFcmToken(@Body HashMap<String, Object> body);
 }

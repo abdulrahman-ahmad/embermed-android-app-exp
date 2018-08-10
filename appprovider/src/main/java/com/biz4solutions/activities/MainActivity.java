@@ -28,6 +28,7 @@ import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -126,6 +127,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void doLogOut() {
+        FirebaseAuthUtil.getInstance().signOut();
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
         SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
         ApiServiceUtil.resetInstance();

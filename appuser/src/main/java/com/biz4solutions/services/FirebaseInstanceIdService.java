@@ -3,7 +3,9 @@ package com.biz4solutions.services;
 import android.content.Context;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
@@ -24,25 +26,23 @@ public class FirebaseInstanceIdService extends com.google.firebase.iid.FirebaseI
     @Override
     public void onTokenRefresh() {
         // Get updated InstanceID token.
-        sendRegistrationToServer(FirebaseInstanceId.getInstance().getToken(), FirebaseInstanceIdService.this);
+        setFcmToken(FirebaseInstanceIdService.this);
     }
 
     private static void sendRegistrationToServer(String token, Context context) {
-        System.out.println("aa --------- FirebaseInstanceIdService ------ token= " + token);
+        //System.out.println("aa --------- FirebaseInstanceIdService ------ token= " + token);
         if (CommonFunctions.getInstance().isOffline(context)) {
             return;
         }
         HashMap<String, Object> body = new HashMap<>();
         body.put("fcmToken", token);
-        if(true){
-            return;
-        }
         new ApiServices().setFcmToken(context, body);
     }
 
     public static void setFcmToken(Context context) {
         String token = FirebaseInstanceId.getInstance().getToken();
-        if (token != null) {
+        String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(context, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+        if (token != null && userAuthKey != null && !userAuthKey.isEmpty()) {
             sendRegistrationToServer(token, context);
         }
     }

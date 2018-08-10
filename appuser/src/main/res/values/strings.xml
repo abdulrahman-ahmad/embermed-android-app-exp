@@ -4,5 +4,6 @@
     <string name="ems_alert">EMS Alert</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>
+    <string name="error_gps_off">GPS is not enabled. Please turn on.</string>
 
 </resources>

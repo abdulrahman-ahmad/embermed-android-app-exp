@@ -132,7 +132,7 @@ public class ApiServiceUtil {
 
     /*use to get deviceId*/
     @SuppressLint("HardwareIds")
-    public String getDeviceID(Context context) {
+    private String getDeviceID(Context context) {
         try {
             if (context != null) {
                 return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -145,7 +145,7 @@ public class ApiServiceUtil {
     }
 
     /*use to get appVersion*/
-    public String getAppVersion() {
+    private String getAppVersion() {
         return BuildConfig.VERSION_NAME;
     }
 
@@ -155,7 +155,7 @@ public class ApiServiceUtil {
     }
 
     /*use to get deviceType*/
-    public String getDeviceType() {
+    private String getDeviceType() {
         return "ANDROID_PHONE";
     }
 

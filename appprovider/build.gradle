@@ -78,13 +78,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:27.1.1'
     implementation 'com.android.support:multidex:1.0.3'
-
     implementation 'com.google.android.gms:play-services-maps:15.0.1' // Google Map Integration
-    implementation 'com.google.android.gms:play-services-location:15.0.1'// Google Map Integration
     implementation 'com.google.firebase:firebase-messaging:17.1.0' // Firebase notification
-    implementation 'com.google.firebase:firebase-auth:16.0.2'      // Firebase Authentication
-    implementation 'com.google.firebase:firebase-database:16.0.1'  // Firebase Database
-
     api project(':loginlib')
 }
 apply plugin: 'com.google.gms.google-services'                    // Firebase push notification

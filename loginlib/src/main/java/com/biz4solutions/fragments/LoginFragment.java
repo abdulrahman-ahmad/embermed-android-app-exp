@@ -28,6 +28,7 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 import static android.app.Activity.RESULT_OK;
@@ -218,6 +219,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         LoginResponse loginResponse = (LoginResponse) response;
         CommonFunctions.getInstance().dismissProgressDialog();
         if (loginResponse.getData() != null) {
+            FirebaseAuthUtil.getInstance().signInUser(loginResponse.getData().getEmail(), BuildConfig.FIREBASE_PASSWORD);
             SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
             SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
             loginActivity.finishActivityWithResult(RESULT_OK);

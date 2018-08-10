@@ -22,12 +22,15 @@ import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -72,6 +75,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
+                FirebaseAuthUtil.getInstance().initDB();
+            } else {
+                User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                if (user != null) {
+                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD);
+                }
+            }
             openDashBoardFragment();
         }
     }
@@ -126,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void doLogOut() {
+        FirebaseAuthUtil.getInstance().signOut();
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
         SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
         ApiServiceUtil.resetInstance();

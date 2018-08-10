@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.loginlib.R;
 import com.biz4solutions.loginlib.databinding.FragmentSignUpBinding;
 import com.biz4solutions.models.request.SignUpRequest;
@@ -24,6 +25,7 @@ import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
 
@@ -119,6 +121,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 LoginResponse loginResponse = (LoginResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (loginResponse.getData() != null) {
+                    FirebaseAuthUtil.getInstance().signInUser(loginResponse.getData().getEmail(), BuildConfig.FIREBASE_PASSWORD);
                     SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
                     SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                     loginActivity.finishActivityWithResult(Activity.RESULT_OK);
