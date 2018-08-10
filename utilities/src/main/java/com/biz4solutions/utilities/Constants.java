@@ -17,7 +17,7 @@ public class Constants implements Serializable {
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String USER_PREFERENCE_KEY = "USER_PREFERENCE_KEY";
     public static final String USER_AUTH_KEY = "USER_AUTH_KEY";
-    public static final String TH_PREFERENCE = "TH_PREFERENCE";
+    public static final String USER_CURRENT_REQUEST_ID_KEY = "USER_CURRENT_REQUEST_ID_KEY";
     public static final String ROLE_NAME = "ROLE_NAME";
     public static final String ROLE_NAME_USER = "USER";
     public static final String ROLE_NAME_PROVIDER = "PROVIDER";

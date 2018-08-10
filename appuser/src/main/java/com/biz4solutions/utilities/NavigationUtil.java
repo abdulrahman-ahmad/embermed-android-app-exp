@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
 import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.interfaces.OnBackClickListener;
 
 public class NavigationUtil {
     private static NavigationUtil instance = null;
@@ -20,6 +21,10 @@ public class NavigationUtil {
     }
 
     public void showBackArrow(final MainActivity mainActivity) {
+        showBackArrow(mainActivity, null);
+    }
+
+    public void showBackArrow(final MainActivity mainActivity, final OnBackClickListener onBackClickListener) {
         try {
             if (mainActivity != null) {
                 ActionBarDrawerToggle actionBarDrawerToggle = mainActivity.toggle;
@@ -27,8 +32,12 @@ public class NavigationUtil {
                 actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
-                        mainActivity.getSupportFragmentManager().popBackStack();
+                        if (onBackClickListener != null) {
+                            onBackClickListener.onBackPress();
+                        } else {
+                            CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
+                            mainActivity.getSupportFragmentManager().popBackStack();
+                        }
                     }
                 });
                 android.support.v7.app.ActionBar actionBar = mainActivity.getSupportActionBar();
@@ -62,5 +71,27 @@ public class NavigationUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void hideMenu(MainActivity activity) {
+        try {
+            if (activity != null) {
+                ActionBarDrawerToggle actionBarDrawerToggle = activity.toggle;
+                actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
+                //activity.toolbarTitleSpace.setVisibility(View.VISIBLE);
+                android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+                if (actionBar != null) {
+                    actionBar.setDisplayHomeAsUpEnabled(false);
+                    actionBar.setHomeButtonEnabled(false);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showMenu(MainActivity activity) {
+        //activity.toolbarTitleSpace.setVisibility(View.GONE);
+        hideBackArrow(activity);
     }
 }

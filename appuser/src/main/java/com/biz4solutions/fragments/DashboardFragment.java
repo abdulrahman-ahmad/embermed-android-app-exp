@@ -25,7 +25,6 @@ import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
-import com.biz4solutions.utilities.GpsServices;
 
 public class DashboardFragment extends Fragment {
 
@@ -131,7 +130,8 @@ public class DashboardFragment extends Fragment {
     }
 
     private void openEmsAlertUnconsciousFragment() {
-        mainActivity.startService(new Intent(getContext(), GpsServices.class));
+        mainActivity.startGpsService();
+
         mainActivity.getSupportFragmentManager().executePendingTransactions();
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, EmsAlertUnconsciousFragment.newInstance())

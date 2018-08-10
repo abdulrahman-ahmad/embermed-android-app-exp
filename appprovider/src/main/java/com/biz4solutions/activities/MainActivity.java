@@ -129,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void doLogOut() {
         FirebaseAuthUtil.getInstance().signOut();
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();

@@ -1,4 +1,4 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.services;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -21,6 +21,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
 import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -46,7 +49,6 @@ public class GpsServices extends Service implements LocationListener {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private static double latitude;
     private static double longitude;
-    private static String requestId;
 
     @Override
     public void onCreate() {
@@ -114,6 +116,7 @@ public class GpsServices extends Service implements LocationListener {
         //System.out.println("aa ------onLocationChanged ----- l-speed=" + location.getSpeed()+", speed="+speed);
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        String requestId = SharedPrefsManager.getInstance().retrieveStringPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
         if (requestId != null && !requestId.isEmpty()) {
             Map<String, Object> hashMap = new HashMap<>();
             hashMap.put("latitude", location.getLatitude());
@@ -143,12 +146,12 @@ public class GpsServices extends Service implements LocationListener {
                 notificationManager.createNotificationChannel(channel);
             }
             NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, CHANNEL_ID)
-                    .setSmallIcon(R.drawable.ic_logo)
-                    .setContentTitle(service.getString(R.string.info_notification_title))
+                    .setSmallIcon(com.biz4solutions.utilities.R.drawable.ic_logo)
+                    .setContentTitle(service.getString(com.biz4solutions.utilities.R.string.info_notification_title))
                     .setOngoing(true)
                     .setAutoCancel(false)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(R.string.info_notification_message)))
-                    .setContentText(service.getString(R.string.info_notification_message))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message)))
+                    .setContentText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message))
                     .setContentIntent(pendingIntent);
             //addActions(service, mNotifyBuilder);
             Notification notification = mNotifyBuilder.build();
@@ -166,7 +169,9 @@ public class GpsServices extends Service implements LocationListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         // If we get killed, after returning from here, restart
         System.out.println("aa ----------- onStartCommand");
+
         startLocationUpdates();
+
         return START_STICKY;
     }
 
@@ -213,10 +218,6 @@ public class GpsServices extends Service implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
-    }
-
-    public static void setRequestId(String mRequestId) {
-        requestId = mRequestId;
     }
 
     public static double getLatitude() {

@@ -2,6 +2,7 @@ package com.biz4solutions.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -26,6 +27,7 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
+import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
@@ -139,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void doLogOut() {
         FirebaseAuthUtil.getInstance().signOut();
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
@@ -213,5 +214,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
             }
         }
+    }
+
+    public void startGpsService() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            startService(new Intent(MainActivity.this, GpsServices.class));
+        } else {
+            startForegroundService(new Intent(MainActivity.this, GpsServices.class));
+        }
+    }
+
+    public void stopGpsService() {
+        stopService(new Intent(MainActivity.this, GpsServices.class));
     }
 }

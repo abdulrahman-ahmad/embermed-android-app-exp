@@ -65,7 +65,7 @@
             </intent-filter>
         </service>
         <service
-            android:name=".utilities.GpsServices"
+            android:name=".services.GpsServices"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedService" />
