@@ -32,9 +32,9 @@ android {
     productFlavors {
         dev {
         }
-        local{
+        qaTest{
         }
-        qaTest {
+        staging {
         }
         prod {
         }

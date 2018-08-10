@@ -131,11 +131,6 @@ public class DashboardFragment extends Fragment {
     }
 
     private void openEmsAlertUnconsciousFragment() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-            mainActivity.startService(new Intent(getContext(), GpsServices.class));
-        } else {
-            mainActivity.startForegroundService(new Intent(getContext(), GpsServices.class));
-        }
         mainActivity.startService(new Intent(getContext(), GpsServices.class));
         mainActivity.getSupportFragmentManager().executePendingTransactions();
         mainActivity.getSupportFragmentManager().beginTransaction()

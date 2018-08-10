@@ -3,6 +3,7 @@ package com.biz4solutions.utilities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -27,6 +28,9 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /*
  * Created by ketan on 20/11/2017.
  */
@@ -40,6 +44,9 @@ public class GpsServices extends Service implements LocationListener {
     public static final String CHANNEL_ID = "200";
 
     private FusedLocationProviderClient fusedLocationProviderClient;
+    private static double latitude;
+    private static double longitude;
+    private static String requestId;
 
     @Override
     public void onCreate() {
@@ -57,7 +64,6 @@ public class GpsServices extends Service implements LocationListener {
             if (mLocationManager != null) {
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, 0, this);
             }
-
             startLocationUpdatesWithTime();
         }
     }
@@ -106,8 +112,14 @@ public class GpsServices extends Service implements LocationListener {
         System.out.println("aa ------onLocationChanged ----- location=" + location);
         sendNotification(this, true);
         //System.out.println("aa ------onLocationChanged ----- l-speed=" + location.getSpeed()+", speed="+speed);
-        //currentLat = location.getLatitude();
-        //currentLon = location.getLongitude();
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+        if (requestId != null && !requestId.isEmpty()) {
+            Map<String, Object> hashMap = new HashMap<>();
+            hashMap.put("latitude", location.getLatitude());
+            hashMap.put("longitude", location.getLongitude());
+            FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_PATIENT_LOCATION_TABLE, requestId, hashMap);
+        }
     }
 
     /*public static void addActions(Service service,NotificationCompat.Builder mNotifyBuilder) {
@@ -122,6 +134,14 @@ public class GpsServices extends Service implements LocationListener {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Intent intent = new Intent(service, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    CHANNEL_ID + " Notification Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
             NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, CHANNEL_ID)
                     .setSmallIcon(R.drawable.ic_logo)
                     .setContentTitle(service.getString(R.string.info_notification_title))
@@ -133,9 +153,7 @@ public class GpsServices extends Service implements LocationListener {
             //addActions(service, mNotifyBuilder);
             Notification notification = mNotifyBuilder.build();
             if (isUpdate) {
-                NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
                 if (notificationManager != null) {
-                    //service.startForeground(200, notification);
                     notificationManager.notify(NOTIFICATION_ID, notification);
                 }
             } else {
@@ -195,5 +213,17 @@ public class GpsServices extends Service implements LocationListener {
 
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    public static void setRequestId(String mRequestId) {
+        requestId = mRequestId;
+    }
+
+    public static double getLatitude() {
+        return latitude;
+    }
+
+    public static double getLongitude() {
+        return longitude;
     }
 }

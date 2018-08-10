@@ -26,11 +26,11 @@ android {
         dev {
             buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"Development"'
         }
-        local {
-            buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"Local"'
-        }
         qaTest {
-            buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"Test"'
+            buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"QATesting"'
+        }
+        staging {
+            buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"Staging"'
         }
         prod {
             buildConfigField 'String', 'FIREBACE_DB_ENVIROMENT', '"Production"'
