@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
-    private String currentRequestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -261,7 +260,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        currentRequestId = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
+        String currentRequestId = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
         if (currentRequestId != null && !currentRequestId.isEmpty()) {
             CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
             new ApiServices().cancelRequest(MainActivity.this, currentRequestId, new RestClientResponse() {

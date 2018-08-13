@@ -7,8 +7,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Map;
 
@@ -105,6 +107,36 @@ public class FirebaseAuthUtil {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void addChildEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ChildEventListener childEventListener){
+        if (mDatabase != null) {
+            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addChildEventListener(childEventListener);
+        }
+    }
+
+    public void removeEventListener(@NonNull ChildEventListener childEventListener){
+        if (mDatabase != null) {
+            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(childEventListener);
+        }
+    }
+
+    public void addValueEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ValueEventListener valueEventListener){
+        if (mDatabase != null) {
+            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addValueEventListener(valueEventListener);
+        }
+    }
+
+    public void addListenerForSingleValueEvent(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ValueEventListener valueEventListener){
+        if (mDatabase != null) {
+            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addListenerForSingleValueEvent(valueEventListener);
+        }
+    }
+
+    public void removeEventListener(@NonNull ValueEventListener valueEventListener){
+        if (mDatabase != null) {
+            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(valueEventListener);
         }
     }
 

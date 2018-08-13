@@ -25,6 +25,7 @@ import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 
 public class DashboardFragment extends Fragment {
 
@@ -65,6 +66,7 @@ public class DashboardFragment extends Fragment {
             }
         });
         isLocationPermissionGranted(101);
+        FirebaseEventUtil.getInstance().addUserChildEventListener(mainActivity);
         return binding.getRoot();
     }
 
