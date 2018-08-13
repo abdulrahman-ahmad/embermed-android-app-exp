@@ -19,12 +19,17 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServiceUtil;
+import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
+import com.biz4solutions.fragments.EmsAlertCardiacCallFragment;
+import com.biz4solutions.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.services.GpsServices;
@@ -41,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
+    private String currentRequestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,11 +215,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }, 2000);
                     break;
+                case EmsAlertUnconsciousFragment.fragmentName:
+                    unconsciousOnBackClick();
+                    break;
+                case EmsAlertCardiacCallFragment.fragmentName:
+                    showCancelRequestAlert();
+                    break;
                 default:
                     getSupportFragmentManager().popBackStack();
                     break;
             }
         }
+    }
+
+    public void unconsciousOnBackClick() {
+        stopGpsService();
+        getSupportFragmentManager().popBackStack();
     }
 
     public void startGpsService() {
@@ -226,5 +243,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void stopGpsService() {
         stopService(new Intent(MainActivity.this, GpsServices.class));
+    }
+
+    public void showCancelRequestAlert() {
+        CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.cancel_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+            @Override
+            public void onClose(Boolean result) {
+                if (result) {
+                    cancelRequest();
+                }
+            }
+        });
+    }
+
+    private void cancelRequest() {
+        if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        currentRequestId = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
+        if (currentRequestId != null && !currentRequestId.isEmpty()) {
+            CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+            new ApiServices().cancelRequest(MainActivity.this, currentRequestId, new RestClientResponse() {
+                @Override
+                public void onSuccess(Object response, int statusCode) {
+                    EmptyResponse emptyResponse = (EmptyResponse) response;
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    stopGpsService();
+                    getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                }
+
+                @Override
+                public void onFailure(String errorMessage, int statusCode) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.utilities.Constants;
@@ -58,6 +59,16 @@ public class ApiServices {
     public void setFcmToken(final Context context, HashMap<String, Object> body) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, null, ApiServiceUtil.getInstance().getRestClient(context)
                 .setFcmToken(body));
+    }
+
+    public void createRequest(final Context context, CreateEmsRequest body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .createRequest(body));
+    }
+
+    public void cancelRequest(final Context context, String query, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .cancelRequest(query));
     }
 
 }

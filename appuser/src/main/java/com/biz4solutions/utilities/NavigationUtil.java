@@ -32,10 +32,10 @@ public class NavigationUtil {
                 actionBarDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
                         if (onBackClickListener != null) {
                             onBackClickListener.onBackPress();
                         } else {
-                            CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
                             mainActivity.getSupportFragmentManager().popBackStack();
                         }
                     }

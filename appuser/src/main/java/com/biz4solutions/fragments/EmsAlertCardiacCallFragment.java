@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
+import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class EmsAlertCardiacCallFragment extends Fragment {
@@ -33,7 +34,12 @@ public class EmsAlertCardiacCallFragment extends Fragment {
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.ems_alert);
-            NavigationUtil.getInstance().showBackArrow(mainActivity);
+            NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
+                @Override
+                public void onBackPress() {
+                    mainActivity.showCancelRequestAlert();
+                }
+            });
         }
         return binding.getRoot();
     }
