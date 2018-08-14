@@ -16,26 +16,21 @@ import android.widget.Toast;
 
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.interfaces.CallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.loginlib.R;
 import com.biz4solutions.loginlib.databinding.FragmentLoginBinding;
-import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.FacebookUtil;
-import com.biz4solutions.utilities.GoogleUtil;
 
 import static android.app.Activity.RESULT_OK;
 
 /*
  * Created by ketan on 12/1/2017.
  */
-public class LoginFragment extends Fragment implements View.OnClickListener, CallbackListener<SocialMediaUserData>, RestClientResponse {
+public class LoginFragment extends Fragment implements View.OnClickListener, RestClientResponse {
 
     public static String fragmentName = "LoginFragment";
     private FragmentLoginBinding binding;
@@ -49,7 +44,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
         loginActivity = (LoginActivity) getActivity();
-        GoogleUtil.getInstance().initGoogleConfig(getActivity(), BuildConfig.GOOGLE_AUTH_CLIENT_ID);
         return binding.getRoot();
     }
 
@@ -177,7 +171,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        FacebookUtil.getInstance().onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -186,8 +179,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        FacebookUtil.getInstance().registerCallback(getContext(), this);
-        FacebookUtil.getInstance().doLogin(getActivity());
     }
 
     private void signInWithGoogle() {
@@ -195,22 +186,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        GoogleUtil.getInstance().signIn(getActivity(), this);
-    }
-
-    @Override
-    public void onSuccess(SocialMediaUserData data) {
-        if (CommonFunctions.getInstance().isOffline(getContext())) {
-            Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
-            return;
-        }
-        //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
-        new ApiServices().socialAppLogin(getActivity(), data, this);
-    }
-
-    @Override
-    public void onFailure(String errorMessage) {
-        Toast.makeText(getActivity(), errorMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
