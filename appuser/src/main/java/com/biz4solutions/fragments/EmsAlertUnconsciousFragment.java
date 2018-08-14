@@ -17,10 +17,8 @@ import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.response.CreateEmsResponse;
-import com.biz4solutions.preferences.SharedPrefsManager;
-import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.utilities.CommonFunctions;
-import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClickListener {
@@ -67,7 +65,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
-                createRequest();
+                getUserLocation();
                 break;
             case R.id.btn_no:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -76,25 +74,40 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         }
     }
 
-    private void createRequest() {
+    private void getUserLocation() {
         if (CommonFunctions.getInstance().isOffline(mainActivity)) {
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
+            @Override
+            public void onSuccess(double latitude, double longitude) {
+                createRequest(latitude, longitude);
+            }
+
+            @Override
+            public void onError() {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, R.string.error_location_fetch, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void createRequest(double latitude, double longitude) {
         CreateEmsRequest body = new CreateEmsRequest();
-        body.setLatitude(GpsServices.getLatitude());
-        body.setLatitude(GpsServices.getLongitude());
+        body.setLatitude(latitude);
+        body.setLatitude(longitude);
         body.setUnconscious(true);
         new ApiServices().createRequest(mainActivity, body, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
+                mainActivity.stopGpsService();
                 CreateEmsResponse createEmsResponse = (CreateEmsResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (createEmsResponse != null && createEmsResponse.getData() != null) {
-                    SharedPrefsManager.getInstance().storeStringPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY,
-                            createEmsResponse.getData().getId());
-                    openEmsAlertCardiacCallFragment();
+                    mainActivity.currentRequestId = createEmsResponse.getData().getId();
+                    mainActivity.openEmsAlertCardiacCallFragment();
                 } else {
                     if (createEmsResponse != null) {
                         Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -108,13 +121,5 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    private void openEmsAlertCardiacCallFragment() {
-        mainActivity.getSupportFragmentManager().executePendingTransactions();
-        mainActivity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance())
-                .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
-                .commitAllowingStateLoss();
     }
 }

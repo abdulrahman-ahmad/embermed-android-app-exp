@@ -11,6 +11,8 @@ public class User {
     private String authToken = "";
     private String email = "";
     private String roleName = "";
+    private String currentRequestId = "";
+    private String deviceId = "";
 
     public String getUserId() {
         return userId;
@@ -60,15 +62,33 @@ public class User {
         this.roleName = roleName;
     }
 
+    public String getCurrentRequestId() {
+        return currentRequestId;
+    }
+
+    public void setCurrentRequestId(String currentRequestId) {
+        this.currentRequestId = currentRequestId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", authToken='" + authToken + '\'' +
                 ", email='" + email + '\'' +
                 ", roleName='" + roleName + '\'' +
+                ", currentRequestId='" + currentRequestId + '\'' +
+                ", deviceId='" + deviceId + '\'' +
                 '}';
     }
 }

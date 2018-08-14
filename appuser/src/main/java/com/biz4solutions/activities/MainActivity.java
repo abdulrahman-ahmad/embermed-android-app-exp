@@ -26,6 +26,7 @@ import com.biz4solutions.fragments.EmsAlertCardiacCallFragment;
 import com.biz4solutions.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.User;
@@ -38,6 +39,7 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
+    public String currentRequestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
             openDashBoardFragment();
+            addFirebaseUserEvent();
         }
     }
 
@@ -144,14 +148,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void doLogOut() {
-        FirebaseAuthUtil.getInstance().signOut();
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
+        clearVariables();
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
+        firebaseSignOut();
+        stopGpsService();
+        openLoginActivity();
+    }
+
+    private void clearVariables() {
+        currentRequestId = null;
+        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
+    }
+
+    private void openLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.putExtra(Constants.ROLE_NAME, Constants.ROLE_NAME_USER);
         startActivityForResult(intent, 149);
+    }
+
+    private void firebaseSignOut() {
+        FirebaseAuthUtil.getInstance().signOut();
+        FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
     }
 
     @Override
@@ -241,7 +260,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void stopGpsService() {
-        stopService(new Intent(MainActivity.this, GpsServices.class));
+        try {
+            stopService(new Intent(MainActivity.this, GpsServices.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showCancelRequestAlert() {
@@ -260,7 +283,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        String currentRequestId = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
         if (currentRequestId != null && !currentRequestId.isEmpty()) {
             CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
             new ApiServices().cancelRequest(MainActivity.this, currentRequestId, new RestClientResponse() {
@@ -269,7 +291,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     EmptyResponse emptyResponse = (EmptyResponse) response;
                     CommonFunctions.getInstance().dismissProgressDialog();
                     Toast.makeText(MainActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                    stopGpsService();
                     getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
                 }
 
@@ -280,5 +301,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+    }
+
+    public void addFirebaseUserEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseUserEvent(MainActivity.this, new FirebaseCallbackListener<User>() {
+            @Override
+            public void onSuccess(User data) {
+                if (data != null) {
+                    currentRequestId = data.getCurrentRequestId();
+                    if (data.getCurrentRequestId() != null && !data.getCurrentRequestId().isEmpty()) {
+                        openEmsAlertCardiacCallFragment();
+                    }
+                }
+            }
+        });
+    }
+
+    public void openEmsAlertUnconsciousFragment() {
+        startGpsService();
+
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, EmsAlertUnconsciousFragment.newInstance())
+                .addToBackStack(EmsAlertUnconsciousFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openEmsAlertCardiacCallFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance())
+                .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 }

@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class EmsAlertCardiacCallFragment extends Fragment {
@@ -41,6 +44,12 @@ public class EmsAlertCardiacCallFragment extends Fragment {
                 }
             });
         }
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+            @Override
+            public void onSuccess(EmsRequest data) {
+                System.out.println("aa ---------- EmsRequest=" + data);
+            }
+        });
         return binding.getRoot();
     }
 
@@ -50,5 +59,6 @@ public class EmsAlertCardiacCallFragment extends Fragment {
         if (mainActivity != null) {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
     }
 }

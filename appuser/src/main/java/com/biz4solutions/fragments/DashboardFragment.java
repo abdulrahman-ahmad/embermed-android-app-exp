@@ -25,7 +25,6 @@ import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
-import com.biz4solutions.utilities.FirebaseEventUtil;
 
 public class DashboardFragment extends Fragment {
 
@@ -60,13 +59,12 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (isLocationPermissionGranted(102) && isGPSEnabled()) {
-                    openEmsAlertUnconsciousFragment();
+                    mainActivity.openEmsAlertUnconsciousFragment();
                 }
                 vibrateEffect();
             }
         });
         isLocationPermissionGranted(101);
-        FirebaseEventUtil.getInstance().addUserChildEventListener(mainActivity);
         return binding.getRoot();
     }
 
@@ -118,7 +116,7 @@ public class DashboardFragment extends Fragment {
             if (userAllowedAllRequestPermissions) {
                 switch (requestCode) {
                     case 102:
-                        openEmsAlertUnconsciousFragment();
+                        mainActivity.openEmsAlertUnconsciousFragment();
                         break;
                     case 101:
                         ((Application) mainActivity.getApplication()).createLoggerFile();
@@ -129,16 +127,6 @@ public class DashboardFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void openEmsAlertUnconsciousFragment() {
-        mainActivity.startGpsService();
-
-        mainActivity.getSupportFragmentManager().executePendingTransactions();
-        mainActivity.getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, EmsAlertUnconsciousFragment.newInstance())
-                .addToBackStack(EmsAlertUnconsciousFragment.fragmentName)
-                .commitAllowingStateLoss();
     }
 
     // Getting GPS status

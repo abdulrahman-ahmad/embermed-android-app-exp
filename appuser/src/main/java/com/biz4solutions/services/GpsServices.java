@@ -21,9 +21,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
 import com.biz4solutions.activities.MainActivity;
-import com.biz4solutions.preferences.SharedPrefsManager;
-import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.FirebaseAuthUtil;
+import com.biz4solutions.utilities.GpsServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -31,24 +29,18 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /*
  * Created by ketan on 20/11/2017.
  */
 public class GpsServices extends Service implements LocationListener {
     private LocationManager mLocationManager;
     public static boolean isLocationUpdateRunning;
-
     public final long UPDATE_INTERVAL = 500;  /* 0.5 sec */
     public final long FASTEST_INTERVAL = 200; /* 0.2 sec*/
     public static final int NOTIFICATION_ID = 200;
     public static final String CHANNEL_ID = "200";
-
     private FusedLocationProviderClient fusedLocationProviderClient;
-    private static double latitude;
-    private static double longitude;
+
 
     @Override
     public void onCreate() {
@@ -113,16 +105,16 @@ public class GpsServices extends Service implements LocationListener {
     public void onLocationChanged(Location location) {
         System.out.println("aa ------onLocationChanged ----- location=" + location);
         sendNotification(this, true);
-        //System.out.println("aa ------onLocationChanged ----- l-speed=" + location.getSpeed()+", speed="+speed);
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        String requestId = SharedPrefsManager.getInstance().retrieveStringPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
-        if (requestId != null && !requestId.isEmpty()) {
+        GpsServicesUtil.getInstance().setLatitude(location.getLatitude());
+        GpsServicesUtil.getInstance().setLongitude(location.getLongitude());
+        //String requestId = SharedPrefsManager.getInstance().retrieveStringPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
+        /*if (requestId != null && !requestId.isEmpty()) {
             Map<String, Object> hashMap = new HashMap<>();
             hashMap.put("latitude", location.getLatitude());
             hashMap.put("longitude", location.getLongitude());
             FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_PATIENT_LOCATION_TABLE, requestId, hashMap);
-        }
+        }*/
+        GpsServicesUtil.getInstance().sendCallback();
     }
 
     /*public static void addActions(Service service,NotificationCompat.Builder mNotifyBuilder) {
@@ -188,6 +180,7 @@ public class GpsServices extends Service implements LocationListener {
         try {
             stopLocationUpdates();
             stopForeground(true);
+            GpsServicesUtil.getInstance().removeCallback();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -220,11 +213,4 @@ public class GpsServices extends Service implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
     }
 
-    public static double getLatitude() {
-        return latitude;
-    }
-
-    public static double getLongitude() {
-        return longitude;
-    }
 }

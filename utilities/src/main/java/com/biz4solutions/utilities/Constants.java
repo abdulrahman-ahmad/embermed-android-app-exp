@@ -17,13 +17,14 @@ public class Constants implements Serializable {
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String USER_PREFERENCE_KEY = "USER_PREFERENCE_KEY";
     public static final String USER_AUTH_KEY = "USER_AUTH_KEY";
-    public static final String USER_CURRENT_REQUEST_ID_KEY = "USER_CURRENT_REQUEST_ID_KEY";
+//    public static final String USER_CURRENT_REQUEST_ID_KEY = "USER_CURRENT_REQUEST_ID_KEY";
     public static final String ROLE_NAME = "ROLE_NAME";
     public static final String ROLE_NAME_USER = "USER";
     public static final String ROLE_NAME_PROVIDER = "PROVIDER";
 
-    public static final String FIREBASE_PATIENT_LOCATION_TABLE = "PatientLocation";
+    //public static final String FIREBASE_PATIENT_LOCATION_TABLE = "PatientLocation";
     public static final String FIREBASE_USER_TABLE = "User";
+    public static final String FIREBASE_REQUEST_TABLE = "Request";
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
 
