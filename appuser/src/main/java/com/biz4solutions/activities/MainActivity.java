@@ -311,6 +311,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     currentRequestId = data.getCurrentRequestId();
                     if (data.getCurrentRequestId() != null && !data.getCurrentRequestId().isEmpty()) {
                         openEmsAlertCardiacCallFragment();
+                    } else {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                            reOpenDashBoardFragment();
+                        }
                     }
                 }
             }

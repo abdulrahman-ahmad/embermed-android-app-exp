@@ -34,7 +34,7 @@ public class FirebaseEventUtil {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     User user1 = dataSnapshot.getValue(User.class);
-                    //System.out.println("aa ---------- user1 = " + user1);
+                    System.out.println("aa ---------- user1 = " + user1);
                     callbackListener.onSuccess(user1);
                 }
 
