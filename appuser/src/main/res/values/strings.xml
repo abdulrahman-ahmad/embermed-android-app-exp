@@ -4,7 +4,7 @@
     <string name="ems_alert">EMS Alert</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>
-    <string name="error_gps_off">GPS is not enabled. Please turn on.</string>
+    <string name="error_gps_off">Please turn on location service.</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
     <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>

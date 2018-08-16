@@ -55,12 +55,8 @@ public class RequestListViewAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
-    public void add(List<EmsRequest> emsRequests, boolean isRefresh) {
-        if (isRefresh) {
-            this.emsRequests.addAll(emsRequests);
-        } else {
-            this.emsRequests = emsRequests;
-        }
+    public void add(List<EmsRequest> emsRequests) {
+        this.emsRequests = emsRequests;
         notifyDataSetChanged();
     }
 

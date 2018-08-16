@@ -1,5 +1,6 @@
 package com.biz4solutions.fragments;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
@@ -24,6 +26,7 @@ import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DashboardFragment extends Fragment implements AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener {
 
@@ -33,6 +36,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     private FragmentDashboardBinding binding;
     private boolean isLoadMore = true;
     private RequestListViewAdapter adapter;
+    private List<EmsRequest> emsRequests = new ArrayList<>();
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -61,7 +65,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             @Override
             public void onRefresh() {
                 page = 0;
-                getRequestList();
+                getRequestList(false);
             }
         });
 
@@ -71,45 +75,34 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 R.color.text_hint_color);
 
 
-        getRequestList();
+        getRequestList(true);
 
         binding.loadMoreListView.setOnLoadMoreListener(this);
         binding.loadMoreListView.setOnItemClickListener(this);
-
-
+        LayoutInflater mInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (mInflater != null) {
+            RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.request_list_header, null, false);
+            binding.loadMoreListView.addHeaderView(header);
+        }
         return binding.getRoot();
     }
 
-    private void getRequestList() {
+    private void getRequestList(boolean showLoader) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             binding.swipeContainer.setRefreshing(false);
             binding.loadMoreListView.onLoadMoreComplete();
             return;
         }
+        if (showLoader) {
+            CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        }
         new ApiServices().getRequestList(getContext(), page, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 try {
-                    EmsRequestResponse emsRequestResponse = (EmsRequestResponse) response;
-                    System.out.println("aa --------- emsRequestResponse=" + emsRequestResponse);
-                    if (emsRequestResponse != null && emsRequestResponse.getData() != null && !emsRequestResponse.getData().isEmpty()) {
-                        isLoadMore = true;
-                        page++;
-                        if (adapter == null) {
-                            adapter = new RequestListViewAdapter(mainActivity, emsRequestResponse.getData());
-                            binding.loadMoreListView.setAdapter(adapter);
-                        } else {
-                            adapter.add(emsRequestResponse.getData(), page == 0);
-                        }
-                    } else {
-                        if (adapter != null && page == 0) {
-                            adapter.add(new ArrayList<EmsRequest>(), true);
-                        }
-                        isLoadMore = false;
-                    }
-                    binding.swipeContainer.setRefreshing(false);
-                    binding.loadMoreListView.onLoadMoreComplete();
+                    setRequestListViewAdapter((EmsRequestResponse) response);
+                    hideLoader();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -118,14 +111,45 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             @Override
             public void onFailure(String errorMessage, int statusCode) {
                 try {
-                    binding.swipeContainer.setRefreshing(false);
-                    binding.loadMoreListView.onLoadMoreComplete();
                     Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                    hideLoader();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void hideLoader() {
+        binding.swipeContainer.setRefreshing(false);
+        binding.loadMoreListView.onLoadMoreComplete();
+        CommonFunctions.getInstance().dismissProgressDialog();
+    }
+
+    private void setRequestListViewAdapter(EmsRequestResponse response) {
+        System.out.println("aa --------- emsRequestResponse=" + response);
+        if (response != null && response.getData() != null && !response.getData().isEmpty()) {
+            isLoadMore = true;
+            page++;
+            if (page == 0) {
+                emsRequests = response.getData();
+            } else {
+                emsRequests.addAll(response.getData());
+            }
+
+            if (adapter == null) {
+                adapter = new RequestListViewAdapter(mainActivity, emsRequests);
+                binding.loadMoreListView.setAdapter(adapter);
+            } else {
+                adapter.add(emsRequests);
+            }
+        } else {
+            if (adapter != null && page == 0) {
+                emsRequests = new ArrayList<>();
+                adapter.add(emsRequests);
+            }
+            isLoadMore = false;
+        }
     }
 
     @Override
@@ -136,7 +160,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onLoadMore() {
         if (isLoadMore) {
-            getRequestList();
+            getRequestList(false);
         } else {
             binding.loadMoreListView.onLoadMoreComplete();
         }

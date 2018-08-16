@@ -54,13 +54,12 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
     private void init(Context context) {
         LayoutInflater mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         // footer
-        RelativeLayout mFooterView = (RelativeLayout) mInflater.inflate(R.layout.load_more_footer, this, false);
-        /*
-         * mLabLoadMore = (TextView) mFooterView
-		 * .findViewById(R.id.load_more_lab_view);
-		 */
-        mProgressBarLoadMore = (SmoothProgressBar) mFooterView.findViewById(R.id.load_more_progressBar);
-        addFooterView(mFooterView);
+        if (mInflater != null) {
+            RelativeLayout mFooterView = (RelativeLayout) mInflater.inflate(R.layout.load_more_footer, this, false);
+            mProgressBarLoadMore = mFooterView.findViewById(R.id.load_more_progressBar);
+            addFooterView(mFooterView);
+        }
+
         super.setOnScrollListener(this);
         super.setOnItemClickListener(this);
     }
@@ -161,7 +160,6 @@ public class LoadMoreListView extends ListView implements AbsListView.OnScrollLi
          * Called when the list reaches the last item (the last item is visible
          * to the user)
          */
-        public void onLoadMore();
+        void onLoadMore();
     }
-
 }
