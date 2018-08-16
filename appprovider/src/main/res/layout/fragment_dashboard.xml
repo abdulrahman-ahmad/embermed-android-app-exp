@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/provider_home_n_coming_soon"
-        android:textSize="30dp" />
+        android:layout_height="match_parent">
+
+        <com.biz4solutions.customs.LoadMoreListView
+            android:id="@+id/load_more_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/request_list_item"
+            android:divider="@null"
+            android:dividerHeight="0dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 </layout>

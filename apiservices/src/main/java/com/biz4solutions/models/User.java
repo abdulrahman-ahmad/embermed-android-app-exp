@@ -13,6 +13,8 @@ public class User {
     private String roleName = "";
     private String currentRequestId = "";
     private String deviceId = "";
+    private int age;
+    private String gender;
 
     public String getUserId() {
         return userId;
@@ -78,6 +80,14 @@ public class User {
         this.deviceId = deviceId;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -89,7 +99,17 @@ public class User {
                 ", roleName='" + roleName + '\'' +
                 ", currentRequestId='" + currentRequestId + '\'' +
                 ", deviceId='" + deviceId + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
                 '}';
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }
 

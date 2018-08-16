@@ -71,4 +71,9 @@ public class ApiServices {
                 .cancelRequest(query));
     }
 
+    public void getRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getRequestList(page, 20));
+    }
+
 }

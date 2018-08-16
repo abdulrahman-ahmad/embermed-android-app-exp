@@ -6,6 +6,7 @@ package com.biz4solutions.interfaces;
         import com.biz4solutions.models.request.SignUpRequest;
         import com.biz4solutions.models.response.CreateEmsResponse;
         import com.biz4solutions.models.response.EmptyResponse;
+        import com.biz4solutions.models.response.EmsRequestResponse;
         import com.biz4solutions.models.response.LoginResponse;
 
         import java.util.HashMap;
@@ -13,6 +14,7 @@ package com.biz4solutions.interfaces;
         import retrofit2.Call;
         import retrofit2.http.Body;
         import retrofit2.http.DELETE;
+        import retrofit2.http.GET;
         import retrofit2.http.POST;
         import retrofit2.http.PUT;
         import retrofit2.http.Query;
@@ -51,4 +53,7 @@ public interface RetrofitRestClient {
 
     @DELETE("v1/users/cancelRequest")
     Call<EmptyResponse> cancelRequest(@Query("requestId") String query);
+
+    @GET("v1/provider/request/list")
+    Call<EmsRequestResponse> getRequestList(@Query("page") int page, @Query("size") int size);
 }

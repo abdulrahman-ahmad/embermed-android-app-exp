@@ -8,6 +8,8 @@ public class EmsRequest {
     private String priority;
     private String requestStatus;
     private String userId;
+    private long requestTime;
+    private User userDetails;
 
     public String getId() {
         return id;
@@ -65,6 +67,22 @@ public class EmsRequest {
         this.userId = userId;
     }
 
+    public long getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(long requestTime) {
+        this.requestTime = requestTime;
+    }
+
+    public User getUserDetails() {
+        return userDetails;
+    }
+
+    public void setUserDetails(User userDetails) {
+        this.userDetails = userDetails;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -75,6 +93,8 @@ public class EmsRequest {
                 ", priority='" + priority + '\'' +
                 ", requestStatus='" + requestStatus + '\'' +
                 ", userId='" + userId + '\'' +
+                ", requestTime=" + requestTime +
+                ", userDetails=" + userDetails +
                 '}';
     }
 }
