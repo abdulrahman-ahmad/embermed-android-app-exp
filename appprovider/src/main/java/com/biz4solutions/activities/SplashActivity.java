@@ -10,7 +10,6 @@ import android.view.animation.AnimationUtils;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.ActivitySplashBinding;
-import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.Constants;
 
 /*

@@ -85,16 +85,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean data) {
+                    if (data != null && data) {
+                        addFirebaseUserEvent();
+                    }
+                }
+            };
             if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
-                FirebaseAuthUtil.getInstance().initDB();
+                FirebaseAuthUtil.getInstance().initDB(callbackListener);
             } else {
                 User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
                 if (user != null) {
-                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD);
+                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
                 }
             }
             openDashBoardFragment();
-            addFirebaseUserEvent();
         }
     }
 

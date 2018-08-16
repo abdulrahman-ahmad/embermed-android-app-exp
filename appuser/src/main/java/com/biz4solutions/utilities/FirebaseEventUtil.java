@@ -29,7 +29,7 @@ public class FirebaseEventUtil {
     public void addFirebaseUserEvent(Context context, final FirebaseCallbackListener<User> callbackListener) {
         User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
         if (user != null) {
-            removeFirebaseUserEvent();
+            //removeFirebaseUserEvent();
             userEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -68,7 +68,7 @@ public class FirebaseEventUtil {
     }
 
     public void addFirebaseRequestEvent(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
-        removeFirebaseRequestEvent();
+        //removeFirebaseRequestEvent();
         requestEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

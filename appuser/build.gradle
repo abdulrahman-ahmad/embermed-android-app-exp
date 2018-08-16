@@ -5,8 +5,8 @@ android {
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 3
-        versionName "0.0.3"
+        versionCode 4
+        versionName "0.0.4"
         flavorDimensions "default"
         applicationId "com.osiris.osirisbio"
         multiDexEnabled true
@@ -52,13 +52,13 @@ android {
     dataBinding {
         enabled = true
     }
-    /*lintOptions {
+    lintOptions {
         abortOnError false
     }
     dexOptions {
         preDexLibraries = false
         javaMaxHeapSize "4g" // 2g should be also OK
-    }*/
+    }
     productFlavors {
         dev {
         }
@@ -80,7 +80,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.android.gms:play-services-maps:15.0.1' // Google Map Integration
     implementation 'com.google.android.gms:play-services-location:15.0.1'// Google Map Integration
-    implementation 'com.google.firebase:firebase-messaging:17.1.0' // Firebase notification
+    implementation 'com.google.firebase:firebase-messaging:17.3.0' // Firebase notification
     api project(':loginlib')
 }
 apply plugin: 'com.google.gms.google-services'                    // Firebase push notification

@@ -2,6 +2,7 @@ package com.biz4solutions.utilities;
 
 import android.support.annotation.NonNull;
 
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -39,13 +40,17 @@ public class FirebaseAuthUtil {
         mFirebaseAuth = FirebaseAuth.getInstance();
     }
 
+    public void signInUser(@NonNull final String email, @NonNull final String password) {
+        signInUser(email, password, null);
+    }
+
     /**
      * this method is used to sign in old user with firebase authentication using email and password
      *
      * @param email    email address of the user
      * @param password password of the user
      */
-    public void signInUser(@NonNull final String email, @NonNull final String password) {
+    public void signInUser(@NonNull final String email, @NonNull final String password, final FirebaseCallbackListener<Boolean> callback) {
         if (email.isEmpty() || password.isEmpty()) {
             return;
         }
@@ -56,12 +61,12 @@ public class FirebaseAuthUtil {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             //currentUser = mFirebaseAuth.getCurrentUser();
-                            initDB();
+                            initDB(callback);
                             //System.out.println("aa ------- currentUser=" + mFirebaseAuth.getCurrentUser());
                         } else {
                             // If sign in fails, display a message to the user.
                             //System.out.println("aa ------ signInWithEmailAndPassword error");
-                            createUser(email, password);
+                            createUser(email, password, callback);
                         }
                     }
                 });
@@ -71,7 +76,7 @@ public class FirebaseAuthUtil {
         return mFirebaseAuth != null && mFirebaseAuth.getCurrentUser() != null;
     }
 
-    private void createUser(@NonNull final String email, @NonNull final String password) {
+    private void createUser(@NonNull final String email, @NonNull final String password, final FirebaseCallbackListener<Boolean> callback) {
         if (email.isEmpty() || password.isEmpty()) {
             return;
         }
@@ -81,7 +86,7 @@ public class FirebaseAuthUtil {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     //currentUser = mFirebaseAuth.getCurrentUser();
-                    initDB();
+                    initDB(callback);
                     //System.out.println("aa ------- createUser currentUser=" + mFirebaseAuth.getCurrentUser());
                 } /*else {
                     // If sign in fails, display a message to the user.
@@ -91,9 +96,12 @@ public class FirebaseAuthUtil {
         });
     }
 
-    public void initDB() {
+    public void initDB(FirebaseCallbackListener<Boolean> callback) {
         try {
             mDatabase = FirebaseDatabase.getInstance().getReference();
+            if(callback != null){
+                callback.onSuccess(true);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
