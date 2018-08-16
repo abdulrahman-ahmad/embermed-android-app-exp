@@ -130,12 +130,12 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         System.out.println("aa --------- emsRequestResponse=" + response);
         if (response != null && response.getData() != null && !response.getData().isEmpty()) {
             isLoadMore = true;
-            page++;
             if (page == 0) {
                 emsRequests = response.getData();
             } else {
                 emsRequests.addAll(response.getData());
             }
+            page++;
 
             if (adapter == null) {
                 adapter = new RequestListViewAdapter(mainActivity, emsRequests);
