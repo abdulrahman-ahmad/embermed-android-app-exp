@@ -22,4 +22,5 @@
     <dimen name="request_medium_text_size">14dp</dimen>
     <dimen name="request_card_padding_start_end">16dp</dimen>
     <dimen name="request_card_elevation">2dp</dimen>
+    <dimen name="empty_alert_height">225dp</dimen>
 </resources>

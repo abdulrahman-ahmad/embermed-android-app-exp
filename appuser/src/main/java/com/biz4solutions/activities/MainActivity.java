@@ -315,8 +315,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onSuccess(User data) {
                 if (data != null) {
-                    currentRequestId = data.getCurrentRequestId();
-                    if (data.getCurrentRequestId() != null && !data.getCurrentRequestId().isEmpty()) {
+                    currentRequestId = data.getPatientCurrentRequestId();
+                    if (data.getPatientCurrentRequestId() != null && !data.getPatientCurrentRequestId().isEmpty()) {
                         openEmsAlertCardiacCallFragment();
                     } else {
                         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);

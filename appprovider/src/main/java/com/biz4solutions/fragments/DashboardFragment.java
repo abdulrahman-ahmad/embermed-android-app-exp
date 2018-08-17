@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,10 +27,12 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +46,8 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     private boolean isLoadMore = true;
     private RequestListViewAdapter adapter;
     private List<EmsRequest> emsRequests = new ArrayList<>();
+    private Handler mHandler = new Handler();
+    private Runnable mRunnable;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -70,8 +75,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                page = 0;
-                getRequestList(false);
+                getNewRequestList(false);
             }
         });
 
@@ -80,7 +84,11 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 R.color.text_color,
                 R.color.text_hint_color);
 
-        getRequestList(true);
+        if (adapter != null) {
+            binding.loadMoreListView.setAdapter(adapter);
+        } else {
+            getNewRequestList(true);
+        }
 
         binding.loadMoreListView.setOnLoadMoreListener(this);
         binding.loadMoreListView.setOnItemClickListener(this);
@@ -90,7 +98,48 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             binding.loadMoreListView.addHeaderView(header);
         }
         checkLocationPermissionGranted();
+        addFirebaseEvent();
         return binding.getRoot();
+    }
+
+    public void getNewRequestList(boolean showLoader) {
+        page = 0;
+        getRequestList(showLoader);
+    }
+
+    private void addFirebaseEvent() {
+        if (mainActivity.isSuccessfullyInitFirebase) {
+            if (mRunnable != null) {
+                mHandler.removeCallbacks(mRunnable);
+            }
+            FirebaseEventUtil.getInstance().addFirebaseAlertEvent(mainActivity, new FirebaseCallbackListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean data) {
+                    if (data) {
+                        getNewRequestList(false);
+                    }
+                }
+            });
+        } else {
+            if (mRunnable == null) {
+                mRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        addFirebaseEvent();
+                    }
+                };
+            }
+            mHandler.postDelayed(mRunnable, 60000); // 60 secs
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        FirebaseEventUtil.getInstance().removeFirebaseAlertEvent();
+        if (mRunnable != null) {
+            mHandler.removeCallbacks(mRunnable);
+        }
     }
 
     private void checkLocationPermissionGranted() {
@@ -102,13 +151,17 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
                 requestPermissions(perms, 101);
             } else {
-                ((Application) mainActivity.getApplication()).createLoggerFile();
-                CommonFunctions.getInstance().isGPSEnabled(mainActivity);
+                startGpsService();
             }
         } else {
-            ((Application) mainActivity.getApplication()).createLoggerFile();
-            CommonFunctions.getInstance().isGPSEnabled(mainActivity);
+            startGpsService();
         }
+    }
+
+    private void startGpsService() {
+        ((Application) mainActivity.getApplication()).createLoggerFile();
+        CommonFunctions.getInstance().isGPSEnabled(mainActivity);
+        mainActivity.startGpsService();
     }
 
     @Override
@@ -125,8 +178,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             if (userAllowedAllRequestPermissions) {
                 switch (requestCode) {
                     case 101:
-                        ((Application) mainActivity.getApplication()).createLoggerFile();
-                        CommonFunctions.getInstance().isGPSEnabled(mainActivity);
+                        startGpsService();
                         break;
                 }
             }
@@ -197,12 +249,18 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             }
             isLoadMore = false;
         }
+        if (emsRequests == null || emsRequests.isEmpty()) {
+            binding.emptyAlertLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyAlertLayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        System.out.println("aa ---------- position=" + position);
-        Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+        if (emsRequests != null && emsRequests.size() > position - 1) {
+            mainActivity.openCardiacCallDetailsFragment(emsRequests.get(position - 1).getId());
+        }
     }
 
     @Override

@@ -19,7 +19,47 @@
                 android:dividerHeight="0dp"
                 tools:listitem="@layout/request_list_item" />
 
-
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <RelativeLayout
+            android:id="@+id/empty_alert_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:ignore="SpUsage">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:text="@string/pull_to_refresh"
+                android:textColor="@color/no_alert_text_color"
+                android:textSize="16dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:orientation="vertical"
+                tools:ignore="UseCompoundDrawables">
+
+                <ImageView
+                    android:layout_width="@dimen/empty_alert_height"
+                    android:layout_height="@dimen/empty_alert_height"
+                    android:background="@drawable/empty_alert_bg"
+                    android:contentDescription="@null" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/no_alerts_available"
+                    android:textColor="@color/no_alert_text_color"
+                    android:textSize="20dp" />
+
+            </LinearLayout>
+        </RelativeLayout>
     </FrameLayout>
 </layout>

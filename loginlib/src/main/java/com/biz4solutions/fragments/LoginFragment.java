@@ -185,7 +185,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(getContext());
         FacebookUtil.getInstance().registerCallback(getContext(), this);
         FacebookUtil.getInstance().doLogin(getActivity());
     }
@@ -195,7 +194,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(getContext());
         GoogleUtil.getInstance().signIn(getActivity(), this);
     }
 
@@ -205,6 +203,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().loadProgressDialog(getContext());
         data.setRoleName(loginActivity.roleName);
         //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
         new ApiServices().socialAppLogin(getActivity(), data, this);

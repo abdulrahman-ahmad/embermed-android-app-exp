@@ -21,6 +21,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
 import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.models.User;
+import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -28,6 +32,9 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Created by ketan on 20/11/2017.
@@ -107,13 +114,13 @@ public class GpsServices extends Service implements LocationListener {
         sendNotification(this, true);
         GpsServicesUtil.getInstance().setLatitude(location.getLatitude());
         GpsServicesUtil.getInstance().setLongitude(location.getLongitude());
-        //String requestId = SharedPrefsManager.getInstance().retrieveStringPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
-        /*if (requestId != null && !requestId.isEmpty()) {
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        if (user != null) {
             Map<String, Object> hashMap = new HashMap<>();
             hashMap.put("latitude", location.getLatitude());
             hashMap.put("longitude", location.getLongitude());
-            FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_PATIENT_LOCATION_TABLE, requestId, hashMap);
-        }*/
+            FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_PROVIDER_LOCATION_TABLE, user.getUserId(), hashMap);
+        }
         GpsServicesUtil.getInstance().sendCallback();
     }
 

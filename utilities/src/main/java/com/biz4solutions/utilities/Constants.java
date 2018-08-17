@@ -25,9 +25,10 @@ public class Constants implements Serializable {
     public static final String LOGOUT_RECEIVER = "LOGOUT_RECEIVER";
     public static final String LOGOUT_MESSAGE = "message";
 
-    //public static final String FIREBASE_PATIENT_LOCATION_TABLE = "PatientLocation";
+    public static final String FIREBASE_PROVIDER_LOCATION_TABLE = "ProviderLocation";
     public static final String FIREBASE_USER_TABLE = "User";
     public static final String FIREBASE_REQUEST_TABLE = "Request";
+    public static final String FIREBASE_ALERT_TABLE = "Alert";
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
 

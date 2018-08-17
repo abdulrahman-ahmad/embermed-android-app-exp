@@ -23,9 +23,13 @@ import android.widget.Toast;
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.databinding.ActivityMainBinding;
+import com.biz4solutions.fragments.CardiacCallDetailsFragment;
 import com.biz4solutions.fragments.DashboardFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
+import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.services.GpsServices;
@@ -34,6 +38,7 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -43,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
     private BroadcastReceiver logoutBroadcastReceiver;
+    public boolean isSuccessfullyInitFirebase = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +111,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean data) {
+                    if (data != null && data) {
+                        isSuccessfullyInitFirebase = true;
+                        addFirebaseUserEvent();
+                    }
+                }
+            };
+            if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
+                FirebaseAuthUtil.getInstance().initDB(callbackListener);
+            } else {
+                User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                if (user != null) {
+                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                }
+            }
             openDashBoardFragment();
-            startGpsService();
         }
+    }
+
+    public void addFirebaseUserEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseUserEvent(MainActivity.this, new FirebaseCallbackListener<User>() {
+            @Override
+            public void onSuccess(User data) {
+                if (data != null) {
+                    if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
+                        openCardiacCallDetailsFragment(data.getProviderCurrentRequestId());
+                    } /*else {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                            reOpenDashBoardFragment();
+                        }
+                    }*/
+                }
+            }
+        });
     }
 
     @Override
@@ -191,6 +231,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == 149) {
             initView();
         }
+    }
+
+    public void openCardiacCallDetailsFragment(String requestId) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof CardiacCallDetailsFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(requestId))
+                .addToBackStack(CardiacCallDetailsFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 
     private void openDashBoardFragment() {

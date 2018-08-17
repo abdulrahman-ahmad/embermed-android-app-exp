@@ -104,7 +104,7 @@
                         android:layout_marginBottom="0dp"
                         android:layout_marginStart="6dp"
                         android:fontFamily="sans-serif"
-                        android:text="@string/txt_cardiac_call"
+                        android:text="@string/cardiac_call"
                         android:textColor="#ff1818"
                         android:textSize="@dimen/request_medium_text_size"
                         card_view:layout_constraintBottom_toBottomOf="parent"

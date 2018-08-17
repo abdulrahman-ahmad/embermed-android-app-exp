@@ -11,7 +11,9 @@ public class User {
     private String authToken = "";
     private String email = "";
     private String roleName = "";
-    private String currentRequestId = "";
+    private String patientCurrentRequestId = "";
+    private String providerCurrentRequestId = "";
+    private String currentRequestPriority = "";
     private String deviceId = "";
     private int age;
     private String gender;
@@ -64,12 +66,12 @@ public class User {
         this.roleName = roleName;
     }
 
-    public String getCurrentRequestId() {
-        return currentRequestId;
+    public String getPatientCurrentRequestId() {
+        return patientCurrentRequestId;
     }
 
-    public void setCurrentRequestId(String currentRequestId) {
-        this.currentRequestId = currentRequestId;
+    public void setPatientCurrentRequestId(String patientCurrentRequestId) {
+        this.patientCurrentRequestId = patientCurrentRequestId;
     }
 
     public String getDeviceId() {
@@ -88,6 +90,30 @@ public class User {
         this.age = age;
     }
 
+    public String getProviderCurrentRequestId() {
+        return providerCurrentRequestId;
+    }
+
+    public void setProviderCurrentRequestId(String providerCurrentRequestId) {
+        this.providerCurrentRequestId = providerCurrentRequestId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCurrentRequestPriority() {
+        return currentRequestPriority;
+    }
+
+    public void setCurrentRequestPriority(String currentRequestPriority) {
+        this.currentRequestPriority = currentRequestPriority;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,19 +123,13 @@ public class User {
                 ", authToken='" + authToken + '\'' +
                 ", email='" + email + '\'' +
                 ", roleName='" + roleName + '\'' +
-                ", currentRequestId='" + currentRequestId + '\'' +
+                ", patientCurrentRequestId='" + patientCurrentRequestId + '\'' +
+                ", providerCurrentRequestId='" + providerCurrentRequestId + '\'' +
+                ", currentRequestPriority='" + currentRequestPriority + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 '}';
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 }
 
