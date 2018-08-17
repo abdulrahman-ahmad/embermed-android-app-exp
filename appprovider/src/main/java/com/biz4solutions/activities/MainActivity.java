@@ -1,6 +1,9 @@
 package com.biz4solutions.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
+    private BroadcastReceiver logoutBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
+        }
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //method call here
+                String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case Constants.LOGOUT_RECEIVER:
+                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
+                            doLogOut();
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.LOGOUT_RECEIVER);
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (logoutBroadcastReceiver != null) {
+            unregisterReceiver(logoutBroadcastReceiver);
         }
     }
 

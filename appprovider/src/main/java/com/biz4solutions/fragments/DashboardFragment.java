@@ -127,18 +127,17 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void setRequestListViewAdapter(EmsRequestResponse response) {
-        System.out.println("aa --------- emsRequestResponse=" + response);
         if (response != null && response.getData() != null && !response.getData().isEmpty()) {
             isLoadMore = true;
-            page++;
             if (page == 0) {
                 emsRequests = response.getData();
             } else {
                 emsRequests.addAll(response.getData());
             }
+            page++;
 
             if (adapter == null) {
-                adapter = new RequestListViewAdapter(mainActivity, emsRequests);
+                adapter = new RequestListViewAdapter(emsRequests);
                 binding.loadMoreListView.setAdapter(adapter);
             } else {
                 adapter.add(emsRequests);
@@ -155,6 +154,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         System.out.println("aa ---------- position=" + position);
+        Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -164,6 +164,5 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         } else {
             binding.loadMoreListView.onLoadMoreComplete();
         }
-        System.out.println("aa ---------- onLoadMore=");
     }
 }

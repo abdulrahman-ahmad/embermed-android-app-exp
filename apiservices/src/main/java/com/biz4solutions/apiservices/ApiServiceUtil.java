@@ -9,6 +9,8 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.interfaces.RetrofitRestClient;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -180,7 +182,11 @@ public class ApiServiceUtil {
                         } else if (response.errorBody() != null) {
                             try {
                                 EmptyResponse emptyResponse = new Gson().getAdapter(EmptyResponse.class).fromJson(response.errorBody().string());
-                                restClientResponse.onFailure(emptyResponse.getMessage(), emptyResponse.getCode());
+                                if (response.code() == Constants.UNAUTHORIZED_ERROR_CODE) {
+                                    CommonFunctions.getInstance().doLogOut(context, emptyResponse.getMessage());
+                                } else {
+                                    restClientResponse.onFailure(emptyResponse.getMessage(), emptyResponse.getCode());
+                                }
                             } catch (IOException e) {
                                 e.printStackTrace();
                                 restClientResponse.onFailure(response.message(), response.code());

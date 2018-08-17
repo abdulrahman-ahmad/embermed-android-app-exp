@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -197,5 +198,13 @@ public class CommonFunctions implements Serializable {
         alertDialog.setCancelable(false);
         // Showing Alert Message
         alertDialog.show();
+    }
+
+    public void doLogOut(final Context context, String alertMessage) {
+        dismissProgressDialog();
+        Intent intent1 = new Intent();
+        intent1.setAction(Constants.LOGOUT_RECEIVER);
+        intent1.putExtra(Constants.LOGOUT_MESSAGE, alertMessage);
+        context.sendBroadcast(intent1);
     }
 }

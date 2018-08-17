@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.databinding.RequestListItemBinding;
 import com.biz4solutions.models.EmsRequest;
 
@@ -16,11 +15,9 @@ import java.util.List;
 
 public class RequestListViewAdapter extends BaseAdapter {
 
-    private final MainActivity mainActivity;
     private List<EmsRequest> emsRequests;
 
-    public RequestListViewAdapter(MainActivity activity, List<EmsRequest> emsRequests) {
-        this.mainActivity = activity;
+    public RequestListViewAdapter(List<EmsRequest> emsRequests) {
         this.emsRequests = emsRequests;
     }
 
@@ -46,6 +43,12 @@ public class RequestListViewAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     public View getView(final int position, View convertView, ViewGroup parent) {
         RequestListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.request_list_item, parent, false);
+        EmsRequest emsRequest = emsRequests.get(position);
+
+        String name = emsRequest.getUserDetails().getFirstName() + " " + emsRequest.getUserDetails().getLastName();
+        binding.txtName.setText(name);
+        String genderAge = emsRequest.getUserDetails().getGender() + ", " + emsRequest.getUserDetails().getAge() + "yrs";
+        binding.txtGenderAge.setText(genderAge);
 
         return binding.getRoot();
     }

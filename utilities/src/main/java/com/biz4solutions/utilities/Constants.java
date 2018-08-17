@@ -13,6 +13,7 @@ public class Constants implements Serializable {
 
     public static final int SPLASH_TIMEOUT = 1200;
     public static final int SEND_LOG_EMAIL = 100;
+    public static final int UNAUTHORIZED_ERROR_CODE = 401;
 
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String USER_PREFERENCE_KEY = "USER_PREFERENCE_KEY";
@@ -21,6 +22,8 @@ public class Constants implements Serializable {
     public static final String ROLE_NAME = "ROLE_NAME";
     public static final String ROLE_NAME_USER = "USER";
     public static final String ROLE_NAME_PROVIDER = "PROVIDER";
+    public static final String LOGOUT_RECEIVER = "LOGOUT_RECEIVER";
+    public static final String LOGOUT_MESSAGE = "message";
 
     //public static final String FIREBASE_PATIENT_LOCATION_TABLE = "PatientLocation";
     public static final String FIREBASE_USER_TABLE = "User";
