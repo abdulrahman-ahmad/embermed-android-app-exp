@@ -104,11 +104,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         if (i == R.id.btn_sign_in) {
             signInWithEmail();
         } else if (i == R.id.btn_sign_in_facebook) {
-            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-            //signInWithFB();
+            signInWithFB();
         } else if (i == R.id.btn_sign_in_google) {
-            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-            //signInWithGoogle();
+            signInWithGoogle();
         } else if (i == R.id.btn_sign_up) {
             showSignUpFragment();
         } else if (i == R.id.txt_forgot_password) {
@@ -205,6 +203,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        data.setRoleName(loginActivity.roleName);
         //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
         new ApiServices().socialAppLogin(getActivity(), data, this);
     }

@@ -1,5 +1,6 @@
 package com.biz4solutions.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -74,14 +75,13 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 R.color.text_color,
                 R.color.text_hint_color);
 
-
         getRequestList(true);
 
         binding.loadMoreListView.setOnLoadMoreListener(this);
         binding.loadMoreListView.setOnItemClickListener(this);
         LayoutInflater mInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (mInflater != null) {
-            RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.request_list_header, null, false);
+            @SuppressLint("InflateParams") RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.request_list_header, null, false);
             binding.loadMoreListView.addHeaderView(header);
         }
         return binding.getRoot();
@@ -130,12 +130,12 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         System.out.println("aa --------- emsRequestResponse=" + response);
         if (response != null && response.getData() != null && !response.getData().isEmpty()) {
             isLoadMore = true;
+            page++;
             if (page == 0) {
                 emsRequests = response.getData();
             } else {
                 emsRequests.addAll(response.getData());
             }
-            page++;
 
             if (adapter == null) {
                 adapter = new RequestListViewAdapter(mainActivity, emsRequests);

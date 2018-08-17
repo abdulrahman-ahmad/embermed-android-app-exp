@@ -3,4 +3,6 @@
     <string name="news_feed">News Feed</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="provider_home_n_coming_soon">Provider Home \n coming soon…</string>
+    <string name="txt_cardiac_call">Cardiac Call</string>
+    <string name="immediate">Immediate</string>
 </resources>

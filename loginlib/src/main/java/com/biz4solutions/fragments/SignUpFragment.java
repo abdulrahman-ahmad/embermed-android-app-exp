@@ -48,7 +48,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         binding.btnSignUp.setOnClickListener(this);
         binding.btnBackToLogin.setOnClickListener(this);
         binding.skipLogin.setOnClickListener(this);
-        binding.edtConfirmPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        //binding.edtConfirmPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        binding.edtPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 int result = actionId & EditorInfo.IME_MASK_ACTION;
@@ -79,7 +80,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         if (i == R.id.btn_sign_up) {
             if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
                 if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
-                    if (isPasswordValid(binding.edtPassword.getText().toString().trim(), binding.edtConfirmPassword.getText().toString().trim())) {
+                    if (isPasswordValid(binding.edtPassword.getText().toString().trim()/*, binding.edtConfirmPassword.getText().toString().trim()*/, binding.edtPassword.getText().toString().trim())) {
                         //call sign web service
                         signUpWebServiceCall();
                     }
@@ -113,7 +114,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
         signUpRequest.setPassword(binding.edtPassword.getText().toString().trim());
-        signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
+        //signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
+        signUpRequest.setConfirmPassword(binding.edtPassword.getText().toString().trim());
 
         new ApiServices().signUp(getActivity(), signUpRequest, new RestClientResponse() {
             @Override

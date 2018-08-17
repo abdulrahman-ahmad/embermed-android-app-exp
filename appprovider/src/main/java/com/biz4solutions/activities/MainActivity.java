@@ -2,6 +2,7 @@ package com.biz4solutions.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -24,6 +25,7 @@ import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
+import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
             openDashBoardFragment();
+            startGpsService();
         }
     }
 
@@ -127,14 +130,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void doLogOut() {
-        FirebaseAuthUtil.getInstance().signOut();
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
+        clearVariables();
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
+        firebaseSignOut();
+        stopGpsService();
+        openLoginActivity();
+    }
+
+    private void clearVariables() {
+        //currentRequestId = null;
+        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
+    }
+
+    private void openLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.putExtra(Constants.ROLE_NAME, Constants.ROLE_NAME_PROVIDER);
         startActivityForResult(intent, 149);
+    }
+
+    private void firebaseSignOut() {
+        FirebaseAuthUtil.getInstance().signOut();
+        //FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
     }
 
     @Override
@@ -201,6 +219,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     getSupportFragmentManager().popBackStack();
                     break;
             }
+        }
+    }
+
+    public void startGpsService() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            startService(new Intent(MainActivity.this, GpsServices.class));
+        } else {
+            startForegroundService(new Intent(MainActivity.this, GpsServices.class));
+        }
+    }
+
+    public void stopGpsService() {
+        try {
+            stopService(new Intent(MainActivity.this, GpsServices.class));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
