@@ -1,16 +1,21 @@
 package com.biz4solutions.utilities;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.view.View;
 import android.view.WindowManager;
@@ -29,6 +34,7 @@ public class CommonFunctions implements Serializable {
     private static CommonFunctions instance = null;
     private ProgressDialog mProgressBar;
     private AppCompatDialog cProgressBar;
+    private AlertDialog.Builder alertDialog;
 
     private CommonFunctions() {
     }
@@ -160,7 +166,7 @@ public class CommonFunctions implements Serializable {
     }
 
     public void showAlertDialog(Context context, int messageId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, true, callBackListener);
+        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, false, callBackListener);
     }
 
     public void showAlertDialog(Context context, int messageId, int ptBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
@@ -172,7 +178,10 @@ public class CommonFunctions implements Serializable {
     }
 
     private void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        if (alertDialog != null) {
+            return;
+        }
+        alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
 
@@ -183,6 +192,7 @@ public class CommonFunctions implements Serializable {
                 if (callBackListener != null) {
                     callBackListener.onClose(true);
                 }
+                alertDialog = null;
             }
         });
         if (isNtBtn) {
@@ -192,12 +202,43 @@ public class CommonFunctions implements Serializable {
                     if (callBackListener != null) {
                         callBackListener.onClose(false);
                     }
+                    alertDialog = null;
                 }
             });
         }
         alertDialog.setCancelable(false);
         // Showing Alert Message
         alertDialog.show();
+    }
+
+    /**
+     * Getting GPS status
+     * Function to show settings alert dialog.
+     * On pressing the Settings button it will launch Settings Options.
+     */
+    public boolean isGPSEnabled(final Context context) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return false;
+        }
+        LocationManager locationManager;
+        boolean isGPSEnabled = false;
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        if (locationManager != null) {
+            isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if (!isGPSEnabled) {
+                showAlertDialog(context, R.string.error_gps_off, new DialogDismissCallBackListener<Boolean>() {
+                    @Override
+                    public void onClose(Boolean result) {
+                        if (result) {
+                            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            context.startActivity(intent);
+                        }
+                    }
+                });
+            }
+        }
+        return isGPSEnabled;
     }
 
     public void doLogOut(final Context context, String alertMessage) {

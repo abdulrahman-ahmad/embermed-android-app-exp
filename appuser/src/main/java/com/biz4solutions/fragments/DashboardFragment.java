@@ -1,18 +1,13 @@
 package com.biz4solutions.fragments;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -25,12 +20,12 @@ import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
+import com.biz4solutions.utilities.CommonFunctions;
 
 public class DashboardFragment extends Fragment {
 
     public static final String fragmentName = "DashboardFragment";
     private MainActivity mainActivity;
-    private AlertDialog.Builder alertDialog;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -58,7 +53,7 @@ public class DashboardFragment extends Fragment {
         binding.alertBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isLocationPermissionGranted(102) && isGPSEnabled()) {
+                if (isLocationPermissionGranted(102) && CommonFunctions.getInstance().isGPSEnabled(mainActivity)) {
                     mainActivity.openEmsAlertUnconsciousFragment();
                 }
                 vibrateEffect();
@@ -91,12 +86,12 @@ public class DashboardFragment extends Fragment {
                 requestPermissions(perms, requestCode);
             } else {
                 ((Application) mainActivity.getApplication()).createLoggerFile();
-                isGPSEnabled();
+                CommonFunctions.getInstance().isGPSEnabled(mainActivity);
                 return true;
             }
         } else {
             ((Application) mainActivity.getApplication()).createLoggerFile();
-            isGPSEnabled();
+            CommonFunctions.getInstance().isGPSEnabled(mainActivity);
             return true;
         }
         return false;
@@ -120,68 +115,12 @@ public class DashboardFragment extends Fragment {
                         break;
                     case 101:
                         ((Application) mainActivity.getApplication()).createLoggerFile();
-                        isGPSEnabled();
+                        CommonFunctions.getInstance().isGPSEnabled(mainActivity);
                         break;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    // Getting GPS status
-    private boolean isGPSEnabled() {
-        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return false;
-        }
-        LocationManager locationManager;
-        boolean isGPSEnabled = false;
-        if (mainActivity != null) {
-            locationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
-            if (locationManager != null) {
-                isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if (!isGPSEnabled) {
-                    showSettingsAlert();
-                }
-            }
-        }
-        return isGPSEnabled;
-    }
-
-    /**
-     * Function to show settings alert dialog.
-     * On pressing the Settings button it will launch Settings Options.
-     */
-    public void showSettingsAlert() {
-        if (alertDialog != null) {
-            return;
-        }
-        alertDialog = new AlertDialog.Builder(mainActivity);
-
-        // Setting Dialog Title
-        //alertDialog.setTitle("GPS is settings");
-
-        // Setting Dialog Message
-        alertDialog.setMessage(R.string.error_gps_off);
-
-        // On pressing the Settings button.
-        alertDialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mainActivity.startActivity(intent);
-                alertDialog = null;
-            }
-        });
-        alertDialog.setCancelable(false);
-        // On pressing the cancel button
-        /*alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });*/
-
-        // Showing Alert Message
-        alertDialog.show();
     }
 }

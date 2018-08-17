@@ -54,4 +54,5 @@
     <string name="no">No</string>
     <string name="info_notification_title">OsirisBio is running.</string>
     <string name="info_notification_message">App will be using GPS and Data only when required.</string>
+    <string name="error_gps_off">Please turn on location service.</string>
 </resources>
