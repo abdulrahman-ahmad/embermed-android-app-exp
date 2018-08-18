@@ -10,5 +10,7 @@
     <string name="ems_has_been_notified">EMS has been notified</string>
     <string name="someone_will_be_contacting_you_immediately">Someone will be contacting\nyou immediately</string>
     <string name="osiris_person_will_connect_with_you_shortly">Osiris person will connect with you shortly</string>
+    <string name="does_the_victim_have_pulse">Does the victim have pulse?</string>
+    <string name="osiris_person_coming_in">Osiris Person Coming in:</string>
 
 </resources>

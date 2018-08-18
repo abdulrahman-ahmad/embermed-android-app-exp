@@ -11,7 +11,6 @@
 
 <resources>
     <dimen name="nav_header_height">150dp</dimen>
-    <dimen name="unconscious_text_size">22dp</dimen>
     <dimen name="unconscious_btn_width">100dp</dimen>
     <dimen name="unconscious_btn_end_margin">20dp</dimen>
     <dimen name="unconscious_btn_margin_top">10dp</dimen>
@@ -21,7 +20,9 @@
     <dimen name="nav_header_padding_bottom">15dp</dimen>
     <dimen name="cardiac_call_header_layout_margin_bottom">20dp</dimen>
     <dimen name="cardiac_call_header_layout_margin_top">4dp</dimen>
-    <dimen name="cardiac_call_header_layout_big_text_size">22.5dp</dimen>
-    <dimen name="cardiac_call_header_layout_small_text_size">18dp</dimen>
-    <dimen name="cardiac_call_waiting_image_height">115dp</dimen>
+    <dimen name="cardiac_call_big_text_size">20dp</dimen>
+    <dimen name="cardiac_call_small_text_size">16dp</dimen>
+    <dimen name="cardiac_call_waiting_image_height">105dp</dimen>
+    <dimen name="ambulance_image_width">140dp</dimen>
+    <dimen name="ambulance_image_height">113.252dp</dimen>
 </resources>
