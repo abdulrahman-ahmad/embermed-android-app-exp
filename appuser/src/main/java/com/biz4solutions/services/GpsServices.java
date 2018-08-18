@@ -107,13 +107,6 @@ public class GpsServices extends Service implements LocationListener {
         sendNotification(this, true);
         GpsServicesUtil.getInstance().setLatitude(location.getLatitude());
         GpsServicesUtil.getInstance().setLongitude(location.getLongitude());
-        //String requestId = SharedPrefsManager.getInstance().retrieveStringPreference(GpsServices.this, Constants.USER_PREFERENCE, Constants.USER_CURRENT_REQUEST_ID_KEY);
-        /*if (requestId != null && !requestId.isEmpty()) {
-            Map<String, Object> hashMap = new HashMap<>();
-            hashMap.put("latitude", location.getLatitude());
-            hashMap.put("longitude", location.getLongitude());
-            FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_PATIENT_LOCATION_TABLE, requestId, hashMap);
-        }*/
         GpsServicesUtil.getInstance().sendCallback();
     }
 

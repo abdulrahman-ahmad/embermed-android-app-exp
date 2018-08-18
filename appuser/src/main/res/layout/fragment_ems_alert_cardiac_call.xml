@@ -8,7 +8,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:weightSum="1535"
-        tools:ignore="SpUsage">
+        tools:ignore="SpUsage,UnusedAttribute">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -58,6 +58,7 @@
             android:layout_weight="1095"
             android:orientation="vertical">
 
+            <!--waiting layout-->
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/waiting_layout"
                 android:layout_width="match_parent"
@@ -69,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/default_left_right_margin"
                     android:layout_marginStart="@dimen/default_left_right_margin"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="30dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/osiris_person_will_connect_with_you_shortly"
@@ -86,7 +87,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:background="@drawable/alert_waiting"
                     android:contentDescription="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -95,6 +96,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
             </android.support.constraint.ConstraintLayout>
 
+            <!--ambulance layout-->
             <LinearLayout
                 android:id="@+id/ambulance_layout"
                 android:layout_width="match_parent"
@@ -102,10 +104,13 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
+                <!--timer layout-->
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="775">
+                    android:layout_weight="775"
+                    android:clipChildren="false"
+                    android:clipToPadding="false">
 
                     <TextView
                         android:id="@+id/textView"
@@ -113,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/default_left_right_margin"
                         android:layout_marginStart="@dimen/default_left_right_margin"
-                        android:layout_marginTop="40dp"
+                        android:layout_marginTop="30dp"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center"
                         android:text="@string/osiris_person_coming_in"
@@ -123,6 +128,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
+                    <!--ambulance image-->
                     <ImageView
                         android:id="@+id/ambulance_image"
                         android:layout_width="@dimen/ambulance_image_width"
@@ -139,9 +145,161 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+                    <!--cpr tutorial layout-->
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/cpr_tutorial_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/cpr_tutorial_height"
+                        android:layout_marginEnd="@dimen/cpr_tutorial_margin"
+                        android:layout_marginStart="@dimen/cpr_tutorial_margin"
+                        android:layout_marginTop="@dimen/cpr_tutorial_margin"
+                        android:clipChildren="false"
+                        android:clipToPadding="false"
+                        android:visibility="gone"
+                        app:cardCornerRadius="6dp"
+                        app:cardElevation="4dp"
+                        app:cardPreventCornerOverlap="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:id="@+id/btn_close"
+                                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/ripple_default_bg"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_close"
+                                    android:backgroundTint="@color/text_color"
+                                    android:contentDescription="@null" />
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/cpr_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="@dimen/cpr_tutorial_title_margin"
+                                android:text="@string/cpr_tutorial_title"
+                                android:textColor="@color/text_color"
+                                android:textSize="@dimen/cpr_tutorial_title_size"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <LinearLayout
+                                android:id="@+id/cpr_gif_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/cpr_tutorial_gif_layout_height"
+                                android:layout_marginEnd="@dimen/cpr_tutorial_margin"
+                                android:layout_marginStart="@dimen/cpr_tutorial_margin"
+                                android:layout_marginTop="@dimen/cpr_tutorial_title_margin"
+                                android:background="@drawable/shape_border"
+                                android:clipChildren="true"
+                                android:clipToPadding="true"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/cpr_title">
+
+                                <ImageView
+                                    android:id="@+id/gif_image"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="5dp"
+                                    android:contentDescription="@null" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_previous_cpr"
+                                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/ripple_default_bg"
+                                android:padding="5dp"
+                                app:layout_constraintEnd_toStartOf="@+id/btn_play_cpr"
+                                app:layout_constraintTop_toBottomOf="@+id/cpr_gif_layout">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_forward"
+                                    android:backgroundTint="@color/text_color"
+                                    android:contentDescription="@null"
+                                    android:rotation="180" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_play_cpr"
+                                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/ripple_default_bg"
+                                android:orientation="vertical"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/cpr_gif_layout">
+
+                                <ImageView
+                                    android:id="@+id/btn_play"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_play"
+                                    android:backgroundTint="@color/colorPrimary"
+                                    android:contentDescription="@null"
+                                    android:visibility="gone" />
+
+                                <ImageView
+                                    android:id="@+id/btn_pause"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_pause"
+                                    android:backgroundTint="@color/colorPrimary"
+                                    android:contentDescription="@null" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/btn_next_cpr"
+                                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginTop="8dp"
+                                android:background="@drawable/ripple_default_bg"
+                                android:padding="5dp"
+                                app:layout_constraintStart_toEndOf="@+id/btn_play_cpr"
+                                app:layout_constraintTop_toBottomOf="@+id/cpr_gif_layout">
+
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/ic_forward"
+                                    android:backgroundTint="@color/text_color"
+                                    android:contentDescription="@null" />
+                            </LinearLayout>
+
+                        </android.support.constraint.ConstraintLayout>
+                    </android.support.v7.widget.CardView>
 
                 </android.support.constraint.ConstraintLayout>
 
+                <!-- que layout-->
                 <LinearLayout
                     android:id="@+id/que_layout"
                     android:layout_width="match_parent"
@@ -188,6 +346,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <!--cpr link layout-->
                 <LinearLayout
                     android:id="@+id/yes_ans_layout"
                     android:layout_width="match_parent"
@@ -211,15 +370,16 @@
                         android:textSize="@dimen/cardiac_call_very_small_text_size" />
 
                     <TextView
+                        android:id="@+id/cpr_tutorial_link"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
+                        android:background="@drawable/ripple_default_bg"
                         android:fontFamily="sans-serif-medium"
                         android:gravity="center"
                         android:text="@string/cpr_tutorial"
                         android:textColor="@color/colorPrimary"
                         android:textSize="@dimen/cardiac_call_small_text_size" />
-
 
                 </LinearLayout>
             </LinearLayout>

@@ -97,7 +97,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     public void createRequest(double latitude, double longitude) {
         CreateEmsRequest body = new CreateEmsRequest();
         body.setLatitude(latitude);
-        body.setLatitude(longitude);
+        body.setLongitude(longitude);
         body.setUnconscious(true);
         new ApiServices().createRequest(mainActivity, body, new RestClientResponse() {
             @Override

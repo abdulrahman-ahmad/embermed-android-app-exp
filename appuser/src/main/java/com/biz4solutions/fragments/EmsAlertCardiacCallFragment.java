@@ -17,12 +17,21 @@ import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.gif.GifDrawable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "EmsAlertCardiacCallFragment";
     private MainActivity mainActivity;
     private FragmentEmsAlertCardiacCallBinding binding;
+
+    List<Integer> gifList = new ArrayList<>();
+    private int gifPosition = 0;
+    private boolean isGifPlaying = true;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -55,6 +64,16 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         });
         binding.btnNo.setOnClickListener(this);
         binding.btnYes.setOnClickListener(this);
+        binding.btnClose.setOnClickListener(this);
+        binding.btnPlayCpr.setOnClickListener(this);
+        binding.btnNextCpr.setOnClickListener(this);
+        binding.btnPreviousCpr.setOnClickListener(this);
+        binding.cprTutorialLink.setOnClickListener(this);
+
+        gifPosition = 0;
+        gifList.add(R.drawable.cpr1);
+        gifList.add(R.drawable.cpr2);
+
         return binding.getRoot();
     }
 
@@ -81,13 +100,60 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.cpr_tutorial_link:
             case R.id.btn_no:
                 binding.queLayout.setVisibility(View.GONE);
+                binding.yesAnsLayout.setVisibility(View.GONE);
+                binding.ambulanceImage.setVisibility(View.GONE);
+                binding.cprTutorialLayout.setVisibility(View.VISIBLE);
+                playGif();
                 break;
             case R.id.btn_yes:
                 binding.queLayout.setVisibility(View.GONE);
                 binding.yesAnsLayout.setVisibility(View.VISIBLE);
                 break;
+            case R.id.btn_close:
+                binding.yesAnsLayout.setVisibility(View.VISIBLE);
+                binding.ambulanceImage.setVisibility(View.VISIBLE);
+                binding.cprTutorialLayout.setVisibility(View.GONE);
+                break;
+            case R.id.btn_next_cpr:
+                if (gifPosition == gifList.size() - 1) {
+                    gifPosition = 0;
+                } else {
+                    gifPosition++;
+                }
+                playGif();
+                break;
+            case R.id.btn_previous_cpr:
+                if (gifPosition == 0) {
+                    gifPosition = gifList.size() - 1;
+                } else {
+                    gifPosition--;
+                }
+                playGif();
+                break;
+            case R.id.btn_play_cpr:
+                if (isGifPlaying) {
+                    binding.btnPlay.setVisibility(View.VISIBLE);
+                    binding.btnPause.setVisibility(View.GONE);
+                    ((GifDrawable) binding.gifImage.getDrawable()).stop();
+                } else {
+                    binding.btnPlay.setVisibility(View.GONE);
+                    binding.btnPause.setVisibility(View.VISIBLE);
+                    ((GifDrawable) binding.gifImage.getDrawable()).start();
+                }
+                isGifPlaying = !isGifPlaying;
+                break;
         }
+    }
+
+    private void playGif() {
+        Glide.with(mainActivity)
+                .load(gifList.get(gifPosition))
+                .into(binding.gifImage);
+        isGifPlaying = true;
+        binding.btnPlay.setVisibility(View.GONE);
+        binding.btnPause.setVisibility(View.VISIBLE);
     }
 }

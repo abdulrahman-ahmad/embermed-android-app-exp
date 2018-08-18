@@ -14,5 +14,6 @@
     <string name="osiris_person_coming_in">Osiris Person Coming in:</string>
     <string name="cpr_tutorial"><u>CPR tutorial</u></string>
     <string name="cpr_tutorial_message">If victim pulse have stopped, please go through our</string>
+    <string name="cpr_tutorial_title">CPR Tutorial</string>
 
 </resources>

@@ -17,4 +17,10 @@
     <dimen name="cardiac_call_waiting_image_height">115dp</dimen>
     <dimen name="ambulance_image_width">160dp</dimen>
     <dimen name="ambulance_image_height">129.431dp</dimen>
+    <dimen name="cpr_tutorial_height">250dp</dimen>
+    <dimen name="cpr_tutorial_margin">20dp</dimen>
+    <dimen name="cpr_tutorial_btn_height_width">30dp</dimen>
+    <dimen name="cpr_tutorial_gif_layout_height">150dp</dimen>
+    <dimen name="cpr_tutorial_title_size">20dp</dimen>
+    <dimen name="cpr_tutorial_title_margin">10dp</dimen>
 </resources>
