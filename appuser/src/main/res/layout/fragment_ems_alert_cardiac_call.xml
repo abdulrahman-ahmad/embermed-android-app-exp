@@ -61,7 +61,8 @@
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/waiting_layout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -99,8 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:weightSum="1095">
+                android:visibility="gone">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
@@ -133,13 +133,17 @@
                         android:layout_marginTop="4dp"
                         android:background="@drawable/ambulance"
                         android:contentDescription="@null"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+
                 </android.support.constraint.ConstraintLayout>
 
                 <LinearLayout
+                    android:id="@+id/que_layout"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_weight="320"
@@ -148,6 +152,7 @@
                     android:orientation="vertical"
                     android:paddingEnd="@dimen/default_left_right_margin"
                     android:paddingStart="@dimen/default_left_right_margin"
+                    android:visibility="visible"
                     tools:ignore="SpUsage,NestedWeights">
 
                     <TextView
@@ -181,6 +186,41 @@
                             android:text="@string/yes" />
 
                     </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/yes_ans_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="320"
+                    android:background="@color/alert_bg_color"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingEnd="16dp"
+                    android:paddingStart="16dp"
+                    android:visibility="gone"
+                    tools:ignore="SpUsage,NestedWeights">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="@string/cpr_tutorial_message"
+                        android:textColor="@color/secondary_text_color"
+                        android:textSize="@dimen/cardiac_call_very_small_text_size" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center"
+                        android:text="@string/cpr_tutorial"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/cardiac_call_small_text_size" />
+
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

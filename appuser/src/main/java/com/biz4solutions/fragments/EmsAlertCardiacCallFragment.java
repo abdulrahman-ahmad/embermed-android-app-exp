@@ -18,10 +18,11 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
-public class EmsAlertCardiacCallFragment extends Fragment {
+public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "EmsAlertCardiacCallFragment";
     private MainActivity mainActivity;
+    private FragmentEmsAlertCardiacCallBinding binding;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -33,7 +34,7 @@ public class EmsAlertCardiacCallFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentEmsAlertCardiacCallBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_cardiac_call, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_cardiac_call, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
@@ -46,14 +47,26 @@ public class EmsAlertCardiacCallFragment extends Fragment {
             });
         }
         binding.waitingImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.heartbeat));
-        //binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
-                System.out.println("aa ---------- EmsRequest=" + data);
+                setCardiacCallView(data);
             }
         });
+        binding.btnNo.setOnClickListener(this);
+        binding.btnYes.setOnClickListener(this);
         return binding.getRoot();
+    }
+
+    private void setCardiacCallView(EmsRequest data) {
+        System.out.println("aa ---------- EmsRequest=" + data);
+        if (data != null
+                && data.getRequestStatus() != null
+                && data.getRequestStatus().equals("ACCEPTED")) {
+            binding.waitingLayout.setVisibility(View.GONE);
+            binding.ambulanceLayout.setVisibility(View.GONE);
+            binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
+        }
     }
 
     @Override
@@ -63,5 +76,18 @@ public class EmsAlertCardiacCallFragment extends Fragment {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_no:
+                binding.queLayout.setVisibility(View.GONE);
+                break;
+            case R.id.btn_yes:
+                binding.queLayout.setVisibility(View.GONE);
+                binding.yesAnsLayout.setVisibility(View.VISIBLE);
+                break;
+        }
     }
 }
