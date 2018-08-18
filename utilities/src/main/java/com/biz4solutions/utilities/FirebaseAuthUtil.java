@@ -51,25 +51,29 @@ public class FirebaseAuthUtil {
      * @param password password of the user
      */
     public void signInUser(@NonNull final String email, @NonNull final String password, final FirebaseCallbackListener<Boolean> callback) {
-        if (email.isEmpty() || password.isEmpty()) {
-            return;
-        }
-        mFirebaseAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //currentUser = mFirebaseAuth.getCurrentUser();
-                            initDB(callback);
-                            //System.out.println("aa ------- currentUser=" + mFirebaseAuth.getCurrentUser());
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            //System.out.println("aa ------ signInWithEmailAndPassword error");
-                            createUser(email, password, callback);
+        try {
+            if (email.isEmpty() || password.isEmpty()) {
+                return;
+            }
+            mFirebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                //currentUser = mFirebaseAuth.getCurrentUser();
+                                initDB(callback);
+                                //System.out.println("aa ------- currentUser=" + mFirebaseAuth.getCurrentUser());
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                //System.out.println("aa ------ signInWithEmailAndPassword error");
+                                createUser(email, password, callback);
+                            }
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean isFirebaseAuthValid() {
@@ -77,23 +81,27 @@ public class FirebaseAuthUtil {
     }
 
     private void createUser(@NonNull final String email, @NonNull final String password, final FirebaseCallbackListener<Boolean> callback) {
-        if (email.isEmpty() || password.isEmpty()) {
-            return;
-        }
-        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    //currentUser = mFirebaseAuth.getCurrentUser();
-                    initDB(callback);
-                    //System.out.println("aa ------- createUser currentUser=" + mFirebaseAuth.getCurrentUser());
-                } /*else {
-                    // If sign in fails, display a message to the user.
-                    //System.out.println("aa ------ signInWithEmailAndPassword createUser error");
-                }*/
+        try {
+            if (email.isEmpty() || password.isEmpty()) {
+                return;
             }
-        });
+            mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        //currentUser = mFirebaseAuth.getCurrentUser();
+                        initDB(callback);
+                        //System.out.println("aa ------- createUser currentUser=" + mFirebaseAuth.getCurrentUser());
+                    } /*else {
+                        // If sign in fails, display a message to the user.
+                        //System.out.println("aa ------ signInWithEmailAndPassword createUser error");
+                    }*/
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void initDB(FirebaseCallbackListener<Boolean> callback) {
@@ -118,32 +126,52 @@ public class FirebaseAuthUtil {
     }
 
     public void addChildEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ChildEventListener childEventListener) {
-        if (mDatabase != null) {
-            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addChildEventListener(childEventListener);
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addChildEventListener(childEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void removeEventListener(@NonNull ChildEventListener childEventListener) {
-        if (mDatabase != null) {
-            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(childEventListener);
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(childEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void addValueEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ValueEventListener valueEventListener) {
-        if (mDatabase != null) {
-            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addValueEventListener(valueEventListener);
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addValueEventListener(valueEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void addListenerForSingleValueEvent(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ValueEventListener valueEventListener) {
-        if (mDatabase != null) {
-            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addListenerForSingleValueEvent(valueEventListener);
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).addListenerForSingleValueEvent(valueEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void removeEventListener(@NonNull ValueEventListener valueEventListener) {
-        if (mDatabase != null) {
-            mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(valueEventListener);
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(valueEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
