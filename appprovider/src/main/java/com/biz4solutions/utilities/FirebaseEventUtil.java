@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.google.firebase.database.DataSnapshot;
@@ -14,6 +15,7 @@ public class FirebaseEventUtil {
     private static FirebaseEventUtil instance = null;
     private ValueEventListener userEventListener;
     private ValueEventListener alertEventListener;
+    private ValueEventListener requestEventListener;
 
     private FirebaseEventUtil() {
     }
@@ -84,6 +86,34 @@ public class FirebaseEventUtil {
             };
             FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_ALERT_TABLE, user.getUserId(), alertEventListener);
         }
+    }
+
+    public void removeFirebaseRequestEvent() {
+        try {
+            if (requestEventListener != null) {
+                FirebaseAuthUtil.getInstance().removeEventListener(requestEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addFirebaseRequestEvent(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
+        //removeFirebaseRequestEvent();
+        requestEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                EmsRequest emsRequest = dataSnapshot.getValue(EmsRequest.class);
+                //System.out.println("aa ---------- EmsRequest = " + emsRequest);
+                callbackListener.onSuccess(emsRequest);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
     }
 
 

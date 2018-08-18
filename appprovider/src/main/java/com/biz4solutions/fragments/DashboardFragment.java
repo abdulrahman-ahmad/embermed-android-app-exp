@@ -227,32 +227,34 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void setRequestListViewAdapter(EmsRequestResponse response) {
-        if (response != null && response.getData() != null && !response.getData().isEmpty()) {
-            isLoadMore = true;
-            if (page == 0) {
-                emsRequests = response.getData();
-            } else {
-                emsRequests.addAll(response.getData());
-            }
-            page++;
+        if (response != null && response.getPage() == page) {
+            if (response.getData() != null && !response.getData().isEmpty()) {
+                isLoadMore = true;
+                if (page == 0) {
+                    emsRequests = response.getData();
+                } else {
+                    emsRequests.addAll(response.getData());
+                }
+                page++;
 
-            if (adapter == null) {
-                adapter = new RequestListViewAdapter(emsRequests);
-                binding.loadMoreListView.setAdapter(adapter);
+                if (adapter == null) {
+                    adapter = new RequestListViewAdapter(emsRequests);
+                    binding.loadMoreListView.setAdapter(adapter);
+                } else {
+                    adapter.add(emsRequests);
+                }
             } else {
-                adapter.add(emsRequests);
+                if (adapter != null && page == 0) {
+                    emsRequests = new ArrayList<>();
+                    adapter.add(emsRequests);
+                }
+                isLoadMore = false;
             }
-        } else {
-            if (adapter != null && page == 0) {
-                emsRequests = new ArrayList<>();
-                adapter.add(emsRequests);
+            if (emsRequests == null || emsRequests.isEmpty()) {
+                binding.emptyAlertLayout.setVisibility(View.VISIBLE);
+            } else {
+                binding.emptyAlertLayout.setVisibility(View.GONE);
             }
-            isLoadMore = false;
-        }
-        if (emsRequests == null || emsRequests.isEmpty()) {
-            binding.emptyAlertLayout.setVisibility(View.VISIBLE);
-        } else {
-            binding.emptyAlertLayout.setVisibility(View.GONE);
         }
     }
 

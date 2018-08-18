@@ -348,7 +348,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (data != null) {
                     currentRequestId = data.getPatientCurrentRequestId();
                     if (data.getPatientCurrentRequestId() != null && !data.getPatientCurrentRequestId().isEmpty()) {
-                        openEmsAlertCardiacCallFragment();
+                        openEmsAlertCardiacCallFragment(false);
                     } else {
                         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
                         if (currentFragment instanceof EmsAlertCardiacCallFragment) {
@@ -371,7 +371,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    public void openEmsAlertCardiacCallFragment() {
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue) {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof EmsAlertCardiacCallFragment) {
             return;
@@ -379,7 +379,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance())
+                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue))
                 .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
                 .commitAllowingStateLoss();
     }

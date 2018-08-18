@@ -3,6 +3,7 @@ package com.biz4solutions.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,17 +29,31 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     public static final String fragmentName = "EmsAlertCardiacCallFragment";
     private MainActivity mainActivity;
     private FragmentEmsAlertCardiacCallBinding binding;
-
+    private final static String IS_NEED_TO_SHOW_QUE = "IS_NEED_TO_SHOW_QUE";
     List<Integer> gifList = new ArrayList<>();
     private int gifPosition = 0;
     private boolean isGifPlaying = true;
+    private boolean isNeedToShowQue = false;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
     }
 
-    public static EmsAlertCardiacCallFragment newInstance() {
-        return new EmsAlertCardiacCallFragment();
+    public static EmsAlertCardiacCallFragment newInstance(boolean isNeedToShowQue) {
+        EmsAlertCardiacCallFragment fragment = new EmsAlertCardiacCallFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_NEED_TO_SHOW_QUE, isNeedToShowQue);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        if (getArguments() != null) {
+            isNeedToShowQue = getArguments().getBoolean(IS_NEED_TO_SHOW_QUE, false);
+        }
     }
 
     @Override
@@ -83,8 +98,11 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 && data.getRequestStatus() != null
                 && data.getRequestStatus().equals("ACCEPTED")) {
             binding.waitingLayout.setVisibility(View.GONE);
-            binding.ambulanceLayout.setVisibility(View.GONE);
+            binding.ambulanceLayout.setVisibility(View.VISIBLE);
             binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
+            if (!isNeedToShowQue) {
+                binding.btnYes.performClick();
+            }
         }
     }
 

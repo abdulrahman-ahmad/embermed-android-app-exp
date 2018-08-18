@@ -56,4 +56,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/provider/request/list")
     Call<EmsRequestResponse> getRequestList(@Query("page") int page, @Query("size") int size);
+
+    @PUT("v1/provider/request/accept")
+    Call<EmptyResponse> acceptRequest(@Query("requestId") String requestId);
 }

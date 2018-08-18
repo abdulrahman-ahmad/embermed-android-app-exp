@@ -94,7 +94,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         });
     }
 
-    public void createRequest(double latitude, double longitude) {
+    private void createRequest(double latitude, double longitude) {
         CreateEmsRequest body = new CreateEmsRequest();
         body.setLatitude(latitude);
         body.setLongitude(longitude);
@@ -107,7 +107,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (createEmsResponse != null && createEmsResponse.getData() != null) {
                     mainActivity.currentRequestId = createEmsResponse.getData().getId();
-                    mainActivity.openEmsAlertCardiacCallFragment();
+                    mainActivity.openEmsAlertCardiacCallFragment(true);
                 } else {
                     if (createEmsResponse != null) {
                         Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();

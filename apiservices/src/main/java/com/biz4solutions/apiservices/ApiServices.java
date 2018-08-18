@@ -76,4 +76,9 @@ public class ApiServices {
                 .getRequestList(page, 20));
     }
 
+    public void acceptRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .acceptRequest(requestId));
+    }
+
 }
