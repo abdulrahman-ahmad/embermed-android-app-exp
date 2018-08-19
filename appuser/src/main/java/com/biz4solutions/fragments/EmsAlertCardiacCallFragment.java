@@ -37,7 +37,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private boolean isNeedToShowQue = false;
     private EmsRequest request;
     private boolean isAcceptedOpen = false;
-    private boolean isCRCDone = false;
+    //private boolean isCRCDone = false;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -118,14 +118,14 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                         }
                     }
                     break;
-                case "CANCELLED":
+                /*case "CANCELLED":
                 case "REJECTED":
                 case "COMPLETED":
                     if (!isCRCDone) {
                         isCRCDone = true;
                         mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
                     }
-                    break;
+                    break;*/
             }
         }
     }

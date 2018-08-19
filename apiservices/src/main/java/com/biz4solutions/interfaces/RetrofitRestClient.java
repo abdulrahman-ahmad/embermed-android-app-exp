@@ -2,6 +2,7 @@ package com.biz4solutions.interfaces;
 
         import com.biz4solutions.models.SocialMediaUserData;
         import com.biz4solutions.models.request.CreateEmsRequest;
+        import com.biz4solutions.models.request.IncidentReport;
         import com.biz4solutions.models.request.LoginRequest;
         import com.biz4solutions.models.request.SignUpRequest;
         import com.biz4solutions.models.response.CreateEmsResponse;
@@ -59,4 +60,13 @@ public interface RetrofitRestClient {
 
     @PUT("v1/provider/request/accept")
     Call<EmptyResponse> acceptRequest(@Query("requestId") String requestId);
+
+    @POST("v1/provider/incidentReport/submit")
+    Call<EmptyResponse> submitIncidentReport(@Body IncidentReport body);
+
+    @DELETE("v1/provider/request/reject")
+    Call<EmptyResponse> rejectRequest(@Query("requestId") String requestId);
+
+    @PUT("v1/provider/request/complete")
+    Call<EmptyResponse> completeRequest(@Query("requestId") String requestId);
 }

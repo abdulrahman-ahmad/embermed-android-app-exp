@@ -28,23 +28,27 @@ public class FirebaseEventUtil {
     }
 
     public void addFirebaseUserEvent(Context context, final FirebaseCallbackListener<User> callbackListener) {
-        User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-        if (user != null) {
-            //removeFirebaseUserEvent();
-            userEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    User user1 = dataSnapshot.getValue(User.class);
-                    System.out.println("aa ---------- Firebase user details= " + user1);
-                    callbackListener.onSuccess(user1);
-                }
+        try {
+            User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            if (user != null) {
+                //removeFirebaseUserEvent();
+                userEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user1 = dataSnapshot.getValue(User.class);
+                        System.out.println("aa ---------- Firebase user details= " + user1);
+                        callbackListener.onSuccess(user1);
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            };
-            FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, user.getUserId(), userEventListener);
+                    }
+                };
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, user.getUserId(), userEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -70,21 +74,25 @@ public class FirebaseEventUtil {
 
     public void addFirebaseAlertEvent(Context context, final FirebaseCallbackListener<Boolean> callbackListener) {
         //removeFirebaseRequestEvent();
-        User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-        if (user != null) {
-            alertEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    System.out.println("aa ---------- Alert dataSnapshot.getValue() = " + dataSnapshot.getValue());
-                    callbackListener.onSuccess(dataSnapshot.getValue() != null);
-                }
+        try {
+            User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            if (user != null) {
+                alertEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        System.out.println("aa ---------- Alert dataSnapshot.getValue() = " + dataSnapshot.getValue());
+                        callbackListener.onSuccess(dataSnapshot.getValue() != null);
+                    }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                }
-            };
-            FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_ALERT_TABLE, user.getUserId(), alertEventListener);
+                    }
+                };
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_ALERT_TABLE, user.getUserId(), alertEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,21 +108,24 @@ public class FirebaseEventUtil {
 
     public void addFirebaseRequestEvent(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
         //removeFirebaseRequestEvent();
-        requestEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                EmsRequest emsRequest = dataSnapshot.getValue(EmsRequest.class);
-                //System.out.println("aa ---------- EmsRequest = " + emsRequest);
-                callbackListener.onSuccess(emsRequest);
-            }
+        try {
+            requestEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    EmsRequest emsRequest = dataSnapshot.getValue(EmsRequest.class);
+                    //System.out.println("aa ---------- EmsRequest = " + emsRequest);
+                    callbackListener.onSuccess(emsRequest);
+                }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        };
-        FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
+                }
+            };
+            FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 
 }

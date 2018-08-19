@@ -5,6 +5,7 @@ import android.content.Context;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.utilities.Constants;
@@ -79,6 +80,21 @@ public class ApiServices {
     public void acceptRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .acceptRequest(requestId));
+    }
+
+    public void completeRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .completeRequest(requestId));
+    }
+
+    public void submitIncidentReport(final Context context, IncidentReport body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .submitIncidentReport(body));
+    }
+
+    public void rejectRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .rejectRequest(requestId));
     }
 
 }
