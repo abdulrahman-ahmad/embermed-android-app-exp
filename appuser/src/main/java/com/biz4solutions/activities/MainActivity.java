@@ -32,6 +32,7 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -348,7 +349,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (data != null) {
                     currentRequestId = data.getPatientCurrentRequestId();
                     if (data.getPatientCurrentRequestId() != null && !data.getPatientCurrentRequestId().isEmpty()) {
-                        openEmsAlertCardiacCallFragment(false);
+                        FirebaseEventUtil.getInstance().getFirebaseRequest(data.getPatientCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
+                            @Override
+                            public void onSuccess(EmsRequest data) {
+                                openEmsAlertCardiacCallFragment(false, data);
+                            }
+                        });
                     } else {
                         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
                         if (currentFragment instanceof EmsAlertCardiacCallFragment) {
@@ -372,6 +378,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue) {
+        openEmsAlertCardiacCallFragment(isNeedToShowQue, null);
+    }
+
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, EmsRequest data) {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof EmsAlertCardiacCallFragment) {
             return;
@@ -379,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue))
+                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
                 .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
                 .commitAllowingStateLoss();
     }

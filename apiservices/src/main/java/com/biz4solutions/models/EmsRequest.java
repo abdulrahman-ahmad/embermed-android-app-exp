@@ -1,6 +1,8 @@
 package com.biz4solutions.models;
 
-public class EmsRequest {
+import java.io.Serializable;
+
+public class EmsRequest implements Serializable {
     private String id;
     private boolean isUnconscious;
     private double latitude;

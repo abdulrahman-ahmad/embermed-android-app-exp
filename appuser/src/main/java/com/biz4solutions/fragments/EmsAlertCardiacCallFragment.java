@@ -30,19 +30,24 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertCardiacCallBinding binding;
     private final static String IS_NEED_TO_SHOW_QUE = "IS_NEED_TO_SHOW_QUE";
+    private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     List<Integer> gifList = new ArrayList<>();
     private int gifPosition = 0;
     private boolean isGifPlaying = true;
     private boolean isNeedToShowQue = false;
+    private EmsRequest request;
+    private boolean isAcceptedOpen = false;
+    private boolean isCRCDone = false;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
     }
 
-    public static EmsAlertCardiacCallFragment newInstance(boolean isNeedToShowQue) {
+    public static EmsAlertCardiacCallFragment newInstance(boolean isNeedToShowQue, EmsRequest data) {
         EmsAlertCardiacCallFragment fragment = new EmsAlertCardiacCallFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_NEED_TO_SHOW_QUE, isNeedToShowQue);
+        args.putSerializable(REQUEST_DETAILS, data);
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,6 +58,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
             isNeedToShowQue = getArguments().getBoolean(IS_NEED_TO_SHOW_QUE, false);
+            request = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
         }
     }
 
@@ -74,7 +80,8 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
-                setCardiacCallView(data);
+                request = data;
+                setCardiacCallView();
             }
         });
         binding.btnNo.setOnClickListener(this);
@@ -89,19 +96,36 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         gifList.add(R.drawable.cpr1);
         gifList.add(R.drawable.cpr2);
 
+        if (request != null) {
+            setCardiacCallView();
+        }
+
         return binding.getRoot();
     }
 
-    private void setCardiacCallView(EmsRequest data) {
-        System.out.println("aa ---------- EmsRequest=" + data);
-        if (data != null
-                && data.getRequestStatus() != null
-                && data.getRequestStatus().equals("ACCEPTED")) {
-            binding.waitingLayout.setVisibility(View.GONE);
-            binding.ambulanceLayout.setVisibility(View.VISIBLE);
-            binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
-            if (!isNeedToShowQue) {
-                binding.btnYes.performClick();
+    private void setCardiacCallView() {
+        System.out.println("aa ---------- EmsRequest=" + request);
+        if (request != null && request.getRequestStatus() != null) {
+            switch (request.getRequestStatus()) {
+                case "ACCEPTED":
+                    if (!isAcceptedOpen) {
+                        isAcceptedOpen = true;
+                        binding.waitingLayout.setVisibility(View.GONE);
+                        binding.ambulanceLayout.setVisibility(View.VISIBLE);
+                        binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
+                        if (!isNeedToShowQue) {
+                            binding.btnYes.performClick();
+                        }
+                    }
+                    break;
+                case "CANCELLED":
+                case "REJECTED":
+                case "COMPLETED":
+                    if (!isCRCDone) {
+                        isCRCDone = true;
+                        mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                    }
+                    break;
             }
         }
     }
