@@ -31,6 +31,7 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
+            openDashBoardFragment();
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override
@@ -133,7 +135,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
                 }
             }
-            openDashBoardFragment();
         }
     }
 
@@ -143,13 +144,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        openCardiacCallDetailsFragment(data.getProviderCurrentRequestId());
-                    } /*else {
-                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-                        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
-                            reOpenDashBoardFragment();
-                        }
-                    }*/
+                        FirebaseEventUtil.getInstance().getFirebaseRequest(data.getProviderCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
+                            @Override
+                            public void onSuccess(EmsRequest data) {
+                                isRequestAcceptedByMe = true;
+                                openCardiacCallDetailsFragment(data);
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -227,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void firebaseSignOut() {
         FirebaseAuthUtil.getInstance().signOut();
-        //FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
+        FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
     }
 
     @Override
@@ -238,14 +240,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void openCardiacCallDetailsFragment(String requestId) {
+    public void openCardiacCallDetailsFragment(EmsRequest data) {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof CardiacCallDetailsFragment) {
             return;
         }
+        currentRequestId = data.getId();
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(requestId))
+                .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data))
                 .addToBackStack(CardiacCallDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }

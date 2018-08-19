@@ -1,9 +1,11 @@
 package com.biz4solutions.models;
 
+import java.io.Serializable;
+
 /*
  * Created by ketan on 12/11/2017.
  */
-public class User {
+public class User implements Serializable{
 
     private String userId;
     private String firstName = "";

@@ -88,6 +88,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             binding.loadMoreListView.setAdapter(adapter);
         } else {
             getNewRequestList(true);
+            addFirebaseEvent();
         }
 
         binding.loadMoreListView.setOnLoadMoreListener(this);
@@ -98,7 +99,6 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             binding.loadMoreListView.addHeaderView(header);
         }
         checkLocationPermissionGranted();
-        addFirebaseEvent();
         return binding.getRoot();
     }
 
@@ -261,7 +261,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (emsRequests != null && emsRequests.size() > position - 1) {
-            mainActivity.openCardiacCallDetailsFragment(emsRequests.get(position - 1).getId());
+            mainActivity.openCardiacCallDetailsFragment(emsRequests.get(position - 1));
         }
     }
 

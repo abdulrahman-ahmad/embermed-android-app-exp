@@ -19,28 +19,33 @@ import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
-import com.biz4solutions.models.request.IncidentReport;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "CardiacCallDetailsFragment";
-    private final static String REQUEST_ID = "REQUEST_ID";
+    private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private MainActivity mainActivity;
-    private String requestId;
+    //private String requestId;
     private FragmentCardiacCallDetailsBinding binding;
+    private EmsRequest request;
+    private User user;
+    private boolean isAcceptedOpen = false;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static CardiacCallDetailsFragment newInstance(String requestId) {
+    public static CardiacCallDetailsFragment newInstance(EmsRequest data) {
         CardiacCallDetailsFragment fragment = new CardiacCallDetailsFragment();
         Bundle args = new Bundle();
-        args.putString(REQUEST_ID, requestId);
+        args.putSerializable(REQUEST_DETAILS, data);
         fragment.setArguments(args);
         return fragment;
     }
@@ -50,7 +55,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            requestId = getArguments().getString(REQUEST_ID);
+            request = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
         }
     }
 
@@ -60,7 +65,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.isRequestAcceptedByMe = false;
-            mainActivity.currentRequestId = requestId;
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
@@ -70,17 +74,58 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 }
             });
         }
-        if (requestId != null) {
-            FirebaseEventUtil.getInstance().addFirebaseRequestEvent(requestId, new FirebaseCallbackListener<EmsRequest>() {
-                @Override
-                public void onSuccess(EmsRequest data) {
-                    System.out.println("aa ---------- EmsRequest = " + data);
-                }
-            });
+        user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+            @Override
+            public void onSuccess(EmsRequest data) {
+                System.out.println("aa ---------- EmsRequest = " + data);
+                request = data;
+                setCardiacCallView();
+            }
+        });
+
+        if (request != null) {
+            setCardiacCallView();
         }
         binding.btnRespond.setOnClickListener(this);
         binding.btnSubmitReport.setOnClickListener(this);
         return binding.getRoot();
+    }
+
+    private void setCardiacCallView() {
+        System.out.println("aa ---------- EmsRequest=" + request);
+        if (request != null && request.getRequestStatus() != null) {
+            switch (request.getRequestStatus()) {
+                case "ACCEPTED":
+                    if (request.getProviderId() != null) {
+                        if (!request.getProviderId().equals(user.getUserId())) {
+                            showAlert(R.string.accepted_request_message);
+                        } else {
+                            if (!isAcceptedOpen) {
+                                isAcceptedOpen = true;
+                                showMapRouteView();
+                            }
+                        }
+                    }
+                    break;
+                case "CANCELLED":
+                    if (request.getProviderId() != null && !request.getProviderId().equals(user.getUserId())) {
+                        showAlert(R.string.canceled_request_message);
+                    }
+                    break;
+            }
+        }
+    }
+
+    private void showAlert(int message) {
+        CommonFunctions.getInstance().showAlertDialog(mainActivity, message, new DialogDismissCallBackListener<Boolean>() {
+            @Override
+            public void onClose(Boolean result) {
+                if (result) {
+                    mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                }
+            }
+        });
     }
 
     @Override
@@ -122,14 +167,12 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().acceptRequest(mainActivity, requestId, new RestClientResponse() {
+        new ApiServices().acceptRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                mainActivity.isRequestAcceptedByMe = true;
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
-                binding.btnRespond.setVisibility(View.GONE);
-                binding.btnSubmitReport.setVisibility(View.VISIBLE);
+                showMapRouteView();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
@@ -141,13 +184,19 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         });
     }
 
+    public void showMapRouteView() {
+        mainActivity.isRequestAcceptedByMe = true;
+        binding.btnRespond.setVisibility(View.GONE);
+        binding.btnSubmitReport.setVisibility(View.VISIBLE);
+    }
+
     private void completeRequest() {
         if (CommonFunctions.getInstance().isOffline(mainActivity)) {
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().completeRequest(mainActivity, requestId, new RestClientResponse() {
+        new ApiServices().completeRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 mainActivity.isRequestAcceptedByMe = false;
@@ -165,8 +214,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         });
     }
 
-
-    private void submitIncidentReport() {
+    /*private void submitIncidentReport() {
         if (CommonFunctions.getInstance().isOffline(mainActivity)) {
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
@@ -193,5 +241,5 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
-    }
+    }*/
 }

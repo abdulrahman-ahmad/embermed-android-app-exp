@@ -9,6 +9,7 @@ public class EmsRequest implements Serializable {
     private double longitude;
     private String priority;
     private String requestStatus;
+    private String providerId;
     private String userId;
     private long requestTime;
     private User userDetails;
@@ -85,6 +86,14 @@ public class EmsRequest implements Serializable {
         this.userDetails = userDetails;
     }
 
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -94,6 +103,7 @@ public class EmsRequest implements Serializable {
                 ", longitude=" + longitude +
                 ", priority='" + priority + '\'' +
                 ", requestStatus='" + requestStatus + '\'' +
+                ", providerId='" + providerId + '\'' +
                 ", userId='" + userId + '\'' +
                 ", requestTime=" + requestTime +
                 ", userDetails=" + userDetails +
