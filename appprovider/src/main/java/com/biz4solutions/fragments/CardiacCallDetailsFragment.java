@@ -69,6 +69,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             mainActivity.currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
+            mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
@@ -155,6 +156,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     public void onDestroyView() {
         super.onDestroyView();
         isPageOpen = false;
+        mainActivity.btnCallAlerter.setVisibility(View.GONE);
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
         if (mainActivity.isRequestAcceptedByMe) {
             mainActivity.isUpdateList = true;

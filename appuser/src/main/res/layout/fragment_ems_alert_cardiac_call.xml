@@ -112,21 +112,51 @@
                     android:clipChildren="false"
                     android:clipToPadding="false">
 
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:id="@+id/text_view_layout"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/default_left_right_margin"
-                        android:layout_marginStart="@dimen/default_left_right_margin"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="30dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:gravity="center"
-                        android:text="@string/osiris_person_coming_in"
-                        android:textColor="@color/secondary_text_color"
-                        android:textSize="@dimen/cardiac_call_small_text_size"
+                        android:gravity="bottom"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/osiris_person_coming_in"
+                            android:textColor="@color/secondary_text_color"
+                            android:textSize="@dimen/cardiac_call_small_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="26"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/cardiac_call_very_big_text_size" />
+
+                        <TextView
+                            android:id="@+id/textView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center"
+                            android:text="@string/mins"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/cardiac_call_small_text_size" />
+
+                    </LinearLayout>
 
                     <!--ambulance image-->
                     <ImageView
@@ -143,7 +173,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView" />
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_layout" />
 
                     <!--cpr tutorial layout-->
                     <android.support.v7.widget.CardView
@@ -161,7 +191,7 @@
                         app:cardPreventCornerOverlap="false"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/textView">
+                        app:layout_constraintTop_toBottomOf="@+id/text_view_layout">
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
@@ -231,17 +261,15 @@
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginTop="8dp"
                                 android:background="@drawable/ripple_default_bg"
-                                android:padding="5dp"
                                 app:layout_constraintEnd_toStartOf="@+id/btn_play_cpr"
                                 app:layout_constraintTop_toBottomOf="@+id/cpr_gif_layout">
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:background="@drawable/ic_forward"
+                                    android:background="@drawable/ic_previous"
                                     android:backgroundTint="@color/text_color"
-                                    android:contentDescription="@null"
-                                    android:rotation="180" />
+                                    android:contentDescription="@null" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -262,7 +290,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="@drawable/ic_play"
-                                    android:backgroundTint="@color/colorPrimary"
                                     android:contentDescription="@null"
                                     android:visibility="gone" />
 
@@ -271,7 +298,6 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:background="@drawable/ic_pause"
-                                    android:backgroundTint="@color/colorPrimary"
                                     android:contentDescription="@null" />
                             </LinearLayout>
 
@@ -282,16 +308,16 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginTop="8dp"
                                 android:background="@drawable/ripple_default_bg"
-                                android:padding="5dp"
                                 app:layout_constraintStart_toEndOf="@+id/btn_play_cpr"
                                 app:layout_constraintTop_toBottomOf="@+id/cpr_gif_layout">
 
                                 <ImageView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:background="@drawable/ic_forward"
+                                    android:background="@drawable/ic_previous"
                                     android:backgroundTint="@color/text_color"
-                                    android:contentDescription="@null" />
+                                    android:contentDescription="@null"
+                                    android:rotation="180" />
                             </LinearLayout>
 
                         </android.support.constraint.ConstraintLayout>

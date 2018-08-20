@@ -24,4 +24,5 @@
     <dimen name="cpr_tutorial_gif_layout_height">150dp</dimen>
     <dimen name="cpr_tutorial_title_size">20dp</dimen>
     <dimen name="cpr_tutorial_title_margin">10dp</dimen>
+    <dimen name="cardiac_call_very_big_text_size">30dp</dimen>
 </resources>

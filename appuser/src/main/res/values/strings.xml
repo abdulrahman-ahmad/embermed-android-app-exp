@@ -15,5 +15,6 @@
     <string name="cpr_tutorial"><u>CPR tutorial</u></string>
     <string name="cpr_tutorial_message">If victim pulse have stopped, please go through our</string>
     <string name="cpr_tutorial_title">CPR Tutorial</string>
+    <string name="mins">mins</string>
 
 </resources>

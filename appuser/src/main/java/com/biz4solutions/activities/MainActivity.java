@@ -329,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 public void onSuccess(Object response, int statusCode) {
                     EmptyResponse emptyResponse = (EmptyResponse) response;
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    Toast.makeText(MainActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
                 }
 

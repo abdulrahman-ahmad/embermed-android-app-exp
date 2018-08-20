@@ -16,7 +16,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,10 +47,11 @@ import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public NavigationView navigationView;
     public TextView toolbarTitle;
+    public LinearLayout btnCallAlerter;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
     private BroadcastReceiver logoutBroadcastReceiver;
@@ -76,7 +79,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
+            btnCallAlerter = binding.appBarMain.btnCallAlerter;
+            binding.appBarMain.btnCallAlerter.setOnClickListener(this);
         }
+
         logoutBroadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -397,6 +403,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             stopService(new Intent(MainActivity.this, GpsServices.class));
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_call_alerter:
+                Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }

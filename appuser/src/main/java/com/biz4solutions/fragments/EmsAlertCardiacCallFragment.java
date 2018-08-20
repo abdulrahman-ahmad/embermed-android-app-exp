@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
@@ -38,7 +39,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private boolean isNeedToShowQue = false;
     private EmsRequest request;
     private boolean isAcceptedOpen = false;
-    //private boolean isCRCDone = false;
+    private boolean isCRCDone = false;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -119,14 +120,24 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                         }
                     }
                     break;
-                /*case "CANCELLED":
-                case "REJECTED":
                 case "COMPLETED":
                     if (!isCRCDone) {
                         isCRCDone = true;
-                        mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                        Toast.makeText(mainActivity, "Your request was completed.", Toast.LENGTH_SHORT).show();
                     }
-                    break;*/
+                    break;
+                case "REJECTED":
+                    if (!isCRCDone) {
+                        isCRCDone = true;
+                        Toast.makeText(mainActivity, "Your request was rejected.", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                case "CANCELLED":
+                    if (!isCRCDone) {
+                        isCRCDone = true;
+                        Toast.makeText(mainActivity, "Your request was cancelled.", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
             }
         }
     }
