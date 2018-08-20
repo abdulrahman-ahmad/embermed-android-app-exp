@@ -124,18 +124,21 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                     if (!isCRCDone) {
                         isCRCDone = true;
                         Toast.makeText(mainActivity, "Your request was completed.", Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
                     }
                     break;
                 case "REJECTED":
                     if (!isCRCDone) {
                         isCRCDone = true;
                         Toast.makeText(mainActivity, "Your request was rejected.", Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
                     }
                     break;
                 case "CANCELLED":
                     if (!isCRCDone) {
                         isCRCDone = true;
                         Toast.makeText(mainActivity, "Your request was cancelled.", Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
                     }
                     break;
             }
