@@ -115,7 +115,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void showAlert(int message) {
-        CommonFunctions.getInstance().showAlertDialog(mainActivity, message, new DialogDismissCallBackListener<Boolean>() {
+        CommonFunctions.getInstance().showAlertDialog(mainActivity, message,true, new DialogDismissCallBackListener<Boolean>() {
             @Override
             public void onClose(Boolean result) {
                 if (result) {

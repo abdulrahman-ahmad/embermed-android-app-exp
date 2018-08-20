@@ -35,6 +35,7 @@ public class CommonFunctions implements Serializable {
     private ProgressDialog mProgressBar;
     private AppCompatDialog cProgressBar;
     private AlertDialog.Builder alertDialog;
+    private AlertDialog mDialog;
 
     private CommonFunctions() {
     }
@@ -162,24 +163,31 @@ public class CommonFunctions implements Serializable {
     }
 
     public void showAlertDialog(Context context, int messageId) {
-        showAlertDialog(context, messageId, R.string.ok, 0, false, null);
+        showAlertDialog(context, messageId, R.string.ok, 0, false, false, null);
     }
 
     public void showAlertDialog(Context context, int messageId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, false, callBackListener);
+        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, false, false, callBackListener);
+    }
+
+    public void showAlertDialog(Context context, int messageId, boolean isHighPriority, final DialogDismissCallBackListener<Boolean> callBackListener) {
+        showAlertDialog(context, messageId, R.string.ok, R.string.cancel, false, isHighPriority, callBackListener);
     }
 
     public void showAlertDialog(Context context, int messageId, int ptBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, ptBtnTextId, R.string.cancel, true, callBackListener);
+        showAlertDialog(context, messageId, ptBtnTextId, R.string.cancel, true, false, callBackListener);
     }
 
     public void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        showAlertDialog(context, messageId, ptBtnTextId, ntBtnTextId, true, callBackListener);
+        showAlertDialog(context, messageId, ptBtnTextId, ntBtnTextId, true, false, callBackListener);
     }
 
-    private void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        if (alertDialog != null) {
+    private void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<Boolean> callBackListener) {
+        if (!isHighPriority && alertDialog != null) {
             return;
+        }
+        if (mDialog != null) {
+            mDialog.dismiss();
         }
         alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
@@ -193,6 +201,7 @@ public class CommonFunctions implements Serializable {
                     callBackListener.onClose(true);
                 }
                 alertDialog = null;
+                mDialog = null;
             }
         });
         if (isNtBtn) {
@@ -203,12 +212,13 @@ public class CommonFunctions implements Serializable {
                         callBackListener.onClose(false);
                     }
                     alertDialog = null;
+                    mDialog = null;
                 }
             });
         }
         alertDialog.setCancelable(false);
         // Showing Alert Message
-        alertDialog.show();
+        mDialog = alertDialog.show();
     }
 
     /**
