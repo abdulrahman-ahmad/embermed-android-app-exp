@@ -26,6 +26,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     public static final String fragmentName = "EmsAlertUnconsciousFragment";
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
+    private boolean isRequestInProgress = false;
 
     public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
@@ -87,7 +88,10 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
             @Override
             public void onSuccess(double latitude, double longitude) {
                 binding.btnYes.setEnabled(true);
-                createRequest(latitude, longitude);
+                if(!isRequestInProgress) {
+                    isRequestInProgress = true;
+                    createRequest(latitude, longitude);
+                }
             }
 
             @Override
@@ -107,6 +111,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         new ApiServices().createRequest(mainActivity, body, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
+                isRequestInProgress = false;
                 mainActivity.stopGpsService();
                 CreateEmsResponse createEmsResponse = (CreateEmsResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
@@ -122,6 +127,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
 
             @Override
             public void onFailure(String errorMessage, int statusCode) {
+                isRequestInProgress = false;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
