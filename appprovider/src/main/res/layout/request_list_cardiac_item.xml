@@ -37,7 +37,6 @@
                     android:fontFamily="sans-serif-medium"
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
-                    android:text="awdwad"
                     android:textColor="#1e282c"
                     android:textSize="@dimen/requester_name_text_size"
                     card_view:layout_constraintStart_toStartOf="parent"

@@ -2,7 +2,6 @@
     <string name="app_name">OsirisBio Provider</string>
     <string name="news_feed">News Feed</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
-    <string name="cardiac_call_details_coming_soon">Cardiac Call Map \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="immediate">Immediate</string>
     <string name="pull_to_refresh">Pull to refresh</string>

@@ -2,6 +2,7 @@ package com.biz4solutions.fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -76,7 +78,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private boolean isMapZoom = false;
     public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
     public int UPDATE_INTERVAL = 500;    // 0.5 sec;
-    public int ZOOM_LEVEL = 14;
+    public int ZOOM_LEVEL = 17;
     private LocationManager mLocationManager;
     private Location mLocation;
     private boolean isShowMapDirection = false;
@@ -157,6 +159,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         initView();
         binding.btnRespond.setOnClickListener(this);
         binding.btnSubmitReport.setOnClickListener(this);
+        binding.btnGetDirection.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -250,6 +253,20 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     }
                 });
                 break;
+            case R.id.btn_get_direction:
+                openGoogleMapApp();
+                break;
+        }
+    }
+
+    private void openGoogleMapApp() {
+        try {
+            Uri gmmIntentUri = Uri.parse("google.navigation:q=" + requestDetails.getLatitude() + "," + requestDetails.getLongitude());
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -280,6 +297,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity.isRequestAcceptedByMe = true;
         binding.btnRespond.setVisibility(View.GONE);
         binding.btnSubmitReport.setVisibility(View.VISIBLE);
+        binding.btnGetDirection.setVisibility(View.VISIBLE);
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
         NavigationUtil.getInstance().hideMenu(mainActivity);
         if (googleMap != null) {
@@ -417,7 +435,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
         if (mLocationManager != null) {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, 0, this);
-            //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_INTERVAL, 0, this);
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_INTERVAL, 0, this);
         }
     }
 
