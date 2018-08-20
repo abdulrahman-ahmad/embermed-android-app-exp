@@ -42,4 +42,9 @@ public class NewsFeedFragment extends Fragment {
         }
         return binding.getRoot();
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

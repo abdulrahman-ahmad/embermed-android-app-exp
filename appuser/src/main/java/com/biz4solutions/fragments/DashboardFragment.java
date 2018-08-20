@@ -63,6 +63,11 @@ public class DashboardFragment extends Fragment {
         return binding.getRoot();
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
     private void vibrateEffect() {
         // Vibrate for 300 milliseconds
         Vibrator vibrator = (Vibrator) mainActivity.getSystemService(Context.VIBRATOR_SERVICE);

@@ -1,13 +1,28 @@
 package com.biz4solutions.fragments;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
+import android.graphics.Point;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
@@ -25,9 +40,26 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
+import com.biz4solutions.utilities.GetDirectionsCallback;
+import com.biz4solutions.utilities.GetDirectionsTask;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
-public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener, GetDirectionsCallback {
 
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
@@ -37,6 +69,17 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private User user;
     private boolean isAcceptedOpen = false;
     private boolean isPageOpen = false;
+    private View mapView;
+    private GoogleMap googleMap;
+    private Marker userMarker;
+    private Marker victimMarker;
+    private boolean isMapZoom = false;
+    public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
+    public int UPDATE_INTERVAL = 500;    // 0.5 sec;
+    public int ZOOM_LEVEL = 14;
+    private LocationManager mLocationManager;
+    private Location mLocation;
+    private boolean isShowMapDirection = false;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -61,8 +104,23 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cardiac_call_details, container, false);
+        if (binding != null) {
+            ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
+            if (parent != null) {
+                parent.removeView(binding.getRoot());
+            }
+        }
+        try {
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cardiac_call_details, container, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         mainActivity = (MainActivity) getActivity();
+
+        SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        mapView = mMapFragment.getView();
+        mMapFragment.getMapAsync(this);
+
         isPageOpen = true;
         if (mainActivity != null) {
             mainActivity.isRequestAcceptedByMe = false;
@@ -164,6 +222,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         } else {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
+        if (mLocationManager != null) {
+            mLocationManager.removeUpdates(this);
+        }
     }
 
     @Override
@@ -221,6 +282,43 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         binding.btnSubmitReport.setVisibility(View.VISIBLE);
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
         NavigationUtil.getInstance().hideMenu(mainActivity);
+        if (googleMap != null) {
+            isShowMapDirection = true;
+            showDirections();
+        }
+    }
+
+    private void showDirections() {
+        if (mLocation != null) {
+            LatLng currentLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
+            //googleMap.clear();
+            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, googleMap.getCameraPosition().zoom));
+            // Assign your origin and destination
+            // These points are your markers coordinates
+            //if (zPotLat != null && !zPotLat.isEmpty() && zPotLng != null && !zPotLng.isEmpty()) {
+            LatLng dest = new LatLng(requestDetails.getLatitude(), requestDetails.getLongitude());
+            // Getting URL to the Google Directions API
+            String url = getDirectionsUrl(currentLocation, dest);
+            GetDirectionsTask downloadTask = new GetDirectionsTask(this);
+            // Start downloading json data from Google Directions API
+            downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+            //}
+        }
+    }
+
+    public String getDirectionsUrl(LatLng origin, LatLng dest) {
+        // Origin of route
+        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
+        // Destination of route
+        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
+        // Sensor enabled
+        String sensor = "sensor=false";
+        // Building the parameters to the web service
+        String parameters = str_origin + "&" + str_dest + "&" + sensor;
+        // Output format
+        String output = "json";
+        // Building the url to the web service
+        return "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
     }
 
     private void completeRequest() {
@@ -274,4 +372,249 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             }
         });
     }*/
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.googleMap = googleMap;
+        initMap();
+    }
+
+    void initMap() {
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        googleMap.setMyLocationEnabled(false);
+        googleMap.clear();
+        googleMap.getUiSettings().setMapToolbarEnabled(false);
+        googleMap.getUiSettings().setCompassEnabled(false);
+        //addProviderMarker(GpsServicesUtil.getInstance().getLatitude(),GpsServicesUtil.getInstance().getLongitude());
+        addVictimMarker(requestDetails.getLatitude(), requestDetails.getLongitude());
+        try {
+            if (mapView != null &&
+                    mapView.findViewById(Integer.parseInt("1")) != null) {
+                // Get the button view
+                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
+                if (locationButton != null) {
+                    // and next place it, on bottom right (as Google Maps app)
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                            locationButton.getLayoutParams();
+                    // position on right bottom
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
+                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+                    layoutParams.setMargins(0, 0, 30, 30);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
+        if (mLocationManager != null) {
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, 0, this);
+            //mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_INTERVAL, 0, this);
+        }
+    }
+
+    private void addVictimMarker(double latitude, double longitude) {
+        try {
+            if (googleMap != null) {
+                LatLng latLng = new LatLng(latitude, longitude);
+                if (victimMarker == null) {
+                    victimMarker = googleMap.addMarker(new MarkerOptions()
+                            .title("")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_victim))
+                            .position(latLng));
+                    if (!isMapZoom) {
+                        isMapZoom = true;
+                        animateCamera(latLng, ZOOM_LEVEL);
+                    }
+                } else {
+                    animateMarker(victimMarker, latLng);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addProviderMarker(double latitude, double longitude) {
+        try {
+            if (googleMap != null) {
+                LatLng latLng = new LatLng(latitude, longitude);
+                if (userMarker == null) {
+                    userMarker = googleMap.addMarker(new MarkerOptions()
+                            .title("")
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_current_location))
+                            .position(latLng));
+                    if (!isMapZoom) {
+                        isMapZoom = true;
+                        animateCamera(latLng, ZOOM_LEVEL);
+                    }
+                } else {
+                    animateMarker(userMarker, latLng);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void animateMarker(final Marker marker, final LatLng toPosition) {
+        try {
+            final Handler handler = new Handler();
+            final long start = SystemClock.uptimeMillis();
+            Projection proj = googleMap.getProjection();
+            Point startPoint = proj.toScreenLocation(marker.getPosition());
+            final LatLng startLatLng = proj.fromScreenLocation(startPoint);
+            final long duration = 500;
+
+            final Interpolator interpolator = new LinearInterpolator();
+
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (toPosition != null) {
+                            long elapsed = SystemClock.uptimeMillis() - start;
+                            float t = interpolator.getInterpolation((float) elapsed
+                                    / duration);
+                            double lng = t * toPosition.longitude + (1 - t)
+                                    * startLatLng.longitude;
+                            double lat = t * toPosition.latitude + (1 - t)
+                                    * startLatLng.latitude;
+                            marker.setPosition(new LatLng(lat, lng));
+
+                            if (t < 1.0) {
+                                // Post again 16ms later.
+                                handler.postDelayed(this, 16);
+                            } else {
+                            /*if (hideMarker) {
+                                carMarker.setVisible(false);
+                            } else {
+                                carMarker.setVisible(true);
+                            }*/
+                                marker.setVisible(true);
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void animateCamera(LatLng position, float zoomLevel) {
+        try {
+            if (googleMap != null) {
+                CameraPosition cameraPosition =
+                        new CameraPosition.Builder()
+                                .target(position)
+                                //.bearing(45)
+                                .tilt(90)
+                                .zoom(zoomLevel)
+                                .build();
+                googleMap.animateCamera(
+                        CameraUpdateFactory.newCameraPosition(cameraPosition),
+                        ANIMATE_SPEED_TURN,
+                        null
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        try {
+            if (location != null) {
+                mLocation = location;
+                addProviderMarker(location.getLatitude(), location.getLongitude());
+                if (isShowMapDirection) {
+                    isShowMapDirection = false;
+                    showDirections();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void showProgress() {
+
+    }
+
+    @Override
+    public void hideProgress() {
+
+    }
+
+    @Override
+    public void onFailure(String message) {
+
+    }
+
+    @Override
+    public void onSuccess(List<List<HashMap<String, String>>> result, String distance, String duration) {
+        ArrayList<LatLng> points;
+        PolylineOptions lineOptions = null;
+
+        // Traversing through all the routes
+        for (int i = 0; i < result.size(); i++) {
+            points = new ArrayList<>();
+            lineOptions = new PolylineOptions();
+
+            // Fetching i-th route
+            List<HashMap<String, String>> path = result.get(i);
+
+            // Fetching all the points in i-th route
+            for (int j = 0; j < path.size(); j++) {
+                HashMap<String, String> point = path.get(j);
+
+                double lat = Double.parseDouble(point.get("lat"));
+                double lng = Double.parseDouble(point.get("lng"));
+                LatLng position = new LatLng(lat, lng);
+
+                points.add(position);
+            }
+
+            // Adding all the points in the route to LineOptions
+            lineOptions.addAll(points);
+            lineOptions.width(10);
+            lineOptions.color(Color.argb(255, 11, 172, 244));
+        }
+
+        if (lineOptions != null) {
+            // Drawing polyline in the Google Map for the i-th route
+            googleMap.addPolyline(lineOptions);
+            //addProviderMarker();
+        } else {
+            onFailure("");
+        }
+    }
 }

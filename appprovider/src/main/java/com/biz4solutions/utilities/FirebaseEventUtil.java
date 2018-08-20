@@ -16,6 +16,8 @@ public class FirebaseEventUtil {
     private ValueEventListener userEventListener;
     private ValueEventListener alertEventListener;
     private ValueEventListener requestEventListener;
+    private String userId;
+    private String requestId;
 
     private FirebaseEventUtil() {
     }
@@ -45,7 +47,8 @@ public class FirebaseEventUtil {
 
                     }
                 };
-                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, user.getUserId(), userEventListener);
+                userId = user.getUserId();
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +57,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseUserEvent() {
         try {
-            if (userEventListener != null) {
-                FirebaseAuthUtil.getInstance().removeEventListener(userEventListener);
+            if (userEventListener != null && userId != null && !userId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,8 +67,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseAlertEvent() {
         try {
-            if (alertEventListener != null) {
-                FirebaseAuthUtil.getInstance().removeEventListener(alertEventListener);
+            if (alertEventListener != null && userId != null && !userId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_ALERT_TABLE, userId, alertEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,8 +101,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseRequestEvent() {
         try {
-            if (requestEventListener != null) {
-                FirebaseAuthUtil.getInstance().removeEventListener(requestEventListener);
+            if (requestEventListener != null && requestId != null && !requestId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -113,7 +116,7 @@ public class FirebaseEventUtil {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     EmsRequest emsRequest = dataSnapshot.getValue(EmsRequest.class);
-                    //System.out.println("aa ---------- EmsRequest = " + emsRequest);
+                    System.out.println("aa ---------- EmsRequest = " + emsRequest);
                     callbackListener.onSuccess(emsRequest);
                 }
 
@@ -122,6 +125,7 @@ public class FirebaseEventUtil {
 
                 }
             };
+            this.requestId = requestId;
             FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
         } catch (Exception e) {
             e.printStackTrace();

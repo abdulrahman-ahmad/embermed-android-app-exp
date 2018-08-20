@@ -77,4 +77,12 @@ public class GpsServicesUtil {
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
 }

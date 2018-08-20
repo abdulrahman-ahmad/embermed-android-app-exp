@@ -15,6 +15,8 @@ public class FirebaseEventUtil {
     private static FirebaseEventUtil instance = null;
     private ValueEventListener userEventListener;
     private ValueEventListener requestEventListener;
+    private String requestId;
+    private String userId;
 
     private FirebaseEventUtil() {
     }
@@ -44,7 +46,8 @@ public class FirebaseEventUtil {
 
                     }
                 };
-                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, user.getUserId(), userEventListener);
+                userId = user.getUserId();
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,8 +56,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseUserEvent() {
         try {
-            if (userEventListener != null) {
-                FirebaseAuthUtil.getInstance().removeEventListener(userEventListener);
+            if (userEventListener != null && userId != null && !userId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,8 +66,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseRequestEvent() {
         try {
-            if (requestEventListener != null) {
-                FirebaseAuthUtil.getInstance().removeEventListener(requestEventListener);
+            if (requestEventListener != null && requestId != null && !requestId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,6 +90,7 @@ public class FirebaseEventUtil {
 
                 }
             };
+            this.requestId = requestId;
             FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
         } catch (Exception e) {
             e.printStackTrace();

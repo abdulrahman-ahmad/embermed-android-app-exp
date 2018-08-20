@@ -148,8 +148,8 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         if (mainActivity != null) {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
-        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
         CommonFunctions.getInstance().dismissAlertDialog();
+        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
     }
 
     @Override
@@ -210,5 +210,10 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         isGifPlaying = true;
         binding.btnPlay.setVisibility(View.GONE);
         binding.btnPause.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

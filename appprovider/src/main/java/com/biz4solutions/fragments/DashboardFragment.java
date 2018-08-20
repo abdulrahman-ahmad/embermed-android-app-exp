@@ -87,9 +87,8 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         if (adapter != null) {
             binding.loadMoreListView.setAdapter(adapter);
             setErrorView();
-        } else {
-            addFirebaseEvent();
         }
+        addFirebaseEvent();
         if (mainActivity.isUpdateList) {
             mainActivity.isUpdateList = false;
             getNewRequestList(true);
@@ -287,5 +286,10 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         } else {
             binding.loadMoreListView.onLoadMoreComplete();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

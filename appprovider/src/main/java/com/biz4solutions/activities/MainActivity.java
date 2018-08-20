@@ -275,11 +275,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void reOpenDashBoardFragment() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof DashboardFragment) {
-            return;
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof DashboardFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
     }
 
     @Override

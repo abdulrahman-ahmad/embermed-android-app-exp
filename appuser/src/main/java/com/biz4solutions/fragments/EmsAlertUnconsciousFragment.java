@@ -133,4 +133,9 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
             }
         });
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
 }

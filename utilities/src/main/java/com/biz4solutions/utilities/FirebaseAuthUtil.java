@@ -135,7 +135,7 @@ public class FirebaseAuthUtil {
         }
     }
 
-    public void removeEventListener(@NonNull ChildEventListener childEventListener) {
+    public void removeEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ChildEventListener childEventListener) {
         try {
             if (mDatabase != null) {
                 mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(childEventListener);
@@ -165,10 +165,10 @@ public class FirebaseAuthUtil {
         }
     }
 
-    public void removeEventListener(@NonNull ValueEventListener valueEventListener) {
+    public void removeEventListener(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBKey, @NonNull ValueEventListener valueEventListener) {
         try {
             if (mDatabase != null) {
-                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).removeEventListener(valueEventListener);
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).removeEventListener(valueEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
