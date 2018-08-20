@@ -1,10 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="vertical"
+        tools:ignore="SpUsage">
+
+        <include
+            android:id="@+id/request_list_cardiac_item"
+            layout="@layout/request_list_cardiac_item" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/request_immediate_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/request_immediate_card_height"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="@dimen/request_card_elevation"
+            card_view:cardPreventCornerOverlap="false">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:paddingEnd="@dimen/request_card_padding_start_end"
+                android:paddingStart="@dimen/request_card_padding_start_end">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/txt_patient_disease_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="0dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxWidth="@dimen/requester_name_max_width"
+                        android:singleLine="true"
+                        android:text="@string/patient_disease"
+                        android:textColor="#1e282c"
+                        android:textSize="@dimen/requester_name_text_size"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/txt_patient_disease"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginTop="@dimen/request_middle_space"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/cardiac_call"
+                        android:textColor="#696969"
+                        android:textSize="@dimen/request_medium_text_size"
+                        card_view:layout_constraintBottom_toBottomOf="parent"
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        card_view:layout_constraintTop_toBottomOf="@+id/txt_patient_disease_title" />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <TextView
             android:layout_width="match_parent"
@@ -14,18 +81,34 @@
             android:text="@string/cardiac_call_details_coming_soon"
             android:textSize="30dp" />
 
-        <Button
-            android:id="@+id/btn_respond"
-            style="@style/BtnStyle"
-            android:layout_marginBottom="100dp"
-            android:text="Respond" />
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/request_immediate_card_height"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="0dp"
+            card_view:cardCornerRadius="0dp"
+            card_view:cardElevation="4dp"
+            card_view:cardPreventCornerOverlap="false">
 
-        <Button
-            android:id="@+id/btn_submit_report"
-            style="@style/BtnStyle"
-            android:layout_marginBottom="100dp"
-            android:text="Submit Report"
-            android:visibility="gone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
 
+                <Button
+                    android:id="@+id/btn_respond"
+                    style="@style/BtnStyle"
+                    android:text="@string/respond" />
+
+                <Button
+                    android:id="@+id/btn_submit_report"
+                    style="@style/BtnStyle"
+                    android:text="@string/complete_request"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
     </LinearLayout>
 </layout>

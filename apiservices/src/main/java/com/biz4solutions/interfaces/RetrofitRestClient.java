@@ -7,6 +7,7 @@ package com.biz4solutions.interfaces;
         import com.biz4solutions.models.request.SignUpRequest;
         import com.biz4solutions.models.response.CreateEmsResponse;
         import com.biz4solutions.models.response.EmptyResponse;
+        import com.biz4solutions.models.response.EmsRequestDetailsResponse;
         import com.biz4solutions.models.response.EmsRequestResponse;
         import com.biz4solutions.models.response.LoginResponse;
 
@@ -69,4 +70,7 @@ public interface RetrofitRestClient {
 
     @PUT("v1/provider/request/complete")
     Call<EmptyResponse> completeRequest(@Query("requestId") String requestId);
+
+    @GET("v1/provider/requestDetail")
+    Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);
 }

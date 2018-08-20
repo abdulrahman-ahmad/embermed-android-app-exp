@@ -13,6 +13,8 @@ public class EmsRequest implements Serializable {
     private String userId;
     private long requestTime;
     private User userDetails;
+    private int amount;
+    private String patientDisease;
 
     public String getId() {
         return id;
@@ -94,6 +96,22 @@ public class EmsRequest implements Serializable {
         this.providerId = providerId;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
+
+    public String getPatientDisease() {
+        return patientDisease;
+    }
+
+    public void setPatientDisease(String patientDisease) {
+        this.patientDisease = patientDisease;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -107,6 +125,8 @@ public class EmsRequest implements Serializable {
                 ", userId='" + userId + '\'' +
                 ", requestTime=" + requestTime +
                 ", userDetails=" + userDetails +
+                ", amount=" + amount +
+                ", patientDisease='" + patientDisease + '\'' +
                 '}';
     }
 }

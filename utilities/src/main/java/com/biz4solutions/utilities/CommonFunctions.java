@@ -186,9 +186,7 @@ public class CommonFunctions implements Serializable {
         if (!isHighPriority && alertDialog != null) {
             return;
         }
-        if (mDialog != null) {
-            mDialog.dismiss();
-        }
+        dismissAlertDialog();
         alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
@@ -219,6 +217,12 @@ public class CommonFunctions implements Serializable {
         alertDialog.setCancelable(false);
         // Showing Alert Message
         mDialog = alertDialog.show();
+    }
+
+    public void dismissAlertDialog() {
+        if (mDialog != null) {
+            mDialog.dismiss();
+        }
     }
 
     /**

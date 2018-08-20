@@ -276,7 +276,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (emsRequests != null && emsRequests.size() > position - 1) {
-            mainActivity.openCardiacCallDetailsFragment(emsRequests.get(position - 1));
+            mainActivity.getRequestDetails(emsRequests.get(position - 1).getId());
         }
     }
 

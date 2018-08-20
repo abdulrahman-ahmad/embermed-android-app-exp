@@ -16,6 +16,7 @@ import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 import com.bumptech.glide.Glide;
@@ -137,6 +138,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
+        CommonFunctions.getInstance().dismissAlertDialog();
     }
 
     @Override

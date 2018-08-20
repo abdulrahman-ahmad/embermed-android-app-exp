@@ -34,12 +34,12 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
@@ -56,12 +56,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public String currentRequestId;
     public boolean isRequestAcceptedByMe = false;
     public boolean isUpdateList = false;
+    private boolean isGetDetailsInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -145,12 +146,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        FirebaseEventUtil.getInstance().getFirebaseRequest(data.getProviderCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
-                            @Override
-                            public void onSuccess(EmsRequest data) {
-                                openCardiacCallDetailsFragment(data);
-                            }
-                        });
+                        getRequestDetails(data.getProviderCurrentRequestId());
                     }
                 }
             }
@@ -240,7 +236,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void openCardiacCallDetailsFragment(EmsRequest data) {
+    private void openCardiacCallDetailsFragment(EmsRequest data) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof CardiacCallDetailsFragment) {
@@ -357,6 +353,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    public void getRequestDetails(String requestId) {
+        if (requestId != null && !requestId.isEmpty()) {
+            if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+                Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                return;
+            }
+            if (!isGetDetailsInProgress) {
+                isGetDetailsInProgress = true;
+                CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+                new ApiServices().getRequestDetails(MainActivity.this, requestId, new RestClientResponse() {
+                    @Override
+                    public void onSuccess(Object response, int statusCode) {
+                        isGetDetailsInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, int statusCode) {
+                        isGetDetailsInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         }
     }
 

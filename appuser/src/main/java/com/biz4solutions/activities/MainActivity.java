@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -387,15 +387,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, EmsRequest data) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
-            return;
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
+                    .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        getSupportFragmentManager().executePendingTransactions();
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
-                .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
-                .commitAllowingStateLoss();
     }
 }

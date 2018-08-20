@@ -9,7 +9,7 @@
     <dimen name="requester_name_text_size">16dp</dimen>
     <dimen name="requester_name_max_width">160dp</dimen>
     <dimen name="request_small_text_size">12dp</dimen>
-    <dimen name="request_middle_space">10dp</dimen>
+    <dimen name="request_middle_space">8dp</dimen>
     <dimen name="request_medium_text_size">14dp</dimen>
     <dimen name="request_card_padding_start_end">16dp</dimen>
     <dimen name="request_card_elevation">2dp</dimen>

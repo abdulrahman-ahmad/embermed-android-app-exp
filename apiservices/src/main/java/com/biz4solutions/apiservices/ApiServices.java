@@ -97,4 +97,9 @@ public class ApiServices {
                 .rejectRequest(requestId));
     }
 
+    public void getRequestDetails(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getRequestDetails(requestId));
+    }
+
 }

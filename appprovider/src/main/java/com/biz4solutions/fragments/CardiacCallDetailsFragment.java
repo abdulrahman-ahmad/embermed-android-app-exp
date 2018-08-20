@@ -32,20 +32,20 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private MainActivity mainActivity;
-    //private String requestId;
     private FragmentCardiacCallDetailsBinding binding;
-    private EmsRequest request;
+    private EmsRequest requestDetails;
     private User user;
     private boolean isAcceptedOpen = false;
+    private boolean isPageOpen = false;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static CardiacCallDetailsFragment newInstance(EmsRequest data) {
+    public static CardiacCallDetailsFragment newInstance(EmsRequest requestDetails) {
         CardiacCallDetailsFragment fragment = new CardiacCallDetailsFragment();
         Bundle args = new Bundle();
-        args.putSerializable(REQUEST_DETAILS, data);
+        args.putSerializable(REQUEST_DETAILS, requestDetails);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,7 +55,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            request = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
+            requestDetails = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
         }
     }
 
@@ -63,9 +63,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cardiac_call_details, container, false);
         mainActivity = (MainActivity) getActivity();
+        isPageOpen = true;
         if (mainActivity != null) {
             mainActivity.isRequestAcceptedByMe = false;
-            mainActivity.currentRequestId = request.getId();
+            mainActivity.currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
@@ -79,25 +80,33 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
-                request = data;
-                setCardiacCallView();
+                if (isPageOpen) {
+                    if (requestDetails != null) {
+                        if (data != null) {
+                            requestDetails.setRequestStatus(data.getRequestStatus());
+                            requestDetails.setProviderId(data.getProviderId());
+                        }
+                        setCardiacCallView();
+                    }
+                }
             }
         });
 
-        if (request != null) {
+        if (requestDetails != null) {
             setCardiacCallView();
         }
+        initView();
         binding.btnRespond.setOnClickListener(this);
         binding.btnSubmitReport.setOnClickListener(this);
         return binding.getRoot();
     }
 
     private void setCardiacCallView() {
-        if (request != null && request.getRequestStatus() != null) {
-            switch (request.getRequestStatus()) {
+        if (requestDetails != null && requestDetails.getRequestStatus() != null) {
+            switch (requestDetails.getRequestStatus()) {
                 case "ACCEPTED":
-                    if (request.getProviderId() != null) {
-                        if (!request.getProviderId().equals(user.getUserId())) {
+                    if (requestDetails.getProviderId() != null) {
+                        if (!requestDetails.getProviderId().equals(user.getUserId())) {
                             showAlert(R.string.accepted_request_message);
                         } else {
                             if (!isAcceptedOpen) {
@@ -114,11 +123,28 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         }
     }
 
+    private void initView() {
+        if (requestDetails != null) {
+            if (requestDetails.getUserDetails() != null) {
+                String name = requestDetails.getUserDetails().getFirstName() + " " + requestDetails.getUserDetails().getLastName();
+                binding.requestListCardiacItem.txtName.setText(name);
+                String genderAge = requestDetails.getUserDetails().getGender() + ", " + requestDetails.getUserDetails().getAge() + "yrs";
+                binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
+            }
+            if (requestDetails.getPatientDisease() != null) {
+                binding.txtPatientDisease.setText(requestDetails.getPatientDisease());
+            }
+            String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
+            binding.btnRespond.setText(btnRespondText);
+        }
+    }
+
     private void showAlert(int message) {
-        CommonFunctions.getInstance().showAlertDialog(mainActivity, message,true, new DialogDismissCallBackListener<Boolean>() {
+        CommonFunctions.getInstance().showAlertDialog(mainActivity, message, true, new DialogDismissCallBackListener<Boolean>() {
             @Override
             public void onClose(Boolean result) {
                 if (result) {
+                    mainActivity.isUpdateList = true;
                     mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
                 }
             }
@@ -128,6 +154,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        isPageOpen = false;
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
         if (mainActivity.isRequestAcceptedByMe) {
             mainActivity.isUpdateList = true;

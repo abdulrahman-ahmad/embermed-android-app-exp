@@ -46,9 +46,9 @@ public class RequestListViewAdapter extends BaseAdapter {
         EmsRequest emsRequest = emsRequests.get(position);
 
         String name = emsRequest.getUserDetails().getFirstName() + " " + emsRequest.getUserDetails().getLastName();
-        binding.txtName.setText(name);
+        binding.requestListCardiacItem.txtName.setText(name);
         String genderAge = emsRequest.getUserDetails().getGender() + ", " + emsRequest.getUserDetails().getAge() + "yrs";
-        binding.txtGenderAge.setText(genderAge);
+        binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
 
         return binding.getRoot();
     }
