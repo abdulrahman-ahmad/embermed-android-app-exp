@@ -81,7 +81,7 @@ public class FirebaseEventUtil {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         System.out.println("aa ---------- Alert dataSnapshot.getValue() = " + dataSnapshot.getValue());
-                        callbackListener.onSuccess(dataSnapshot.getValue() != null);
+                        callbackListener.onSuccess(true);
                     }
 
                     @Override

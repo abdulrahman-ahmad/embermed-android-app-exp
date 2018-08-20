@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean isSuccessfullyInitFirebase = false;
     public String currentRequestId;
     public boolean isRequestAcceptedByMe = false;
+    public boolean isUpdateList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +148,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseEventUtil.getInstance().getFirebaseRequest(data.getProviderCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
                             @Override
                             public void onSuccess(EmsRequest data) {
-                                isRequestAcceptedByMe = true;
                                 openCardiacCallDetailsFragment(data);
                             }
                         });
@@ -241,16 +241,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openCardiacCallDetailsFragment(EmsRequest data) {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof CardiacCallDetailsFragment) {
-            return;
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof CardiacCallDetailsFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data))
+                    .addToBackStack(CardiacCallDetailsFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        currentRequestId = data.getId();
-        getSupportFragmentManager().executePendingTransactions();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data))
-                .addToBackStack(CardiacCallDetailsFragment.fragmentName)
-                .commitAllowingStateLoss();
     }
 
     private void openDashBoardFragment() {
@@ -316,7 +319,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void showRejectRequestAlert() {
-        if (isRequestAcceptedByMe) {
+        if (!isRequestAcceptedByMe) {
+            getSupportFragmentManager().popBackStack();
+        } /*else {
+            // do nothing
             CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.reject_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
                 @Override
                 public void onClose(Boolean result) {
@@ -325,9 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             });
-        } else {
-            getSupportFragmentManager().popBackStack();
-        }
+        }*/
     }
 
     private void rejectRequest() {
@@ -340,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new ApiServices().rejectRequest(MainActivity.this, currentRequestId, new RestClientResponse() {
                 @Override
                 public void onSuccess(Object response, int statusCode) {
-                    isRequestAcceptedByMe = false;
+                    //isRequestAcceptedByMe = false;
                     EmptyResponse createEmsResponse = (EmptyResponse) response;
                     CommonFunctions.getInstance().dismissProgressDialog();
                     Toast.makeText(MainActivity.this, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();

@@ -65,6 +65,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.isRequestAcceptedByMe = false;
+            mainActivity.currentRequestId = request.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
@@ -78,7 +79,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
-                System.out.println("aa ---------- EmsRequest = " + data);
                 request = data;
                 setCardiacCallView();
             }
@@ -93,7 +93,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void setCardiacCallView() {
-        System.out.println("aa ---------- EmsRequest=" + request);
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
                 case "ACCEPTED":
@@ -109,9 +108,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     }
                     break;
                 case "CANCELLED":
-                    if (request.getProviderId() != null && !request.getProviderId().equals(user.getUserId())) {
-                        showAlert(R.string.canceled_request_message);
-                    }
+                    showAlert(R.string.canceled_request_message);
                     break;
             }
         }
@@ -131,8 +128,13 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        NavigationUtil.getInstance().hideBackArrow(mainActivity);
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
+        if (mainActivity.isRequestAcceptedByMe) {
+            mainActivity.isUpdateList = true;
+            NavigationUtil.getInstance().showMenu(mainActivity);
+        } else {
+            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        }
     }
 
     @Override
@@ -188,6 +190,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity.isRequestAcceptedByMe = true;
         binding.btnRespond.setVisibility(View.GONE);
         binding.btnSubmitReport.setVisibility(View.VISIBLE);
+        NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        NavigationUtil.getInstance().hideMenu(mainActivity);
     }
 
     private void completeRequest() {
@@ -199,7 +203,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         new ApiServices().completeRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                mainActivity.isRequestAcceptedByMe = false;
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();

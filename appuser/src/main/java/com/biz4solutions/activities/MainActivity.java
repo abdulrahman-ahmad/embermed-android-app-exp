@@ -361,6 +361,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             reOpenDashBoardFragment();
                         }
                     }
+                } else {
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                        reOpenDashBoardFragment();
+                    }
                 }
             }
         });

@@ -86,9 +86,13 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
         if (adapter != null) {
             binding.loadMoreListView.setAdapter(adapter);
+            setErrorView();
         } else {
-            getNewRequestList(true);
             addFirebaseEvent();
+        }
+        if (mainActivity.isUpdateList) {
+            mainActivity.isUpdateList = false;
+            getNewRequestList(true);
         }
 
         binding.loadMoreListView.setOnLoadMoreListener(this);
@@ -103,8 +107,12 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     public void getNewRequestList(boolean showLoader) {
-        page = 0;
-        getRequestList(showLoader);
+        if (mainActivity.isSuccessfullyInitFirebase) {
+            page = 0;
+            getRequestList(showLoader);
+        } else {
+            hideLoader();
+        }
     }
 
     private void addFirebaseEvent() {
@@ -117,6 +125,8 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 public void onSuccess(Boolean data) {
                     if (data) {
                         getNewRequestList(false);
+                    } else {
+                        setErrorView();
                     }
                 }
             });
@@ -190,8 +200,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     private void getRequestList(boolean showLoader) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
-            binding.swipeContainer.setRefreshing(false);
-            binding.loadMoreListView.onLoadMoreComplete();
+            hideLoader();
             return;
         }
         if (showLoader) {
@@ -250,11 +259,17 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 }
                 isLoadMore = false;
             }
-            if (emsRequests == null || emsRequests.isEmpty()) {
-                binding.emptyAlertLayout.setVisibility(View.VISIBLE);
-            } else {
-                binding.emptyAlertLayout.setVisibility(View.GONE);
-            }
+            setErrorView();
+        }
+    }
+
+    private void setErrorView() {
+        binding.txtPullToRefresh.setVisibility(View.VISIBLE);
+        binding.txtNoAlertsAvailable.setVisibility(View.VISIBLE);
+        if (emsRequests == null || emsRequests.isEmpty()) {
+            binding.emptyAlertLayout.setVisibility(View.VISIBLE);
+        } else {
+            binding.emptyAlertLayout.setVisibility(View.GONE);
         }
     }
 

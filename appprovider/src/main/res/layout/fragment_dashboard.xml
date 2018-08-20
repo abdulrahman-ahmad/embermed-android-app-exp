@@ -25,17 +25,19 @@
             android:id="@+id/empty_alert_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
+            android:visibility="visible"
             tools:ignore="SpUsage">
 
             <TextView
+                android:id="@+id/txt_pull_to_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="@string/pull_to_refresh"
                 android:textColor="@color/no_alert_text_color"
-                android:textSize="16dp" />
+                android:textSize="16dp"
+                android:visibility="invisible" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -51,13 +53,15 @@
                     android:contentDescription="@null" />
 
                 <TextView
+                    android:id="@+id/txt_no_alerts_available"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
                     android:text="@string/no_alerts_available"
                     android:textColor="@color/no_alert_text_color"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:visibility="invisible" />
 
             </LinearLayout>
         </RelativeLayout>

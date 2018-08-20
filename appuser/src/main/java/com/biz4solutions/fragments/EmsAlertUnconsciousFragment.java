@@ -25,6 +25,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
 
     public static final String fragmentName = "EmsAlertUnconsciousFragment";
     private MainActivity mainActivity;
+    private FragmentEmsAlertUnconsciousBinding binding;
 
     public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
@@ -36,7 +37,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentEmsAlertUnconsciousBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_unconscious, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_unconscious, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
@@ -65,6 +66,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_yes:
+                binding.btnYes.setEnabled(false);
                 getUserLocation();
                 break;
             case R.id.btn_no:
@@ -77,12 +79,14 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private void getUserLocation() {
         if (CommonFunctions.getInstance().isOffline(mainActivity)) {
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            binding.btnYes.setEnabled(true);
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
             @Override
             public void onSuccess(double latitude, double longitude) {
+                binding.btnYes.setEnabled(true);
                 createRequest(latitude, longitude);
             }
 
@@ -90,6 +94,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
             public void onError() {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, R.string.error_location_fetch, Toast.LENGTH_SHORT).show();
+                binding.btnYes.setEnabled(true);
             }
         });
     }
