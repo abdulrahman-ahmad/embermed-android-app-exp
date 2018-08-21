@@ -5,6 +5,8 @@ import java.io.Serializable;
 public class Constants implements Serializable {
     public static final String SEND_LOG_EMAIL_ADDRESS1 = "ketan@biz4solutions.com";
 
+    public static final String GOOGLE_MAP_URL = "https://maps.googleapis.com/maps/";
+
     public static final String FILE_DIRECTORY = "OsirisBio";
     public static final String SUPPORT_DIRECTORY = "Support";
     public static final String SUPPORT_FILE_NAME = "SupportLog.txt";

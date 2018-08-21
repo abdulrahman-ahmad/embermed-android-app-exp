@@ -11,7 +11,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -35,13 +34,12 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
-import com.biz4solutions.provider.utilities.GetDirectionsCallback;
-import com.biz4solutions.provider.utilities.GetDirectionsTask;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -55,13 +53,13 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener, GetDirectionsCallback {
+public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
@@ -83,6 +81,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private LocationManager mLocationManager;
     private Location mLocation;
     private boolean isShowMapDirection = false;
+    private Polyline routesPolyline;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -309,34 +308,69 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void showDirections() {
-        if (mLocation != null) {
-            LatLng currentLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-            // Assign your origin and destination
-            // These points are your markers coordinates
-            LatLng dest = new LatLng(requestDetails.getLatitude(), requestDetails.getLongitude());
-            // Getting URL to the Google Directions API
-            String url = getDirectionsUrl(currentLocation, dest);
-            GetDirectionsTask downloadTask = new GetDirectionsTask(this);
-            // Start downloading json data from Google Directions API
-            downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+        if (mLocation != null && googleMap != null) {
+            if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+                Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                return;
+            }
+            new ApiServices().getDistanceDuration(mLocation.getLatitude(), mLocation.getLongitude(), requestDetails.getLatitude(), requestDetails.getLongitude(), new RestClientResponse() {
+                @Override
+                public void onSuccess(Object googleResponse, int statusCode) {
+                    if (routesPolyline != null) {
+                        routesPolyline.remove();
+                    }
+                    GoogleDirectionResponse response = (GoogleDirectionResponse) googleResponse;
+                    if (response != null && response.getRoutes() != null && !response.getRoutes().isEmpty()) {
+                        String encodedString = response.getRoutes().get(0).getOverviewPolyline().getPoints();
+                        List<LatLng> list = decodePoly(encodedString);
+                        routesPolyline = googleMap.addPolyline(new PolylineOptions()
+                                .addAll(list)
+                                .width(15)
+                                .color(Color.argb(255, 11, 172, 244))
+                                .geodesic(true)
+                        );
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage, int statusCode) {
+                    Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
         } else {
             isShowMapDirection = true;
         }
     }
 
-    public String getDirectionsUrl(LatLng origin, LatLng dest) {
-        // Origin of route
-        String str_origin = "origin=" + origin.latitude + "," + origin.longitude;
-        // Destination of route
-        String str_dest = "destination=" + dest.latitude + "," + dest.longitude;
-        // Sensor enabled
-        String sensor = "sensor=false";
-        // Building the parameters to the web service
-        String parameters = str_origin + "&" + str_dest + "&" + sensor;
-        // Output format
-        String output = "json";
-        // Building the url to the web service
-        return "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
+    private List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng((((double) lat / 1E5)),
+                    (((double) lng / 1E5)));
+            poly.add(p);
+        }
+        return poly;
     }
 
     private void completeRequest() {
@@ -419,8 +453,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
                 if (locationButton != null) {
                     // and next place it, on bottom right (as Google Maps app)
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
-                            locationButton.getLayoutParams();
+                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
                     // position on right bottom
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
                     layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
@@ -513,11 +546,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                                 // Post again 16ms later.
                                 handler.postDelayed(this, 16);
                             } else {
-                            /*if (hideMarker) {
-                                carMarker.setVisible(false);
-                            } else {
-                                carMarker.setVisible(true);
-                            }*/
                                 marker.setVisible(true);
                             }
                         }
@@ -581,59 +609,5 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     @Override
     public void onProviderDisabled(String provider) {
 
-    }
-
-    @Override
-    public void showProgress() {
-
-    }
-
-    @Override
-    public void hideProgress() {
-
-    }
-
-    @Override
-    public void onFailure(String message) {
-
-    }
-
-    @Override
-    public void onSuccess(List<List<HashMap<String, String>>> result, String distance, String duration) {
-        ArrayList<LatLng> points;
-        PolylineOptions lineOptions = null;
-
-        // Traversing through all the routes
-        for (int i = 0; i < result.size(); i++) {
-            points = new ArrayList<>();
-            lineOptions = new PolylineOptions();
-
-            // Fetching i-th route
-            List<HashMap<String, String>> path = result.get(i);
-
-            // Fetching all the points in i-th route
-            for (int j = 0; j < path.size(); j++) {
-                HashMap<String, String> point = path.get(j);
-
-                double lat = Double.parseDouble(point.get("lat"));
-                double lng = Double.parseDouble(point.get("lng"));
-                LatLng position = new LatLng(lat, lng);
-
-                points.add(position);
-            }
-
-            // Adding all the points in the route to LineOptions
-            lineOptions.addAll(points);
-            lineOptions.width(10);
-            lineOptions.color(Color.argb(255, 11, 172, 244));
-        }
-
-        if (lineOptions != null) {
-            // Drawing polyline in the Google Map for the i-th route
-            googleMap.addPolyline(lineOptions);
-            //addProviderMarker();
-        } else {
-            onFailure("");
-        }
     }
 }

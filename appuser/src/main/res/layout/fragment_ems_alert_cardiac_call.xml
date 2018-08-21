@@ -52,7 +52,7 @@
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1095"
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="30dp"
+                        android:layout_marginTop="20dp"
                         android:gravity="bottom"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -203,8 +203,8 @@
                                 android:layout_height="@dimen/cpr_tutorial_btn_height_width"
                                 android:layout_marginEnd="8dp"
                                 android:layout_marginTop="8dp"
-                                android:padding="6dp"
                                 android:background="@drawable/ripple_default_bg"
+                                android:padding="6dp"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
@@ -410,6 +410,6 @@
 
                 </LinearLayout>
             </LinearLayout>
-        </LinearLayout>
+        </RelativeLayout>
     </LinearLayout>
 </layout>

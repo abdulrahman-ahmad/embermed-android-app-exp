@@ -102,4 +102,9 @@ public class ApiServices {
                 .getRequestDetails(requestId));
     }
 
+    public void getDistanceDuration(double originLatitude, double originLongitude, double destLatitude, double destLongitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(null, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
+                .getDistanceDuration("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false));
+    }
+
 }

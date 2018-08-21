@@ -183,7 +183,9 @@ public class ApiServiceUtil {
                             try {
                                 EmptyResponse emptyResponse = new Gson().getAdapter(EmptyResponse.class).fromJson(response.errorBody().string());
                                 if (response.code() == Constants.UNAUTHORIZED_ERROR_CODE) {
-                                    CommonFunctions.getInstance().doLogOut(context, emptyResponse.getMessage());
+                                    if(context != null) {
+                                        CommonFunctions.getInstance().doLogOut(context, emptyResponse.getMessage());
+                                    }
                                 } else {
                                     restClientResponse.onFailure(emptyResponse.getMessage(), emptyResponse.getCode());
                                 }

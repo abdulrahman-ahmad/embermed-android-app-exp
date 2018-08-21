@@ -10,6 +10,7 @@ package com.biz4solutions.interfaces;
         import com.biz4solutions.models.response.EmsRequestDetailsResponse;
         import com.biz4solutions.models.response.EmsRequestResponse;
         import com.biz4solutions.models.response.LoginResponse;
+        import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
 
         import java.util.HashMap;
 
@@ -73,4 +74,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/provider/requestDetail")
     Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);
+
+    @GET("api/directions/json")
+    Call<GoogleDirectionResponse> getDistanceDuration(@Query("units") String units, @Query("origin") String origin, @Query("destination") String destination, @Query("mode") String mode, @Query("sensor") boolean sensor);
 }
