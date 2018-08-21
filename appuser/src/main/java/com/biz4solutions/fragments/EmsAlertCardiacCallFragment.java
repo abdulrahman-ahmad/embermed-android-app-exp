@@ -20,7 +20,7 @@ import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.Location;
-import com.biz4solutions.models.response.googledirection.GoogleDistanceDurationResponse;
+import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -114,10 +114,22 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             setCardiacCallView();
         }
 
-        timerTask = new TimerTask();
-        timer.schedule(timerTask, 60000);//60 sec
+        reSetTimer();
 
         return binding.getRoot();
+    }
+
+    private void reSetTimer() {
+        stopTimer();
+        timerTask = new TimerTask();
+        timer.schedule(timerTask, 30000);//30 sec
+    }
+
+    private void stopTimer(){
+        if (timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
     }
 
     @Override
@@ -136,7 +148,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 @Override
                 public void onSuccess(Location location) {
                     System.out.println("aa --------- location=" + location);
-                    if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || isTimerReset) {
+                    if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || !isTimerReset) {
                         return;
                     }
                     isApiInProgress = true;
@@ -150,6 +162,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                             GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
                             timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
                             System.out.println("aa ------- GoogleDistanceDurationResponse=" + timeInSec);
+                            System.out.println("aa ------- GoogleDistanceDurationResponse=" + durationResponse.getRows().get(0).getElements().get(0).getDuration().getText());
                         }
 
                         @Override
@@ -212,10 +225,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         CommonFunctions.getInstance().dismissAlertDialog();
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
         FirebaseEventUtil.getInstance().removeFirebaseProviderLocationEvent();
-        if (timerTask != null) {
-            timerTask.cancel();
-            timer.purge();
-        }
+        stopTimer();
     }
 
     @Override
@@ -287,6 +297,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         @Override
         public void run() {
             isTimerReset = true;
+            reSetTimer();
         }
     }
 }

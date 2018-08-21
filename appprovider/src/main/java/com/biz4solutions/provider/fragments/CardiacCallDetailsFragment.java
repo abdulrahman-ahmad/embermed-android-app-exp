@@ -34,7 +34,7 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
-import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
+import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.activities.MainActivity;

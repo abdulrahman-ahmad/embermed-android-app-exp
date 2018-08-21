@@ -1,4 +1,4 @@
-package com.biz4solutions.models.response.googledirection;
+package com.biz4solutions.models.response.google;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

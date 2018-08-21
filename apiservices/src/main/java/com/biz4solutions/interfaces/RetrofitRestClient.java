@@ -10,8 +10,8 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
-import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
-import com.biz4solutions.models.response.googledirection.GoogleDistanceDurationResponse;
+import com.biz4solutions.models.response.google.GoogleDirectionResponse;
+import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 
 import java.util.HashMap;
 
