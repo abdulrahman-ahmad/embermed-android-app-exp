@@ -1,11 +1,12 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.utilities.CommonFunctions;
 
 public class NavigationUtil {
     private static NavigationUtil instance = null;
@@ -43,7 +44,7 @@ public class NavigationUtil {
                 android.support.v7.app.ActionBar actionBar = mainActivity.getSupportActionBar();
 
                 if (actionBar != null) {
-                    final Drawable drawable = mainActivity.getResources().getDrawable(R.drawable.ic_arrow_back_btn);
+                    final Drawable drawable = mainActivity.getResources().getDrawable(com.biz4solutions.utilities.R.drawable.ic_arrow_back_btn);
                     actionBar.setHomeAsUpIndicator(drawable);
                     actionBar.setDisplayHomeAsUpEnabled(true);
                     actionBar.setHomeButtonEnabled(true);

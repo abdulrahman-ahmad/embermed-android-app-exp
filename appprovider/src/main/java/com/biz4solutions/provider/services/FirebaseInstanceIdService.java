@@ -1,4 +1,4 @@
-package com.biz4solutions.services;
+package com.biz4solutions.provider.services;
 
 import android.content.Context;
 

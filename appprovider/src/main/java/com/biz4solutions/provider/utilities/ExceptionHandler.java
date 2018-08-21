@@ -1,10 +1,10 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 
-import com.biz4solutions.activities.CrashActivity;
+import com.biz4solutions.provider.activities.CrashActivity;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

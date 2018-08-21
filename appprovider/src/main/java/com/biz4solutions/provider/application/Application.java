@@ -1,4 +1,4 @@
-package com.biz4solutions.application;
+package com.biz4solutions.provider.application;
 
 import android.Manifest;
 import android.content.Context;

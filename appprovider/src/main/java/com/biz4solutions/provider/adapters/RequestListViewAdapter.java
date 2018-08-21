@@ -1,4 +1,4 @@
-package com.biz4solutions.adapters;
+package com.biz4solutions.provider.adapters;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.biz4solutions.R;
-import com.biz4solutions.databinding.RequestListItemBinding;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.databinding.RequestListItemBinding;
 import com.biz4solutions.models.EmsRequest;
 
 import java.util.List;

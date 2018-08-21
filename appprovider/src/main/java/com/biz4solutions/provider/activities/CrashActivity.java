@@ -1,4 +1,4 @@
-package com.biz4solutions.activities;
+package com.biz4solutions.provider.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -7,7 +7,7 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
-import com.biz4solutions.R;
+import com.biz4solutions.provider.R;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 

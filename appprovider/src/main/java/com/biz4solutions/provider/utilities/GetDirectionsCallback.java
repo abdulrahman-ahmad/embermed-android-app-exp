@@ -1,10 +1,10 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by amrut.bidri on 11-05-2017.
+ * Created by ketan on 11-05-2017.
  */
 
 public interface GetDirectionsCallback {

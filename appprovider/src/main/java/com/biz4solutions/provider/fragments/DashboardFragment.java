@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments;
+package com.biz4solutions.provider.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,19 +20,19 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
-import com.biz4solutions.adapters.RequestListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.application.Application;
 import com.biz4solutions.customs.LoadMoreListView;
-import com.biz4solutions.databinding.FragmentDashboardBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.response.EmsRequestResponse;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.adapters.RequestListViewAdapter;
+import com.biz4solutions.provider.application.Application;
+import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
+import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
-import com.biz4solutions.utilities.FirebaseEventUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,7 +138,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                     }
                 };
             }
-            mHandler.postDelayed(mRunnable, 60000); // 60 secs
+            mHandler.postDelayed(mRunnable, 30000); // 30 secs
         }
     }
 

@@ -1,4 +1,4 @@
-package com.biz4solutions.services;
+package com.biz4solutions.provider.services;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -20,12 +20,12 @@ import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
-import com.biz4solutions.utilities.GpsServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -99,7 +99,7 @@ public class GpsServices extends Service implements LocationListener {
     LocationCallback locationCallbackTime = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            System.out.println("aa ------locationResult----- " + locationResult);
+            //System.out.println("aa ------locationResult----- " + locationResult);
             if (locationResult != null) {
                 // do work here
                 onLocationChanged(locationResult.getLastLocation());
@@ -110,7 +110,7 @@ public class GpsServices extends Service implements LocationListener {
     };
 
     public void onLocationChanged(Location location) {
-        System.out.println("aa ------onLocationChanged ----- location=" + location);
+        //System.out.println("aa ------onLocationChanged ----- location=" + location);
         sendNotification(this, true);
         GpsServicesUtil.getInstance().setLatitude(location.getLatitude());
         GpsServicesUtil.getInstance().setLongitude(location.getLongitude());

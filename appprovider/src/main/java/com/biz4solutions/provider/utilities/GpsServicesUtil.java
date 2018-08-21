@@ -1,4 +1,4 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import android.os.Handler;
 

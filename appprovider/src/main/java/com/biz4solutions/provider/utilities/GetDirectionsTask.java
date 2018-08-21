@@ -1,4 +1,4 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -38,7 +38,7 @@ public class GetDirectionsTask extends AsyncTask<String, Void, String> {
             // Reading data from url
             iStream = urlConnection.getInputStream();
             BufferedReader br = new BufferedReader(new InputStreamReader(iStream));
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             String line;
             while ((line = br.readLine()) != null) {
                 sb.append(line);

@@ -1,4 +1,4 @@
-package com.biz4solutions.activities;
+package com.biz4solutions.provider.activities;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -8,8 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import com.biz4solutions.R;
-import com.biz4solutions.databinding.ActivitySplashBinding;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.databinding.ActivitySplashBinding;
 import com.biz4solutions.utilities.Constants;
 
 /*

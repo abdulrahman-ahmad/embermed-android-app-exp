@@ -1,4 +1,4 @@
-package com.biz4solutions.activities;
+package com.biz4solutions.provider.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -22,13 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.ActivityMainBinding;
-import com.biz4solutions.fragments.CardiacCallDetailsFragment;
-import com.biz4solutions.fragments.DashboardFragment;
-import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -38,14 +34,19 @@ import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
-import com.biz4solutions.services.FirebaseInstanceIdService;
-import com.biz4solutions.services.GpsServices;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.databinding.ActivityMainBinding;
+import com.biz4solutions.provider.fragments.CardiacCallDetailsFragment;
+import com.biz4solutions.provider.fragments.DashboardFragment;
+import com.biz4solutions.provider.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.services.FirebaseInstanceIdService;
+import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.utilities.ExceptionHandler;
+import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
-import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -130,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean data) {
+                    isSuccessfullyInitFirebase = true;
                     if (data != null && data) {
-                        isSuccessfullyInitFirebase = true;
                         addFirebaseUserEvent();
                     }
                 }
@@ -231,8 +232,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void firebaseSignOut() {
-        FirebaseAuthUtil.getInstance().signOut();
         FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
+        FirebaseEventUtil.getInstance().removeFirebaseAlertEvent();
+        //FirebaseAuthUtil.getInstance().signOut();
     }
 
     @Override
@@ -260,6 +262,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void openDashBoardFragment() {
+        /*Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof DashboardFragment) {
+            Intent intent = new Intent();
+            intent.setAction(Constants.UPDATE_HOME_RECEIVER);
+            sendBroadcast(intent);
+            return;
+        }*/
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, DashboardFragment.newInstance())

@@ -1,4 +1,4 @@
-package com.biz4solutions.services;
+package com.biz4solutions.provider.services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -9,8 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.content.ContextCompat;
 
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.activities.MainActivity;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Date;
@@ -44,7 +44,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public static void sendNotification(Context context, String message) {
         int notificationId = (int) new Date().getTime();
         Intent intent = new Intent(context, MainActivity.class);
-        //intent.setComponent(new ComponentName("com.biz4solutions.activities", "com.biz4solutions.activities.MainActivity"));
+        //intent.setComponent(new ComponentName("com.biz4solutions.activities", "MainActivity"));
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_ONE_SHOT);
         //int appIcon = getApplicationContext().getApplicationInfo().icon;

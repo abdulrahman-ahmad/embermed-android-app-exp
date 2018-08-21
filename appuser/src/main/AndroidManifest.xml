@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
-        android:name="com.biz4solutions.application.Application"
+        android:name=".application.Application"
         android:allowBackup="true"
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +22,7 @@
         android:theme="@style/MainAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name="com.biz4solutions.activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
@@ -33,13 +33,13 @@
         </activity>
 
         <activity
-            android:name="com.biz4solutions.activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name="com.biz4solutions.activities.CrashActivity"
+            android:name=".activities.CrashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 

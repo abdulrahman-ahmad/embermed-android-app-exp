@@ -1,4 +1,4 @@
-package com.biz4solutions.utilities;
+package com.biz4solutions.provider.utilities;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -7,6 +7,8 @@ import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
@@ -17,6 +19,7 @@ public class FirebaseEventUtil {
     private ValueEventListener alertEventListener;
     private ValueEventListener requestEventListener;
     private String userId;
+    private String rUserId;
     private String requestId;
 
     private FirebaseEventUtil() {
@@ -67,8 +70,8 @@ public class FirebaseEventUtil {
 
     public void removeFirebaseAlertEvent() {
         try {
-            if (alertEventListener != null && userId != null && !userId.isEmpty()) {
-                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_ALERT_TABLE, userId, alertEventListener);
+            if (alertEventListener != null && rUserId != null && !rUserId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_ALERT_TABLE, rUserId, alertEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +79,7 @@ public class FirebaseEventUtil {
     }
 
     public void addFirebaseAlertEvent(Context context, final FirebaseCallbackListener<Boolean> callbackListener) {
-        //removeFirebaseRequestEvent();
+        //removeFirebaseAlertEvent();
         try {
             User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
             if (user != null) {
@@ -92,7 +95,8 @@ public class FirebaseEventUtil {
 
                     }
                 };
-                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_ALERT_TABLE, user.getUserId(), alertEventListener);
+                rUserId = user.getUserId();
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_ALERT_TABLE, rUserId, alertEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();

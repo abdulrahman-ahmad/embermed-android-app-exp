@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments;
+package com.biz4solutions.provider.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -27,10 +27,10 @@ import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.databinding.FragmentCardiacCallDetailsBinding;
+import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
@@ -39,12 +39,12 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.provider.utilities.FirebaseEventUtil;
+import com.biz4solutions.provider.utilities.GetDirectionsCallback;
+import com.biz4solutions.provider.utilities.GetDirectionsTask;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.FirebaseEventUtil;
-import com.biz4solutions.utilities.GetDirectionsCallback;
-import com.biz4solutions.utilities.GetDirectionsTask;
-import com.biz4solutions.utilities.NavigationUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;

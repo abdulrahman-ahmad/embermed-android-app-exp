@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments;
+package com.biz4solutions.provider.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,9 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
-import com.biz4solutions.databinding.FragmentNewsFeedBinding;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.databinding.FragmentNewsFeedBinding;
 
 public class NewsFeedFragment extends Fragment {
 
