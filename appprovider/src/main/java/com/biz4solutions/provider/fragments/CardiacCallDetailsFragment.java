@@ -27,10 +27,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
@@ -39,6 +36,9 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GetDirectionsCallback;
 import com.biz4solutions.provider.utilities.GetDirectionsTask;
@@ -77,7 +77,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private Marker victimMarker;
     private boolean isMapZoom = false;
     public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
-    public int UPDATE_INTERVAL = 500;    // 0.5 sec;
+    public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
+    public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
     public int ZOOM_LEVEL = 17;
     private LocationManager mLocationManager;
     private Location mLocation;
@@ -301,26 +302,25 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
         NavigationUtil.getInstance().hideMenu(mainActivity);
         if (googleMap != null) {
-            isShowMapDirection = true;
             showDirections();
+        } else {
+            isShowMapDirection = true;
         }
     }
 
     private void showDirections() {
         if (mLocation != null) {
             LatLng currentLocation = new LatLng(mLocation.getLatitude(), mLocation.getLongitude());
-            //googleMap.clear();
-            //googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, googleMap.getCameraPosition().zoom));
             // Assign your origin and destination
             // These points are your markers coordinates
-            //if (zPotLat != null && !zPotLat.isEmpty() && zPotLng != null && !zPotLng.isEmpty()) {
             LatLng dest = new LatLng(requestDetails.getLatitude(), requestDetails.getLongitude());
             // Getting URL to the Google Directions API
             String url = getDirectionsUrl(currentLocation, dest);
             GetDirectionsTask downloadTask = new GetDirectionsTask(this);
             // Start downloading json data from Google Directions API
             downloadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
-            //}
+        } else {
+            isShowMapDirection = true;
         }
     }
 
@@ -411,7 +411,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         googleMap.clear();
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
-        //addProviderMarker(GpsServicesUtil.getInstance().getLatitude(),GpsServicesUtil.getInstance().getLongitude());
         addVictimMarker(requestDetails.getLatitude(), requestDetails.getLongitude());
         try {
             if (mapView != null &&
@@ -434,8 +433,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
         mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
         if (mLocationManager != null) {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, 0, this);
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_INTERVAL, 0, this);
+            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
+            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
         }
     }
 
@@ -468,8 +467,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 if (userMarker == null) {
                     userMarker = googleMap.addMarker(new MarkerOptions()
                             .title("")
+                            .anchor(0.5f, 0.5f)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_current_location))
                             .position(latLng));
+
                     if (!isMapZoom) {
                         isMapZoom = true;
                         animateCamera(latLng, ZOOM_LEVEL);
