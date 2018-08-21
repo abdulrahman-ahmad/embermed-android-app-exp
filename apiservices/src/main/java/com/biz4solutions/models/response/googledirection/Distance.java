@@ -40,4 +40,11 @@ public class Distance {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "Distance{" +
+                "text='" + text + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

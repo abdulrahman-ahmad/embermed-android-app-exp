@@ -10,7 +10,7 @@ public class Duration {
     private String text;
     @SerializedName("value")
     @Expose
-    private Integer value;
+    private int value;
 
     /**
      * @return The text
@@ -29,15 +29,22 @@ public class Duration {
     /**
      * @return The value
      */
-    public Integer getValue() {
+    public int getValue() {
         return value;
     }
 
     /**
      * @param value The value
      */
-    public void setValue(Integer value) {
+    public void setValue(int value) {
         this.value = value;
     }
 
+    @Override
+    public String toString() {
+        return "Duration{" +
+                "text='" + text + '\'' +
+                ", value=" + value +
+                '}';
+    }
 }

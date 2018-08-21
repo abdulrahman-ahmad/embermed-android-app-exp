@@ -313,7 +313,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
                 return;
             }
-            new ApiServices().getDistanceDuration(mLocation.getLatitude(), mLocation.getLongitude(), requestDetails.getLatitude(), requestDetails.getLongitude(), new RestClientResponse() {
+            new ApiServices().getDirections(mainActivity, mLocation.getLatitude(), mLocation.getLongitude(), requestDetails.getLatitude(), requestDetails.getLongitude(), new RestClientResponse() {
                 @Override
                 public void onSuccess(Object googleResponse, int statusCode) {
                     if (routesPolyline != null) {

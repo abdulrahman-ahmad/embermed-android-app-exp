@@ -40,4 +40,11 @@ public class Leg {
         this.duration = duration;
     }
 
+    @Override
+    public String toString() {
+        return "Leg{" +
+                "distance=" + distance +
+                ", duration=" + duration +
+                '}';
+    }
 }

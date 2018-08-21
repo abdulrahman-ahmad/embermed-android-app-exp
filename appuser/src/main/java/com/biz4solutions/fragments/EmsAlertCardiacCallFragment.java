@@ -13,10 +13,14 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.Location;
+import com.biz4solutions.models.response.googledirection.GoogleDistanceDurationResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -25,6 +29,7 @@ import com.bumptech.glide.load.resource.gif.GifDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClickListener {
 
@@ -40,6 +45,12 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private EmsRequest request;
     private boolean isAcceptedOpen = false;
     private boolean isCRCDone = false;
+    private boolean isProviderLocationEventAdded = false;
+    private boolean isApiInProgress = false;
+    private Timer timer = new Timer();
+    private TimerTask timerTask;
+    private boolean isTimerReset = true;
+    private int timeInSec = -1;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -83,6 +94,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             @Override
             public void onSuccess(EmsRequest data) {
                 request = data;
+                addFirebaseProviderLocationEvent();
                 setCardiacCallView();
             }
         });
@@ -102,11 +114,57 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             setCardiacCallView();
         }
 
+        timerTask = new TimerTask();
+        timer.schedule(timerTask, 60000);//60 sec
+
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (request != null) {
+            isCRCDone = false;
+            setCardiacCallView();
+        }
+    }
+
+    private void addFirebaseProviderLocationEvent() {
+        if (request.getProviderId() != null && !isProviderLocationEventAdded) {
+            isProviderLocationEventAdded = true;
+            FirebaseEventUtil.getInstance().addFirebaseProviderLocationEvent(request.getProviderId(), new FirebaseCallbackListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+                    System.out.println("aa --------- location=" + location);
+                    if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || isTimerReset) {
+                        return;
+                    }
+                    isApiInProgress = true;
+                    isTimerReset = false;
+                    List<Location> locations = new ArrayList<>();
+                    locations.add(location);
+                    new ApiServices().getDistanceDuration(mainActivity, request.getLatitude(), request.getLongitude(), locations, new RestClientResponse() {
+                        @Override
+                        public void onSuccess(Object response, int statusCode) {
+                            isApiInProgress = false;
+                            GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                            timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
+                            System.out.println("aa ------- GoogleDistanceDurationResponse=" + timeInSec);
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage, int statusCode) {
+                            isApiInProgress = false;
+                            System.out.println("aa ------ errorMessage=" + errorMessage);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     private void setCardiacCallView() {
-        System.out.println("aa ---------- EmsRequest=" + request);
+        //System.out.println("aa ---------- EmsRequest=" + request);
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
                 case "ACCEPTED":
@@ -153,6 +211,11 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         }
         CommonFunctions.getInstance().dismissAlertDialog();
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
+        FirebaseEventUtil.getInstance().removeFirebaseProviderLocationEvent();
+        if (timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
     }
 
     @Override
@@ -218,5 +281,12 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private class TimerTask extends java.util.TimerTask {
+        @Override
+        public void run() {
+            isTimerReset = true;
+        }
     }
 }

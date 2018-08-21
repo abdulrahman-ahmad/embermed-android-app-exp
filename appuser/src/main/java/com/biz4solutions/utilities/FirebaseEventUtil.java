@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.Location;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.google.firebase.database.DataSnapshot;
@@ -15,6 +16,8 @@ public class FirebaseEventUtil {
     private static FirebaseEventUtil instance = null;
     private ValueEventListener userEventListener;
     private ValueEventListener requestEventListener;
+    private ValueEventListener providerEventListener;
+    private String providerId;
     private String requestId;
     private String userId;
 
@@ -28,16 +31,25 @@ public class FirebaseEventUtil {
         return instance;
     }
 
+    public void removeFirebaseUserEvent() {
+        try {
+            if (userEventListener != null && userId != null && !userId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addFirebaseUserEvent(Context context, final FirebaseCallbackListener<User> callbackListener) {
         try {
             User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
             if (user != null) {
-                //removeFirebaseUserEvent();
                 userEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         User user1 = dataSnapshot.getValue(User.class);
-                        System.out.println("aa ---------- user1 = " + user1);
+                        //System.out.println("aa ---------- user1 = " + user1);
                         callbackListener.onSuccess(user1);
                     }
 
@@ -48,16 +60,6 @@ public class FirebaseEventUtil {
                 };
                 userId = user.getUserId();
                 FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void removeFirebaseUserEvent() {
-        try {
-            if (userEventListener != null && userId != null && !userId.isEmpty()) {
-                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -76,7 +78,6 @@ public class FirebaseEventUtil {
 
     public void addFirebaseRequestEvent(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
         try {
-            //removeFirebaseRequestEvent();
             requestEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -92,6 +93,38 @@ public class FirebaseEventUtil {
             };
             this.requestId = requestId;
             FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_REQUEST_TABLE, requestId, requestEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeFirebaseProviderLocationEvent() {
+        try {
+            if (providerEventListener != null && providerId != null && !providerId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_PROVIDER_LOCATION_TABLE, providerId, providerEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addFirebaseProviderLocationEvent(String providerId, final FirebaseCallbackListener<Location> callbackListener) {
+        try {
+            providerEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Location location = dataSnapshot.getValue(Location.class);
+                    //System.out.println("aa ---------- location = " + location);
+                    callbackListener.onSuccess(location);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            this.providerId = providerId;
+            FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_PROVIDER_LOCATION_TABLE, providerId, providerEventListener);
         } catch (Exception e) {
             e.printStackTrace();
         }

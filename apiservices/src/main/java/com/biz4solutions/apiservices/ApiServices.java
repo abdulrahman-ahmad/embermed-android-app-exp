@@ -3,6 +3,7 @@ package com.biz4solutions.apiservices;
 import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.Location;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.IncidentReport;
@@ -11,6 +12,7 @@ import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
+import java.util.List;
 
 /*
  * Created by Ketan on 12/1/2017.
@@ -102,9 +104,22 @@ public class ApiServices {
                 .getRequestDetails(requestId));
     }
 
-    public void getDistanceDuration(double originLatitude, double originLongitude, double destLatitude, double destLongitude, final RestClientResponse restClientResponse) {
-        ApiServiceUtil.getInstance().retrofitWebServiceCall(null, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
-                .getDistanceDuration("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false));
+    public void getDirections(final Context context, double originLatitude, double originLongitude, double destLatitude, double destLongitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
+                .getDirections("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false/*, BuildConfig.GOOGLE_API_KEY*/));
+    }
+
+    public void getDistanceDuration(final Context context, double originLatitude, double originLongitude, List<Location> locations, final RestClientResponse restClientResponse) {
+        StringBuilder locatioStr = new StringBuilder();
+        for (int i = 0; i < locations.size(); i++) {
+            if (i == 0) {
+                locatioStr = new StringBuilder(locations.get(i).getLatitude() + "," + locations.get(i).getLongitude());
+            } else {
+                locatioStr.append("|").append(locations.get(i).getLatitude()).append(",").append(locations.get(i).getLongitude());
+            }
+        }
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
+                .getDistanceDuration("metric", originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false/*, BuildConfig.GOOGLE_API_KEY*/));
     }
 
 }

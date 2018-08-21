@@ -8,6 +8,8 @@ android {
         versionCode 1
         versionName "1.0"
         flavorDimensions "default"
+
+        buildConfigField "String", "GOOGLE_API_KEY", '"AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"'
     }
     buildTypes {
         release {

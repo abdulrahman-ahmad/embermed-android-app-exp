@@ -1,26 +1,27 @@
 package com.biz4solutions.interfaces;
 
-        import com.biz4solutions.models.SocialMediaUserData;
-        import com.biz4solutions.models.request.CreateEmsRequest;
-        import com.biz4solutions.models.request.IncidentReport;
-        import com.biz4solutions.models.request.LoginRequest;
-        import com.biz4solutions.models.request.SignUpRequest;
-        import com.biz4solutions.models.response.CreateEmsResponse;
-        import com.biz4solutions.models.response.EmptyResponse;
-        import com.biz4solutions.models.response.EmsRequestDetailsResponse;
-        import com.biz4solutions.models.response.EmsRequestResponse;
-        import com.biz4solutions.models.response.LoginResponse;
-        import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
+import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.IncidentReport;
+import com.biz4solutions.models.request.LoginRequest;
+import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.response.CreateEmsResponse;
+import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.models.response.EmsRequestDetailsResponse;
+import com.biz4solutions.models.response.EmsRequestResponse;
+import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.models.response.googledirection.GoogleDirectionResponse;
+import com.biz4solutions.models.response.googledirection.GoogleDistanceDurationResponse;
 
-        import java.util.HashMap;
+import java.util.HashMap;
 
-        import retrofit2.Call;
-        import retrofit2.http.Body;
-        import retrofit2.http.DELETE;
-        import retrofit2.http.GET;
-        import retrofit2.http.POST;
-        import retrofit2.http.PUT;
-        import retrofit2.http.Query;
+import retrofit2.Call;
+import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 public interface RetrofitRestClient {
 
@@ -76,5 +77,8 @@ public interface RetrofitRestClient {
     Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);
 
     @GET("api/directions/json")
-    Call<GoogleDirectionResponse> getDistanceDuration(@Query("units") String units, @Query("origin") String origin, @Query("destination") String destination, @Query("mode") String mode, @Query("sensor") boolean sensor);
+    Call<GoogleDirectionResponse> getDirections(@Query("units") String units, @Query("origin") String origin, @Query("destination") String destination, @Query("mode") String mode, @Query("sensor") boolean sensor/*, @Query("key") String key*/);
+
+    @GET("api/distancematrix/json")
+    Call<GoogleDistanceDurationResponse> getDistanceDuration(@Query("units") String units, @Query("origins") String origins, @Query("destinations") String destinations, @Query("mode") String mode, @Query("sensor") boolean sensor/*, @Query("key") String key*/);
 }
