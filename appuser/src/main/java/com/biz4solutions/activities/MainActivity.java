@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public ActionBarDrawerToggle toggle;
     public String currentRequestId;
     private BroadcastReceiver logoutBroadcastReceiver;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             binding.drawerLayout.addDrawerListener(toggle);
+            drawerLayout = binding.drawerLayout;
             toggle.syncState();
         }
         navigationView = binding.navView;
@@ -155,15 +157,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         // Handle navigation view item clicks here.
-        final int id = item.getItemId();
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                switch (id) {
+                switch (item.getItemId()) {
                     case R.id.nav_dashboard:
                         reOpenDashBoardFragment();
                         break;

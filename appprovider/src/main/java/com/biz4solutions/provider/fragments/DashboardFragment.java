@@ -25,17 +25,23 @@ import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.EmsRequestResponse;
+import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.provider.adapters.RequestListViewAdapter;
 import com.biz4solutions.provider.application.Application;
 import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
+import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Timer;
 
 public class DashboardFragment extends Fragment implements AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener {
 
@@ -46,8 +52,12 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     private boolean isLoadMore = true;
     private RequestListViewAdapter adapter;
     private List<EmsRequest> emsRequests = new ArrayList<>();
+    private HashMap<String, String> distanceHashMap = new HashMap<>();
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
+    private boolean isApiInProgress = false;
+    private Timer timer = new Timer();
+    private TimerTask timerTask;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -102,6 +112,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             binding.loadMoreListView.addHeaderView(header);
         }
         checkLocationPermissionGranted();
+        reSetTimer();
         return binding.getRoot();
     }
 
@@ -149,6 +160,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         if (mRunnable != null) {
             mHandler.removeCallbacks(mRunnable);
         }
+        stopTimer();
     }
 
     private void checkLocationPermissionGranted() {
@@ -246,7 +258,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 page++;
 
                 if (adapter == null) {
-                    adapter = new RequestListViewAdapter(emsRequests);
+                    adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap);
                     binding.loadMoreListView.setAdapter(adapter);
                 } else {
                     adapter.add(emsRequests);
@@ -275,7 +287,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (emsRequests != null && emsRequests.size() > position - 1) {
-            mainActivity.getRequestDetails(emsRequests.get(position - 1).getId());
+            mainActivity.getRequestDetails(emsRequests.get(position - 1).getId(), distanceHashMap.get(emsRequests.get(position - 1).getId()));
         }
     }
 
@@ -291,5 +303,81 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private void getDistance() {
+        GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
+            @Override
+            public void onSuccess(double latitude, double longitude) {
+                if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || emsRequests == null || emsRequests.isEmpty()) {
+                    return;
+                }
+                isApiInProgress = true;
+                List<Location> locations = new ArrayList<>();
+                distanceHashMap.clear();
+                final List<EmsRequest> tempEmsRequests = new ArrayList<>();
+                for (EmsRequest request : emsRequests) {
+                    tempEmsRequests.add(request);
+                    locations.add(new Location(request.getLatitude(), request.getLongitude()));
+                    distanceHashMap.put(request.getId(), "");
+                }
+                new ApiServices().getDistanceDuration(mainActivity, "imperial", latitude, longitude, locations, new RestClientResponse() {
+                    @Override
+                    public void onSuccess(Object response, int statusCode) {
+                        isApiInProgress = false;
+                        GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                        //System.out.println("aa ------------ durationResponse" + durationResponse);
+                        if (durationResponse != null
+                                && durationResponse.getRows() != null
+                                && !durationResponse.getRows().isEmpty()
+                                && durationResponse.getRows().get(0).getElements() != null
+                                && !durationResponse.getRows().get(0).getElements().isEmpty()) {
+                            for (int i = 0; i < durationResponse.getRows().get(0).getElements().size(); i++) {
+                                if (durationResponse.getRows().get(0).getElements().get(i).getDistance() != null
+                                        && !tempEmsRequests.isEmpty()
+                                        && i < tempEmsRequests.size()) {
+                                    distanceHashMap.put(tempEmsRequests.get(i).getId(), durationResponse.getRows().get(0).getElements().get(i).getDistance().getText());
+                                }
+                            }
+                            if (adapter != null) {
+                                adapter.add(distanceHashMap);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, int statusCode) {
+                        isApiInProgress = false;
+                        System.out.println("aa ------ errorMessage=" + errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
+    }
+
+    private void reSetTimer() {
+        stopTimer();
+        timerTask = new TimerTask();
+        timer.schedule(timerTask, Constants.DISTANCE_API_DElAY);//30 sec
+        getDistance();
+    }
+
+    private void stopTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
+    }
+
+    private class TimerTask extends java.util.TimerTask {
+        @Override
+        public void run() {
+            reSetTimer();
+        }
     }
 }

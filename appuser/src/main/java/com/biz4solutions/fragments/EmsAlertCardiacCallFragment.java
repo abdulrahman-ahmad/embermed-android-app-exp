@@ -24,6 +24,7 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 import com.bumptech.glide.Glide;
@@ -133,7 +134,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private void reSetTimer() {
         stopTimer();
         timerTask = new TimerTask();
-        timer.schedule(timerTask, 30000);//30 sec
+        timer.schedule(timerTask, Constants.DISTANCE_API_DElAY);//30 sec
     }
 
     private void stopTimer() {
@@ -165,7 +166,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                     isTimerReset = false;
                     List<Location> locations = new ArrayList<>();
                     locations.add(location);
-                    new ApiServices().getDistanceDuration(mainActivity, request.getLatitude(), request.getLongitude(), locations, new RestClientResponse() {
+                    new ApiServices().getDistanceDuration(mainActivity, "metric", request.getLatitude(), request.getLongitude(), locations, new RestClientResponse() {
                         @Override
                         public void onSuccess(Object response, int statusCode) {
                             isApiInProgress = false;
@@ -174,7 +175,8 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                                     && durationResponse.getRows() != null
                                     && !durationResponse.getRows().isEmpty()
                                     && durationResponse.getRows().get(0).getElements() != null
-                                    && !durationResponse.getRows().get(0).getElements().isEmpty()) {
+                                    && !durationResponse.getRows().get(0).getElements().isEmpty()
+                                    && durationResponse.getRows().get(0).getElements().get(0).getDuration() != null) {
                                 int timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
                                 int min = timeInSec / 60;
                                 //System.out.println("aa ------- min=" + min);

@@ -15,4 +15,5 @@
     <string name="complete_request">Complete Request</string>
     <string name="respond">Respond</string>
     <string name="respond_for_">Respond for $</string>
+    <string name="away">&#160;away</string>
 </resources>

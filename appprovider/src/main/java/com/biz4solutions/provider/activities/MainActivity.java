@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public String currentRequestId;
     public boolean isRequestAcceptedByMe = false;
     public boolean isUpdateList = false;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             binding.drawerLayout.addDrawerListener(toggle);
+            drawerLayout = binding.drawerLayout;
             toggle.syncState();
         }
         navigationView = binding.navView;
@@ -152,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        getRequestDetails(data.getProviderCurrentRequestId());
+                        getRequestDetails(data.getProviderCurrentRequestId(), "");
                     }
                 }
             }
@@ -180,8 +182,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         final int id = item.getItemId();
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openCardiacCallDetailsFragment(EmsRequest data) {
+    private void openCardiacCallDetailsFragment(EmsRequest data, String distanceStr) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof CardiacCallDetailsFragment) {
@@ -251,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data))
+                    .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data, distanceStr))
                     .addToBackStack(CardiacCallDetailsFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
@@ -340,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }*/
     }
 
-    public void getRequestDetails(String requestId) {
+    public void getRequestDetails(String requestId, final String distanceStr) {
         if (requestId != null && !requestId.isEmpty()) {
             if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
                 Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -351,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData());
+                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData(), distanceStr);
                 }
 
                 @Override

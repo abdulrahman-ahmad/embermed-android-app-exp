@@ -35,6 +35,7 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
+import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.activities.MainActivity;
@@ -58,11 +59,13 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
 
 public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
+    private final static String DISTANCE_STR = "DISTANCE_STR";
     private MainActivity mainActivity;
     private FragmentCardiacCallDetailsBinding binding;
     private EmsRequest requestDetails;
@@ -82,15 +85,21 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private Location mLocation;
     private boolean isShowMapDirection = false;
     private Polyline routesPolyline;
+    private boolean isApiInProgress = false;
+    private String distanceStr;
+    private Timer timer = new Timer();
+    private TimerTask timerTask;
+    private boolean isTimerReset = true;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static CardiacCallDetailsFragment newInstance(EmsRequest requestDetails) {
+    public static CardiacCallDetailsFragment newInstance(EmsRequest requestDetails, String distanceStr) {
         CardiacCallDetailsFragment fragment = new CardiacCallDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_DETAILS, requestDetails);
+        args.putString(DISTANCE_STR, distanceStr);
         fragment.setArguments(args);
         return fragment;
     }
@@ -101,6 +110,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
             requestDetails = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
+            distanceStr = getArguments().getString(DISTANCE_STR);
         }
     }
 
@@ -160,6 +170,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         binding.btnRespond.setOnClickListener(this);
         binding.btnSubmitReport.setOnClickListener(this);
         binding.btnGetDirection.setOnClickListener(this);
+        setDistanceValue(distanceStr);
+        reSetTimer();
         return binding.getRoot();
     }
 
@@ -228,6 +240,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
         }
+        stopTimer();
     }
 
     @Override
@@ -590,6 +603,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     isShowMapDirection = false;
                     showDirections();
                 }
+                getDistance(location);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -609,5 +623,69 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     @Override
     public void onProviderDisabled(String provider) {
 
+    }
+
+    private void getDistance(Location location) {
+        if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || !isTimerReset) {
+            return;
+        }
+        isApiInProgress = true;
+        isTimerReset = false;
+        List<com.biz4solutions.models.Location> locations = new ArrayList<>();
+        locations.add(new com.biz4solutions.models.Location(location.getLatitude(), location.getLongitude()));
+
+        new ApiServices().getDistanceDuration(mainActivity, "imperial", requestDetails.getLatitude(), requestDetails.getLongitude(), locations, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                isApiInProgress = false;
+                GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                //System.out.println("aa ------------ durationResponse" + durationResponse);
+                if (durationResponse != null
+                        && durationResponse.getRows() != null
+                        && !durationResponse.getRows().isEmpty()
+                        && durationResponse.getRows().get(0).getElements() != null
+                        && !durationResponse.getRows().get(0).getElements().isEmpty()
+                        && durationResponse.getRows().get(0).getElements().get(0).getDistance() != null) {
+                    setDistanceValue(durationResponse.getRows().get(0).getElements().get(0).getDistance().getText());
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                isApiInProgress = false;
+                System.out.println("aa ------ errorMessage=" + errorMessage);
+            }
+        });
+    }
+
+    private void setDistanceValue(String distanceTxt) {
+        binding.requestListCardiacItem.distanceLoader.setVisibility(View.VISIBLE);
+        String distance = mainActivity.getString(R.string.away);
+        if (distanceTxt != null && !distanceTxt.isEmpty()) {
+            binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
+            distance = distanceTxt + mainActivity.getString(R.string.away);
+        }
+        binding.requestListCardiacItem.txtDistance.setText(distance);
+    }
+
+    private void reSetTimer() {
+        stopTimer();
+        timerTask = new TimerTask();
+        timer.schedule(timerTask, Constants.DISTANCE_API_DElAY);//30 sec
+    }
+
+    private void stopTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
+    }
+
+    private class TimerTask extends java.util.TimerTask {
+        @Override
+        public void run() {
+            isTimerReset = true;
+            reSetTimer();
+        }
     }
 }

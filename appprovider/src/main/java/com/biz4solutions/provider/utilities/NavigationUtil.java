@@ -1,11 +1,13 @@
 package com.biz4solutions.provider.utilities;
 
 import android.graphics.drawable.Drawable;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
-import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 
 public class NavigationUtil {
@@ -49,6 +51,7 @@ public class NavigationUtil {
                     actionBar.setDisplayHomeAsUpEnabled(true);
                     actionBar.setHomeButtonEnabled(true);
                 }
+                mainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,23 +71,25 @@ public class NavigationUtil {
                 if (actionBarDrawerToggle != null) {
                     actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
                 }
+                mainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void hideMenu(MainActivity activity) {
+    public void hideMenu(MainActivity mainActivity) {
         try {
-            if (activity != null) {
-                ActionBarDrawerToggle actionBarDrawerToggle = activity.toggle;
+            if (mainActivity != null) {
+                ActionBarDrawerToggle actionBarDrawerToggle = mainActivity.toggle;
                 actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
                 //activity.toolbarTitleSpace.setVisibility(View.VISIBLE);
-                android.support.v7.app.ActionBar actionBar = activity.getSupportActionBar();
+                android.support.v7.app.ActionBar actionBar = mainActivity.getSupportActionBar();
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(false);
                     actionBar.setHomeButtonEnabled(false);
                 }
+                mainActivity.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
             }
         } catch (Exception e) {
             e.printStackTrace();

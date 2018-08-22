@@ -16,6 +16,7 @@ public class Constants implements Serializable {
     public static final int SPLASH_TIMEOUT = 1200;
     public static final int SEND_LOG_EMAIL = 100;
     public static final int UNAUTHORIZED_ERROR_CODE = 401;
+    public static final int DISTANCE_API_DElAY = 30000; // 30 sec
 
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String USER_PREFERENCE_KEY = "USER_PREFERENCE_KEY";
