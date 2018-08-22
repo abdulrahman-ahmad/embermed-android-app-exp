@@ -154,7 +154,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     }
 
     private void addFirebaseProviderLocationEvent() {
-        if (request.getProviderId() != null && !isProviderLocationEventAdded) {
+        if (request != null && request.getProviderId() != null && !isProviderLocationEventAdded) {
             isProviderLocationEventAdded = true;
             FirebaseEventUtil.getInstance().addFirebaseProviderLocationEvent(request.getProviderId(), new FirebaseCallbackListener<Location>() {
                 @Override
