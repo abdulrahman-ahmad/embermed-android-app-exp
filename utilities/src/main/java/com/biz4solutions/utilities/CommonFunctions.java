@@ -26,6 +26,7 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.concurrent.TimeUnit;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
 
@@ -261,5 +262,62 @@ public class CommonFunctions implements Serializable {
         intent1.setAction(Constants.LOGOUT_RECEIVER);
         intent1.putExtra(Constants.LOGOUT_MESSAGE, alertMessage);
         context.sendBroadcast(intent1);
+    }
+
+    public String getTimeAgo(long durationInMilliseconds) {
+        long seconds = TimeUnit.MILLISECONDS.toSeconds(durationInMilliseconds);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(durationInMilliseconds);
+        long hours = TimeUnit.MILLISECONDS.toHours(durationInMilliseconds);
+        long days = TimeUnit.MILLISECONDS.toDays(durationInMilliseconds);
+        String s;
+        if (seconds < 60) {
+            if (seconds == 1) {
+                s = "Just now";
+            } else {
+                s = seconds + " sec ago";
+            }
+        } else if (minutes < 60) {
+            if (minutes == 1) {
+                s = minutes + " min ago";
+            } else {
+                s = minutes + " mins ago";
+            }
+        } else if (hours < 24) {
+            if (hours == 1) {
+                s = hours + " hr ago";
+            } else {
+                s = hours + " hrs ago";
+            }
+        } else {
+            if (days == 1) {
+                s = days + " day ago";
+            } else {
+                if (days >= 365) {
+                    int yr = (int) (days / 365);
+                    if (yr == 1) {
+                        s = yr + " yr ago";
+                    } else {
+                        s = yr + " yrs ago";
+                    }
+                } else if (days >= 30) {
+                    int month = (int) (days / 30);
+                    if (month == 1) {
+                        s = month + " month ago";
+                    } else {
+                        s = month + " months ago";
+                    }
+                } else if (days >= 7) {
+                    int week = (int) (days / 7);
+                    if (week == 1) {
+                        s = week + " week ago";
+                    } else {
+                        s = week + " weeks ago";
+                    }
+                } else {
+                    s = days + " days ago";
+                }
+            }
+        }
+        return s;
     }
 }

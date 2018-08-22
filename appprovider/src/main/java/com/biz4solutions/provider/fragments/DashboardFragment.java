@@ -2,7 +2,10 @@ package com.biz4solutions.provider.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
@@ -53,11 +56,13 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     private RequestListViewAdapter adapter;
     private List<EmsRequest> emsRequests = new ArrayList<>();
     private HashMap<String, String> distanceHashMap = new HashMap<>();
+    private HashMap<String, String> durationHashMap = new HashMap<>();
     private Handler mHandler = new Handler();
     private Runnable mRunnable;
     private boolean isApiInProgress = false;
     private Timer timer = new Timer();
     private TimerTask timerTask;
+    private BroadcastReceiver clockBroadcastReceiver;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -82,6 +87,64 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             mainActivity.toolbarTitle.setText(R.string.dashboard);
         }
 
+        initswipeContainer();
+        addFirebaseEvent();
+        initListView();
+
+        if (mainActivity.isUpdateList) {
+            mainActivity.isUpdateList = false;
+            getNewRequestList(true);
+        }
+        checkLocationPermissionGranted();
+        reSetTimer();
+        addClockBroadcastReceiver();
+
+        return binding.getRoot();
+    }
+
+    private void addClockBroadcastReceiver() {
+        clockBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent intent) {
+                if (intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
+                    //System.out.println("aa ------------ ---");
+                    setDurationHashMap();
+                }
+            }
+        };
+
+        mainActivity.registerReceiver(clockBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
+    }
+
+    private void setDurationHashMap() {
+        if (emsRequests != null
+                && !emsRequests.isEmpty()) {
+            durationHashMap.clear();
+            for (EmsRequest request : emsRequests) {
+                durationHashMap.put(request.getId(),
+                        CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - request.getRequestTime()));
+            }
+            if (adapter != null) {
+                adapter.addValue(durationHashMap);
+            }
+        }
+    }
+
+    private void initListView() {
+        if (adapter != null) {
+            binding.loadMoreListView.setAdapter(adapter);
+            setErrorView();
+        }
+        binding.loadMoreListView.setOnLoadMoreListener(this);
+        binding.loadMoreListView.setOnItemClickListener(this);
+        LayoutInflater mInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        if (mInflater != null) {
+            @SuppressLint("InflateParams") RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.request_list_header, null, false);
+            binding.loadMoreListView.addHeaderView(header);
+        }
+    }
+
+    private void initswipeContainer() {
         binding.swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -93,27 +156,6 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 R.color.colorPrimaryDark,
                 R.color.text_color,
                 R.color.text_hint_color);
-
-        if (adapter != null) {
-            binding.loadMoreListView.setAdapter(adapter);
-            setErrorView();
-        }
-        addFirebaseEvent();
-        if (mainActivity.isUpdateList) {
-            mainActivity.isUpdateList = false;
-            getNewRequestList(true);
-        }
-
-        binding.loadMoreListView.setOnLoadMoreListener(this);
-        binding.loadMoreListView.setOnItemClickListener(this);
-        LayoutInflater mInflater = (LayoutInflater) mainActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if (mInflater != null) {
-            @SuppressLint("InflateParams") RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.request_list_header, null, false);
-            binding.loadMoreListView.addHeaderView(header);
-        }
-        checkLocationPermissionGranted();
-        reSetTimer();
-        return binding.getRoot();
     }
 
     public void getNewRequestList(boolean showLoader) {
@@ -161,6 +203,9 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             mHandler.removeCallbacks(mRunnable);
         }
         stopTimer();
+        if (clockBroadcastReceiver != null) {
+            mainActivity.unregisterReceiver(clockBroadcastReceiver);
+        }
     }
 
     private void checkLocationPermissionGranted() {
@@ -257,16 +302,18 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 }
                 page++;
 
+                setDurationHashMap();
                 if (adapter == null) {
-                    adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap);
+                    adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap, durationHashMap);
                     binding.loadMoreListView.setAdapter(adapter);
                 } else {
-                    adapter.add(emsRequests);
+                    adapter.add(emsRequests, durationHashMap);
                 }
             } else {
                 if (adapter != null && page == 0) {
                     emsRequests = new ArrayList<>();
-                    adapter.add(emsRequests);
+                    setDurationHashMap();
+                    adapter.add(emsRequests, durationHashMap);
                 }
                 isLoadMore = false;
             }

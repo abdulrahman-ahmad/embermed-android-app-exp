@@ -1,8 +1,10 @@
 package com.biz4solutions.provider.fragments;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
@@ -90,6 +92,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private boolean isTimerReset = true;
+    private BroadcastReceiver clockBroadcastReceiver;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -116,6 +119,32 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        initBindingView(inflater, container);
+
+        mainActivity = (MainActivity) getActivity();
+        isPageOpen = true;
+
+        initMapView();
+        initNavView();
+
+        user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+
+        addFirebaseRequestEvent();
+
+        if (requestDetails != null) {
+            setCardiacCallView();
+        }
+        initView();
+        binding.btnRespond.setOnClickListener(this);
+        binding.btnSubmitReport.setOnClickListener(this);
+        binding.btnGetDirection.setOnClickListener(this);
+        setDistanceValue(distanceStr);
+        reSetTimer();
+        addClockBroadcastReceiver();
+        return binding.getRoot();
+    }
+
+    private void initBindingView(@NonNull LayoutInflater inflater, ViewGroup container) {
         if (binding != null) {
             ViewGroup parent = (ViewGroup) binding.getRoot().getParent();
             if (parent != null) {
@@ -127,13 +156,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-        mainActivity = (MainActivity) getActivity();
+    }
 
-        SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
-        mapView = mMapFragment.getView();
-        mMapFragment.getMapAsync(this);
-
-        isPageOpen = true;
+    private void initNavView() {
         if (mainActivity != null) {
             mainActivity.isRequestAcceptedByMe = false;
             mainActivity.currentRequestId = requestDetails.getId();
@@ -147,7 +172,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 }
             });
         }
-        user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+    }
+
+    private void addFirebaseRequestEvent() {
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
@@ -162,17 +189,24 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 }
             }
         });
+    }
 
-        if (requestDetails != null) {
-            setCardiacCallView();
-        }
-        initView();
-        binding.btnRespond.setOnClickListener(this);
-        binding.btnSubmitReport.setOnClickListener(this);
-        binding.btnGetDirection.setOnClickListener(this);
-        setDistanceValue(distanceStr);
-        reSetTimer();
-        return binding.getRoot();
+    private void initMapView() {
+        SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
+        mapView = mMapFragment.getView();
+        mMapFragment.getMapAsync(this);
+    }
+
+    private void addClockBroadcastReceiver() {
+        clockBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context ctx, Intent intent) {
+                if (requestDetails != null && intent != null && intent.getAction() != null && intent.getAction().equals(Intent.ACTION_TIME_TICK)) {
+                    binding.requestListCardiacItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
+                }
+            }
+        };
+        mainActivity.registerReceiver(clockBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
     private void setCardiacCallView() {
@@ -210,6 +244,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
+            binding.requestListCardiacItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
         }
     }
 
@@ -241,6 +276,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             mLocationManager.removeUpdates(this);
         }
         stopTimer();
+        if (clockBroadcastReceiver != null) {
+            mainActivity.unregisterReceiver(clockBroadcastReceiver);
+        }
     }
 
     @Override

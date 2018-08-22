@@ -19,12 +19,14 @@ public class RequestListViewAdapter extends BaseAdapter {
 
     private final MainActivity mainActivity;
     private HashMap<String, String> distanceHashMap;
+    private HashMap<String, String> durationHashMap;
     private List<EmsRequest> emsRequests;
 
-    public RequestListViewAdapter(MainActivity mainActivity, List<EmsRequest> emsRequests, HashMap<String, String> distanceHashMap) {
+    public RequestListViewAdapter(MainActivity mainActivity, List<EmsRequest> emsRequests, HashMap<String, String> distanceHashMap, HashMap<String, String> durationHashMap) {
         this.mainActivity = mainActivity;
         this.emsRequests = emsRequests;
         this.distanceHashMap = distanceHashMap;
+        this.durationHashMap = durationHashMap;
     }
 
     @Override
@@ -62,6 +64,10 @@ public class RequestListViewAdapter extends BaseAdapter {
             binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
             distance = distanceHashMap.get(emsRequest.getId()) + mainActivity.getString(R.string.away);
         }
+        if (durationHashMap != null && !durationHashMap.isEmpty()
+                && durationHashMap.get(emsRequest.getId()) != null && !durationHashMap.get(emsRequest.getId()).isEmpty()) {
+            binding.requestListCardiacItem.txtTime.setText(durationHashMap.get(emsRequest.getId()));
+        }
         binding.requestListCardiacItem.txtDistance.setText(distance);
 
         return binding.getRoot();
@@ -72,13 +78,19 @@ public class RequestListViewAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
-    public void add(List<EmsRequest> emsRequests) {
+    public void add(List<EmsRequest> emsRequests,HashMap<String, String> durationHashMap) {
         this.emsRequests = emsRequests;
+        this.durationHashMap = durationHashMap;
         notifyDataSetChanged();
     }
 
     public void add(HashMap<String, String> distanceHashMap) {
         this.distanceHashMap = distanceHashMap;
+        notifyDataSetChanged();
+    }
+
+    public void addValue(HashMap<String, String> durationHashMap) {
+        this.durationHashMap = durationHashMap;
         notifyDataSetChanged();
     }
 
