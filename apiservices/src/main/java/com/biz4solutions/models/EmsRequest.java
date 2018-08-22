@@ -32,6 +32,10 @@ public class EmsRequest implements Serializable {
         isUnconscious = unconscious;
     }
 
+    public void setIsUnconscious(boolean unconscious) {
+        isUnconscious = unconscious;
+    }
+
     public double getLatitude() {
         return latitude;
     }

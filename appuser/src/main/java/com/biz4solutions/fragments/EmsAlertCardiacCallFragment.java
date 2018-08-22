@@ -1,6 +1,8 @@
 package com.biz4solutions.fragments;
 
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -50,7 +52,9 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private boolean isTimerReset = true;
-    private int timeInSec = -1;
+    private ObservableField<String> arrivalTimeInMin = new ObservableField<>();
+    private ObservableBoolean loaderVisibility = new ObservableBoolean();
+    private ObservableField<String> arrivalTimeUnit = new ObservableField<>();
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
@@ -106,6 +110,13 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         binding.btnPreviousCpr.setOnClickListener(this);
         binding.cprTutorialLink.setOnClickListener(this);
 
+        arrivalTimeInMin.set("");
+        loaderVisibility.set(true);
+        arrivalTimeUnit.set(getString(R.string.mins));
+        binding.setArrivalTime(arrivalTimeInMin);
+        binding.setLoaderVisibility(loaderVisibility);
+        binding.setArrivalTimeUnit(arrivalTimeUnit);
+
         gifPosition = 0;
         gifList.add(R.drawable.cpr1);
         gifList.add(R.drawable.cpr2);
@@ -125,7 +136,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         timer.schedule(timerTask, 30000);//30 sec
     }
 
-    private void stopTimer(){
+    private void stopTimer() {
         if (timerTask != null) {
             timerTask.cancel();
             timer.purge();
@@ -147,7 +158,6 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             FirebaseEventUtil.getInstance().addFirebaseProviderLocationEvent(request.getProviderId(), new FirebaseCallbackListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    System.out.println("aa --------- location=" + location);
                     if (CommonFunctions.getInstance().isOffline(mainActivity) || isApiInProgress || !isTimerReset) {
                         return;
                     }
@@ -160,9 +170,23 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                         public void onSuccess(Object response, int statusCode) {
                             isApiInProgress = false;
                             GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
-                            timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
-                            System.out.println("aa ------- GoogleDistanceDurationResponse=" + timeInSec);
-                            System.out.println("aa ------- GoogleDistanceDurationResponse=" + durationResponse.getRows().get(0).getElements().get(0).getDuration().getText());
+                            if (durationResponse != null
+                                    && durationResponse.getRows() != null
+                                    && !durationResponse.getRows().isEmpty()
+                                    && durationResponse.getRows().get(0).getElements() != null
+                                    && !durationResponse.getRows().get(0).getElements().isEmpty()) {
+                                int timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
+                                int min = timeInSec / 60;
+                                //System.out.println("aa ------- min=" + min);
+                                if (min <= 1) {
+                                    min = 1;
+                                    arrivalTimeUnit.set(getString(R.string.min));
+                                } else {
+                                    arrivalTimeUnit.set(getString(R.string.mins));
+                                }
+                                loaderVisibility.set(false);
+                                arrivalTimeInMin.set("" + min);
+                            }
                         }
 
                         @Override

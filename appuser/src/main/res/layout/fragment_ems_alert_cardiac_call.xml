@@ -3,6 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="loaderVisibility"
+            type="android.databinding.ObservableBoolean" />
+
+        <variable
+            name="arrivalTime"
+            type="android.databinding.ObservableField&lt;String>" />
+
+        <variable
+            name="arrivalTimeUnit"
+            type="android.databinding.ObservableField&lt;String>" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -134,16 +151,31 @@
                             android:textColor="@color/secondary_text_color"
                             android:textSize="@dimen/cardiac_call_small_text_size" />
 
+                        <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                            android:layout_width="@dimen/cardiac_call_very_big_text_size"
+                            android:layout_height="@dimen/cardiac_call_very_big_text_size"
+                            android:layout_marginStart="4dp"
+                            android:indeterminate="true"
+                            android:visibility="@{loaderVisibility ? View.VISIBLE : View.GONE}"
+                            app:cpb_color="@color/colorPrimary"
+                            app:cpb_colors="@array/progress_bar_multi_color"
+                            app:cpb_max_sweep_angle="300"
+                            app:cpb_min_sweep_angle="10"
+                            app:cpb_rotation_speed="1.0"
+                            app:cpb_stroke_width="4dp"
+                            app:cpb_sweep_speed="1.0" />
+
                         <TextView
                             android:id="@+id/textView1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="4dp"
                             android:fontFamily="sans-serif-medium"
-                            android:gravity="center"
-                            android:text="26"
+                            android:gravity="bottom"
+                            android:text="@{arrivalTime}"
                             android:textColor="@color/colorPrimary"
-                            android:textSize="@dimen/cardiac_call_very_big_text_size" />
+                            android:textSize="@dimen/cardiac_call_very_big_text_size"
+                            android:visibility="@{loaderVisibility ? View.INVISIBLE : View.VISIBLE}" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -152,7 +184,7 @@
                             android:layout_marginStart="4dp"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
-                            android:text="@string/mins"
+                            android:text="@{arrivalTimeUnit,default=min}"
                             android:textColor="@color/colorPrimary"
                             android:textSize="@dimen/cardiac_call_small_text_size" />
 
