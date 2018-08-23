@@ -77,8 +77,8 @@ public interface RetrofitRestClient {
     Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);
 
     @GET("api/directions/json")
-    Call<GoogleDirectionResponse> getDirections(@Query("units") String units, @Query("origin") String origin, @Query("destination") String destination, @Query("mode") String mode, @Query("sensor") boolean sensor/*, @Query("key") String key*/);
+    Call<GoogleDirectionResponse> getDirections(@Query("units") String units, @Query("origin") String origin, @Query("destination") String destination, @Query("mode") String mode, @Query("sensor") boolean sensor, @Query("key") String key);
 
     @GET("api/distancematrix/json")
-    Call<GoogleDistanceDurationResponse> getDistanceDuration(@Query("units") String units, @Query("origins") String origins, @Query("destinations") String destinations, @Query("mode") String mode, @Query("sensor") boolean sensor/*, @Query("key") String key*/);
+    Call<GoogleDistanceDurationResponse> getDistanceDuration(@Query("units") String units, @Query("origins") String origins, @Query("destinations") String destinations, @Query("mode") String mode, @Query("sensor") boolean sensor, @Query("key") String key);
 }

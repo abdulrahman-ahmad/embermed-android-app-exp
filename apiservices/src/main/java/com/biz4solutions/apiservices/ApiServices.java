@@ -106,7 +106,7 @@ public class ApiServices {
 
     public void getDirections(final Context context, double originLatitude, double originLongitude, double destLatitude, double destLongitude, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
-                .getDirections("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false/*, BuildConfig.GOOGLE_API_KEY*/));
+                .getDirections("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false, BuildConfig.GOOGLE_API_KEY));
     }
 
     public void getDistanceDuration(final Context context, String units, double originLatitude, double originLongitude, List<Location> locations, final RestClientResponse restClientResponse) {
@@ -119,7 +119,7 @@ public class ApiServices {
             }
         }
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
-                .getDistanceDuration(units, originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false/*, BuildConfig.GOOGLE_API_KEY*/));
+                .getDistanceDuration(units, originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false, BuildConfig.GOOGLE_API_KEY));
     }
 
 }
