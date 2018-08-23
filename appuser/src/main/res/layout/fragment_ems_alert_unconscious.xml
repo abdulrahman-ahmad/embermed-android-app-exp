@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1535">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1215"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/default_left_right_margin"
+            android:paddingStart="@dimen/default_left_right_margin"
+            android:weightSum="1213">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="560"
+                android:contentDescription="@null"
+                android:src="@drawable/unconscious"
+                tools:ignore="NestedWeights" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="320"
+            android:background="@color/alert_bg_color"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/default_left_right_margin"
+            android:paddingStart="@dimen/default_left_right_margin"
+            tools:ignore="SpUsage,NestedWeights">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/is_victim_unconscious"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/cardiac_call_small_text_size" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/unconscious_btn_margin_top"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_no"
+                    style="@style/BtnStyle"
+                    android:layout_width="@dimen/unconscious_btn_width"
+                    android:layout_marginEnd="@dimen/unconscious_btn_end_margin"
+                    android:layout_marginStart="0dp"
+                    android:text="@string/no" />
+
+                <Button
+                    android:id="@+id/btn_yes"
+                    style="@style/BtnStyle"
+                    android:layout_width="@dimen/unconscious_btn_width"
+                    android:layout_margin="0dp"
+                    android:text="@string/yes" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

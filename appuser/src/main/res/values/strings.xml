@@ -1,6 +1,21 @@
 <resources>
     <string name="app_name">OsirisBio</string>
-    <string name="newsfeed">News Feed</string>
-    <string name="newsfeed_coming_soon">News Feed \n coming soon…</string>
+    <string name="news_feed">News Feed</string>
+    <string name="ems_alert">EMS Alert</string>
+    <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
+    <string name="is_victim_unconscious">Is victim unconscious?</string>
+    <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
+    <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
+    <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
+    <string name="ems_has_been_notified">EMS has been notified</string>
+    <string name="someone_will_be_contacting_you_immediately">Someone will be contacting\nyou immediately.</string>
+    <string name="osiris_person_will_connect_with_you_shortly">Osiris person will connect with you shortly</string>
+    <string name="does_the_victim_have_pulse">Does the victim have pulse?</string>
+    <string name="osiris_person_coming_in">Osiris Person Coming in:</string>
+    <string name="cpr_tutorial"><u>CPR tutorial</u></string>
+    <string name="cpr_tutorial_message">If victim pulse have stopped, please go through our</string>
+    <string name="cpr_tutorial_title">CPR Tutorial</string>
+    <string name="mins">mins</string>
+    <string name="min">min</string>
 
 </resources>

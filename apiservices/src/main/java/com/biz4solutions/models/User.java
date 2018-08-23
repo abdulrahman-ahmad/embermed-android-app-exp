@@ -1,9 +1,11 @@
 package com.biz4solutions.models;
 
+import java.io.Serializable;
+
 /*
  * Created by ketan on 12/11/2017.
  */
-public class User {
+public class User implements Serializable{
 
     private String userId;
     private String firstName = "";
@@ -11,6 +13,12 @@ public class User {
     private String authToken = "";
     private String email = "";
     private String roleName = "";
+    private String patientCurrentRequestId = "";
+    private String providerCurrentRequestId = "";
+    private String currentRequestPriority = "";
+    private String deviceId = "";
+    private int age;
+    private String gender;
 
     public String getUserId() {
         return userId;
@@ -60,15 +68,69 @@ public class User {
         this.roleName = roleName;
     }
 
+    public String getPatientCurrentRequestId() {
+        return patientCurrentRequestId;
+    }
+
+    public void setPatientCurrentRequestId(String patientCurrentRequestId) {
+        this.patientCurrentRequestId = patientCurrentRequestId;
+    }
+
+    public String getDeviceId() {
+        return deviceId;
+    }
+
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getProviderCurrentRequestId() {
+        return providerCurrentRequestId;
+    }
+
+    public void setProviderCurrentRequestId(String providerCurrentRequestId) {
+        this.providerCurrentRequestId = providerCurrentRequestId;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCurrentRequestPriority() {
+        return currentRequestPriority;
+    }
+
+    public void setCurrentRequestPriority(String currentRequestPriority) {
+        this.currentRequestPriority = currentRequestPriority;
+    }
+
     @Override
     public String toString() {
         return "User{" +
-                "userId=" + userId +
+                "userId='" + userId + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", authToken='" + authToken + '\'' +
                 ", email='" + email + '\'' +
                 ", roleName='" + roleName + '\'' +
+                ", patientCurrentRequestId='" + patientCurrentRequestId + '\'' +
+                ", providerCurrentRequestId='" + providerCurrentRequestId + '\'' +
+                ", currentRequestPriority='" + currentRequestPriority + '\'' +
+                ", deviceId='" + deviceId + '\'' +
+                ", age=" + age +
+                ", gender='" + gender + '\'' +
                 '}';
     }
 }

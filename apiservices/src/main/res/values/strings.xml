@@ -2,4 +2,5 @@
     <string name="error_internal_server_error">Internal server error. Please try again later.</string>
     <string name="error_server_connect_error">Unable to connect to server. Please try again later.</string>
     <string name="error_invalid_server_data">Unable to fetch valid data from server. Please try again later.</string>
+    <string name="error_session_expired">Your session was expired. Please login again.</string>
 </resources>

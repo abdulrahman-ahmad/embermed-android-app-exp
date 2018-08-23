@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="#dfffffff"
+            android:background="#f2ffffff"
             android:fitsSystemWindows="true"
             app:headerLayout="@layout/nav_header_main"
             app:itemBackground="@drawable/selector_drawer_item"

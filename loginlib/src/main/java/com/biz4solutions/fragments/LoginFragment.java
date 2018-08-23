@@ -28,6 +28,7 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 import static android.app.Activity.RESULT_OK;
@@ -103,11 +104,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         if (i == R.id.btn_sign_in) {
             signInWithEmail();
         } else if (i == R.id.btn_sign_in_facebook) {
-            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-            //signInWithFB();
+            signInWithFB();
         } else if (i == R.id.btn_sign_in_google) {
-            Toast.makeText(loginActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-            //signInWithGoogle();
+            signInWithGoogle();
         } else if (i == R.id.btn_sign_up) {
             showSignUpFragment();
         } else if (i == R.id.txt_forgot_password) {
@@ -204,6 +203,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().loadProgressDialog(getContext());
+        data.setRoleName(loginActivity.roleName);
         //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
         new ApiServices().socialAppLogin(getActivity(), data, this);
     }
@@ -218,6 +219,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
         LoginResponse loginResponse = (LoginResponse) response;
         CommonFunctions.getInstance().dismissProgressDialog();
         if (loginResponse.getData() != null) {
+            FirebaseAuthUtil.getInstance().signInUser(loginResponse.getData().getEmail(), BuildConfig.FIREBASE_PASSWORD);
             SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
             SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
             loginActivity.finishActivityWithResult(RESULT_OK);

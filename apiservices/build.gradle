@@ -8,6 +8,8 @@ android {
         versionCode 1
         versionName "1.0"
         flavorDimensions "default"
+
+        buildConfigField "String", "GOOGLE_API_KEY", '"AIzaSyAoZwqvud4CYP2VpZrSfVeNjG429KBFTck"'
     }
     buildTypes {
         release {
@@ -24,15 +26,19 @@ android {
     }
     productFlavors {
         dev {
-            buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
-        }
-        local{
+            //dev/local
             buildConfigField 'String', 'HOST', '"http://192.168.1.83:9095/api/"'
         }
         qaTest {
-            buildConfigField 'String', 'HOST', '"http://osiris-dev-ws-env.us-west-1.elasticbeanstalk.com/api/"'
+            //Internal testing
+            buildConfigField 'String', 'HOST', '"http://osiris-qa-test-env.us-west-2.elasticbeanstalk.com/api/"'
+        }
+        staging{
+            //uat
+            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-2.elasticbeanstalk.com/api/"'
         }
         prod {
+            //production url
             buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com/api/"'
         }
     }

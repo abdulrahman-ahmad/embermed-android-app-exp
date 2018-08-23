@@ -78,7 +78,7 @@
                     android:layout_marginTop="@dimen/login_image_margin_top"
                     android:drawableStart="@drawable/ic_user_name"
                     android:hint="@string/first_name"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="textCapWords"
                     android:maxLength="50"
                     android:theme="@style/EditTextHint"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -91,7 +91,7 @@
                     android:layout_marginTop="@dimen/login_edit_text_margin_top"
                     android:drawableStart="@drawable/ic_user_name"
                     android:hint="@string/last_name"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="textCapWords"
                     android:maxLength="50"
                     android:theme="@style/EditTextHint"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -139,11 +139,12 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                <!--<android.support.design.widget.TextInputLayout
                     android:id="@+id/login_confirm_password_input_layout"
                     style="@style/EditTextStyle"
                     android:layout_marginTop="@dimen/login_edit_text_margin_top"
                     android:theme="@style/EditTextHint"
+                    android:visibility="gone"
                     app:hintEnabled="false"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -165,7 +166,7 @@
                         android:maxLength="20"
                         android:maxLines="1"
                         android:theme="@style/EditTextHint" />
-                </android.support.design.widget.TextInputLayout>
+                </android.support.design.widget.TextInputLayout>-->
 
                 <Button
                     android:id="@+id/btn_sign_up"
@@ -174,7 +175,7 @@
                     android:text="@string/sign_up"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/login_confirm_password_input_layout" />
+                    app:layout_constraintTop_toBottomOf="@+id/login_password_input_layout" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
