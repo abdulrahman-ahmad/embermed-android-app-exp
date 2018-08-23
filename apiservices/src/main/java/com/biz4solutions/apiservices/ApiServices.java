@@ -3,12 +3,16 @@ package com.biz4solutions.apiservices;
 import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.Location;
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
 import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
+import java.util.List;
 
 /*
  * Created by Ketan on 12/1/2017.
@@ -58,6 +62,64 @@ public class ApiServices {
     public void setFcmToken(final Context context, HashMap<String, Object> body) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, null, ApiServiceUtil.getInstance().getRestClient(context)
                 .setFcmToken(body));
+    }
+
+    public void createRequest(final Context context, CreateEmsRequest body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .createRequest(body));
+    }
+
+    public void cancelRequest(final Context context, String query, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .cancelRequest(query));
+    }
+
+    public void getRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getRequestList(page, 20));
+    }
+
+    public void acceptRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .acceptRequest(requestId));
+    }
+
+    public void completeRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .completeRequest(requestId));
+    }
+
+    public void submitIncidentReport(final Context context, IncidentReport body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .submitIncidentReport(body));
+    }
+
+    public void rejectRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .rejectRequest(requestId));
+    }
+
+    public void getRequestDetails(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getRequestDetails(requestId));
+    }
+
+    public void getDirections(final Context context, double originLatitude, double originLongitude, double destLatitude, double destLongitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
+                .getDirections("metric", originLatitude + "," + originLongitude, destLatitude + "," + destLongitude, "driving", false, BuildConfig.GOOGLE_API_KEY));
+    }
+
+    public void getDistanceDuration(final Context context, String units, double originLatitude, double originLongitude, List<Location> locations, final RestClientResponse restClientResponse) {
+        StringBuilder locatioStr = new StringBuilder();
+        for (int i = 0; i < locations.size(); i++) {
+            if (i == 0) {
+                locatioStr = new StringBuilder(locations.get(i).getLatitude() + "," + locations.get(i).getLongitude());
+            } else {
+                locatioStr.append("|").append(locations.get(i).getLatitude()).append(",").append(locations.get(i).getLongitude());
+            }
+        }
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
+                .getDistanceDuration(units, originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false, BuildConfig.GOOGLE_API_KEY));
     }
 
 }

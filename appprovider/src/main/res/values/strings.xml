@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">OsirisBio Provider</string>
-    <string name="newsfeed">News Feed</string>
-    <string name="newsfeed_coming_soon">News Feed \n coming soon…</string>
-    <string name="provider_home_n_coming_soon">Provider Home \n coming soon…</string>
+    <string name="news_feed">News Feed</string>
+    <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
+    <string name="cardiac_call">Cardiac Call</string>
+    <string name="immediate">Immediate</string>
+    <string name="pull_to_refresh">Pull to refresh</string>
+    <string name="no_alerts_available">No alerts available</string>
+    <string name="reject_request_message">Are you sure, you want to reject this request?</string>
+    <string name="accept_request_message">Are you sure, you want to accept this request?</string>
+    <string name="complete_request_message">Are you sure, you want to complete this request?</string>
+    <string name="accepted_request_message">Another provider has accepted this request.</string>
+    <string name="canceled_request_message">The user has canceled this request.</string>
+    <string name="patient_disease">Patient Disease:</string>
+    <string name="complete_request">Complete Request</string>
+    <string name="respond">Respond</string>
+    <string name="respond_for_">Respond for $</string>
+    <string name="away">&#160;away</string>
 </resources>

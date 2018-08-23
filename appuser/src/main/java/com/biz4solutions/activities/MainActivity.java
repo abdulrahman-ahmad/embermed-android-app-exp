@@ -1,7 +1,11 @@
 package com.biz4solutions.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -18,16 +22,28 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServiceUtil;
+import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.ActivityMainBinding;
 import com.biz4solutions.fragments.DashboardFragment;
+import com.biz4solutions.fragments.EmsAlertCardiacCallFragment;
+import com.biz4solutions.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
+import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.User;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
+import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
+    public String currentRequestId;
+    private BroadcastReceiver logoutBroadcastReceiver;
+    public DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
             binding.drawerLayout.addDrawerListener(toggle);
+            drawerLayout = binding.drawerLayout;
             toggle.syncState();
         }
         navigationView = binding.navView;
@@ -55,6 +75,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
+        }
+
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //method call here
+                String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case Constants.LOGOUT_RECEIVER:
+                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
+                            doLogOut();
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.LOGOUT_RECEIVER);
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (logoutBroadcastReceiver != null) {
+            unregisterReceiver(logoutBroadcastReceiver);
         }
     }
 
@@ -72,6 +119,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
+                @Override
+                public void onSuccess(Boolean data) {
+                    if (data != null && data) {
+                        addFirebaseUserEvent();
+                    }
+                }
+            };
+            if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
+                FirebaseAuthUtil.getInstance().initDB(callbackListener);
+            } else {
+                User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                if (user != null) {
+                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                }
+            }
             openDashBoardFragment();
         }
     }
@@ -94,15 +157,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         // Handle navigation view item clicks here.
-        final int id = item.getItemId();
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+        drawerLayout.closeDrawer(GravityCompat.START);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                switch (id) {
+                switch (item.getItemId()) {
                     case R.id.nav_dashboard:
                         reOpenDashBoardFragment();
                         break;
@@ -126,14 +187,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void doLogOut() {
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
-        SharedPrefsManager.getInstance().clearPreference(this, Constants.TH_PREFERENCE);
+        clearVariables();
         ApiServiceUtil.resetInstance();
         FacebookUtil.getInstance().doLogout();
         GoogleUtil.getInstance().doLogout();
+        firebaseSignOut();
+        stopGpsService();
+        openLoginActivity();
+    }
+
+    private void clearVariables() {
+        currentRequestId = null;
+        SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
+    }
+
+    private void openLoginActivity() {
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         intent.putExtra(Constants.ROLE_NAME, Constants.ROLE_NAME_USER);
         startActivityForResult(intent, 149);
+    }
+
+    private void firebaseSignOut() {
+        FirebaseAuthUtil.getInstance().signOut();
+        FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
     }
 
     @Override
@@ -160,12 +236,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    private void reOpenDashBoardFragment() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof DashboardFragment) {
-            return;
+    public void reOpenDashBoardFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof DashboardFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
     }
 
     @Override
@@ -196,10 +276,134 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }, 2000);
                     break;
+                case EmsAlertUnconsciousFragment.fragmentName:
+                    unconsciousOnBackClick();
+                    break;
+                case EmsAlertCardiacCallFragment.fragmentName:
+                    showCancelRequestAlert();
+                    break;
                 default:
                     getSupportFragmentManager().popBackStack();
                     break;
             }
+        }
+    }
+
+    public void unconsciousOnBackClick() {
+        stopGpsService();
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public void startGpsService() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            startService(new Intent(MainActivity.this, GpsServices.class));
+        } else {
+            startForegroundService(new Intent(MainActivity.this, GpsServices.class));
+        }
+    }
+
+    public void stopGpsService() {
+        try {
+            stopService(new Intent(MainActivity.this, GpsServices.class));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showCancelRequestAlert() {
+        CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.cancel_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+            @Override
+            public void onClose(Boolean result) {
+                if (result) {
+                    cancelRequest();
+                }
+            }
+        });
+    }
+
+    private void cancelRequest() {
+        if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (currentRequestId != null && !currentRequestId.isEmpty()) {
+            CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+            new ApiServices().cancelRequest(MainActivity.this, currentRequestId, new RestClientResponse() {
+                @Override
+                public void onSuccess(Object response, int statusCode) {
+                    EmptyResponse emptyResponse = (EmptyResponse) response;
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                }
+
+                @Override
+                public void onFailure(String errorMessage, int statusCode) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    public void addFirebaseUserEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseUserEvent(MainActivity.this, new FirebaseCallbackListener<User>() {
+            @Override
+            public void onSuccess(User data) {
+                if (data != null) {
+                    currentRequestId = data.getPatientCurrentRequestId();
+                    if (data.getPatientCurrentRequestId() != null && !data.getPatientCurrentRequestId().isEmpty()) {
+                        FirebaseEventUtil.getInstance().getFirebaseRequest(data.getPatientCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
+                            @Override
+                            public void onSuccess(EmsRequest data) {
+                                openEmsAlertCardiacCallFragment(false, data);
+                            }
+                        });
+                    } else {
+                        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                        if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                            reOpenDashBoardFragment();
+                        }
+                    }
+                } else {
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                        reOpenDashBoardFragment();
+                    }
+                }
+            }
+        });
+    }
+
+    public void openEmsAlertUnconsciousFragment() {
+        startGpsService();
+
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, EmsAlertUnconsciousFragment.newInstance())
+                .addToBackStack(EmsAlertUnconsciousFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue) {
+        openEmsAlertCardiacCallFragment(isNeedToShowQue, null);
+    }
+
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, EmsRequest data) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof EmsAlertCardiacCallFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
+                    .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

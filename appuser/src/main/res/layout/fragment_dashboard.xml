@@ -10,15 +10,15 @@
         android:layout_marginBottom="35dp"
         app:rb_color="#8bd10000"
         app:rb_duration="5000"
-        app:rb_radius="32dp"
+        app:rb_radius="@dimen/home_ripple_radius"
         app:rb_rippleAmount="6"
         app:rb_scale="6"
-        tools:context="com.biz4solutions.activities.MainActivity">
+        tools:context=".activities.MainActivity">
 
         <ImageView
             android:id="@+id/alert_btn"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
+            android:layout_width="@dimen/home_btn_height_width"
+            android:layout_height="@dimen/home_btn_height_width"
             android:layout_centerInParent="true"
             android:background="@drawable/selector_home_alert_btn"
             android:contentDescription="@null" />

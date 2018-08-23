@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.loginlib.R;
 import com.biz4solutions.loginlib.databinding.FragmentSignUpBinding;
 import com.biz4solutions.models.request.SignUpRequest;
@@ -24,6 +25,7 @@ import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 
 public class SignUpFragment extends Fragment implements View.OnClickListener {
 
@@ -46,7 +48,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         binding.btnSignUp.setOnClickListener(this);
         binding.btnBackToLogin.setOnClickListener(this);
         binding.skipLogin.setOnClickListener(this);
-        binding.edtConfirmPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        //binding.edtConfirmPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+        binding.edtPassword.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 int result = actionId & EditorInfo.IME_MASK_ACTION;
@@ -77,7 +80,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         if (i == R.id.btn_sign_up) {
             if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
                 if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
-                    if (isPasswordValid(binding.edtPassword.getText().toString().trim(), binding.edtConfirmPassword.getText().toString().trim())) {
+                    if (isPasswordValid(binding.edtPassword.getText().toString().trim()/*, binding.edtConfirmPassword.getText().toString().trim()*/, binding.edtPassword.getText().toString().trim())) {
                         //call sign web service
                         signUpWebServiceCall();
                     }
@@ -111,7 +114,8 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
         signUpRequest.setPassword(binding.edtPassword.getText().toString().trim());
-        signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
+        //signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
+        signUpRequest.setConfirmPassword(binding.edtPassword.getText().toString().trim());
 
         new ApiServices().signUp(getActivity(), signUpRequest, new RestClientResponse() {
             @Override
@@ -119,6 +123,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
                 LoginResponse loginResponse = (LoginResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (loginResponse.getData() != null) {
+                    FirebaseAuthUtil.getInstance().signInUser(loginResponse.getData().getEmail(), BuildConfig.FIREBASE_PASSWORD);
                     SharedPrefsManager.getInstance().storeStringPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY, "Bearer " + loginResponse.getData().getAuthToken());
                     SharedPrefsManager.getInstance().storeUserPreference(getContext(), Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                     loginActivity.finishActivityWithResult(Activity.RESULT_OK);

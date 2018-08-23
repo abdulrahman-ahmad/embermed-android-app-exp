@@ -9,6 +9,8 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.interfaces.RetrofitRestClient;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 
@@ -132,7 +134,7 @@ public class ApiServiceUtil {
 
     /*use to get deviceId*/
     @SuppressLint("HardwareIds")
-    public String getDeviceID(Context context) {
+    private String getDeviceID(Context context) {
         try {
             if (context != null) {
                 return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -145,7 +147,7 @@ public class ApiServiceUtil {
     }
 
     /*use to get appVersion*/
-    public String getAppVersion() {
+    private String getAppVersion() {
         return BuildConfig.VERSION_NAME;
     }
 
@@ -155,7 +157,7 @@ public class ApiServiceUtil {
     }
 
     /*use to get deviceType*/
-    public String getDeviceType() {
+    private String getDeviceType() {
         return "ANDROID_PHONE";
     }
 
@@ -177,6 +179,8 @@ public class ApiServiceUtil {
                     if (restClientResponse != null) {
                         if (response.isSuccessful()) {
                             restClientResponse.onSuccess(response.body(), response.code());
+                        } else if (response.code() == Constants.UNAUTHORIZED_ERROR_CODE) {
+                            CommonFunctions.getInstance().doLogOut(context, context.getString(R.string.error_session_expired));
                         } else if (response.errorBody() != null) {
                             try {
                                 EmptyResponse emptyResponse = new Gson().getAdapter(EmptyResponse.class).fromJson(response.errorBody().string());

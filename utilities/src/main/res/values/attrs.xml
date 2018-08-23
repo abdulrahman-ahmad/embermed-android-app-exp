@@ -7,6 +7,13 @@
         <item>@color/magenta</item>-->
     </array>
 
+    <array name="progress_bar_multi_color">
+        <item>@color/colorPrimary</item>
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/text_color</item>
+        <item>@color/text_hint_color</item>
+    </array>
+
     <color name="rippelColor">@android:color/black</color>
     //default ripple color.when we not given rv_color.then this color is used.
     <declare-styleable name="RippleView">

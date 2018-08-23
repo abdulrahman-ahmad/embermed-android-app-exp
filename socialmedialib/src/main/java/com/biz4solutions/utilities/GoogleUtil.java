@@ -98,10 +98,10 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
                     userData.setFirstName(acct.getDisplayName());
                 }
                 if (acct.getId() != null) {
-                    userData.setUserId(acct.getId());
+                    userData.setSocialLoginId(acct.getId());
                 }
                 if (acct.getIdToken() != null) {
-                    userData.setToken(acct.getIdToken());
+                    userData.setSocialLoginToken(acct.getIdToken());
                 }
                 googleCallback.onSuccess(userData);
             } else {

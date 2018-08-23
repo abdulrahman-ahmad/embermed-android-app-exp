@@ -69,8 +69,8 @@ public class FacebookUtil {
                                     userData.setEmail(emailId);
                                     userData.setFirstName(firstName);
                                     userData.setLastName(lastName);
-                                    userData.setUserId(facebookId);
-                                    userData.setToken(accessToken);
+                                    userData.setSocialLoginId(facebookId);
+                                    userData.setSocialLoginToken(accessToken);
                                     userData.setSignupType("FB");
                                     facebookCallback.onSuccess(userData);
                                 } catch (JSONException e) {

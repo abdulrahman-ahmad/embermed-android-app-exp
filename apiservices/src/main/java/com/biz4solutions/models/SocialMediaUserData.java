@@ -9,8 +9,9 @@ public class SocialMediaUserData {
     private String firstName;
     private String lastName;
     private String signupType;
-    private String userId;
-    private String Token;
+    private String socialLoginId;
+    private String socialLoginToken;
+    private String roleName;
 
     public String getEmail() {
         return email;
@@ -44,20 +45,28 @@ public class SocialMediaUserData {
         this.signupType = signupType;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getSocialLoginId() {
+        return socialLoginId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setSocialLoginId(String socialLoginId) {
+        this.socialLoginId = socialLoginId;
     }
 
-    public String getToken() {
-        return Token;
+    public String getSocialLoginToken() {
+        return socialLoginToken;
     }
 
-    public void setToken(String token) {
-        Token = token;
+    public void setSocialLoginToken(String socialLoginToken) {
+        this.socialLoginToken = socialLoginToken;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     @Override
@@ -67,8 +76,9 @@ public class SocialMediaUserData {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", signupType='" + signupType + '\'' +
-                ", userId='" + userId + '\'' +
-                ", Token='" + Token + '\'' +
+                ", socialLoginId='" + socialLoginId + '\'' +
+                ", socialLoginToken='" + socialLoginToken + '\'' +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }
