@@ -226,6 +226,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 try {
                     Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     hideLoader();
+                    setErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -263,8 +264,8 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 }
                 isLoadMore = false;
             }
-            setErrorView();
         }
+        setErrorView();
     }
 
     private void setErrorView() {

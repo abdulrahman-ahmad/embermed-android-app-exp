@@ -90,7 +90,7 @@
                     android:layout_marginTop="30dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="@string/osiris_person_will_connect_with_you_shortly"
+                    android:text="@string/ember_person_will_connect_with_you_shortly"
                     android:textColor="@color/secondary_text_color"
                     android:textSize="@dimen/cardiac_call_small_text_size"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -147,7 +147,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
                             android:gravity="center"
-                            android:text="@string/osiris_person_coming_in"
+                            android:text="@string/ember_person_coming_in"
                             android:textColor="@color/secondary_text_color"
                             android:textSize="@dimen/cardiac_call_small_text_size" />
 

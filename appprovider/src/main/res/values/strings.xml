@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OsirisBio Provider</string>
+    <string name="app_name">Ember Provider</string>
     <string name="news_feed">News Feed</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>

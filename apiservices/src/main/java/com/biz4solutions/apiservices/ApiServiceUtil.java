@@ -187,10 +187,10 @@ public class ApiServiceUtil {
                                 restClientResponse.onFailure(emptyResponse.getMessage(), emptyResponse.getCode());
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                restClientResponse.onFailure(response.message(), response.code());
+                                restClientResponse.onFailure(context.getString(R.string.error_internal_server_error), response.code());
                             }
                         } else {
-                            restClientResponse.onFailure(response.message(), response.code());
+                            restClientResponse.onFailure(context.getString(R.string.error_internal_server_error), response.code());
                         }
                     }
                 }

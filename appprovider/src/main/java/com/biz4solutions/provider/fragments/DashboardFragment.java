@@ -278,6 +278,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 try {
                     Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
                     hideLoader();
+                    setErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -317,8 +318,8 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 }
                 isLoadMore = false;
             }
-            setErrorView();
         }
+        setErrorView();
     }
 
     private void setErrorView() {
