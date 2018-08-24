@@ -47,7 +47,7 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:27.1.1'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api project(':socialmedialib')
     application project(':appuser')
     application project(':appprovider')
-    api project(':apiservices')
 }
