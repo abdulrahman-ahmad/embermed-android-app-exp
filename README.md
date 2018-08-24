@@ -1,4 +1,2 @@
-## User_Android
-
-Android User Native App for Osiris Bio Project
-
+# osirisbio-android-app
+This repository for the Android application code base

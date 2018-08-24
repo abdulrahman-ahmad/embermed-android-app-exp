@@ -11,8 +11,6 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.fragments.LoginFragment;
 import com.biz4solutions.loginlib.R;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.FacebookUtil;
-import com.biz4solutions.utilities.GoogleUtil;
 
 /*
  * Created by ketan on 11/30/2017.
@@ -32,11 +30,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == FacebookUtil.getInstance().getRequestCode()) {
-            FacebookUtil.getInstance().onActivityResult(requestCode, resultCode, data);
-        } else if (requestCode == GoogleUtil.getInstance().getRequestCode()) {
-            GoogleUtil.getInstance().onActivityResult(requestCode, data);
-        }
     }
 
     public void showLoginFragment() {
