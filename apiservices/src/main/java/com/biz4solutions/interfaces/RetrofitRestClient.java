@@ -10,6 +10,7 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.models.response.SymptomResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 
@@ -81,4 +82,7 @@ public interface RetrofitRestClient {
 
     @GET("api/distancematrix/json")
     Call<GoogleDistanceDurationResponse> getDistanceDuration(@Query("units") String units, @Query("origins") String origins, @Query("destinations") String destinations, @Query("mode") String mode, @Query("sensor") boolean sensor, @Query("key") String key);
+
+    @GET("v1/symptom/list")
+    Call<SymptomResponse> getSymptomList(@Query("page") int page, @Query("size") int size);
 }

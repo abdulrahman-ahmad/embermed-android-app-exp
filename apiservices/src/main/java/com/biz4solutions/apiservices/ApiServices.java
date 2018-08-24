@@ -122,4 +122,9 @@ public class ApiServices {
                 .getDistanceDuration(units, originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false, BuildConfig.GOOGLE_API_KEY));
     }
 
+    public void getSymptomList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSymptomList(page, 20));
+    }
+
 }

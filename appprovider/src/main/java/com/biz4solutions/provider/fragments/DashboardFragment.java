@@ -158,7 +158,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 R.color.text_hint_color);
     }
 
-    public void getNewRequestList(boolean showLoader) {
+    private void getNewRequestList(boolean showLoader) {
         if (mainActivity.isSuccessfullyInitFirebase) {
             page = 0;
             getRequestList(showLoader);

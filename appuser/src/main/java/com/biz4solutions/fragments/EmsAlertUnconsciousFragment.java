@@ -71,10 +71,18 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 getUserLocation();
                 break;
             case R.id.btn_no:
-                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                //mainActivity.stopGpsService();
+                openSymptomsFragment();
                 break;
         }
+    }
+
+    private void openSymptomsFragment() {
+        mainActivity.getSupportFragmentManager().executePendingTransactions();
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, SymptomsFragment.newInstance())
+                .addToBackStack(SymptomsFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 
     private void getUserLocation() {
@@ -88,7 +96,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
             @Override
             public void onSuccess(double latitude, double longitude) {
                 binding.btnYes.setEnabled(true);
-                if(!isRequestInProgress) {
+                if (!isRequestInProgress) {
                     isRequestInProgress = true;
                     createRequest(latitude, longitude);
                 }
