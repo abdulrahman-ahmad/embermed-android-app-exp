@@ -1,14 +1,19 @@
-package com.biz4solutions.opentok.sdk;
+package com.biz4solutions.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.databinding.DataBindingUtil;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.biz4solutions.opentok.sdk.BuildConfig;
+import com.biz4solutions.opentok.sdk.R;
+import com.biz4solutions.opentok.sdk.databinding.ActivityOpentokBinding;
 import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
@@ -18,14 +23,12 @@ import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
 
-public class OpenTokActivity extends AppCompatActivity implements WebServiceCoordinator.Listener,
+public class OpenTokActivity extends AppCompatActivity implements
         Session.SessionListener,
         PublisherKit.PublisherListener,
         SubscriberKit.SubscriberListener {
 
-    private static final int RC_SETTINGS_SCREEN_PERM = 123;
-    private static final int RC_VIDEO_APP_PERM = 124;
-
+    private static final int PERMISSION_REQUEST_CODE = 124;
     public static final int RC_OPENTOK_ACTIVITY = 125;
     public static final String OPENTOK_SESSION_ID = "OPENTOK_SESSION_ID";
     public static final String OPENTOK_SUBSCRIBER_TOKEN = "OPENTOK_SUBSCRIBER_TOKEN";
@@ -35,18 +38,15 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
     private String mSubscriberToken;
     private String mPublisherToken;
 
-    private WebServiceCoordinator mWebServiceCoordinator;
-
     private Session mSession;
     private Subscriber mSubscriber;
 
-    private FrameLayout mPublisherViewContainer;
-    private FrameLayout mSubscriberViewContainer;
+    private ActivityOpentokBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_opentok);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_opentok);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -60,11 +60,6 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
                 mPublisherToken = bundle.getString(OPENTOK_PUBLISHER_TOKEN);
             }
         }
-
-        // initialize view objects from your layout
-        mPublisherViewContainer = findViewById(R.id.publisher_container);
-        mSubscriberViewContainer = findViewById(R.id.subscriber_container);
-
         requestPermissions();
     }
 
@@ -88,38 +83,48 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            boolean userAllowedAllRequestPermissions = true;
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    userAllowedAllRequestPermissions = false;
+                }
+            }
+
+            if (userAllowedAllRequestPermissions) {
+                switch (requestCode) {
+                    case PERMISSION_REQUEST_CODE:
+                        startSession();
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void requestPermissions() {
-        //String[] perms = {Manifest.permission.INTERNET, Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
-        //if (EasyPermissions.hasPermissions(this, perms)) {
-        // use hard coded session values
-        if (OpenTokConfig.CHAT_SERVER_URL == null) {
-            // use hard coded session values
-            if (mSessionId!=null && !mSessionId.isEmpty()){
-                if(mSubscriberToken!=null && !mSubscriberToken.isEmpty()) {
-                    initializeSession(OpenTokConfig.API_KEY, mSessionId, mSubscriberToken);
-                } else if(mPublisherToken!=null && !mPublisherToken.isEmpty()) {
-                    initializeSession(OpenTokConfig.API_KEY, mSessionId, mPublisherToken);
-                } else {
-                    showConfigError("Token Error", OpenTokConfig.hardCodedConfigErrorMessage);
-                }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+                requestPermissions(perms, PERMISSION_REQUEST_CODE);
             } else {
-                showConfigError("Configuration Error", OpenTokConfig.hardCodedConfigErrorMessage);
+                startSession();
             }
         } else {
-            // otherwise initialize WebServiceCoordinator and kick off request for session data
-            // session initialization occurs once data is returned, in onSessionConnectionDataReady
-            if (OpenTokConfig.isWebServerConfigUrlValid()) {
-                mWebServiceCoordinator = new WebServiceCoordinator(this, this);
-                mWebServiceCoordinator.fetchSessionConnectionData(OpenTokConfig.SESSION_INFO_ENDPOINT);
-            } else {
-                showConfigError("Configuration Error", OpenTokConfig.webServerConfigErrorMessage);
+            startSession();
+        }
+    }
+
+    private void startSession() {
+        if (mSessionId != null && !mSessionId.isEmpty()) {
+            if (mSubscriberToken != null && !mSubscriberToken.isEmpty()) {
+                initializeSession(BuildConfig.OPENTOK_API_KEY, mSessionId, mSubscriberToken);
+            } else if (mPublisherToken != null && !mPublisherToken.isEmpty()) {
+                initializeSession(BuildConfig.OPENTOK_API_KEY, mSessionId, mPublisherToken);
             }
         }
-        /*} else {
-            EasyPermissions.requestPermissions(this, getString(R.string.rationale_video_app), RC_VIDEO_APP_PERM, perms);
-        }*/
     }
 
     private void initializeSession(String apiKey, String sessionId, String token) {
@@ -128,21 +133,7 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
         mSession.connect(token);
     }
 
-    /* Web Service Coordinator delegate methods */
-
-    @Override
-    public void onSessionConnectionDataReady(String apiKey, String sessionId, String token) {
-        initializeSession(apiKey, sessionId, token);
-    }
-
-    @Override
-    public void onWebServiceCoordinatorError(Exception error) {
-        Toast.makeText(this, "Web Service error: " + error.getMessage(), Toast.LENGTH_LONG).show();
-        finish();
-    }
-
     /* Session Listener methods */
-
     @Override
     public void onConnected(Session session) {
         // initialize Publisher and set this object to listen to Publisher events
@@ -152,7 +143,7 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
         // set publisher video style to fill view
         mPublisher.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE,
                 BaseVideoRenderer.STYLE_VIDEO_FILL);
-        mPublisherViewContainer.addView(mPublisher.getView());
+        binding.publisherContainer.addView(mPublisher.getView());
         if (mPublisher.getView() instanceof GLSurfaceView) {
             ((GLSurfaceView) mPublisher.getView()).setZOrderOnTop(true);
         }
@@ -171,7 +162,7 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
             mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
             mSubscriber.setSubscriberListener(this);
             mSession.subscribe(mSubscriber);
-            mSubscriberViewContainer.addView(mSubscriber.getView());
+            binding.subscriberContainer.addView(mSubscriber.getView());
         }
     }
 
@@ -179,7 +170,7 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
     public void onStreamDropped(Session session, Stream stream) {
         if (mSubscriber != null) {
             mSubscriber = null;
-            mSubscriberViewContainer.removeAllViews();
+            binding.subscriberContainer.removeAllViews();
         }
     }
 
@@ -189,7 +180,6 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
     }
 
     /* Publisher Listener methods */
-
     @Override
     public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
     }
@@ -219,18 +209,5 @@ public class OpenTokActivity extends AppCompatActivity implements WebServiceCoor
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
         finish();
-    }
-
-    private void showConfigError(String alertTitle, final String errorMessage) {
-        new AlertDialog.Builder(this)
-                .setTitle(alertTitle)
-                .setMessage(errorMessage)
-                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        OpenTokActivity.this.finish();
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
     }
 }
