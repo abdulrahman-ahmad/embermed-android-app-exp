@@ -36,12 +36,12 @@
                 android:gravity="center"
                 android:text="@string/triage_waiting_message"
                 android:textColor="@android:color/black"
-                android:textSize="18dp" />
+                android:textSize="@dimen/triage_call_waiting_text_size" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="@dimen/triage_call_cancel_btn_margin_top"
                 android:gravity="center"
                 android:weightSum="1080">
 
