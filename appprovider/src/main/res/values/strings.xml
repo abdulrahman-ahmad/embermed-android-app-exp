@@ -16,4 +16,12 @@
     <string name="respond">Respond</string>
     <string name="respond_for_">Respond for $</string>
     <string name="away">&#160;away</string>
+    <!--Side menus-->
+    <string name="account_settings">Account Settings</string>
+    <string name="incidents_reports">Incidents Reports</string>
+    <string name="medical_profile">Medical Profile</string>
+    <string name="how_it_works">How It Works</string>
+    <string name="aed_maps">AED Maps</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="triage">Triage</string>
 </resources>

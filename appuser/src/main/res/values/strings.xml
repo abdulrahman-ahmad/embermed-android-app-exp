@@ -23,4 +23,12 @@
     <string name="no_symptoms_available">No symptoms available</string>
     <string name="error_validation_symptom_select">Please select at least one symptom.</string>
     <string name="triage_waiting_message">Triage Medical Professional\nwill be with you soon.</string>
+    <!--Side menus-->
+    <string name="account_settings">Account Settings</string>
+    <string name="incidents_reports">Incidents Reports</string>
+    <string name="medical_profile">Medical Profile</string>
+    <string name="how_it_works">How It Works</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="triage">Triage</string>
+
 </resources>

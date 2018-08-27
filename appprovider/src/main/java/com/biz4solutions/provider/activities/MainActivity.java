@@ -120,12 +120,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
+
+            navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             openNewsFeedFragment();
         } else {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
+
+            navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             openDashBoardFragment();
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
@@ -202,6 +216,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_log_in:
                         doLogOut();
+                        break;
+                    case R.id.nav_account_settings:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_incidents_reports:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_medical_profile:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_how_it_works:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_aed_maps:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.nav_contact_us:
+                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
                 }
             }
