@@ -44,4 +44,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.opentok.android:opentok-android-sdk:2.14.2'
+    api project(':apiservices')
 }
