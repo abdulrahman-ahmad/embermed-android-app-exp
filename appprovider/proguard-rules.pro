@@ -19,7 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--ignorewarnings
+#-ignorewarnings
 
 -keepclassmembers class fqcn.of.javascript.interface.for.webview {
    public *;
@@ -225,3 +225,8 @@
 -keep class com.biz4solutions.customs.** { *; }
 -keep class com.biz4solutions.utilities.** { *; }
 -keep class com.biz4solutions.services.** { *; }
+
+-dontwarn org.conscrypt.**
+-dontwarn org.codehaus.mojo.**
+-dontnote org.apache.http.**
+-dontnote com.biz4solutions.**
