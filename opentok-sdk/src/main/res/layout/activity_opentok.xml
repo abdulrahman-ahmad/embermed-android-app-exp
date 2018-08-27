@@ -43,7 +43,7 @@
                 android:layout_marginBottom="@dimen/publisher_margin_bottom"
                 android:layout_marginEnd="@dimen/publisher_right_margin"
                 android:layout_marginRight="@dimen/publisher_end_margin"
-                android:background="@color/publisher_border_color"
+                android:background="@color/white"
                 android:padding="@dimen/publisher_padding" />
 
             <LinearLayout
