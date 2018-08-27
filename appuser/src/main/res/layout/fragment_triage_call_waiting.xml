@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1535"
+        tools:ignore="SpUsage">
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="230" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="755"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter"
+            android:src="@drawable/triage_waiting" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="550"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/triage_waiting_message"
+                android:textColor="@android:color/black"
+                android:textSize="18dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:weightSum="1080">
+
+                <Button
+                    android:id="@+id/btn_submit"
+                    style="@style/BtnStyle"
+                    android:layout_width="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="385"
+                    android:background="@drawable/ripple_red_button"
+                    android:text="@string/cancel" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

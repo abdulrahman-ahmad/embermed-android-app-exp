@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments;
+package com.biz4solutions.triage.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,7 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.home.views.activities.MainActivity;
 import com.biz4solutions.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
@@ -156,7 +156,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (createEmsResponse != null && createEmsResponse.getData() != null) {
                     mainActivity.currentRequestId = createEmsResponse.getData().getId();
-                    //mainActivity.openEmsAlertCardiacCallFragment(true);
+                    mainActivity.openTriageCallWaitingFragment();
                 } else {
                     if (createEmsResponse != null) {
                         Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();

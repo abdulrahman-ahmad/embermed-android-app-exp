@@ -1,4 +1,4 @@
-package com.biz4solutions.activities;
+package com.biz4solutions.home.views.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,13 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
+import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.cardiac.views.fragments.EmsAlertCardiacCallFragment;
 import com.biz4solutions.databinding.ActivityMainBinding;
-import com.biz4solutions.fragments.DashboardFragment;
-import com.biz4solutions.fragments.EmsAlertCardiacCallFragment;
-import com.biz4solutions.fragments.EmsAlertUnconsciousFragment;
-import com.biz4solutions.fragments.NewsFeedFragment;
+import com.biz4solutions.home.views.fragments.DashboardFragment;
+import com.biz4solutions.home.views.fragments.EmsAlertUnconsciousFragment;
+import com.biz4solutions.home.views.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -38,9 +39,9 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseInstanceIdService;
 import com.biz4solutions.services.GpsServices;
+import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -356,7 +357,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         FirebaseEventUtil.getInstance().getFirebaseRequest(data.getPatientCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
                             @Override
                             public void onSuccess(EmsRequest data) {
-                                openEmsAlertCardiacCallFragment(false, data);
+                                handledFirebaseRequestData(data);
                             }
                         });
                     } else {
@@ -373,6 +374,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
+    }
+
+    private void handledFirebaseRequestData(EmsRequest data) {
+        System.out.println("aa --------Firebase Request data=" + data);
+        if (data != null) {
+            if (data.isUnconscious()) {
+                openEmsAlertCardiacCallFragment(false, data);
+            } else {
+                if (Constants.FIREBASE_STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
+                    openTriageCallWaitingFragment(data);
+                }
+            }
+        }
     }
 
     public void openEmsAlertUnconsciousFragment() {
@@ -401,6 +415,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
                     .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openTriageCallWaitingFragment() {
+        openTriageCallWaitingFragment(null);
+    }
+
+    public void openTriageCallWaitingFragment(EmsRequest data) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof TriageCallWaitingFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, TriageCallWaitingFragment.newInstance(data))
+                    .addToBackStack(TriageCallWaitingFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();

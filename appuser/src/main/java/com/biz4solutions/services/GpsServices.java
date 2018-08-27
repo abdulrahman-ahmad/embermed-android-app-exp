@@ -20,7 +20,7 @@ import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.home.views.activities.MainActivity;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -92,7 +92,7 @@ public class GpsServices extends Service implements LocationListener {
     LocationCallback locationCallbackTime = new LocationCallback() {
         @Override
         public void onLocationResult(LocationResult locationResult) {
-            System.out.println("aa ------locationResult----- " + locationResult);
+            //System.out.println("aa ------locationResult----- " + locationResult);
             if (locationResult != null) {
                 // do work here
                 onLocationChanged(locationResult.getLastLocation());
@@ -103,7 +103,7 @@ public class GpsServices extends Service implements LocationListener {
     };
 
     public void onLocationChanged(Location location) {
-        System.out.println("aa ------onLocationChanged ----- location=" + location);
+        //System.out.println("aa ------onLocationChanged ----- location=" + location);
         sendNotification(this, true);
         GpsServicesUtil.getInstance().setLatitude(location.getLatitude());
         GpsServicesUtil.getInstance().setLongitude(location.getLongitude());

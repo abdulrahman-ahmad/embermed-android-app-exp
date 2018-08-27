@@ -9,4 +9,5 @@
     <color name="state_pressed_text_color">#7b7b7b7b</color>
     <color name="text_color">#4b565b</color>
     <color name="secondary_text_color">#839096</color>
+    <color name="btn_red_color">#ff1818</color>
 </resources>

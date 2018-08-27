@@ -15,6 +15,13 @@ public class EmsRequest implements Serializable {
     private User userDetails;
     private int amount;
     private String patientDisease;
+    private String triageCallStatus;
+    private String providerFeedback;
+    private boolean isPatientFeedbackSubmitted;
+    private String providerName;
+    private String patientName;
+    private String providerSpecialization;
+    private String patientSymptoms;
 
     public String getId() {
         return id;
@@ -29,6 +36,10 @@ public class EmsRequest implements Serializable {
     }
 
     public void setUnconscious(boolean unconscious) {
+        isUnconscious = unconscious;
+    }
+
+    public void getIsUnconscious(boolean unconscious) {
         isUnconscious = unconscious;
     }
 
@@ -116,6 +127,66 @@ public class EmsRequest implements Serializable {
         this.patientDisease = patientDisease;
     }
 
+    public String getTriageCallStatus() {
+        return triageCallStatus;
+    }
+
+    public void setTriageCallStatus(String triageCallStatus) {
+        this.triageCallStatus = triageCallStatus;
+    }
+
+    public String getProviderFeedback() {
+        return providerFeedback;
+    }
+
+    public void setProviderFeedback(String providerFeedback) {
+        this.providerFeedback = providerFeedback;
+    }
+
+    public boolean isPatientFeedbackSubmitted() {
+        return isPatientFeedbackSubmitted;
+    }
+
+    public boolean getIsPatientFeedbackSubmitted() {
+        return isPatientFeedbackSubmitted;
+    }
+
+    public void setPatientFeedbackSubmitted(boolean patientFeedbackSubmitted) {
+        isPatientFeedbackSubmitted = patientFeedbackSubmitted;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public String getProviderSpecialization() {
+        return providerSpecialization;
+    }
+
+    public void setProviderSpecialization(String providerSpecialization) {
+        this.providerSpecialization = providerSpecialization;
+    }
+
+    public String getPatientSymptoms() {
+        return patientSymptoms;
+    }
+
+    public void setPatientSymptoms(String patientSymptoms) {
+        this.patientSymptoms = patientSymptoms;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -131,6 +202,13 @@ public class EmsRequest implements Serializable {
                 ", userDetails=" + userDetails +
                 ", amount=" + amount +
                 ", patientDisease='" + patientDisease + '\'' +
+                ", triageCallStatus='" + triageCallStatus + '\'' +
+                ", providerFeedback='" + providerFeedback + '\'' +
+                ", isPatientFeedbackSubmitted=" + isPatientFeedbackSubmitted +
+                ", providerName='" + providerName + '\'' +
+                ", patientName='" + patientName + '\'' +
+                ", providerSpecialization='" + providerSpecialization + '\'' +
+                ", patientSymptoms='" + patientSymptoms + '\'' +
                 '}';
     }
 }

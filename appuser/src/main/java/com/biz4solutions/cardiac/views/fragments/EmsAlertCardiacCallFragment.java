@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments;
+package com.biz4solutions.cardiac.views.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.activities.MainActivity;
+import com.biz4solutions.home.views.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
