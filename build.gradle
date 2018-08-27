@@ -4,7 +4,6 @@ buildscript {
     
     repositories {
         google()
-        maven { url 'https://tokbox.bintray.com/maven' }
         jcenter()
         mavenCentral()
     }

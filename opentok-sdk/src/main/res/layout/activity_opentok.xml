@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.biz4solutions.opentok.sdk.OpenTokActivity">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <FrameLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <FrameLayout
             android:id="@+id/subscriber_container"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="#777777" />
 
         <FrameLayout
@@ -39,8 +34,8 @@
                 android:id="@+id/tv_call_duration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15:49"
                 android:padding="15dp"
+                android:text="15:49"
                 android:textColor="#FFFFFF" />
 
             <LinearLayout
@@ -57,12 +52,11 @@
 
                 <TextView
                     android:id="@+id/tv_end_call"
-                    android:text="End Call"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="15dp"
-                    />
+                    android:text="End Call" />
 
                 <ImageView
                     android:id="@+id/iv_mute_video"
@@ -74,4 +68,4 @@
         </LinearLayout>
     </FrameLayout>
 
-</android.support.constraint.ConstraintLayout>
+</layout>

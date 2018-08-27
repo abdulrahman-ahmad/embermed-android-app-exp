@@ -383,8 +383,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openEmsAlertCardiacCallFragment(false, data);
             } else {
                 if (Constants.FIREBASE_STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
-                    openTriageCallWaitingFragment(data);
                 }
+                openTriageCallWaitingFragment(data);
             }
         }
     }

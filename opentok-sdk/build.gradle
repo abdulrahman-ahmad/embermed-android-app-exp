@@ -2,27 +2,34 @@ apply plugin: 'com.android.feature'
 
 android {
     compileSdkVersion 27
-
+    baseFeature true
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         flavorDimensions "default"
-        //testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
-
+    dataBinding {
+        enabled = true
+    }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            useProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            debuggable true
+            /*minifyEnabled true
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'*/
         }
     }
     productFlavors {
         dev {
         }
-        qaTest{
+        qaTest {
         }
         staging {
         }
@@ -33,16 +40,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    //implementation project(':inapppurchaselib')
-    //testImplementation 'junit:junit:4.12'
-    //androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    //androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    api 'com.opentok.android:opentok-android-sdk:2.14.2'
-    api 'pub.devrel:easypermissions:0.4.0'
     api 'com.android.support:appcompat-v7:27.1.1'
-    api 'com.android.support.constraint:constraint-layout:1.0.2'
+    api 'com.opentok.android:opentok-android-sdk:2.14.2'
     api 'com.android.volley:volley:1.0.0'
-    api project(':apiservices')
-    //application project(':app')
 }
