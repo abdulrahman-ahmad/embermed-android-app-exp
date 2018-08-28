@@ -10,14 +10,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
-import com.biz4solutions.triage.views.fragments.SymptomsFragment;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.response.CreateEmsResponse;
+import com.biz4solutions.triage.views.fragments.SymptomsFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -72,7 +72,8 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 getUserLocation();
                 break;
             case R.id.btn_no:
-                openSymptomsFragment();
+                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                //openSymptomsFragment();
                 break;
         }
     }

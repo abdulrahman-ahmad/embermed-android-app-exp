@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
-
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
@@ -133,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
-
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
@@ -204,6 +202,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_dashboard:
                         reOpenDashBoardFragment();
                         break;
+                    case R.id.nav_news_feed:
+                        openNewsFeedFragment();
+                        break;
                     case R.id.nav_log_out:
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
                             @Override
@@ -217,22 +218,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_log_in:
                         doLogOut();
                         break;
-                    case R.id.nav_account_settings:
-                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_incidents_reports:
-                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_medical_profile:
-                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_how_it_works:
-                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_aed_maps:
-                        Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_contact_us:
+                    default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
                 }
@@ -293,13 +279,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void openDashBoardFragment() {
-        /*Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
-            Intent intent = new Intent();
-            intent.setAction(Constants.UPDATE_HOME_RECEIVER);
-            sendBroadcast(intent);
             return;
-        }*/
+        }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, DashboardFragment.newInstance())
@@ -308,6 +291,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void openNewsFeedFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof NewsFeedFragment) {
+            return;
+        }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
@@ -341,6 +328,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             switch (fragmentName) {
                 case NewsFeedFragment.fragmentName:
+                    String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+                    if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                        getSupportFragmentManager().popBackStack();
+                        break;
+                    }
                 case DashboardFragment.fragmentName:
                     if (doubleBackToExitPressedOnce) {
                         finish();
