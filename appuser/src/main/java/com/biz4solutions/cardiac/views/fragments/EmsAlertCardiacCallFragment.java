@@ -214,6 +214,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                         binding.headerArriving.setVisibility(View.VISIBLE);
                         binding.ambulanceLayout.setVisibility(View.VISIBLE);
                         binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
+                        binding.ambulanceTopLight.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.blinking));
                         if (!isNeedToShowQue) {
                             binding.btnYes.performClick();
                         }
