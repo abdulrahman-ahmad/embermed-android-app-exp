@@ -9,10 +9,12 @@
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
     <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
     <string name="ems_has_been_notified">EMS has been notified</string>
+    <string name="ems_has_been_accepted">EMS has been accepted</string>
     <string name="someone_will_be_contacting_you_immediately">Someone will be contacting\nyou immediately.</string>
-    <string name="ember_person_will_connect_with_you_shortly">Ember medics will connect with you shortly</string>
+    <string name="someone_will_be_arriving_message">Someone will be arriving at\nyour location soon.</string>
+    <string name="ember_person_will_connect_with_you_shortly">Ember Medics will connect with you shortly</string>
     <string name="does_the_victim_have_pulse">Does the victim have pulse?</string>
-    <string name="ember_person_coming_in">Ember Medics Coming in:</string>
+    <string name="ember_person_coming_in">Ember Medics coming in:</string>
     <string name="cpr_tutorial"><u>CPR tutorial</u></string>
     <string name="cpr_tutorial_message">If victim pulse have stopped, please go through our</string>
     <string name="cpr_tutorial_title">CPR Tutorial</string>
@@ -31,5 +33,8 @@
     <string name="contact_us">Contact Us</string>
     <string name="triage">Triage</string>
     <string name="call_911">Call 911</string>
+    <string name="message_request_completed">Your request was completed.</string>
+    <string name="message_request_rejected">Your request was rejected.</string>
+    <string name="message_request_cancelled">Your request was cancelled.</string>
 
 </resources>

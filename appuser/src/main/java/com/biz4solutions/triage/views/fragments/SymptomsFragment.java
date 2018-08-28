@@ -15,12 +15,12 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.databinding.FragmentSymptomsBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.Symptom;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.response.CreateEmsResponse;
@@ -189,10 +189,8 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (symptomList != null && symptomList.size() > position - 1) {
-            if (adapter != null) {
-                adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
-            }
+        if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
+            adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
         }
     }
 

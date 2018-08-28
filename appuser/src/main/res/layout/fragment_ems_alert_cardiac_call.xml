@@ -28,13 +28,13 @@
         tools:ignore="SpUsage,UnusedAttribute">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/header_waiting"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="440"
             android:background="#ebf5fa">
 
             <LinearLayout
-                android:id="@+id/header_layout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/cardiac_call_header_layout_margin_bottom"
@@ -63,6 +63,49 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/someone_will_be_contacting_you_immediately"
+                    android:textColor="@color/secondary_text_color"
+                    android:textSize="@dimen/cardiac_call_small_text_size" />
+
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/header_arriving"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="440"
+            android:background="#ebf5fa"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/cardiac_call_header_layout_margin_bottom"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/cardiac_call_header_layout_margin_top"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/ems_has_been_accepted"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/cardiac_call_big_text_size" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/someone_will_be_arriving_message"
                     android:textColor="@color/secondary_text_color"
                     android:textSize="@dimen/cardiac_call_small_text_size" />
 

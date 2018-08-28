@@ -40,7 +40,6 @@ import com.biz4solutions.provider.fragments.DashboardFragment;
 import com.biz4solutions.provider.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseInstanceIdService;
 import com.biz4solutions.provider.services.GpsServices;
-import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -66,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -118,24 +117,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (userAuthKey == null || userAuthKey.isEmpty()) {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             openNewsFeedFragment();
         } else {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             openDashBoardFragment();

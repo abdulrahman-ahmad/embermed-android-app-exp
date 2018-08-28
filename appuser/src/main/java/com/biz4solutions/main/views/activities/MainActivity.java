@@ -42,7 +42,6 @@ import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.ExceptionHandler;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -112,27 +111,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (userAuthKey == null || userAuthKey.isEmpty()) {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             openNewsFeedFragment();
         } else {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_how_it_works).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             FirebaseInstanceIdService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
@@ -415,7 +410,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (data.getIsUnconscious()) {
                 openEmsAlertCardiacCallFragment(false, data);
             } else {
-                if (Constants.FIREBASE_STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
+                if (Constants.STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
                     openTriageCallWaitingFragment(data);
                 }
             }

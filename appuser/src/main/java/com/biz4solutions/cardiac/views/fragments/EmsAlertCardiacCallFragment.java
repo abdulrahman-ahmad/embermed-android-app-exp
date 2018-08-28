@@ -14,12 +14,12 @@ import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
@@ -206,10 +206,12 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         //System.out.println("aa ---------- EmsRequest=" + request);
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
-                case "ACCEPTED":
+                case Constants.STATUS_ACCEPTED:
                     if (!isAcceptedOpen) {
                         isAcceptedOpen = true;
                         binding.waitingLayout.setVisibility(View.GONE);
+                        binding.headerWaiting.setVisibility(View.GONE);
+                        binding.headerArriving.setVisibility(View.VISIBLE);
                         binding.ambulanceLayout.setVisibility(View.VISIBLE);
                         binding.ambulanceImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_right));
                         if (!isNeedToShowQue) {
@@ -217,24 +219,24 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                         }
                     }
                     break;
-                case "COMPLETED":
+                case Constants.STATUS_COMPLETED:
                     if (!isCRCDone) {
                         isCRCDone = true;
-                        Toast.makeText(mainActivity, "Your request was completed.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, R.string.message_request_completed, Toast.LENGTH_SHORT).show();
                         mainActivity.reOpenDashBoardFragment();
                     }
                     break;
-                case "REJECTED":
+                case Constants.STATUS_REJECTED:
                     if (!isCRCDone) {
                         isCRCDone = true;
-                        Toast.makeText(mainActivity, "Your request was rejected.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, R.string.message_request_rejected, Toast.LENGTH_SHORT).show();
                         mainActivity.reOpenDashBoardFragment();
                     }
                     break;
-                case "CANCELLED":
+                case Constants.STATUS_CANCELLED:
                     if (!isCRCDone) {
                         isCRCDone = true;
-                        Toast.makeText(mainActivity, "Your request was cancelled.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, R.string.message_request_cancelled, Toast.LENGTH_SHORT).show();
                         mainActivity.reOpenDashBoardFragment();
                     }
                     break;
