@@ -46,7 +46,7 @@
                 android:weightSum="1080">
 
                 <Button
-                    android:id="@+id/btn_submit"
+                    android:id="@+id/btn_cancel_request"
                     style="@style/BtnStyle"
                     android:layout_width="0dp"
                     android:layout_margin="0dp"

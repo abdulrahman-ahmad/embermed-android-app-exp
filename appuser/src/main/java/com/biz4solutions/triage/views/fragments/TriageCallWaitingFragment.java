@@ -17,7 +17,7 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
-public class TriageCallWaitingFragment extends Fragment {
+public class TriageCallWaitingFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "TriageCallWaitingFragment";
     public static final String REQUEST_DETAILS = "REQUEST_DETAILS";
@@ -61,6 +61,7 @@ public class TriageCallWaitingFragment extends Fragment {
                 //setCardiacCallView();
             }
         });
+        binding.btnCancelRequest.setOnClickListener(this);
         return binding.getRoot();
     }
 
@@ -75,5 +76,14 @@ public class TriageCallWaitingFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_cancel_request:
+                mainActivity.showCancelRequestAlert();
+                break;
+        }
     }
 }
