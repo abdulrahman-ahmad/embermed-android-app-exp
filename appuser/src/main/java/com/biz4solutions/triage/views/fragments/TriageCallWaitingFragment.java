@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biz4solutions.R;
-import com.biz4solutions.home.views.activities.MainActivity;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.databinding.FragmentTriageCallWaitingBinding;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.models.EmsRequest;

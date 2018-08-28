@@ -1,4 +1,4 @@
-package com.biz4solutions.home.views.activities;
+package com.biz4solutions.main.views.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -26,9 +26,9 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.cardiac.views.fragments.EmsAlertCardiacCallFragment;
 import com.biz4solutions.databinding.ActivityMainBinding;
-import com.biz4solutions.home.views.fragments.DashboardFragment;
-import com.biz4solutions.home.views.fragments.EmsAlertUnconsciousFragment;
-import com.biz4solutions.home.views.fragments.NewsFeedFragment;
+import com.biz4solutions.main.views.fragments.DashboardFragment;
+import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
+import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;

@@ -20,7 +20,7 @@ import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
-import com.biz4solutions.home.views.activities.MainActivity;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;

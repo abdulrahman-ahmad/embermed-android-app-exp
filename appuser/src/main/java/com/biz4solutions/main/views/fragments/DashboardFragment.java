@@ -1,4 +1,4 @@
-package com.biz4solutions.home.views.fragments;
+package com.biz4solutions.main.views.fragments;
 
 import android.Manifest;
 import android.content.Context;
@@ -17,7 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biz4solutions.R;
-import com.biz4solutions.home.views.activities.MainActivity;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
 import com.biz4solutions.utilities.CommonFunctions;

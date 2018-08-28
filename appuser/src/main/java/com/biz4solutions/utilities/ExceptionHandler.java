@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 
-import com.biz4solutions.home.views.activities.CrashActivity;
+import com.biz4solutions.main.views.activities.CrashActivity;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;

@@ -21,7 +21,7 @@
         android:theme="@style/MainAppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".home.views.activities.SplashActivity"
+            android:name=".main.views.activities.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
             <intent-filter>
@@ -32,13 +32,13 @@
         </activity>
 
         <activity
-            android:name=".home.views.activities.MainActivity"
+            android:name=".main.views.activities.MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainActivityTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
-            android:name=".home.views.activities.CrashActivity"
+            android:name=".main.views.activities.CrashActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 

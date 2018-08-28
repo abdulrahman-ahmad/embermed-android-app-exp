@@ -1,4 +1,4 @@
-package com.biz4solutions.home.views.fragments;
+package com.biz4solutions.main.views.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.home.views.activities.MainActivity;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
 import com.biz4solutions.triage.views.fragments.SymptomsFragment;
