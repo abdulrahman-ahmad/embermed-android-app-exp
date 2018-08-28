@@ -113,7 +113,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
-
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
@@ -127,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_news_feed).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
-
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
@@ -420,8 +418,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 openEmsAlertCardiacCallFragment(false, data);
             } else {
                 if (Constants.FIREBASE_STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
+                    openTriageCallWaitingFragment(data);
                 }
-                openTriageCallWaitingFragment(data);
             }
         }
     }
