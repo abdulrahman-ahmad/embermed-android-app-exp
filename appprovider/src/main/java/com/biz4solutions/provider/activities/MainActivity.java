@@ -40,6 +40,7 @@ import com.biz4solutions.provider.fragments.DashboardFragment;
 import com.biz4solutions.provider.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseInstanceIdService;
 import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        //Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

@@ -18,7 +18,7 @@
     <string name="away">&#160;away</string>
     <!--Side menus-->
     <string name="account_settings">Account Settings</string>
-    <string name="incidents_reports">Incidents Reports</string>
+    <string name="incidents_reports">Incident Reports</string>
     <string name="medical_profile">Medical Profile</string>
     <string name="how_it_works">How It Works</string>
     <string name="aed_maps">AED Maps</string>
