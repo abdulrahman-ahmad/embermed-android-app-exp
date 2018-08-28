@@ -411,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void handledFirebaseRequestData(EmsRequest data) {
         System.out.println("aa --------Firebase Request data=" + data);
         if (data != null) {
-            if (data.isUnconscious()) {
+            if (data.getIsUnconscious()) {
                 openEmsAlertCardiacCallFragment(false, data);
             } else {
                 if (Constants.FIREBASE_STATUS_PENDING.equals("" + data.getTriageCallStatus())) {

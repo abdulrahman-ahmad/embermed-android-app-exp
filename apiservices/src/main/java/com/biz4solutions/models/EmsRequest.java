@@ -31,16 +31,8 @@ public class EmsRequest implements Serializable {
         this.id = id;
     }
 
-    public boolean isUnconscious() {
+    public boolean getIsUnconscious() {
         return isUnconscious;
-    }
-
-    public void setUnconscious(boolean unconscious) {
-        isUnconscious = unconscious;
-    }
-
-    public void getIsUnconscious(boolean unconscious) {
-        isUnconscious = unconscious;
     }
 
     public void setIsUnconscious(boolean unconscious) {
