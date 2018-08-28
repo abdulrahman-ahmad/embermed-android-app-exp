@@ -10,7 +10,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.content.ContextCompat;
 
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.google.firebase.messaging.RemoteMessage;
 
 import java.util.Date;

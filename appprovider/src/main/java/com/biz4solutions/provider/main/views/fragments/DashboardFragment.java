@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.fragments;
+package com.biz4solutions.provider.main.views.fragments;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -32,7 +32,7 @@ import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.adapters.RequestListViewAdapter;
 import com.biz4solutions.provider.application.Application;
 import com.biz4solutions.provider.databinding.FragmentDashboardBinding;

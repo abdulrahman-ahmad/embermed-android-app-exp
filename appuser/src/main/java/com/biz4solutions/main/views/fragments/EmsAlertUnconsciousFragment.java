@@ -72,8 +72,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 getUserLocation();
                 break;
             case R.id.btn_no:
-                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                //openSymptomsFragment();
+                openSymptomsFragment();
                 break;
         }
     }

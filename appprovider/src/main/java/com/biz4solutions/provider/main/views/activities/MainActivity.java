@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.activities;
+package com.biz4solutions.provider.main.views.activities;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,9 +35,9 @@ import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
-import com.biz4solutions.provider.fragments.CardiacCallDetailsFragment;
-import com.biz4solutions.provider.fragments.DashboardFragment;
-import com.biz4solutions.provider.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
+import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
+import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseInstanceIdService;
 import com.biz4solutions.provider.services.GpsServices;
 import com.biz4solutions.provider.utilities.ExceptionHandler;

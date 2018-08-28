@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.activities;
+package com.biz4solutions.provider.main.views.activities;
 
 import android.content.Intent;
 import android.net.Uri;

@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.fragments;
+package com.biz4solutions.provider.triage.views.fragments;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -40,8 +40,9 @@ import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -63,9 +64,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 
-public class CardiacCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener {
+public class TriageCallDetailsFragment extends Fragment implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
-    public static final String fragmentName = "CardiacCallDetailsFragment";
+    public static final String fragmentName = "TriageCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private final static String DISTANCE_STR = "DISTANCE_STR";
     private MainActivity mainActivity;
@@ -94,12 +95,12 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private boolean isTimerReset = true;
     private BroadcastReceiver clockBroadcastReceiver;
 
-    public CardiacCallDetailsFragment() {
+    public TriageCallDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static CardiacCallDetailsFragment newInstance(EmsRequest requestDetails, String distanceStr) {
-        CardiacCallDetailsFragment fragment = new CardiacCallDetailsFragment();
+    public static TriageCallDetailsFragment newInstance(EmsRequest requestDetails, String distanceStr) {
+        TriageCallDetailsFragment fragment = new TriageCallDetailsFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_DETAILS, requestDetails);
         args.putString(DISTANCE_STR, distanceStr);

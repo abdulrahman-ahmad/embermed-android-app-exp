@@ -20,7 +20,7 @@ import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 
-import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
