@@ -199,7 +199,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                     }
                 };
             }
-            mHandler.postDelayed(mRunnable, 30000); // 30 secs
+            mHandler.postDelayed(mRunnable, 15000); // 15 secs
         }
     }
 
