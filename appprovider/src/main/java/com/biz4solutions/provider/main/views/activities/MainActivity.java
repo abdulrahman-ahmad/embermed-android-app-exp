@@ -38,7 +38,7 @@ import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFrag
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
-import com.biz4solutions.provider.services.FirebaseInstanceIdService;
+import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
@@ -135,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             openDashBoardFragment();
-            FirebaseInstanceIdService.setFcmToken(MainActivity.this);
+            FirebaseMessagingService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override
                 public void onSuccess(Boolean data) {

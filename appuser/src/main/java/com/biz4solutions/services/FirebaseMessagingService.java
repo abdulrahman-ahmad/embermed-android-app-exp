@@ -89,7 +89,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);
-        System.out.println("aa ---------- onNewToken=" + s);
         sendRegistrationToServer(s, FirebaseMessagingService.this);
     }
 
@@ -121,7 +120,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     public static void setFcmToken(final Context context) {
-        System.out.println("aa ---------- setFcmToken");
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                     @Override
@@ -129,7 +127,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                         if (task.isSuccessful()) {
                             // Get new Instance ID token
                             String token = task.getResult().getToken();
-                            System.out.println("aa ----------FirebaseInstanceId token=" + token);
                             sendRegistrationToServer(token, context);
                         }
                     }
