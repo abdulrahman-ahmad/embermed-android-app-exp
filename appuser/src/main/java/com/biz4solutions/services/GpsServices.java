@@ -37,8 +37,8 @@ public class GpsServices extends Service implements LocationListener {
     public static boolean isLocationUpdateRunning;
     public final long UPDATE_INTERVAL = 500;  /* 0.5 sec */
     public final long FASTEST_INTERVAL = 200; /* 0.2 sec*/
-    public static final int NOTIFICATION_ID = 200;
-    public static final String CHANNEL_ID = "200";
+    private static final int NOTIFICATION_ID = 200;
+    private static final String CHANNEL_ID = "200";
     private FusedLocationProviderClient fusedLocationProviderClient;
 
 

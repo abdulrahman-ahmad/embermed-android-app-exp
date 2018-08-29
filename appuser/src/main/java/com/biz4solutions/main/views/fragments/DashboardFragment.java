@@ -17,9 +17,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.biz4solutions.R;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 
 public class DashboardFragment extends Fragment {
@@ -61,6 +61,14 @@ public class DashboardFragment extends Fragment {
         });
         isLocationPermissionGranted(101);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mainActivity != null) {
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+        }
     }
 
     @Override

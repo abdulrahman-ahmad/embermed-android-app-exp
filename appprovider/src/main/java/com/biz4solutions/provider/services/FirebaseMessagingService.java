@@ -1,14 +1,15 @@
 package com.biz4solutions.provider.services;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -22,7 +23,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.RemoteMessage;
 
-import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -31,6 +31,9 @@ import java.util.HashMap;
  */
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
+
+    private static final int NOTIFICATION_ID = 202;
+    private static final String CHANNEL_ID = "202";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -51,39 +54,30 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    public static void sendNotification(Context context, String message) {
-        int notificationId = (int) new Date().getTime();
-        Intent intent = new Intent(context, MainActivity.class);
-        //intent.setComponent(new ComponentName("com.biz4solutions.activities", "MainActivity"));
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, notificationId, intent, PendingIntent.FLAG_ONE_SHOT);
-        //int appIcon = getApplicationContext().getApplicationInfo().icon;
+    public void sendNotification(Service service, String message) {
+        Intent intent = new Intent(service, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
-        Bitmap image = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_logo);
-
-        android.support.v4.app.NotificationCompat.Builder builder =
-                new android.support.v4.app.NotificationCompat.Builder(context);
-        // Big Text Style
-        android.support.v4.app.NotificationCompat.BigTextStyle style
-                = new android.support.v4.app.NotificationCompat.BigTextStyle(builder);
-
-        style.bigText(message).setBigContentTitle(context.getString(context.getApplicationContext().getApplicationInfo().labelRes));
-
-        Notification notification = builder
-                .setStyle(style)
-                .setColor(ContextCompat.getColor(context, R.color.white))
-                .setLargeIcon(image)
-                .setSmallIcon(R.drawable.ic_logo)
-                .setContentTitle(context.getString(context.getApplicationContext().getApplicationInfo().labelRes))
-                .setContentText(message)
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build();
-
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, notification);
+        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (notificationManager != null) {
+                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                        CHANNEL_ID + " Notification Channel",
+                        NotificationManager.IMPORTANCE_LOW);
+                notificationManager.createNotificationChannel(channel);
+            }
         }
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, CHANNEL_ID)
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle(service.getString(R.string.app_name))
+                .setOngoing(true)
+                .setAutoCancel(false)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message)
+                .setContentIntent(pendingIntent);
+        //addActions(service, mNotifyBuilder);
+        Notification notification = mNotifyBuilder.build();
+        service.startForeground(NOTIFICATION_ID, notification);
     }
 
     @Override
