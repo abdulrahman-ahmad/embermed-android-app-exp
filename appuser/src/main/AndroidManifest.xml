@@ -57,13 +57,6 @@
             </intent-filter>
         </service>
         <service
-            android:name=".services.FirebaseInstanceIdService"
-            tools:ignore="ExportedService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service
             android:name=".services.GpsServices"
             android:enabled="true"
             android:exported="true"

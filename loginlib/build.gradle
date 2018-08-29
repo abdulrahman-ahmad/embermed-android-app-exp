@@ -10,7 +10,7 @@ android {
         versionName "1.0"
         flavorDimensions "default"
 
-        buildConfigField "String", "GOOGLE_AUTH_CLIENT_ID", '"999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com"'
+        buildConfigField "String", "GOOGLE_AUTH_CLIENT_ID", '"978641682696-dvk8h2j9g9r36vhh5g3bqdkco7rscpsn.apps.googleusercontent.com"'
         buildConfigField "String", "FIREBASE_PASSWORD", '"~!@#$%^&*()_+"'
     }
     dataBinding {

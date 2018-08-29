@@ -8,14 +8,14 @@ android {
         versionCode 3
         versionName "0.0.3"
         flavorDimensions "default"
-        applicationId "com.osiris.osirisbio.provider"
+        applicationId "com.ember.medics"
         multiDexEnabled true
 
         def addConstant = { constantName, constantValue ->
             manifestPlaceholders = [(constantName): constantValue]
             buildConfigField "String", "${constantName}", "\"${constantValue}\""
         }
-        addConstant("GOOGLE_API_KEY", "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M")
+        addConstant("GOOGLE_API_KEY", "AIzaSyB4Lr5filcplh4r4vau5KNEWS1IwzRxLjI")
     }
 
     signingConfigs {
