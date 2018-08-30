@@ -166,40 +166,48 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                     isTimerReset = false;
                     List<Location> locations = new ArrayList<>();
                     locations.add(location);
-                    new ApiServices().getDistanceDuration(mainActivity, "metric", request.getLatitude(), request.getLongitude(), locations, new RestClientResponse() {
-                        @Override
-                        public void onSuccess(Object response, int statusCode) {
-                            isApiInProgress = false;
-                            GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
-                            if (durationResponse != null
-                                    && durationResponse.getRows() != null
-                                    && !durationResponse.getRows().isEmpty()
-                                    && durationResponse.getRows().get(0).getElements() != null
-                                    && !durationResponse.getRows().get(0).getElements().isEmpty()
-                                    && durationResponse.getRows().get(0).getElements().get(0).getDuration() != null) {
-                                int timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
-                                int min = timeInSec / 60;
-                                //System.out.println("aa ------- min=" + min);
-                                if (min <= 1) {
-                                    min = 1;
-                                    arrivalTimeUnit.set(getString(R.string.min));
-                                } else {
-                                    arrivalTimeUnit.set(getString(R.string.mins));
-                                }
-                                loaderVisibility.set(false);
-                                arrivalTimeInMin.set("" + min);
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(String errorMessage, int statusCode) {
-                            isApiInProgress = false;
-                            System.out.println("aa ------ errorMessage=" + errorMessage);
-                        }
-                    });
+                    getDistanceDuration(locations);
                 }
             });
         }
+    }
+
+    private void getDistanceDuration(List<Location> locations) {
+        new ApiServices().getDistanceDuration(mainActivity, "metric", request.getLatitude(), request.getLongitude(), locations, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                try {
+                    isApiInProgress = false;
+                    GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                    if (durationResponse != null
+                            && durationResponse.getRows() != null
+                            && !durationResponse.getRows().isEmpty()
+                            && durationResponse.getRows().get(0).getElements() != null
+                            && !durationResponse.getRows().get(0).getElements().isEmpty()
+                            && durationResponse.getRows().get(0).getElements().get(0).getDuration() != null) {
+                        int timeInSec = durationResponse.getRows().get(0).getElements().get(0).getDuration().getValue();
+                        int min = timeInSec / 60;
+                        //System.out.println("aa ------- min=" + min);
+                        if (min <= 1) {
+                            min = 1;
+                            arrivalTimeUnit.set(getString(R.string.min));
+                        } else {
+                            arrivalTimeUnit.set(getString(R.string.mins));
+                        }
+                        loaderVisibility.set(false);
+                        arrivalTimeInMin.set("" + min);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                isApiInProgress = false;
+                System.out.println("aa ------ errorMessage=" + errorMessage);
+            }
+        });
     }
 
     private void setCardiacCallView() {

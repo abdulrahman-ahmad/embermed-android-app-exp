@@ -26,4 +26,14 @@
     <string name="aed_maps">AED Maps</string>
     <string name="contact_us">Contact Us</string>
     <string name="triage">Triage</string>
+
+    <string name="submit">Submit</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="is_victim_life_saved">Is victim life saved?</string>
+    <string name="title">Title</string>
+    <string name="comment">Comment</string>
+    <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
+    <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
+    <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
+    <string name="submit_incident_report_message">Are you sure, you want to submit this incident report?</string>
 </resources>

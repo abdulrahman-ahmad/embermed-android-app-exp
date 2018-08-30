@@ -62,7 +62,7 @@ android {
     productFlavors {
         dev {
         }
-        qaTest{
+        qaTest {
         }
         staging {
         }

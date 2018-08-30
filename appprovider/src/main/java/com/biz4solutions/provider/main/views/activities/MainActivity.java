@@ -35,6 +35,7 @@ import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
+import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
@@ -298,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    private void reOpenDashBoardFragment() {
+    public void reOpenDashBoardFragment() {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof DashboardFragment) {
@@ -308,6 +309,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void openCardiacIncidentReportFragment(EmsRequest requestDetails) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof CardiacIncidentReportFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, CardiacIncidentReportFragment.newInstance(requestDetails))
+                .addToBackStack(CardiacIncidentReportFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 
     @Override
@@ -345,6 +359,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case CardiacCallDetailsFragment.fragmentName:
                     showRejectRequestAlert();
+                    break;
+                case CardiacIncidentReportFragment.fragmentName:
+                    reOpenDashBoardFragment();
                     break;
                 default:
                     getSupportFragmentManager().popBackStack();

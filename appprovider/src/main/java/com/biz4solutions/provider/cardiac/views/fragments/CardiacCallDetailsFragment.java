@@ -40,8 +40,8 @@ import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.NavigationUtil;
@@ -136,13 +136,17 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             setCardiacCallView();
         }
         initView();
-        binding.btnRespond.setOnClickListener(this);
-        binding.btnSubmitReport.setOnClickListener(this);
-        binding.btnGetDirection.setOnClickListener(this);
+        initClickListeners();
         setDistanceValue(distanceStr);
         reSetTimer();
         addClockBroadcastReceiver();
         return binding.getRoot();
+    }
+
+    private void initClickListeners() {
+        binding.btnRespond.setOnClickListener(this);
+        binding.btnSubmitReport.setOnClickListener(this);
+        binding.btnGetDirection.setOnClickListener(this);
     }
 
     private void initBindingView(@NonNull LayoutInflater inflater, ViewGroup container) {
@@ -241,7 +245,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
             }
             if (requestDetails.getPatientDisease() != null) {
-                binding.txtPatientDisease.setText(requestDetails.getPatientDisease());
+                binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientDisease());
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
@@ -437,7 +441,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+//                mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+                mainActivity.openCardiacIncidentReportFragment(requestDetails);
             }
 
             @Override
@@ -447,35 +452,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             }
         });
     }
-
-    /*private void submitIncidentReport() {
-        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
-            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
-            return;
-        }
-        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        IncidentReport body = new IncidentReport();
-        body.setComment("Test Comment");
-        body.setVictimLifeSaved(true);
-        body.setRequestId(requestId);
-        body.setTitle("Test Title");
-
-        new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {
-            @Override
-            public void onSuccess(Object response, int statusCode) {
-                EmptyResponse createEmsResponse = (EmptyResponse) response;
-                CommonFunctions.getInstance().dismissProgressDialog();
-                Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
-            }
-
-            @Override
-            public void onFailure(String errorMessage, int statusCode) {
-                CommonFunctions.getInstance().dismissProgressDialog();
-                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
-            }
-        });
-    }*/
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -676,16 +652,20 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         new ApiServices().getDistanceDuration(mainActivity, "imperial", requestDetails.getLatitude(), requestDetails.getLongitude(), locations, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                isApiInProgress = false;
-                GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
-                //System.out.println("aa ------------ durationResponse" + durationResponse);
-                if (durationResponse != null
-                        && durationResponse.getRows() != null
-                        && !durationResponse.getRows().isEmpty()
-                        && durationResponse.getRows().get(0).getElements() != null
-                        && !durationResponse.getRows().get(0).getElements().isEmpty()
-                        && durationResponse.getRows().get(0).getElements().get(0).getDistance() != null) {
-                    setDistanceValue(durationResponse.getRows().get(0).getElements().get(0).getDistance().getText());
+                try {
+                    isApiInProgress = false;
+                    GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                    //System.out.println("aa ------------ durationResponse" + durationResponse);
+                    if (durationResponse != null
+                            && durationResponse.getRows() != null
+                            && !durationResponse.getRows().isEmpty()
+                            && durationResponse.getRows().get(0).getElements() != null
+                            && !durationResponse.getRows().get(0).getElements().isEmpty()
+                            && durationResponse.getRows().get(0).getElements().get(0).getDistance() != null) {
+                        setDistanceValue(durationResponse.getRows().get(0).getElements().get(0).getDistance().getText());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

@@ -241,7 +241,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
                 binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
             }
             if (requestDetails.getPatientDisease() != null) {
-                binding.txtPatientDisease.setText(requestDetails.getPatientDisease());
+                binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientDisease());
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
@@ -676,16 +676,20 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         new ApiServices().getDistanceDuration(mainActivity, "imperial", requestDetails.getLatitude(), requestDetails.getLongitude(), locations, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                isApiInProgress = false;
-                GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
-                //System.out.println("aa ------------ durationResponse" + durationResponse);
-                if (durationResponse != null
-                        && durationResponse.getRows() != null
-                        && !durationResponse.getRows().isEmpty()
-                        && durationResponse.getRows().get(0).getElements() != null
-                        && !durationResponse.getRows().get(0).getElements().isEmpty()
-                        && durationResponse.getRows().get(0).getElements().get(0).getDistance() != null) {
-                    setDistanceValue(durationResponse.getRows().get(0).getElements().get(0).getDistance().getText());
+                try {
+                    isApiInProgress = false;
+                    GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                    //System.out.println("aa ------------ durationResponse" + durationResponse);
+                    if (durationResponse != null
+                            && durationResponse.getRows() != null
+                            && !durationResponse.getRows().isEmpty()
+                            && durationResponse.getRows().get(0).getElements() != null
+                            && !durationResponse.getRows().get(0).getElements().isEmpty()
+                            && durationResponse.getRows().get(0).getElements().get(0).getDistance() != null) {
+                        setDistanceValue(durationResponse.getRows().get(0).getElements().get(0).getDistance().getText());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

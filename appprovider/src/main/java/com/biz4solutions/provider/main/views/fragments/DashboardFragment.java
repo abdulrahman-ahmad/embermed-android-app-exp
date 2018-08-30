@@ -377,41 +377,49 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                     locations.add(new Location(request.getLatitude(), request.getLongitude()));
                     distanceHashMap.put(request.getId(), "");
                 }
-                new ApiServices().getDistanceDuration(mainActivity, "imperial", latitude, longitude, locations, new RestClientResponse() {
-                    @Override
-                    public void onSuccess(Object response, int statusCode) {
-                        isApiInProgress = false;
-                        GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
-                        //System.out.println("aa ------------ durationResponse" + durationResponse);
-                        if (durationResponse != null
-                                && durationResponse.getRows() != null
-                                && !durationResponse.getRows().isEmpty()
-                                && durationResponse.getRows().get(0).getElements() != null
-                                && !durationResponse.getRows().get(0).getElements().isEmpty()) {
-                            for (int i = 0; i < durationResponse.getRows().get(0).getElements().size(); i++) {
-                                if (durationResponse.getRows().get(0).getElements().get(i).getDistance() != null
-                                        && !tempEmsRequests.isEmpty()
-                                        && i < tempEmsRequests.size()) {
-                                    distanceHashMap.put(tempEmsRequests.get(i).getId(), durationResponse.getRows().get(0).getElements().get(i).getDistance().getText());
-                                }
-                            }
-                            if (adapter != null) {
-                                adapter.add(distanceHashMap);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(String errorMessage, int statusCode) {
-                        isApiInProgress = false;
-                        System.out.println("aa ------ errorMessage=" + errorMessage);
-                    }
-                });
+                getDistanceDuration(latitude, longitude, locations, tempEmsRequests);
             }
 
             @Override
             public void onError() {
 
+            }
+        });
+    }
+
+    private void getDistanceDuration(double latitude, double longitude, List<Location> locations, final List<EmsRequest> tempEmsRequests) {
+        new ApiServices().getDistanceDuration(mainActivity, "imperial", latitude, longitude, locations, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                try {
+                    isApiInProgress = false;
+                    GoogleDistanceDurationResponse durationResponse = (GoogleDistanceDurationResponse) response;
+                    //System.out.println("aa ------------ durationResponse" + durationResponse);
+                    if (durationResponse != null
+                            && durationResponse.getRows() != null
+                            && !durationResponse.getRows().isEmpty()
+                            && durationResponse.getRows().get(0).getElements() != null
+                            && !durationResponse.getRows().get(0).getElements().isEmpty()) {
+                        for (int i = 0; i < durationResponse.getRows().get(0).getElements().size(); i++) {
+                            if (durationResponse.getRows().get(0).getElements().get(i).getDistance() != null
+                                    && !tempEmsRequests.isEmpty()
+                                    && i < tempEmsRequests.size()) {
+                                distanceHashMap.put(tempEmsRequests.get(i).getId(), durationResponse.getRows().get(0).getElements().get(i).getDistance().getText());
+                            }
+                        }
+                        if (adapter != null) {
+                            adapter.add(distanceHashMap);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                isApiInProgress = false;
+                System.out.println("aa ------ errorMessage=" + errorMessage);
             }
         });
     }

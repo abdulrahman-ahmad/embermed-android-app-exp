@@ -15,4 +15,11 @@
     <dimen name="request_card_padding_start_end">24dp</dimen>
     <dimen name="request_card_elevation">3dp</dimen>
     <dimen name="empty_alert_height">325dp</dimen>
+    <dimen name="incident_report_text_size">27dp</dimen>
+    <dimen name="is_victim_life_saved_margin_top">15dp</dimen>
+    <dimen name="radio_button_margin_left">22.5dp</dimen>
+    <dimen name="comment_et_height">210dp</dimen>
+    <dimen name="submit_button_margin_top">30dp</dimen>
+    <dimen name="incident_report_input_text_padding">15dp</dimen>
+    <dimen name="comment_margin_top">18dp</dimen>
 </resources>
