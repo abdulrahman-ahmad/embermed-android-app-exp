@@ -82,8 +82,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
                 .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                 .setContentTitle(service.getString(R.string.app_name))
-                .setOngoing(true)
-                .setAutoCancel(false)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                 .setContentText(message)
                 .setContentIntent(pendingIntent);

@@ -34,6 +34,7 @@ public class Constants implements Serializable {
     public static final String FIREBASE_ALERT_TABLE = "Alert";
 
     public static final String STATUS_PENDING = "PENDING";
+    public static final String STATUS_IMMEDIATE = "IMMEDIATE";
     public static final String STATUS_ACCEPTED = "ACCEPTED";
     public static final String STATUS_COMPLETED = "COMPLETED";
     public static final String STATUS_REJECTED = "REJECTED";

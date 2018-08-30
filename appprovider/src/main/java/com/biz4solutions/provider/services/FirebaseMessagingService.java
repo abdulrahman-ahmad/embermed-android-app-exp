@@ -12,6 +12,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.widget.RemoteViews;
 
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -42,12 +43,18 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         try {
             String message = null;
             String notificationId = null;
+            String priority = null;
             if (remoteMessage.getData() != null && remoteMessage.getData().containsKey("message")) {
                 message = remoteMessage.getData().get("message");
+                priority = remoteMessage.getData().get("priority");
                 notificationId = remoteMessage.getData().get("notificationId");
             }
 
-            sendNotification(this, message, notificationId);
+            if (Constants.STATUS_IMMEDIATE.equals("" + priority)) {
+                sendCustomNotification(this, message, notificationId);
+            } else {
+                sendNotification(this, message, notificationId);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -59,6 +66,23 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
         NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        int notificationId = getNotificationId(nid, notificationManager);
+        Notification notification = new NotificationCompat.Builder(service, "" + notificationId)
+                .setSmallIcon(R.drawable.icon_notification_tranperant)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                .setContentTitle(service.getString(R.string.app_name))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message)
+                .setContentIntent(pendingIntent)
+                .build();
+        if (notificationManager != null) {
+            notificationManager.notify(notificationId, notification);
+            DEFAULT_NOTIFICATION_ID++;
+        }
+    }
+
+    private int getNotificationId(String nid, NotificationManager notificationManager) {
         int notificationId;
         if (nid == null || nid.isEmpty()) {
             notificationId = DEFAULT_NOTIFICATION_ID;
@@ -77,18 +101,28 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 notificationManager.createNotificationChannel(channel);
             }
         }
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, "" + notificationId)
+        return notificationId;
+    }
+
+    public void sendCustomNotification(Service service, String message, String nid) {
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
+        /*notificationLayout.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
+        notificationLayout.setTextViewText(R.id.title, "Custom notification");
+        notificationLayout.setTextViewText(R.id.text, "This is a custom layout");*/
+        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
+
+        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        int notificationId = getNotificationId(nid, notificationManager);
+        // Apply the layouts to the notification
+        Notification notification = new NotificationCompat.Builder(service, nid)
                 .setSmallIcon(R.drawable.icon_notification_tranperant)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
                 .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
-                .setContentTitle(service.getString(R.string.app_name))
-                .setOngoing(true)
-                .setAutoCancel(false)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setContentIntent(pendingIntent);
-        //addActions(service, mNotifyBuilder);
-        Notification notification = mNotifyBuilder.build();
+                .setCustomContentView(notificationLayout)
+                //.setContentTitle(service.getString(R.string.app_name))
+                //.setContentText(message)
+                .setCustomBigContentView(notificationLayoutExpanded)
+                .build();
         if (notificationManager != null) {
             notificationManager.notify(notificationId, notification);
             DEFAULT_NOTIFICATION_ID++;
