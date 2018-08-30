@@ -4,4 +4,5 @@
     <color name="triage_text_color">#0b68f4</color>
     <color name="triage_bg_color">#ecf9ff</color>
     <color name="cardiac_bg_color">#ffefef</color>
+    <color name="notification_bg_color">#fafafa</color>
 </resources>

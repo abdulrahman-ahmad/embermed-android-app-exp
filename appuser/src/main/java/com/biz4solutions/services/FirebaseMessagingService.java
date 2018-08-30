@@ -7,9 +7,11 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
@@ -32,43 +34,53 @@ import java.util.HashMap;
 
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
-    private static final int NOTIFICATION_ID = 201;
-    private static final String CHANNEL_ID = "201";
+    private static int DEFAULT_NOTIFICATION_ID = 201;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
-            //System.out.println("aa ----------Came here");
-            //System.out.println("aa ----------message:" + remoteMessage);
             String message = null;
+            String notificationId = null;
             if (remoteMessage.getData() != null && remoteMessage.getData().containsKey("message")) {
                 message = remoteMessage.getData().get("message");
-                //System.out.println("aa ----------message:" + message);
+                notificationId = remoteMessage.getData().get("notificationId");
             }
 
-            sendNotification(this, message);
+            sendNotification(this, message, notificationId);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendNotification(Service service, String message) {
+    public void sendNotification(Service service, String message, String nid) {
         Intent intent = new Intent(service, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
         NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        int notificationId;
+        if (nid == null || nid.isEmpty()) {
+            notificationId = DEFAULT_NOTIFICATION_ID;
+        } else {
+            try {
+                notificationId = Integer.parseInt(nid);
+            } catch (Exception e) {
+                notificationId = DEFAULT_NOTIFICATION_ID;
+            }
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null) {
-                NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                        CHANNEL_ID + " Notification Channel",
+                NotificationChannel channel = new NotificationChannel("" + notificationId,
+                        notificationId + " Notification Channel",
                         NotificationManager.IMPORTANCE_LOW);
                 notificationManager.createNotificationChannel(channel);
             }
         }
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, "" + notificationId)
+                .setSmallIcon(R.drawable.icon_notification_tranperant)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                 .setContentTitle(service.getString(R.string.app_name))
                 .setOngoing(true)
                 .setAutoCancel(false)
@@ -77,7 +89,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentIntent(pendingIntent);
         //addActions(service, mNotifyBuilder);
         Notification notification = mNotifyBuilder.build();
-        service.startForeground(NOTIFICATION_ID, notification);
+        if (notificationManager != null) {
+            notificationManager.notify(notificationId, notification);
+            DEFAULT_NOTIFICATION_ID++;
+        }
     }
 
     @Override
