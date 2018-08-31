@@ -7,71 +7,112 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/cardiac_bg_color"
+        android:gravity="center_vertical"
         android:orientation="vertical"
-        android:padding="12dp"
+        android:paddingBottom="6dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:paddingTop="6dp"
         tools:ignore="SpUsage">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            tools:ignore="DisableBaselineAlignment,UselessParent">
 
-            <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/ic_immediate_request"
-                android:contentDescription="@null" />
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/notification_icon_hight_width"
+                        android:layout_height="@dimen/notification_icon_hight_width"
+                        android:background="@drawable/ic_immediate_request"
+                        android:contentDescription="@null" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="bottom">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="sans-serif"
+                            android:text="@string/cardiac_call"
+                            android:textColor="@color/btn_red_color"
+                            android:textSize="@dimen/notification_cardiac_text_size" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/immediate"
+                            android:textColor="@color/btn_red_color"
+                            android:textSize="@dimen/notification_priority_text_size" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:gravity="bottom">
+
+                    <TextView
+                        android:id="@+id/patientName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLength="16"
+                        android:maxLines="1"
+                        android:textColor="@color/provider_secondary_text_color"
+                        android:textSize="@dimen/notification_name_text_size" />
+
+                    <TextView
+                        android:id="@+id/genderAge"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:maxLength="14"
+                        android:textColor="@color/provider_gender_age_text_color"
+                        android:textSize="@dimen/notification_priority_text_size" />
+
+                </LinearLayout>
+
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:minHeight="@dimen/notification_image_height_width">
 
-                <TextView
+                <Button
+                    android:id="@+id/btn_respond"
+                    style="@style/BtnStyle"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/cardiac_call"
-                    android:textColor="@color/btn_red_color"
-                    android:textSize="22dp" />
+                    android:layout_height="35dp"
+                    android:layout_margin="0dp"
+                    android:background="@drawable/ripple_red_button"
+                    android:padding="0dp"
+                    android:text="@string/view"
+                    android:textSize="16dp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="@string/immediate"
-                    android:textColor="@color/btn_red_color"
-                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="bottom">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Ellen Thomson"
-                android:textColor="@color/provider_secondary_text_color"
-                android:textSize="18dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="sans-serif-medium"
-                android:text="Female, 26yre"
-                android:textColor="@color/provider_gender_age_text_color"
-                android:textSize="14dp" />
-
-        </LinearLayout>
-
     </LinearLayout>
 </layout>

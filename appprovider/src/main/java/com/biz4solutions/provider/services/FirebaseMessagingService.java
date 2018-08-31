@@ -44,14 +44,20 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             String message = "";
             String notificationId = "";
             String priority = "";
+            String patientName = "";
+            String age = "";
+            String gender = "";
             if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
                 priority = remoteMessage.getData().get("priority");//IMMEDIATE
+                patientName = remoteMessage.getData().get("patientName");//Ellen Thomson
+                age = remoteMessage.getData().get("age");//26
+                gender = remoteMessage.getData().get("gender");//Female
                 notificationId = remoteMessage.getData().get("notificationId");
             }
 
             if (Constants.STATUS_IMMEDIATE.equals("" + priority)) {
-                sendCustomNotification(this, message, notificationId);
+                sendCustomNotification(this, notificationId, patientName, age, gender);
             } else {
                 sendNotification(this, message, notificationId);
             }
@@ -107,12 +113,14 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         return notificationId;
     }
 
-    public void sendCustomNotification(Service service, String message, String nid) {
+    public void sendCustomNotification(Service service, String nid, String patientName, String age, String gender) {
+        String genderAge = gender + ", " + age + "yrs";
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
-        /*notificationLayout.setImageViewResource(R.id.image, R.mipmap.ic_launcher);
-        notificationLayout.setTextViewText(R.id.title, "Custom notification");
-        notificationLayout.setTextViewText(R.id.text, "This is a custom layout");*/
+        notificationLayout.setTextViewText(R.id.patientName, patientName);
+        notificationLayout.setTextViewText(R.id.genderAge, genderAge);
         RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
+        notificationLayoutExpanded.setTextViewText(R.id.patientName, patientName);
+        notificationLayoutExpanded.setTextViewText(R.id.genderAge, genderAge);
 
         NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
         int notificationId = getNotificationId(nid, notificationManager, true);

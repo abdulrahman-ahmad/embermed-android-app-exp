@@ -36,4 +36,5 @@
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
     <string name="submit_incident_report_message">Are you sure, you want to submit this incident report?</string>
+    <string name="view">View</string>
 </resources>
