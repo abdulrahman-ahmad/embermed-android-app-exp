@@ -102,7 +102,7 @@
                 android:minHeight="@dimen/notification_image_height_width">
 
                 <Button
-                    android:id="@+id/btn_respond"
+                    android:id="@+id/btn_view"
                     style="@style/BtnStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="35dp"

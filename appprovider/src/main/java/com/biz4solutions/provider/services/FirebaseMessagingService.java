@@ -18,6 +18,7 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.provider.receiver.FirebaseMessagingReceiver;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,6 +48,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             String patientName = "";
             String age = "";
             String gender = "";
+            String requestId = "";
             if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
                 priority = remoteMessage.getData().get("priority");//IMMEDIATE
@@ -54,10 +56,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 age = remoteMessage.getData().get("age");//26
                 gender = remoteMessage.getData().get("gender");//Female
                 notificationId = remoteMessage.getData().get("notificationId");
+                requestId = remoteMessage.getData().get("requestId");
             }
 
             if (Constants.STATUS_IMMEDIATE.equals("" + priority)) {
-                sendCustomNotification(this, notificationId, patientName, age, gender);
+                sendCustomNotification(this, notificationId, patientName, age, gender, requestId);
             } else {
                 sendNotification(this, message, notificationId);
             }
@@ -113,25 +116,33 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         return notificationId;
     }
 
-    public void sendCustomNotification(Service service, String nid, String patientName, String age, String gender) {
+    public void sendCustomNotification(Service service, String nid, String patientName, String age, String gender, String requestId) {
         String genderAge = gender + ", " + age + "yrs";
+        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        int notificationId = getNotificationId(nid, notificationManager, true);
+        Intent intent = new Intent(this, FirebaseMessagingReceiver.class);
+        intent.setAction(Constants.NOTIFICATION_ACTION_VIEW);
+        intent.putExtra(Constants.NOTIFICATION_REQUEST_ID_KEY, requestId);
+        intent.putExtra(Constants.NOTIFICATION_ID_KEY, notificationId);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
         notificationLayout.setTextViewText(R.id.patientName, patientName);
         notificationLayout.setTextViewText(R.id.genderAge, genderAge);
+        notificationLayout.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
+
         RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
         notificationLayoutExpanded.setTextViewText(R.id.patientName, patientName);
         notificationLayoutExpanded.setTextViewText(R.id.genderAge, genderAge);
+        notificationLayoutExpanded.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
 
-        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(nid, notificationManager, true);
         // Apply the layouts to the notification
         Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_notification_tranperant)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
                 .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                 .setCustomContentView(notificationLayout)
-                //.setContentTitle(service.getString(R.string.app_name))
-                //.setContentText(message)
                 .setCustomBigContentView(notificationLayoutExpanded)
                 .build();
         if (notificationManager != null) {

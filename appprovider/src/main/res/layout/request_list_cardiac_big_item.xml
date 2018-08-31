@@ -158,13 +158,13 @@
 
                 <ImageView
                     android:id="@+id/iv_patient"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
                     android:adjustViewBounds="false"
-                    android:background="@mipmap/ic_launcher"
+                    android:background="@drawable/cardiac_call_card_person"
                     android:contentDescription="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/space2"

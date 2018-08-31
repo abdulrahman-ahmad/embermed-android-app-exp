@@ -35,6 +35,11 @@ public class Constants implements Serializable {
 
     public static final String EMBER_MEDICS_CHANNEL_ID = "200";
     public static final String EMBER_MEDICS_CARDIAC_CHANNEL_ID = "201";
+    public static final String EMBER_CHANNEL_ID = "202";
+
+    public static final String NOTIFICATION_ACTION_VIEW = "EMBER_MEDICS_NOTIFICATION_ACTION_VIEW";
+    public static final String NOTIFICATION_REQUEST_ID_KEY = "NOTIFICATION_REQUEST_ID_KEY";
+    public static final String NOTIFICATION_ID_KEY = "NOTIFICATION_ID_KEY";
 
     public static final String STATUS_PENDING = "PENDING";
     public static final String STATUS_IMMEDIATE = "IMMEDIATE";

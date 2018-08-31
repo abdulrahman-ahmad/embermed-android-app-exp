@@ -57,6 +57,11 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+        <receiver android:name=".receiver.FirebaseMessagingReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="EMBER_MEDICS_NOTIFICATION_ACTION_VIEW" />
+            </intent-filter>
+        </receiver>
         <service
             android:name=".services.GpsServices"
             android:enabled="true"

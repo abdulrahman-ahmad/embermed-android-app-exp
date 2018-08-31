@@ -54,7 +54,7 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cardiac_incident_report, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {

@@ -110,7 +110,7 @@
             android:weightSum="1030">
 
             <Button
-                android:id="@+id/btn_respond"
+                android:id="@+id/btn_view"
                 style="@style/BtnStyle"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
