@@ -5,5 +5,6 @@
     <color name="triage_bg_color">#ecf9ff</color>
     <color name="cardiac_bg_color">#ffefef</color>
     <color name="notification_bg_color">#fafafa</color>
-    <color name="patient_disease_text_color">#1e282c</color>
+    <color name="provider_secondary_text_color">#1e282c</color>
+    <color name="provider_gender_age_text_color">#696969</color>
 </resources>

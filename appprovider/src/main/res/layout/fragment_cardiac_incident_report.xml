@@ -37,7 +37,7 @@
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
                     android:text="@string/incident_report"
-                    android:textColor="@color/patient_disease_text_color"
+                    android:textColor="@color/provider_secondary_text_color"
                     android:textSize="@dimen/incident_report_text_size" />
 
                 <LinearLayout

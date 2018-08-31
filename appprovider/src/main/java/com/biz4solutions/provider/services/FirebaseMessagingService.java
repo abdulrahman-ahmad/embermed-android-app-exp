@@ -41,12 +41,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
-            String message = null;
-            String notificationId = null;
-            String priority = null;
-            if (remoteMessage.getData() != null && remoteMessage.getData().containsKey("message")) {
+            String message = "";
+            String notificationId = "";
+            String priority = "";
+            if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
-                priority = remoteMessage.getData().get("priority");
+                priority = remoteMessage.getData().get("priority");//IMMEDIATE
                 notificationId = remoteMessage.getData().get("notificationId");
             }
 
@@ -66,8 +66,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
         NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(nid, notificationManager);
-        Notification notification = new NotificationCompat.Builder(service, "" + notificationId)
+        int notificationId = getNotificationId(nid, notificationManager, false);
+        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_notification_tranperant)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
                 .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
@@ -78,11 +78,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .build();
         if (notificationManager != null) {
             notificationManager.notify(notificationId, notification);
-            DEFAULT_NOTIFICATION_ID++;
         }
     }
 
-    private int getNotificationId(String nid, NotificationManager notificationManager) {
+    private int getNotificationId(String nid, NotificationManager notificationManager, boolean isCardiacChannelId) {
         int notificationId;
         if (nid == null || nid.isEmpty()) {
             notificationId = DEFAULT_NOTIFICATION_ID;
@@ -93,11 +92,15 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 notificationId = DEFAULT_NOTIFICATION_ID;
             }
         }
+        DEFAULT_NOTIFICATION_ID++;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null) {
-                NotificationChannel channel = new NotificationChannel("" + notificationId,
-                        notificationId + " Notification Channel",
-                        NotificationManager.IMPORTANCE_LOW);
+                String channelId = Constants.EMBER_MEDICS_CHANNEL_ID;
+                if (isCardiacChannelId) {
+                    channelId = Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID;
+                }
+                NotificationChannel channel = new NotificationChannel(channelId, getString(R.string.app_name),
+                        NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
         }
@@ -112,9 +115,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
 
         NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(nid, notificationManager);
+        int notificationId = getNotificationId(nid, notificationManager, true);
         // Apply the layouts to the notification
-        Notification notification = new NotificationCompat.Builder(service, nid)
+        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_notification_tranperant)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
                 .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
@@ -125,7 +128,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .build();
         if (notificationManager != null) {
             notificationManager.notify(notificationId, notification);
-            DEFAULT_NOTIFICATION_ID++;
         }
     }
 
@@ -154,6 +156,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         if (CommonFunctions.getInstance().isOffline(context)) {
             return;
         }
+        System.out.println("aa ------- fcmToken=" + token);
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(context, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
         if (token != null && userAuthKey != null && !userAuthKey.isEmpty()) {
             HashMap<String, Object> body = new HashMap<>();

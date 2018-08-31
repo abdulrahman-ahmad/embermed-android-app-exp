@@ -39,7 +39,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
-                    android:textColor="#1e282c"
+                    android:textColor="@color/provider_secondary_text_color"
                     android:textSize="@dimen/requester_name_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif"
-                    android:textColor="#696969"
+                    android:textColor="@color/provider_gender_age_text_color"
                     android:textSize="@dimen/request_small_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@+id/txt_name"
                     app:layout_constraintStart_toEndOf="@+id/txt_name" />
@@ -61,7 +61,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="0dp"
                     android:fontFamily="sans-serif"
-                    android:textColor="#696969"
+                    android:textColor="@color/provider_gender_age_text_color"
                     android:textSize="@dimen/request_small_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@+id/txt_gender_age"
                     app:layout_constraintEnd_toEndOf="parent" />
@@ -134,7 +134,7 @@
                     android:layout_marginEnd="0dp"
                     android:fontFamily="sans-serif"
                     android:text="@string/away"
-                    android:textColor="#1e282c"
+                    android:textColor="@color/provider_secondary_text_color"
                     android:textSize="@dimen/request_small_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@+id/txt_immediate"
                     app:layout_constraintEnd_toEndOf="parent" />
