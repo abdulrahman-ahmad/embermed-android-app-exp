@@ -17,7 +17,6 @@ import android.widget.RemoteViews;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.receiver.FirebaseMessagingReceiver;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -37,6 +36,9 @@ import java.util.HashMap;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     private static int DEFAULT_NOTIFICATION_ID = 202;
+    private NotificationManager notificationManager;
+    private PendingIntent pendingIntent;
+    private int notificationId;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -58,11 +60,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 notificationId = remoteMessage.getData().get("notificationId");
                 requestId = remoteMessage.getData().get("requestId");
             }
-
+            createPendingIntent(this, notificationId, requestId, Constants.STATUS_IMMEDIATE.equals("" + priority));
             if (Constants.STATUS_IMMEDIATE.equals("" + priority)) {
-                sendCustomNotification(this, notificationId, patientName, age, gender, requestId);
+                sendCustomNotification(this, patientName, age, gender);
             } else {
-                sendNotification(this, message, notificationId);
+                sendNotification(this, message);
             }
 
         } catch (Exception e) {
@@ -70,12 +72,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         }
     }
 
-    public void sendNotification(Service service, String message, String nid) {
-        Intent intent = new Intent(service, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
+    private void createPendingIntent(Service service, String nid, String requestId, boolean isCardiacChannelId) {
+        notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        notificationId = getNotificationId(nid, notificationManager, isCardiacChannelId);
+        Intent intent = new Intent(this, FirebaseMessagingReceiver.class);
+        intent.setAction(Constants.NOTIFICATION_ACTION_VIEW);
+        intent.putExtra(Constants.NOTIFICATION_REQUEST_ID_KEY, requestId);
+        intent.putExtra(Constants.NOTIFICATION_ID_KEY, notificationId);
+        pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
-        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(nid, notificationManager, false);
+    private void sendNotification(Service service, String message) {
         Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
                 .setSmallIcon(R.drawable.icon_notification_tranperant)
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
@@ -116,16 +123,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         return notificationId;
     }
 
-    public void sendCustomNotification(Service service, String nid, String patientName, String age, String gender, String requestId) {
+    private void sendCustomNotification(Service service, String patientName, String age, String gender) {
         String genderAge = gender + ", " + age + "yrs";
-        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
-        int notificationId = getNotificationId(nid, notificationManager, true);
-        Intent intent = new Intent(this, FirebaseMessagingReceiver.class);
-        intent.setAction(Constants.NOTIFICATION_ACTION_VIEW);
-        intent.putExtra(Constants.NOTIFICATION_REQUEST_ID_KEY, requestId);
-        intent.putExtra(Constants.NOTIFICATION_ID_KEY, notificationId);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
         notificationLayout.setTextViewText(R.id.patientName, patientName);

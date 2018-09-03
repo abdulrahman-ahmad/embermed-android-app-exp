@@ -59,7 +59,7 @@
         </service>
         <receiver android:name=".receiver.FirebaseMessagingReceiver" android:exported="false">
             <intent-filter>
-                <action android:name="EMBER_MEDICS_NOTIFICATION_ACTION_VIEW" />
+                <action android:name="com.ember.medics.EMBER_MEDICS_NOTIFICATION_ACTION_VIEW" />
             </intent-filter>
         </receiver>
         <service
