@@ -2,24 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeContainer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.biz4solutions.customs.LoadMoreListView
-                android:id="@+id/load_more_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                tools:listitem="@layout/request_list_item" />
-
-        </android.support.v4.widget.SwipeRefreshLayout>
 
         <RelativeLayout
             android:id="@+id/empty_alert_layout"
@@ -65,5 +50,20 @@
 
             </LinearLayout>
         </RelativeLayout>
-    </FrameLayout>
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.biz4solutions.customs.LoadMoreListView
+                android:id="@+id/load_more_list_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                tools:listitem="@layout/request_list_item" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </RelativeLayout>
 </layout>
