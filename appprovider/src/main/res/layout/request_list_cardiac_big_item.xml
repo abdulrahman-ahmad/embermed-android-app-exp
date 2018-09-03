@@ -16,14 +16,14 @@
         app:cardCornerRadius="0dp"
         app:cardElevation="@dimen/request_card_elevation"
         app:cardPreventCornerOverlap="false"
-        tools:ignore="SpUsage">
+        tools:ignore="SpUsage,UnusedAttribute,UseCompoundDrawables">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
             android:paddingEnd="@dimen/request_card_padding_start_end"
-            android:paddingLeft="@dimen/request_card_padding_start_end">
+            android:paddingStart="@dimen/request_card_padding_start_end">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -85,7 +85,6 @@
                     android:fontFamily="sans-serif-medium"
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
-                    android:text="karan Bajaj"
                     android:textColor="@color/provider_secondary_text_color"
                     android:textSize="@dimen/requester_name_text_size"
                     app:layout_constraintStart_toStartOf="parent"
@@ -97,7 +96,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/cardiac_big_card_tv_age_margin_start"
                     android:fontFamily="sans-serif"
-                    android:text="male, 26yrs"
                     android:textColor="@color/provider_gender_age_text_color"
                     android:textSize="@dimen/request_small_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@+id/txt_name"
@@ -131,7 +129,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/cardiac_big_card_tv_time_margin_start"
                         android:fontFamily="sans-serif"
-                        android:text="30 sec ago"
                         android:textColor="@color/provider_secondary_text_color"
                         android:textSize="@dimen/request_small_text_size" />
                 </LinearLayout>
@@ -158,7 +155,8 @@
                         android:adjustViewBounds="false"
                         android:background="@drawable/ic_location"
                         android:backgroundTint="@color/provider_secondary_text_color"
-                        android:contentDescription="@null" />
+                        android:contentDescription="@null"
+                        tools:ignore="UnusedAttribute" />
 
                     <fr.castorflex.android.circularprogressbar.CircularProgressBar
                         android:id="@+id/distance_loader"
