@@ -94,6 +94,8 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     private TimerTask timerTask;
     private boolean isTimerReset = true;
     private BroadcastReceiver clockBroadcastReceiver;
+    private String currentRequestId;
+    public boolean isRequestAcceptedByMe = false;
 
     public TriageCallDetailsFragment() {
         // Required empty public constructor
@@ -161,8 +163,8 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
 
     private void initNavView() {
         if (mainActivity != null) {
-            mainActivity.isRequestAcceptedByMe = false;
-            mainActivity.currentRequestId = requestDetails.getId();
+            isRequestAcceptedByMe = false;
+            currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
             mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
@@ -176,7 +178,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     }
 
     private void addFirebaseRequestEvent() {
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
                 if (isPageOpen) {
@@ -267,7 +269,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         isPageOpen = false;
         mainActivity.btnCallAlerter.setVisibility(View.GONE);
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
-        if (mainActivity.isRequestAcceptedByMe) {
+        if (isRequestAcceptedByMe) {
             mainActivity.isUpdateList = true;
             NavigationUtil.getInstance().showMenu(mainActivity);
         } else {
@@ -328,7 +330,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().acceptRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
+        new ApiServices().acceptRequest(mainActivity, currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
@@ -346,7 +348,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     }
 
     public void showMapRouteView() {
-        mainActivity.isRequestAcceptedByMe = true;
+        isRequestAcceptedByMe = true;
         binding.btnRespond.setVisibility(View.GONE);
         binding.btnSubmitReport.setVisibility(View.VISIBLE);
         binding.btnGetDirection.setVisibility(View.VISIBLE);
@@ -431,7 +433,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().completeRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
+        new ApiServices().completeRequest(mainActivity, currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;

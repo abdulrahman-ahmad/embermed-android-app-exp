@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public String currentRequestId;
     private BroadcastReceiver logoutBroadcastReceiver;
     public DrawerLayout drawerLayout;
+    public static boolean isActivityOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,12 +155,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        isActivityOpen = true;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        isActivityOpen = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 

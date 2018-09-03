@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.receiver;
+package com.biz4solutions.receiver;
 
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -6,7 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.Constants;
 
 import java.util.List;
@@ -50,7 +50,7 @@ public class FirebaseMessagingReceiver extends BroadcastReceiver {
         if (activityManager != null) {
             List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(Integer.MAX_VALUE);
             for (int i = 0; i < tasksInfo.size(); i++) {
-                if (tasksInfo.get(i).baseActivity.getClassName().contains("com.biz4solutions.provider.main.views.activities.MainActivity"))
+                if (tasksInfo.get(i).baseActivity.getClassName().contains("com.biz4solutions.main.views.activities.MainActivity"))
                     return true;
             }
         }

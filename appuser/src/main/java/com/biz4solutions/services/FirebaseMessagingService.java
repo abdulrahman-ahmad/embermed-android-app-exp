@@ -15,8 +15,8 @@ import android.support.v4.content.ContextCompat;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.receiver.FirebaseMessagingReceiver;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -35,30 +35,56 @@ import java.util.HashMap;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     private static int DEFAULT_NOTIFICATION_ID = 201;
+    private NotificationManager notificationManager;
+    private PendingIntent pendingIntent;
+    private int notificationId;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         try {
-            String message = null;
-            String notificationId = null;
-            if (remoteMessage.getData() != null && remoteMessage.getData().containsKey("message")) {
+            String message = "";
+            String requestId = "";
+            String notificationId = "";
+            if (remoteMessage.getData() != null) {
                 message = remoteMessage.getData().get("message");
                 notificationId = remoteMessage.getData().get("notificationId");
+                requestId = remoteMessage.getData().get("requestId");
             }
-
-            sendNotification(this, message, notificationId);
+            createPendingIntent(this, notificationId, requestId);
+            sendNotification(this, message);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sendNotification(Service service, String message, String nid) {
-        Intent intent = new Intent(service, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
+    private void createPendingIntent(Service service, String nid, String requestId) {
+        notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+        notificationId = getNotificationId(nid, notificationManager);
+        Intent intent = new Intent(this, FirebaseMessagingReceiver.class);
+        intent.setAction(Constants.PATIENT_NOTIFICATION_ACTION_VIEW);
+        intent.putExtra(Constants.NOTIFICATION_REQUEST_ID_KEY, requestId);
+        intent.putExtra(Constants.NOTIFICATION_ID_KEY, notificationId);
+        pendingIntent = PendingIntent.getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 
-        NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
+    private void sendNotification(Service service, String message) {
+        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_CHANNEL_ID)
+                .setSmallIcon(R.drawable.icon_notification_tranperant)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                .setContentTitle(service.getString(R.string.app_name))
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                .setContentText(message)
+                .setContentIntent(pendingIntent)
+                .build();
+        if (notificationManager != null) {
+            notificationManager.notify(notificationId, notification);
+        }
+    }
+
+    private int getNotificationId(String nid, NotificationManager notificationManager) {
         int notificationId;
         if (nid == null || nid.isEmpty()) {
             notificationId = DEFAULT_NOTIFICATION_ID;
@@ -69,28 +95,16 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 notificationId = DEFAULT_NOTIFICATION_ID;
             }
         }
+        DEFAULT_NOTIFICATION_ID++;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             if (notificationManager != null) {
-                NotificationChannel channel = new NotificationChannel("" + notificationId,
-                        notificationId + " Notification Channel",
-                        NotificationManager.IMPORTANCE_LOW);
+                String channelId = Constants.EMBER_CHANNEL_ID;
+                NotificationChannel channel = new NotificationChannel(channelId, getString(R.string.app_name),
+                        NotificationManager.IMPORTANCE_DEFAULT);
                 notificationManager.createNotificationChannel(channel);
             }
         }
-        NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, "" + notificationId)
-                .setSmallIcon(R.drawable.icon_notification_tranperant)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
-                .setContentTitle(service.getString(R.string.app_name))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setContentIntent(pendingIntent);
-        //addActions(service, mNotifyBuilder);
-        Notification notification = mNotifyBuilder.build();
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, notification);
-            DEFAULT_NOTIFICATION_ID++;
-        }
+        return notificationId;
     }
 
     @Override
@@ -118,6 +132,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         if (CommonFunctions.getInstance().isOffline(context)) {
             return;
         }
+        System.out.println("aa ------- fcmToken=" + token);
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(context, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
         if (token != null && userAuthKey != null && !userAuthKey.isEmpty()) {
             HashMap<String, Object> body = new HashMap<>();

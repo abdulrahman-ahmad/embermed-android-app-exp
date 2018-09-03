@@ -36,7 +36,7 @@ public class FirebaseEventUtil {
         try {
             User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
             if (user != null) {
-                //removeFirebaseUserEvent();
+                removeFirebaseUserEvent();
                 userEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -79,7 +79,7 @@ public class FirebaseEventUtil {
     }
 
     public void addFirebaseAlertEvent(Context context, final FirebaseCallbackListener<Boolean> callbackListener) {
-        //removeFirebaseAlertEvent();
+        removeFirebaseAlertEvent();
         try {
             User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
             if (user != null) {
@@ -114,7 +114,7 @@ public class FirebaseEventUtil {
     }
 
     public void addFirebaseRequestEvent(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
-        //removeFirebaseRequestEvent();
+        removeFirebaseRequestEvent();
         try {
             requestEventListener = new ValueEventListener() {
                 @Override
@@ -138,7 +138,6 @@ public class FirebaseEventUtil {
 
     public void getFirebaseRequest(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
         try {
-            //removeFirebaseRequestEvent();
             FirebaseAuthUtil.getInstance().addListenerForSingleValueEvent(Constants.FIREBASE_REQUEST_TABLE, requestId, new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

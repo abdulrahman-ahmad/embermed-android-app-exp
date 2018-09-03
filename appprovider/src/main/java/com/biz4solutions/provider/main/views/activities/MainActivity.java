@@ -41,6 +41,7 @@ import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -56,12 +57,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public LinearLayout btnCallAlerter;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
-    private BroadcastReceiver logoutBroadcastReceiver;
+    private BroadcastReceiver broadcastReceiver;
     public boolean isSuccessfullyInitFirebase = false;
-    public String currentRequestId;
-    public boolean isRequestAcceptedByMe = false;
     public boolean isUpdateList = false;
     public DrawerLayout drawerLayout;
+    public static boolean isActivityOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             binding.appBarMain.btnCallAlerter.setOnClickListener(this);
         }
 
-        logoutBroadcastReceiver = new BroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 //method call here
@@ -97,20 +97,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
                             doLogOut();
                             break;
+                        case Constants.LOCAL_NOTIFICATION_ACTION_VIEW:
+                            openNotificationDetailsView(intent);
+                            break;
                     }
                 }
             }
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.LOGOUT_RECEIVER);
-        registerReceiver(logoutBroadcastReceiver, intentFilter);
+        intentFilter.addAction(Constants.LOCAL_NOTIFICATION_ACTION_VIEW);
+        registerReceiver(broadcastReceiver, intentFilter);
+
+        openNotificationDetailsView(getIntent());
+    }
+
+    private void openNotificationDetailsView(Intent intent) {
+        String requestId = intent.getStringExtra(Constants.NOTIFICATION_REQUEST_ID_KEY);
+        if (requestId != null && !requestId.isEmpty()) {
+            getRequestDetails(requestId, "", true);
+        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (logoutBroadcastReceiver != null) {
-            unregisterReceiver(logoutBroadcastReceiver);
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
         }
     }
 
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        getRequestDetails(data.getProviderCurrentRequestId(), "");
+                        getRequestDetails(data.getProviderCurrentRequestId(), "", true);
                     }
                 }
             }
@@ -173,12 +186,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        isActivityOpen = true;
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        isActivityOpen = false;
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
@@ -280,11 +295,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openCardiacCallDetailsFragment(EmsRequest data, String distanceStr) {
+    private void openCardiacCallDetailsFragment(EmsRequest data, String distanceStr, boolean isOpenDuplicateFragment) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-            if (currentFragment instanceof CardiacCallDetailsFragment) {
-                return;
+            if (!isOpenDuplicateFragment) {
+                if (currentFragment instanceof CardiacCallDetailsFragment) {
+                    return;
+                }
+            } else {
+                if (currentFragment instanceof CardiacCallDetailsFragment) {
+                    if (((CardiacCallDetailsFragment) currentFragment).currentRequestId != null
+                            && ((CardiacCallDetailsFragment) currentFragment).currentRequestId.equals("" + data.getId())) {
+                        return;
+                    }
+                }
             }
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
@@ -392,14 +416,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void showRejectRequestAlert() {
-        if (!isRequestAcceptedByMe) {
-            getSupportFragmentManager().popBackStack();
-        } /*else {
-            // do nothing
-        }*/
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof CardiacCallDetailsFragment) {
+            if (!((CardiacCallDetailsFragment) currentFragment).isRequestAcceptedByMe) {
+                getSupportFragmentManager().popBackStack();
+            } /*else {
+                // do nothing
+            }*/
+        } else if (currentFragment instanceof TriageCallDetailsFragment) {
+            if (!((TriageCallDetailsFragment) currentFragment).isRequestAcceptedByMe) {
+                getSupportFragmentManager().popBackStack();
+            } /*else {
+                // do nothing
+            }*/
+        }
     }
 
-    public void getRequestDetails(String requestId, final String distanceStr) {
+    public void getRequestDetails(String requestId, final String distanceStr, final boolean isOpenDuplicateFragment) {
         if (requestId != null && !requestId.isEmpty()) {
             if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
                 Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -410,7 +443,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData(), distanceStr);
+                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData(), distanceStr, isOpenDuplicateFragment);
                 }
 
                 @Override

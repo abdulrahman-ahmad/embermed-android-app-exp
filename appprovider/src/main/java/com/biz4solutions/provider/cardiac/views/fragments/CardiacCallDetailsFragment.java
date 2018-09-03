@@ -94,6 +94,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private TimerTask timerTask;
     private boolean isTimerReset = true;
     private BroadcastReceiver clockBroadcastReceiver;
+    public String currentRequestId;
+    public boolean isRequestAcceptedByMe = false;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -125,13 +127,18 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         mainActivity = (MainActivity) getActivity();
         isPageOpen = true;
 
-        initMapView();
+        if (googleMap == null) {
+            initMapView();
+        } else {
+            startLocationUpdates();
+        }
         initNavView();
 
         user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
 
         addFirebaseRequestEvent();
 
+        isAcceptedOpen = false;
         if (requestDetails != null) {
             setCardiacCallView();
         }
@@ -165,8 +172,8 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
     private void initNavView() {
         if (mainActivity != null) {
-            mainActivity.isRequestAcceptedByMe = false;
-            mainActivity.currentRequestId = requestDetails.getId();
+            isRequestAcceptedByMe = false;
+            currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
             mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
@@ -180,7 +187,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void addFirebaseRequestEvent() {
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
                 if (isPageOpen) {
@@ -270,13 +277,13 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         super.onDestroyView();
         isPageOpen = false;
         mainActivity.btnCallAlerter.setVisibility(View.GONE);
-        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
-        if (mainActivity.isRequestAcceptedByMe) {
+        if (isRequestAcceptedByMe) {
             mainActivity.isUpdateList = true;
             NavigationUtil.getInstance().showMenu(mainActivity);
         } else {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
         if (mLocationManager != null) {
             mLocationManager.removeUpdates(this);
         }
@@ -332,7 +339,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().acceptRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
+        new ApiServices().acceptRequest(mainActivity, currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
@@ -350,7 +357,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     public void showMapRouteView() {
-        mainActivity.isRequestAcceptedByMe = true;
+        isRequestAcceptedByMe = true;
         binding.btnRespond.setVisibility(View.GONE);
         binding.btnSubmitReport.setVisibility(View.VISIBLE);
         binding.btnGetDirection.setVisibility(View.VISIBLE);
@@ -435,7 +442,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().completeRequest(mainActivity, mainActivity.currentRequestId, new RestClientResponse() {
+        new ApiServices().completeRequest(mainActivity, currentRequestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
@@ -488,10 +495,17 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     layoutParams.setMargins(0, 0, 30, 30);
                 }
             }
+            startLocationUpdates();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+    private void startLocationUpdates() {
+        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
         if (mLocationManager != null) {
             mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
