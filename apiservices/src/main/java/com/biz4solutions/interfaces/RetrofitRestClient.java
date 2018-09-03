@@ -85,4 +85,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/symptom/list")
     Call<SymptomResponse> getSymptomList(@Query("page") int page, @Query("size") int size);
+
+    @DELETE("v1/users/logout")
+    Call<EmptyResponse> logout();
 }

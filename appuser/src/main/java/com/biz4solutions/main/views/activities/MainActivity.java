@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
                             Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            doLogOut();
+                            callLogoutAPI();
                             break;
                     }
                 }
@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             @Override
                             public void onClose(Boolean result) {
                                 if (result) {
-                                    doLogOut();
+                                    callLogoutAPI();
                                 }
                             }
                         });
@@ -202,6 +202,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }, 250);
         return true;
+    }
+
+    private void callLogoutAPI() {
+        if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+        new ApiServices().logout(MainActivity.this, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                doLogOut();
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void doLogOut() {

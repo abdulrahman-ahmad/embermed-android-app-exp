@@ -132,4 +132,9 @@ public class ApiServices {
                 .getSymptomList(page, 20));
     }
 
+    public void logout(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .logout());
+    }
+
 }
