@@ -208,6 +208,6 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-        finish();
+//        finish();
     }
 }
