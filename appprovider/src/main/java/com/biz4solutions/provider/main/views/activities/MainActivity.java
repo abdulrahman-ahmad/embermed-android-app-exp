@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
                             Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            callLogoutAPI();
+                            doLogOut();
                             break;
                     }
                 }
