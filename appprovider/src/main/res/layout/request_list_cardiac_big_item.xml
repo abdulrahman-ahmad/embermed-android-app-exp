@@ -12,7 +12,6 @@
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
-        android:paddingBottom="10dp"
         app:cardBackgroundColor="@color/cardiac_bg_color"
         app:cardCornerRadius="0dp"
         app:cardElevation="@dimen/request_card_elevation"
@@ -23,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:padding="@dimen/request_card_padding_start_end">
+            android:paddingEnd="@dimen/request_card_padding_start_end"
+            android:paddingLeft="@dimen/request_card_padding_start_end">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -31,26 +31,28 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
+                    android:layout_width="16.5dp"
+                    android:layout_height="16.5dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="14dp"
                     android:adjustViewBounds="false"
                     android:background="@drawable/ic_immediate_request"
                     android:contentDescription="@null"
-                    app:layout_constraintBottom_toBottomOf="@+id/txt_cardiac"
+                    app:layout_constraintBottom_toTopOf="@+id/space"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/txt_cardiac" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/txt_cardiac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="0dp"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="14dp"
                     android:fontFamily="sans-serif"
                     android:text="@string/cardiac_call"
                     android:textColor="@color/btn_red_color"
                     android:textSize="18dp"
-                    app:layout_constraintBaseline_toBaselineOf="@+id/imageView"
+                    app:layout_constraintBottom_toTopOf="@+id/space"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +60,7 @@
                     android:id="@+id/txt_immediate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/immediate"
                     android:textColor="@color/btn_red_color"
@@ -68,10 +70,10 @@
 
                 <Space
                     android:id="@+id/space"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/request_middle_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_cardiac" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_immediate" />
 
                 <TextView
                     android:id="@+id/txt_name"
@@ -84,7 +86,7 @@
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
                     android:text="karan Bajaj"
-                    android:textColor="#1e282c"
+                    android:textColor="@color/provider_secondary_text_color"
                     android:textSize="@dimen/requester_name_text_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/space" />
@@ -96,75 +98,102 @@
                     android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif"
                     android:text="male, 26yrs"
-                    android:textColor="#696969"
+                    android:textColor="@color/provider_gender_age_text_color"
                     android:textSize="@dimen/request_small_text_size"
                     app:layout_constraintBaseline_toBaselineOf="@+id/txt_name"
                     app:layout_constraintStart_toEndOf="@+id/txt_name" />
 
                 <Space
                     android:id="@+id/space2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="7dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
-                <TextView
-                    android:id="@+id/txt_time"
+                <LinearLayout
+                    android:id="@+id/ll_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="30 sec ago"
-                    android:textColor="#696969"
-                    android:textSize="@dimen/request_small_text_size"
+                    android:gravity="center_vertical"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/space2" />
+                    app:layout_constraintTop_toBottomOf="@+id/space2">
+
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:background="@drawable/ic_clock"
+                        android:backgroundTint="@color/provider_secondary_text_color"
+                        android:contentDescription="@null" />
+
+                    <TextView
+                        android:id="@+id/txt_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif"
+                        android:text="30 sec ago"
+                        android:textColor="@color/provider_secondary_text_color"
+                        android:textSize="@dimen/request_small_text_size" />
+                </LinearLayout>
 
                 <Space
                     android:id="@+id/space3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="3dp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_time" />
+                    app:layout_constraintTop_toBottomOf="@+id/ll_time" />
 
-                <TextView
-                    android:id="@+id/txt_distance"
+                <LinearLayout
+                    android:id="@+id/ll_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:fontFamily="sans-serif"
-                    android:text="@string/away"
-                    android:textColor="#1e282c"
-                    android:textSize="@dimen/request_small_text_size"
-                    app:layout_constraintStart_toEndOf="@+id/distance_loader"
-                    app:layout_constraintTop_toBottomOf="@+id/space3" />
+                    android:layout_marginBottom="14dp"
+                    android:gravity="center_vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/space3">
 
+                    <ImageView
+                        android:layout_width="10dp"
+                        android:layout_height="10dp"
+                        android:adjustViewBounds="false"
+                        android:background="@drawable/ic_location"
+                        android:backgroundTint="@color/provider_secondary_text_color"
+                        android:contentDescription="@null" />
 
-                <fr.castorflex.android.circularprogressbar.CircularProgressBar
-                    android:id="@+id/distance_loader"
-                    android:layout_width="@dimen/request_small_text_size"
-                    android:layout_height="@dimen/request_small_text_size"
-                    android:layout_marginTop="4dp"
-                    android:indeterminate="true"
-                    app:cpb_color="@color/colorPrimary"
-                    app:cpb_colors="@array/progress_bar_multi_color"
-                    app:cpb_max_sweep_angle="300"
-                    app:cpb_min_sweep_angle="10"
-                    app:cpb_rotation_speed="1.0"
-                    app:cpb_stroke_width="1dp"
-                    app:cpb_sweep_speed="1.0"
-                    app:layout_constraintTop_toBottomOf="@+id/space3" />
+                    <fr.castorflex.android.circularprogressbar.CircularProgressBar
+                        android:id="@+id/distance_loader"
+                        android:layout_width="@dimen/request_small_text_size"
+                        android:layout_height="@dimen/request_small_text_size"
+                        android:layout_marginStart="6dp"
+                        android:indeterminate="true"
+                        app:cpb_color="@color/colorPrimary"
+                        app:cpb_colors="@array/progress_bar_multi_color"
+                        app:cpb_max_sweep_angle="300"
+                        app:cpb_min_sweep_angle="10"
+                        app:cpb_rotation_speed="1.0"
+                        app:cpb_stroke_width="1dp"
+                        app:cpb_sweep_speed="1.0" />
+
+                    <TextView
+                        android:id="@+id/txt_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif"
+                        android:text="@string/away"
+                        android:textColor="@color/provider_secondary_text_color"
+                        android:textSize="@dimen/request_small_text_size"
+                        app:layout_constraintStart_toEndOf="@+id/distance_loader" />
+
+                </LinearLayout>
 
                 <ImageView
                     android:id="@+id/iv_patient"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:adjustViewBounds="false"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/cardiac_call_card_person"
                     android:contentDescription="@null"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

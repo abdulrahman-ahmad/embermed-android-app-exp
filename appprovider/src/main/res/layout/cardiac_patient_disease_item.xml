@@ -52,7 +52,7 @@
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="@dimen/request_middle_space"
                     android:fontFamily="sans-serif"
-                    android:textColor="#696969"
+                    android:textColor="@color/provider_gender_age_text_color"
                     android:textSize="@dimen/request_medium_text_size"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
