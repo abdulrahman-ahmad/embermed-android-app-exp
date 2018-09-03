@@ -27,4 +27,15 @@
     <dimen name="notification_priority_text_size">14dp</dimen>
     <dimen name="notification_name_text_size">16dp</dimen>
     <dimen name="notification_image_height_width">65dp</dimen>
+    <dimen name="cardiac_big_card_cardiac_call_text_size">15.3dp</dimen>
+    <dimen name="cardiac_big_card_cardiac_call_text_margin_top">11.9dp</dimen>
+    <dimen name="cardiac_big_card_heart_image_height">14.03dp</dimen>
+    <dimen name="cardiac_big_card_upper_space">8.5dp</dimen>
+    <dimen name="cardiac_big_card_middle_space">5.95dp</dimen>
+    <dimen name="cardiac_big_card_lower_space">2.55dp</dimen>
+    <dimen name="cardiac_big_card_clock_icon_height">8.5dp</dimen>
+    <dimen name="cardiac_big_card_iv_patient_height">74.8dp</dimen>
+    <dimen name="cardiac_big_card_tv_time_margin_start">5.1dp</dimen>
+    <dimen name="cardiac_big_card_tv_age_margin_start">6.8dp</dimen>
+    <dimen name="cardiac_big_card_tv_immediate_margin_start">3.4dp</dimen>
 </resources>

@@ -31,10 +31,10 @@
 
                 <ImageView
                     android:id="@+id/imageView"
-                    android:layout_width="16.5dp"
-                    android:layout_height="16.5dp"
+                    android:layout_width="@dimen/cardiac_big_card_heart_image_height"
+                    android:layout_height="@dimen/cardiac_big_card_heart_image_height"
                     android:layout_marginStart="0dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="@dimen/cardiac_big_card_cardiac_call_text_margin_top"
                     android:adjustViewBounds="false"
                     android:background="@drawable/ic_immediate_request"
                     android:contentDescription="@null"
@@ -46,12 +46,12 @@
                     android:id="@+id/txt_cardiac"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginStart="@dimen/cardiac_big_card_tv_age_margin_start"
+                    android:layout_marginTop="@dimen/cardiac_big_card_cardiac_call_text_margin_top"
                     android:fontFamily="sans-serif"
                     android:text="@string/cardiac_call"
                     android:textColor="@color/btn_red_color"
-                    android:textSize="18dp"
+                    android:textSize="@dimen/cardiac_big_card_cardiac_call_text_size"
                     app:layout_constraintBottom_toTopOf="@+id/space"
                     app:layout_constraintStart_toEndOf="@+id/imageView"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -60,7 +60,7 @@
                     android:id="@+id/txt_immediate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="@dimen/cardiac_big_card_tv_immediate_margin_start"
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/immediate"
                     android:textColor="@color/btn_red_color"
@@ -71,7 +71,7 @@
                 <Space
                     android:id="@+id/space"
                     android:layout_width="match_parent"
-                    android:layout_height="10dp"
+                    android:layout_height="@dimen/cardiac_big_card_upper_space"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_immediate" />
 
@@ -95,7 +95,7 @@
                     android:id="@+id/txt_gender_age"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="@dimen/cardiac_big_card_tv_age_margin_start"
                     android:fontFamily="sans-serif"
                     android:text="male, 26yrs"
                     android:textColor="@color/provider_gender_age_text_color"
@@ -106,7 +106,7 @@
                 <Space
                     android:id="@+id/space2"
                     android:layout_width="match_parent"
-                    android:layout_height="7dp"
+                    android:layout_height="@dimen/cardiac_big_card_middle_space"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name" />
 
@@ -119,8 +119,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/space2">
 
                     <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="@dimen/cardiac_big_card_clock_icon_height"
+                        android:layout_height="@dimen/cardiac_big_card_clock_icon_height"
                         android:background="@drawable/ic_clock"
                         android:backgroundTint="@color/provider_secondary_text_color"
                         android:contentDescription="@null" />
@@ -129,7 +129,7 @@
                         android:id="@+id/txt_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="@dimen/cardiac_big_card_tv_time_margin_start"
                         android:fontFamily="sans-serif"
                         android:text="30 sec ago"
                         android:textColor="@color/provider_secondary_text_color"
@@ -139,7 +139,7 @@
                 <Space
                     android:id="@+id/space3"
                     android:layout_width="match_parent"
-                    android:layout_height="3dp"
+                    android:layout_height="@dimen/cardiac_big_card_lower_space"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/ll_time" />
 
@@ -147,14 +147,14 @@
                     android:id="@+id/ll_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="14dp"
+                    android:layout_marginBottom="@dimen/cardiac_big_card_cardiac_call_text_margin_top"
                     android:gravity="center_vertical"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/space3">
 
                     <ImageView
-                        android:layout_width="10dp"
-                        android:layout_height="10dp"
+                        android:layout_width="@dimen/cardiac_big_card_clock_icon_height"
+                        android:layout_height="@dimen/cardiac_big_card_clock_icon_height"
                         android:adjustViewBounds="false"
                         android:background="@drawable/ic_location"
                         android:backgroundTint="@color/provider_secondary_text_color"
@@ -164,7 +164,7 @@
                         android:id="@+id/distance_loader"
                         android:layout_width="@dimen/request_small_text_size"
                         android:layout_height="@dimen/request_small_text_size"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="@dimen/cardiac_big_card_tv_time_margin_start"
                         android:indeterminate="true"
                         app:cpb_color="@color/colorPrimary"
                         app:cpb_colors="@array/progress_bar_multi_color"
@@ -178,7 +178,7 @@
                         android:id="@+id/txt_distance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6dp"
+                        android:layout_marginStart="@dimen/cardiac_big_card_tv_time_margin_start"
                         android:fontFamily="sans-serif"
                         android:text="@string/away"
                         android:textColor="@color/provider_secondary_text_color"
@@ -189,9 +189,9 @@
 
                 <ImageView
                     android:id="@+id/iv_patient"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_width="@dimen/cardiac_big_card_iv_patient_height"
+                    android:layout_height="@dimen/cardiac_big_card_iv_patient_height"
+                    android:layout_marginTop="@dimen/cardiac_big_card_upper_space"
                     android:background="@drawable/cardiac_call_card_person"
                     android:contentDescription="@null"
                     app:layout_constraintEnd_toEndOf="parent"
