@@ -68,7 +68,7 @@
 
                 <Space
                     android:id="@+id/space"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="@dimen/request_middle_space"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_cardiac" />
@@ -103,7 +103,7 @@
 
                 <Space
                     android:id="@+id/space2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_name" />
@@ -121,7 +121,7 @@
 
                 <Space
                     android:id="@+id/space3"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/txt_time" />
@@ -129,12 +129,13 @@
                 <TextView
                     android:id="@+id/txt_distance"
                     android:layout_width="wrap_content"
-                    android:layout_height="15dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
                     android:fontFamily="sans-serif"
                     android:text="@string/away"
                     android:textColor="#1e282c"
                     android:textSize="@dimen/request_small_text_size"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/distance_loader"
                     app:layout_constraintTop_toBottomOf="@+id/space3" />
 
 
@@ -142,7 +143,7 @@
                     android:id="@+id/distance_loader"
                     android:layout_width="@dimen/request_small_text_size"
                     android:layout_height="@dimen/request_small_text_size"
-                    android:layout_marginEnd="8dp"
+                    android:layout_marginTop="4dp"
                     android:indeterminate="true"
                     app:cpb_color="@color/colorPrimary"
                     app:cpb_colors="@array/progress_bar_multi_color"
@@ -151,10 +152,7 @@
                     app:cpb_rotation_speed="1.0"
                     app:cpb_stroke_width="1dp"
                     app:cpb_sweep_speed="1.0"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/txt_distance"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintTop_toBottomOf="@+id/space3" />
 
                 <ImageView
                     android:id="@+id/iv_patient"
@@ -167,9 +165,8 @@
                     android:background="@drawable/cardiac_call_card_person"
                     android:contentDescription="@null"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@+id/space2"
-                    app:layout_constraintStart_toEndOf="@+id/txt_immediate"
-                    app:layout_constraintTop_toTopOf="@+id/txt_cardiac" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
 
