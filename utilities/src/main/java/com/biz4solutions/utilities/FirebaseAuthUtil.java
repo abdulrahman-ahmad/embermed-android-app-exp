@@ -88,12 +88,12 @@ public class FirebaseAuthUtil {
             mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
+                    initDB(callback);
+                    /*if (task.isSuccessful()) {
                         // Sign in success, update UI with the signed-in user's information
                         //currentUser = mFirebaseAuth.getCurrentUser();
-                        initDB(callback);
                         //System.out.println("aa ------- createUser currentUser=" + mFirebaseAuth.getCurrentUser());
-                    } /*else {
+                    } else {
                         // If sign in fails, display a message to the user.
                         //System.out.println("aa ------ signInWithEmailAndPassword createUser error");
                     }*/

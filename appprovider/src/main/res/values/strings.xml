@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">OsirisBio Provider</string>
+    <string name="app_name">Ember Medics</string>
     <string name="news_feed">News Feed</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
+    <string name="triage_call">Triage Call</string>
     <string name="immediate">Immediate</string>
+    <string name="high">High</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_alerts_available">No alerts available</string>
     <string name="reject_request_message">Are you sure, you want to reject this request?</string>
@@ -16,4 +18,23 @@
     <string name="respond">Respond</string>
     <string name="respond_for_">Respond for $</string>
     <string name="away">&#160;away</string>
+    <!--Side menus-->
+    <string name="account_settings">Account Settings</string>
+    <string name="incidents_reports">Incident Reports</string>
+    <string name="medical_profile">Medical Profile</string>
+    <string name="how_it_works">How It Works</string>
+    <string name="aed_maps">AED Maps</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="triage">Triage</string>
+
+    <string name="submit">Submit</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="is_victim_life_saved">Is victim life saved?</string>
+    <string name="title">Title</string>
+    <string name="comment">Comment</string>
+    <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
+    <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
+    <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
+    <string name="submit_incident_report_message">Are you sure, you want to submit this incident report?</string>
+    <string name="view">View</string>
 </resources>

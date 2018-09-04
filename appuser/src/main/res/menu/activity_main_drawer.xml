@@ -13,6 +13,34 @@
             android:icon="@drawable/icn_news_feed"
             android:title="@string/news_feed" />
         <item
+            android:id="@+id/nav_triage"
+            android:icon="@drawable/icn_triage"
+            android:title="@string/triage" />
+        <item
+            android:id="@+id/nav_call_911"
+            android:icon="@drawable/icn_call_911"
+            android:title="@string/call_911" />
+        <item
+            android:id="@+id/nav_account_settings"
+            android:icon="@drawable/icn_account_settings"
+            android:title="@string/account_settings" />
+        <item
+            android:id="@+id/nav_incidents_reports"
+            android:icon="@drawable/icn_incidents_reports"
+            android:title="@string/incidents_reports" />
+        <item
+            android:id="@+id/nav_medical_profile"
+            android:icon="@drawable/icn_medical_profile"
+            android:title="@string/medical_profile" />
+        <item
+            android:id="@+id/nav_how_it_works"
+            android:icon="@drawable/icn_how_it_works"
+            android:title="@string/how_it_works" />
+        <item
+            android:id="@+id/nav_contact_us"
+            android:icon="@drawable/icn_contact_us"
+            android:title="@string/contact_us" />
+        <item
             android:id="@+id/nav_log_out"
             android:icon="@drawable/icn_logout"
             android:title="@string/log_out" />

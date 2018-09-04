@@ -1,13 +1,12 @@
 package com.biz4solutions.provider.utilities;
 
 import android.graphics.drawable.Drawable;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
 import com.biz4solutions.interfaces.OnBackClickListener;
-import com.biz4solutions.provider.activities.MainActivity;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 
 public class NavigationUtil {

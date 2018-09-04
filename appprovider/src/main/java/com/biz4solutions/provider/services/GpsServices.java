@@ -10,6 +10,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,10 +20,12 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
 
-import com.biz4solutions.provider.activities.MainActivity;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
@@ -44,8 +47,7 @@ public class GpsServices extends Service implements LocationListener {
     public static boolean isLocationUpdateRunning;
     public final long UPDATE_INTERVAL = 500;  /* 0.5 sec */
     public final long FASTEST_INTERVAL = 200; /* 0.2 sec*/
-    public static final int NOTIFICATION_ID = 200;
-    public static final String CHANNEL_ID = "200";
+    private static final int NOTIFICATION_ID = 200;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
 
@@ -137,20 +139,22 @@ public class GpsServices extends Service implements LocationListener {
             Intent intent = new Intent(service, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(service, 0, intent, PendingIntent.FLAG_NO_CREATE);
 
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
-                    CHANNEL_ID + " Notification Channel",
+            NotificationChannel channel = new NotificationChannel(Constants.EMBER_MEDICS_CHANNEL_ID,
+                    Constants.EMBER_MEDICS_CHANNEL_ID + " Notification Channel",
                     NotificationManager.IMPORTANCE_DEFAULT);
             NotificationManager notificationManager = (NotificationManager) service.getSystemService(NOTIFICATION_SERVICE);
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
             }
-            NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, CHANNEL_ID)
-                    .setSmallIcon(com.biz4solutions.utilities.R.drawable.ic_logo)
-                    .setContentTitle(service.getString(com.biz4solutions.utilities.R.string.info_notification_title))
+            NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.icon_notification_tranperant)
+                    .setLargeIcon(BitmapFactory.decodeResource(service.getResources(), R.drawable.icon_notification))
+                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setContentTitle(service.getString(R.string.info_notification_title))
                     .setOngoing(true)
                     .setAutoCancel(false)
-                    .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message)))
-                    .setContentText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(R.string.info_notification_message)))
+                    .setContentText(service.getString(R.string.info_notification_message))
                     .setContentIntent(pendingIntent);
             //addActions(service, mNotifyBuilder);
             Notification notification = mNotifyBuilder.build();

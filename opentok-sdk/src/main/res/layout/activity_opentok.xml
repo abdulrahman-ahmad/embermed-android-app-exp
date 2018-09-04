@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center_vertical"
+                android:text="Triage Call"
+                android:textColor="@color/white"
+                android:textSize="@dimen/toolbar_title_text_size"
+                tools:ignore="SpUsage" />
+
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <FrameLayout
+                android:id="@+id/subscriber_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#777777" />
+
+            <FrameLayout
+                android:id="@+id/publisher_container"
+                android:layout_width="@dimen/publisher_width"
+                android:layout_height="@dimen/publisher_height"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/publisher_margin_bottom"
+                android:layout_marginEnd="@dimen/publisher_right_margin"
+                android:layout_marginRight="@dimen/publisher_end_margin"
+                android:background="@color/white"
+                android:padding="@dimen/publisher_padding" />
+
+            <LinearLayout
+                android:id="@+id/ll_controls"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/call_controls_height"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_call_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:text="15:49"
+                    android:textColor="#FFFFFF" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_mute_audio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@android:drawable/ic_dialog_info" />
+
+                    <TextView
+                        android:id="@+id/tv_end_call"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:padding="15dp"
+                        android:text="End Call" />
+
+                    <ImageView
+                        android:id="@+id/iv_mute_video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@android:drawable/ic_dialog_info" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

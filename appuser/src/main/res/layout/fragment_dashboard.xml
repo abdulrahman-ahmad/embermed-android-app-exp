@@ -13,7 +13,7 @@
         app:rb_radius="@dimen/home_ripple_radius"
         app:rb_rippleAmount="6"
         app:rb_scale="6"
-        tools:context=".activities.MainActivity">
+        tools:context=".main.views.activities.MainActivity">
 
         <ImageView
             android:id="@+id/alert_btn"

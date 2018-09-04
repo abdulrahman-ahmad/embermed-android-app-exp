@@ -1,1 +1,1 @@
-include ':appuser', ':socialmedialib', ':apiservices', ':utilities', ':loginlib', ':appprovider'
+include ':appuser', ':socialmedialib', ':apiservices', ':utilities', ':loginlib', ':appprovider', ':opentok-sdk'
