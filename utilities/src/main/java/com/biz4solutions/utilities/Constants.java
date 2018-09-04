@@ -7,10 +7,10 @@ public class Constants implements Serializable {
 
     public static final String GOOGLE_MAP_URL = "https://maps.googleapis.com/maps/";
 
-    public static final String FILE_DIRECTORY = "OsirisBio";
+    public static final String FILE_DIRECTORY = "Ember";
     public static final String SUPPORT_DIRECTORY = "Support";
     public static final String SUPPORT_FILE_NAME = "SupportLog.txt";
-    public static final String SUPPORT_LOG_EXTRA_SUBJECT = "Osiris Bio Support Log file";
+    public static final String SUPPORT_LOG_EXTRA_SUBJECT = "Ember Support Log file";
     public static final String SUPPORT_LOG_EXTRA_TEXT = "Log file attached.";
 
     public static final int SPLASH_TIMEOUT = 1200;
@@ -32,6 +32,24 @@ public class Constants implements Serializable {
     public static final String FIREBASE_USER_TABLE = "User";
     public static final String FIREBASE_REQUEST_TABLE = "Request";
     public static final String FIREBASE_ALERT_TABLE = "Alert";
+
+    public static final String EMBER_MEDICS_CHANNEL_ID = "200";
+    public static final String EMBER_MEDICS_CARDIAC_CHANNEL_ID = "201";
+    public static final String EMBER_CHANNEL_ID = "202";
+
+    public static final String NOTIFICATION_ACTION_VIEW = "com.ember.medics.EMBER_MEDICS_NOTIFICATION_ACTION_VIEW";
+    public static final String PATIENT_NOTIFICATION_ACTION_VIEW = "com.ember.patient.EMBER_MEDICS_NOTIFICATION_ACTION_VIEW";
+    public static final String LOCAL_NOTIFICATION_ACTION_VIEW = "com.ember.medics.EMBER_MEDICS_LOCAL_NOTIFICATION_ACTION_VIEW";
+    public static final String NOTIFICATION_REQUEST_ID_KEY = "NOTIFICATION_REQUEST_ID_KEY";
+    public static final String NOTIFICATION_ID_KEY = "NOTIFICATION_ID_KEY";
+
+    public static final String STATUS_PENDING = "PENDING";
+    public static final String STATUS_IMMEDIATE = "IMMEDIATE";
+    public static final String STATUS_ACCEPTED = "ACCEPTED";
+    public static final String STATUS_COMPLETED = "COMPLETED";
+    public static final String STATUS_REJECTED = "REJECTED";
+    public static final String STATUS_CANCELLED = "CANCELLED";
+
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
 

@@ -1,43 +1,43 @@
 {
   "project_info": {
-    "project_number": "999514034669",
-    "firebase_url": "https://osirisbio-57a95.firebaseio.com",
-    "project_id": "osirisbio-57a95",
-    "storage_bucket": "osirisbio-57a95.appspot.com"
+    "project_number": "978641682696",
+    "firebase_url": "https://emergency-care-7b001.firebaseio.com",
+    "project_id": "emergency-care-7b001",
+    "storage_bucket": "emergency-care-7b001.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999514034669:android:cf765996035507fa",
+        "mobilesdk_app_id": "1:978641682696:android:5ccc23431b19fd80",
         "android_client_info": {
-          "package_name": "com.osiris.osirisbio"
+          "package_name": "com.ember.medics"
         }
       },
       "oauth_client": [
         {
-          "client_id": "999514034669-q2fn6a5fko6ca45rl94vrq8akv8hp5uv.apps.googleusercontent.com",
+          "client_id": "978641682696-kqe1c3ef3l37hj993raigqvgh6o0eo2s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.osiris.osirisbio",
+            "package_name": "com.ember.medics",
             "certificate_hash": "7f718d433b599dbf5b733f62790b0cbd2d207cf4"
           }
         },
         {
-          "client_id": "999514034669-f4p9a58v03vh1gg4rvm16pbd0j7euust.apps.googleusercontent.com",
+          "client_id": "978641682696-2kdltvm4uon2759rq7nuuva73jtvnb82.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.osiris.osirisbio",
+            "package_name": "com.ember.medics",
             "certificate_hash": "a8ea7d0ebabc136968e5cd9205e41c068495d810"
           }
         },
         {
-          "client_id": "999514034669-9iioo8e5i1eat3tuvmbgpi6ss4aug2j0.apps.googleusercontent.com",
+          "client_id": "978641682696-rfnd4n067c0ki30jrc61n6j84vmbr5dt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"
+          "current_key": "AIzaSyAtWTZ3Akz4nzKOWg2mBrEKZDP3B2ZSKA4"
         }
       ],
       "services": {
@@ -48,14 +48,14 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com",
+              "client_id": "978641682696-3jetjaj75u549pt94tfi485gf04k98aj.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "999514034669-uf9ts23tlp11ngc82tq8efjqlmtb5p8e.apps.googleusercontent.com",
+              "client_id": "978641682696-e841r14gdrlgibj2qjb1acdesh8vgbap.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "Biz4Solutions.OsirisBioProvider"
+                "bundle_id": "com.ember.patient"
               }
             }
           ]
@@ -67,36 +67,36 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:999514034669:android:0491f66a7b77da72",
+        "mobilesdk_app_id": "1:978641682696:android:3ff18984a293c906",
         "android_client_info": {
-          "package_name": "com.osiris.osirisbio.provider"
+          "package_name": "com.ember.patient"
         }
       },
       "oauth_client": [
         {
-          "client_id": "999514034669-f74pu6c0070225r12efdjmjvufp8nkhe.apps.googleusercontent.com",
+          "client_id": "978641682696-5f9lcrf2534niphnn5blbpt8o6f140og.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.osiris.osirisbio.provider",
+            "package_name": "com.ember.patient",
             "certificate_hash": "7f718d433b599dbf5b733f62790b0cbd2d207cf4"
           }
         },
         {
-          "client_id": "999514034669-h93jq6572onjh6m5bqd4piqj086n4rna.apps.googleusercontent.com",
+          "client_id": "978641682696-e3a4qr47shql4aqthb866p5iqad9nv3h.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.osiris.osirisbio.provider",
+            "package_name": "com.ember.patient",
             "certificate_hash": "a8ea7d0ebabc136968e5cd9205e41c068495d810"
           }
         },
         {
-          "client_id": "999514034669-9iioo8e5i1eat3tuvmbgpi6ss4aug2j0.apps.googleusercontent.com",
+          "client_id": "978641682696-rfnd4n067c0ki30jrc61n6j84vmbr5dt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDvA1wLVBXIikhdcKQlhXXhVbBXwNs3G5M"
+          "current_key": "AIzaSyAtWTZ3Akz4nzKOWg2mBrEKZDP3B2ZSKA4"
         }
       ],
       "services": {
@@ -107,14 +107,14 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "999514034669-2hobiq08nee9c5cdsr0s6mps26s4q687.apps.googleusercontent.com",
+              "client_id": "978641682696-3jetjaj75u549pt94tfi485gf04k98aj.apps.googleusercontent.com",
               "client_type": 3
             },
             {
-              "client_id": "999514034669-uf9ts23tlp11ngc82tq8efjqlmtb5p8e.apps.googleusercontent.com",
+              "client_id": "978641682696-e841r14gdrlgibj2qjb1acdesh8vgbap.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "Biz4Solutions.OsirisBioProvider"
+                "bundle_id": "com.ember.patient"
               }
             }
           ]

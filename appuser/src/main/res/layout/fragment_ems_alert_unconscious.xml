@@ -6,25 +6,30 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1535">
+        android:weightSum="1535"
+        tools:ignore="NestedWeights">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1215"
-            android:gravity="center"
             android:orientation="vertical"
             android:paddingEnd="@dimen/default_left_right_margin"
             android:paddingStart="@dimen/default_left_right_margin"
-            android:weightSum="1213">
+            android:weightSum="1215">
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="450" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_weight="560"
                 android:contentDescription="@null"
-                android:src="@drawable/unconscious"
-                tools:ignore="NestedWeights" />
+                android:scaleType="fitCenter"
+                android:src="@drawable/unconscious" />
         </LinearLayout>
 
         <LinearLayout

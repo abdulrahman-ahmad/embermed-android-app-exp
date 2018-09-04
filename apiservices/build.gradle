@@ -9,7 +9,7 @@ android {
         versionName "1.0"
         flavorDimensions "default"
 
-        buildConfigField "String", "GOOGLE_API_KEY", '"AIzaSyAoZwqvud4CYP2VpZrSfVeNjG429KBFTck"'
+        buildConfigField "String", "GOOGLE_API_KEY", '"AIzaSyDP2cpZdwlckwNAoJrEf7wGupeK4FIjQBo"'
     }
     buildTypes {
         release {

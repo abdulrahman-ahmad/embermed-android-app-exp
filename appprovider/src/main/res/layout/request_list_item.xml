@@ -17,7 +17,12 @@
 
         <include
             android:id="@+id/request_list_cardiac_item"
-            layout="@layout/request_list_cardiac_item" />
+            layout="@layout/request_list_cardiac_big_item" />
+
+        <include
+            android:id="@+id/request_list_triage_item"
+            layout="@layout/request_list_triage_item"
+            android:visibility="gone" />
 
     </LinearLayout>
 </layout>

@@ -95,6 +95,7 @@ public class ApiServiceUtil {
                             .header("appVersion", commonHeadersMap.get("appVersion"))
                             .header("osVersion", commonHeadersMap.get("osVersion"))
                             .header("deviceType", commonHeadersMap.get("deviceType"))
+                            .header("deviceName", commonHeadersMap.get("deviceName"))
                             .header("Authorization", authToken)
                             .method(original.method(), original.body())
                             .build();
@@ -117,6 +118,7 @@ public class ApiServiceUtil {
         commonHeaders.put("appVersion", getAppVersion());
         commonHeaders.put("osVersion", "" + getOsVersion());
         commonHeaders.put("deviceType", getDeviceType());
+        commonHeaders.put("deviceName", getDeviceName());
         String authToken = getAuthToken(context);
         if (authToken != null && !authToken.isEmpty()) {
             commonHeaders.put("Authorization", authToken);
@@ -187,10 +189,10 @@ public class ApiServiceUtil {
                                 restClientResponse.onFailure(emptyResponse.getMessage(), emptyResponse.getCode());
                             } catch (IOException e) {
                                 e.printStackTrace();
-                                restClientResponse.onFailure(response.message(), response.code());
+                                restClientResponse.onFailure(context.getString(R.string.error_internal_server_error), response.code());
                             }
                         } else {
-                            restClientResponse.onFailure(response.message(), response.code());
+                            restClientResponse.onFailure(context.getString(R.string.error_internal_server_error), response.code());
                         }
                     }
                 }

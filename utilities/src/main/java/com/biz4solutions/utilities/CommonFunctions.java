@@ -53,12 +53,14 @@ public class CommonFunctions implements Serializable {
      */
     public boolean isOffline(Context context) {
         try {
-            ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = null;
-            if (connectivityManager != null) {
-                networkInfo = connectivityManager.getActiveNetworkInfo();
+            if (context != null) {
+                ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo networkInfo = null;
+                if (connectivityManager != null) {
+                    networkInfo = connectivityManager.getActiveNetworkInfo();
+                }
+                return (networkInfo == null || !networkInfo.isConnected());
             }
-            return (networkInfo == null || !networkInfo.isConnected());
         } catch (Exception e) {
             e.printStackTrace();
         }

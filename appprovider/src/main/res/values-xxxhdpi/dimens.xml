@@ -14,4 +14,27 @@
     <dimen name="request_card_padding_start_end">16dp</dimen>
     <dimen name="request_card_elevation">2dp</dimen>
     <dimen name="empty_alert_height">225dp</dimen>
+    <dimen name="incident_report_text_size">18dp</dimen>
+    <dimen name="is_victim_life_saved_margin_top">11.5dp</dimen>
+    <dimen name="radio_button_margin_left">17.25dp</dimen>
+    <dimen name="comment_et_height">161dp</dimen>
+    <dimen name="submit_button_margin_top">23dp</dimen>
+    <dimen name="incident_report_input_text_padding">11.5dp</dimen>
+    <dimen name="comment_margin_top">13.8dp</dimen>
+    <dimen name="notification_icon_hight_width">20dp</dimen>
+    <dimen name="notification_cardiac_text_size">18dp</dimen>
+    <dimen name="notification_priority_text_size">14dp</dimen>
+    <dimen name="notification_name_text_size">16dp</dimen>
+    <dimen name="notification_image_height_width">65dp</dimen>
+    <dimen name="cardiac_big_card_cardiac_call_text_size">20.7dp</dimen>
+    <dimen name="cardiac_big_card_cardiac_call_text_margin_top">16.1dp</dimen>
+    <dimen name="cardiac_big_card_heart_image_height">18.98dp</dimen>
+    <dimen name="cardiac_big_card_upper_space">11.5dp</dimen>
+    <dimen name="cardiac_big_card_middle_space">8.05dp</dimen>
+    <dimen name="cardiac_big_card_lower_space">3.45dp</dimen>
+    <dimen name="cardiac_big_card_clock_icon_height">11.5dp</dimen>
+    <dimen name="cardiac_big_card_iv_patient_height">101.2dp</dimen>
+    <dimen name="cardiac_big_card_tv_time_margin_start">6.9dp</dimen>
+    <dimen name="cardiac_big_card_tv_age_margin_start">9.2dp</dimen>
+    <dimen name="cardiac_big_card_tv_immediate_margin_start">4.6dp</dimen>
 </resources>

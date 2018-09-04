@@ -112,14 +112,29 @@ public class ApiServices {
     public void getDistanceDuration(final Context context, String units, double originLatitude, double originLongitude, List<Location> locations, final RestClientResponse restClientResponse) {
         StringBuilder locatioStr = new StringBuilder();
         for (int i = 0; i < locations.size(); i++) {
-            if (i == 0) {
-                locatioStr = new StringBuilder(locations.get(i).getLatitude() + "," + locations.get(i).getLongitude());
-            } else {
-                locatioStr.append("|").append(locations.get(i).getLatitude()).append(",").append(locations.get(i).getLongitude());
+            if (locations.get(i) != null) {
+                if (i == 0) {
+                    locatioStr = new StringBuilder(locations.get(i).getLatitude() + "," + locations.get(i).getLongitude());
+                } else {
+                    locatioStr.append("|").append(locations.get(i).getLatitude()).append(",").append(locations.get(i).getLongitude());
+                }
             }
+        }
+        if (locatioStr.toString().isEmpty()) {
+            return;
         }
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(Constants.GOOGLE_MAP_URL)
                 .getDistanceDuration(units, originLatitude + "," + originLongitude, locatioStr.toString(), "driving", false, BuildConfig.GOOGLE_API_KEY));
+    }
+
+    public void getSymptomList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSymptomList(page, 20));
+    }
+
+    public void logout(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .logout());
     }
 
 }
