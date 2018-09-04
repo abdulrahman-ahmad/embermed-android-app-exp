@@ -184,7 +184,12 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                 @Override
                 public void onSuccess(Boolean data) {
                     if (data) {
-                        getNewRequestList(false);
+                        mHandler.postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getNewRequestList(false);
+                            }
+                        },1000);
                     } else {
                         setErrorView();
                     }
@@ -342,8 +347,9 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (emsRequests != null && emsRequests.size() > position - 1) {
-            mainActivity.getRequestDetails(emsRequests.get(position - 1).getId(), distanceHashMap.get(emsRequests.get(position - 1).getId()), false);
+        int index = position -1;
+        if (emsRequests != null && emsRequests.size() > index && index >= 0) {
+            mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
         }
     }
 
