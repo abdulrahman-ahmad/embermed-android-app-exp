@@ -2,6 +2,7 @@
     <string name="app_name">Ember</string>
     <string name="news_feed">News Feed</string>
     <string name="ems_alert">EMS Alert</string>
+    <string name="triage_service">Triage Service</string>
     <string name="symptoms">Symptoms</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>

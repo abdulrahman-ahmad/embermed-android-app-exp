@@ -96,14 +96,12 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         if (mainActivity != null) {
             currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.cardiac_call);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
 
         user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-
         addFirebaseRequestEvent();
-
         if (requestDetails != null) {
             setCardiacCallView();
         }
@@ -175,6 +173,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     }
 
     private void initView() {
+        binding.cardiacPatientDiseaseItem.txtPatientDiseaseTitle.setText(R.string.patient_symptoms);
         if (requestDetails != null) {
             if (requestDetails.getUserDetails() != null) {
                 String name = requestDetails.getUserDetails().getFirstName() + " " + requestDetails.getUserDetails().getLastName();
@@ -182,8 +181,8 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
                 String genderAge = requestDetails.getUserDetails().getGender() + ", " + requestDetails.getUserDetails().getAge() + "yrs";
                 binding.requestListTriageItem.txtGenderAge.setText(genderAge);
             }
-            if (requestDetails.getPatientDisease() != null) {
-                binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientDisease());
+            if (requestDetails.getPatientSymptoms() != null) {
+                binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientSymptoms());
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
