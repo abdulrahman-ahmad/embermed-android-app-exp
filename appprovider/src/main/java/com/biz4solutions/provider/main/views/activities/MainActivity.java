@@ -320,6 +320,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openTriageCallDetailsFragment(EmsRequest data, String distanceStr, boolean isOpenDuplicateFragment) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (!isOpenDuplicateFragment) {
+                if (currentFragment instanceof TriageCallDetailsFragment) {
+                    return;
+                }
+            } else {
+                if (currentFragment instanceof TriageCallDetailsFragment) {
+                    if (((TriageCallDetailsFragment) currentFragment).currentRequestId != null
+                            && ((TriageCallDetailsFragment) currentFragment).currentRequestId.equals("" + data.getId())) {
+                        return;
+                    }
+                }
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.main_container, TriageCallDetailsFragment.newInstance(data, distanceStr))
+                    .addToBackStack(TriageCallDetailsFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void openDashBoardFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
@@ -423,12 +448,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             } /*else {
                 // do nothing
             }*/
-        } else if (currentFragment instanceof TriageCallDetailsFragment) {
-            if (!((TriageCallDetailsFragment) currentFragment).isRequestAcceptedByMe) {
-                getSupportFragmentManager().popBackStack();
-            } /*else {
-                // do nothing
-            }*/
         }
     }
 
@@ -443,7 +462,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData(), distanceStr, isOpenDuplicateFragment);
+                    EmsRequest data = ((EmsRequestDetailsResponse) response).getData();
+                    if (Constants.STATUS_IMMEDIATE.equals("" + data.getPriority())) {
+                        openCardiacCallDetailsFragment(data, distanceStr, isOpenDuplicateFragment);
+                    } else {
+                        openTriageCallDetailsFragment(data, distanceStr, isOpenDuplicateFragment);
+                    }
                 }
 
                 @Override
