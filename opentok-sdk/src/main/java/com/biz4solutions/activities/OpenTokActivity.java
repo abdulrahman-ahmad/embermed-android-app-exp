@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.biz4solutions.opentok.sdk.BuildConfig;
@@ -26,7 +27,7 @@ import com.opentok.android.SubscriberKit;
 public class OpenTokActivity extends AppCompatActivity implements
         Session.SessionListener,
         PublisherKit.PublisherListener,
-        SubscriberKit.SubscriberListener {
+        SubscriberKit.SubscriberListener, View.OnClickListener {
 
     private static final int PERMISSION_REQUEST_CODE = 124;
     public static final int RC_OPENTOK_ACTIVITY = 125;
@@ -60,7 +61,15 @@ public class OpenTokActivity extends AppCompatActivity implements
                 mPublisherToken = bundle.getString(OPENTOK_PUBLISHER_TOKEN);
             }
         }
+        initClickListeners();
         requestPermissions();
+    }
+
+    private void initClickListeners() {
+        binding.ivAudio.setOnClickListener(this);
+        binding.ivMuteAudio.setOnClickListener(this);
+        binding.ivVideo.setOnClickListener(this);
+        binding.ivMuteVideo.setOnClickListener(this);
     }
 
     /* Activity lifecycle methods */
@@ -208,6 +217,23 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-//        finish();
+        finish();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if (view.getId() == R.id.iv_audio) {
+            binding.ivAudio.setVisibility(View.GONE);
+            binding.ivMuteAudio.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.iv_mute_audio) {
+            binding.ivAudio.setVisibility(View.VISIBLE);
+            binding.ivMuteAudio.setVisibility(View.GONE);
+        } else if (view.getId() == R.id.iv_video) {
+            binding.ivVideo.setVisibility(View.GONE);
+            binding.ivMuteVideo.setVisibility(View.VISIBLE);
+        } else if (view.getId() == R.id.iv_mute_video) {
+            binding.ivVideo.setVisibility(View.VISIBLE);
+            binding.ivMuteVideo.setVisibility(View.GONE);
+        }
     }
 }

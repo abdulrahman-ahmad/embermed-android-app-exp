@@ -36,20 +36,25 @@
                 android:background="#777777" />
 
             <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/shape_gradient_bg" />
+
+            <FrameLayout
                 android:id="@+id/publisher_container"
-                android:layout_width="@dimen/publisher_width"
-                android:layout_height="@dimen/publisher_height"
+                android:layout_width="@dimen/_75dp"
+                android:layout_height="@dimen/_100dp"
                 android:layout_gravity="bottom|end"
-                android:layout_marginBottom="@dimen/publisher_margin_bottom"
-                android:layout_marginEnd="@dimen/publisher_right_margin"
-                android:layout_marginRight="@dimen/publisher_end_margin"
+                android:layout_marginBottom="@dimen/_100dp"
+                android:layout_marginEnd="@dimen/_16dp"
+                android:layout_marginRight="@dimen/_16dp"
                 android:background="@color/white"
-                android:padding="@dimen/publisher_padding" />
+                android:padding="2dp" />
 
             <LinearLayout
                 android:id="@+id/ll_controls"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/call_controls_height"
+                android:layout_height="@dimen/_100dp"
                 android:layout_gravity="bottom"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -58,9 +63,10 @@
                     android:id="@+id/tv_call_duration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="15dp"
+                    android:paddingBottom="@dimen/_7dp"
                     android:text="15:49"
-                    android:textColor="#FFFFFF" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_16dp" />
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -68,28 +74,91 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:id="@+id/iv_mute_audio"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/iv_audio"
+                        android:layout_width="@dimen/_50dp"
+                        android:layout_height="@dimen/_50dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@android:drawable/ic_dialog_info" />
+                        android:src="@drawable/audio" />
 
-                    <TextView
-                        android:id="@+id/tv_end_call"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:id="@+id/iv_mute_audio"
+                        android:layout_width="@dimen/_50dp"
+                        android:layout_height="@dimen/_50dp"
                         android:layout_gravity="center_vertical"
-                        android:padding="15dp"
-                        android:text="End Call" />
+                        android:src="@drawable/audio_off"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btn_cancel_request"
+                        style="@style/BtnStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_50dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginBottom="0dp"
+                        android:layout_marginEnd="@dimen/_15dp"
+                        android:layout_marginStart="@dimen/_15dp"
+                        android:layout_marginTop="0dp"
+                        android:background="@drawable/ripple_red_button"
+                        android:drawablePadding="@dimen/_5dp"
+                        android:drawableStart="@drawable/call_end"
+                        android:paddingBottom="@dimen/_10dp"
+                        android:paddingEnd="@dimen/_20dp"
+                        android:paddingStart="@dimen/_20dp"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="End" />
+
+
+                    <ImageView
+                        android:id="@+id/iv_video"
+                        android:layout_width="@dimen/_50dp"
+                        android:layout_height="@dimen/_50dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/video" />
 
                     <ImageView
                         android:id="@+id/iv_mute_video"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/_50dp"
+                        android:layout_height="@dimen/_50dp"
                         android:layout_gravity="center_vertical"
-                        android:src="@android:drawable/ic_dialog_info" />
+                        android:src="@drawable/video_off"
+                        android:visibility="gone" />
                 </LinearLayout>
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_10dp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_caller"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginTop="@dimen/_10dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_caller_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Karan Bajaj"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_18dp" />
+
+                <TextView
+                    android:id="@+id/tv_caller_disease"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7dp"
+                    android:text="Chest Pain"
+                    android:textColor="#FFFFFF"
+                    android:textSize="@dimen/_16dp" />
+
+            </LinearLayout>
+
+
         </FrameLayout>
     </LinearLayout>
 </layout>

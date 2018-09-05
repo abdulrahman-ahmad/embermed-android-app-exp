@@ -2,16 +2,15 @@
     1)Samsung Tab GTP3100
  -->
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-
-    <dimen name="publisher_height">100dp</dimen>
-    <dimen name="publisher_width">75dp</dimen>
-    <dimen name="publisher_margin_bottom">75dp</dimen>
-    <dimen name="publisher_end_margin">16dp</dimen>
-    <dimen name="publisher_right_margin">16dp</dimen>
-    <dimen name="publisher_bottom_margin">16dp</dimen>
-    <dimen name="publisher_padding">2dp</dimen>
-    <dimen name="call_controls_height">100dp</dimen>
+    <dimen name="_5dp">7.5dp</dimen>
+    <dimen name="_7dp">10.5dp</dimen>
+    <dimen name="_8dp">12dp</dimen>
+    <dimen name="_10dp">15dp</dimen>
+    <dimen name="_15dp">22.5dp</dimen>
+    <dimen name="_16dp">24dp</dimen>
+    <dimen name="_18dp">27dp</dimen>
+    <dimen name="_20dp">30dp</dimen>
+    <dimen name="_50dp">75dp</dimen>
+    <dimen name="_75dp">112.5dp</dimen>
+    <dimen name="_100dp">150dp</dimen>
 </resources>

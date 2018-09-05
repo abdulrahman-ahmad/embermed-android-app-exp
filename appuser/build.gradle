@@ -85,6 +85,6 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     api project(':loginlib')
-    //api project(':opentok-sdk')
+    api project(':opentok-sdk')
 }
 apply plugin: 'com.google.gms.google-services'                    // Firebase push notification
