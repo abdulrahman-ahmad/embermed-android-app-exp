@@ -336,6 +336,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case EmsAlertCardiacCallFragment.fragmentName:
                     showCancelRequestAlert();
                     break;
+                case TriageCallWaitingFragment.fragmentName:
+                    // not do any think
+                    break;
                 default:
                     getSupportFragmentManager().popBackStack();
                     break;

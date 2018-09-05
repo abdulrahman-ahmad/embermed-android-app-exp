@@ -84,9 +84,9 @@ public class ApiServices {
                 .acceptRequest(requestId));
     }
 
-    public void completeRequest(final Context context, String requestId, final RestClientResponse restClientResponse) {
+    public void completeRequest(final Context context, HashMap<String, Object> body, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
-                .completeRequest(requestId));
+                .completeRequest(body));
     }
 
     public void submitIncidentReport(final Context context, IncidentReport body, final RestClientResponse restClientResponse) {

@@ -72,7 +72,7 @@ public interface RetrofitRestClient {
     Call<EmptyResponse> rejectRequest(@Query("requestId") String requestId);
 
     @PUT("v1/provider/request/complete")
-    Call<EmptyResponse> completeRequest(@Query("requestId") String requestId);
+    Call<EmptyResponse> completeRequest(@Body HashMap<String, Object> body);
 
     @GET("v1/provider/requestDetail")
     Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);

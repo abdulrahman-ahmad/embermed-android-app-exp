@@ -61,6 +61,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
@@ -433,7 +434,11 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().completeRequest(mainActivity, currentRequestId, new RestClientResponse() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("requestId", currentRequestId);
+        body.put("reason", "any");
+        body.put("providerFeedback", "ER");//ER//URGENT_CARE//PCP
+        new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
