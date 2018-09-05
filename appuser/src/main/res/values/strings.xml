@@ -37,4 +37,9 @@
     <string name="message_request_rejected">Your request was rejected.</string>
     <string name="message_request_cancelled">Your request was cancelled.</string>
 
+    <!--Feedback Screen-->
+    <string name="feedback">Feedback</string>
+    <string name="feedback_on_triage_call_text">Feedback on Triage call</string>
+    <string name="comment">Comment</string>
+    <string name="skip"><u>Skip</u></string>
 </resources>

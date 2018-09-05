@@ -9,7 +9,12 @@
     <dimen name="_16dp">18.4dp</dimen>
     <dimen name="_18dp">20.7dp</dimen>
     <dimen name="_20dp">23dp</dimen>
+    <dimen name="_25dp">28.75dp</dimen>
+    <dimen name="_30dp">34.5dp</dimen>
+    <dimen name="_40dp">46dp</dimen>
     <dimen name="_50dp">57.5dp</dimen>
+    <dimen name="_65dp">74.75dp</dimen>
     <dimen name="_75dp">86.25dp</dimen>
     <dimen name="_100dp">115dp</dimen>
+    <dimen name="_140dp">161dp</dimen>
 </resources>

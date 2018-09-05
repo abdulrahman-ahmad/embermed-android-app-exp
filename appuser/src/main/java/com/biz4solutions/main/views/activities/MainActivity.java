@@ -39,6 +39,7 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
+import com.biz4solutions.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -337,6 +338,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showCancelRequestAlert();
                     break;
                 case TriageCallWaitingFragment.fragmentName:
+                case FeedbackFragment.fragmentName:
                     // not do any think
                     break;
                 default:
