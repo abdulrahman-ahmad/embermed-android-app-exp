@@ -26,7 +26,7 @@
                     android:layout_marginTop="@dimen/_25dp"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
-                    android:text="@string/feedback_on_triage_call_text"
+                    android:text="@string/rate_caller"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_18dp" />
 

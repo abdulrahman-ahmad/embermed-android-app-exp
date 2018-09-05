@@ -41,6 +41,7 @@ import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
@@ -432,6 +433,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     break;
                 case CardiacIncidentReportFragment.fragmentName:
                     reOpenDashBoardFragment();
+                    break;
+                case FeedbackFragment.fragmentName:
+                    // do nothing
                     break;
                 default:
                     getSupportFragmentManager().popBackStack();

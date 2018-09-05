@@ -12,4 +12,21 @@
     <dimen name="sub_btn_height">34dp</dimen>
     <dimen name="btn_text_size">16dp</dimen>
     <dimen name="sub_btn_text_size">14dp</dimen>
+
+    <dimen name="_5dp">4.25dp</dimen>
+    <dimen name="_7dp">5.95dp</dimen>
+    <dimen name="_8dp">6.8dp</dimen>
+    <dimen name="_10dp">8.5dp</dimen>
+    <dimen name="_15dp">12.75dp</dimen>
+    <dimen name="_16dp">13.6dp</dimen>
+    <dimen name="_18dp">15.3dp</dimen>
+    <dimen name="_20dp">17dp</dimen>
+    <dimen name="_25dp">21.25dp</dimen>
+    <dimen name="_30dp">25.5dp</dimen>
+    <dimen name="_40dp">34dp</dimen>
+    <dimen name="_50dp">42.5dp</dimen>
+    <dimen name="_65dp">55.25dp</dimen>
+    <dimen name="_75dp">63.75dp</dimen>
+    <dimen name="_100dp">85dp</dimen>
+    <dimen name="_140dp">119dp</dimen>
 </resources>
