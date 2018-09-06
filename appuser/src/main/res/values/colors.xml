@@ -3,4 +3,5 @@
     <color name="alert_bg_color">#efefef</color>
     <color name="no_symptoms_text_color">#acacac</color>
     <color name="notification_bg_color">#fafafa</color>
+    <color name="reason_txt_color">#545e69</color>
 </resources>

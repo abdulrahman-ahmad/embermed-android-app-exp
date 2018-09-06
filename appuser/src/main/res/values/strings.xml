@@ -48,4 +48,10 @@
     <string name="triage_will_submit_the_report_shortly">Triage will submit the report shortly</string>
     <string name="triage_feedback_waiting_message">Screen will disappear ones the triage submit the report.</string>
     <string name="triage_call_is_in_progress_waiting_msg">Your triage service call is in progress from another device. Please wait until your call is completed.</string>
+    <string name="our_medical_professional_has_recommended">Our Medical Professional\nhas recommended</string>
+    <string name="go_to_er">Go to ER</string>
+    <string name="book_uber">Book Uber</string>
+    <string name="reason">Reason</string>
+    <string name="see_more"><u>SEE MORE</u></string>
+    <string name="see_less"><u>SEE LESS</u></string>
 </resources>

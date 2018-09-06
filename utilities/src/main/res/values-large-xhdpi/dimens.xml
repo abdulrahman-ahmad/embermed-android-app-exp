@@ -18,6 +18,8 @@
     <dimen name="_7dp">11.2dp</dimen>
     <dimen name="_8dp">12.8dp</dimen>
     <dimen name="_10dp">16dp</dimen>
+    <dimen name="_12dp">19.2dp</dimen>
+    <dimen name="_14dp">22.4dp</dimen>
     <dimen name="_15dp">24dp</dimen>
     <dimen name="_16dp">25.6dp</dimen>
     <dimen name="_18dp">28.8dp</dimen>

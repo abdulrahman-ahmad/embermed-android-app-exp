@@ -12,10 +12,8 @@ import android.view.ViewGroup;
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentTriageCallFeedbackWaitingBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
-import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
-import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -32,7 +30,7 @@ public class TriageCallFeedbackWaitingFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static TriageCallFeedbackWaitingFragment newInstance(boolean isNeedToShowQue, EmsRequest data) {
+    public static TriageCallFeedbackWaitingFragment newInstance(EmsRequest data) {
         TriageCallFeedbackWaitingFragment fragment = new TriageCallFeedbackWaitingFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_DETAILS, data);
@@ -55,13 +53,8 @@ public class TriageCallFeedbackWaitingFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.ems_alert);
-            NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
-                @Override
-                public void onBackPress() {
-                    mainActivity.showCancelRequestAlert();
-                }
-            });
+            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            NavigationUtil.getInstance().hideMenu(mainActivity);
         }
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
@@ -92,9 +85,8 @@ public class TriageCallFeedbackWaitingFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            NavigationUtil.getInstance().showMenu(mainActivity);
         }
-        CommonFunctions.getInstance().dismissAlertDialog();
         FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
     }
 
