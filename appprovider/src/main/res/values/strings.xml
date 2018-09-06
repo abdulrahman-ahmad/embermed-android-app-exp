@@ -41,4 +41,13 @@
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
     <string name="skip"><u>Skip</u></string>
+    <string name="where_should_caller_go">Where should caller go?</string>
+    <string name="go_to_er">Go to ER</string>
+    <string name="go_to_urgent_care">Go to Urgent Care</string>
+    <string name="go_to_pcp">Go to PCP</string>
+    <string name="reason">Reason</string>
+    <string name="caller_visit">Caller Visit:</string>
+    <string name="reason_colon">Reason:</string>
+    <string name="see_more"><u>SEE MORE</u></string>
+    <string name="see_less"><u>SEE LESS</u></string>
 </resources>

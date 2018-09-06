@@ -8,30 +8,31 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.databinding.FragmentFeedbackBinding;
+import com.biz4solutions.provider.databinding.FragmentTriageCallerFeedbackBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 
-public class FeedbackFragment extends Fragment implements View.OnClickListener {
+public class TriageCallerFeedbackFragment extends Fragment implements View.OnClickListener {
 
-    public static final String fragmentName = "FeedbackFragment";
+    public static final String fragmentName = "TriageCallerFeedbackFragment";
     private MainActivity mainActivity;
-    private FragmentFeedbackBinding binding;
+    private FragmentTriageCallerFeedbackBinding binding;
 
-    public FeedbackFragment() {
+    public TriageCallerFeedbackFragment() {
         // Required empty public constructor
     }
 
-    public static FeedbackFragment newInstance() {
-        return new FeedbackFragment();
+    public static TriageCallerFeedbackFragment newInstance() {
+        return new TriageCallerFeedbackFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feedback, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_triage_caller_feedback, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
@@ -44,12 +45,11 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     }
 
     private void initView() {
-        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
+        binding.edtReason.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtReason.getId()));
     }
 
     private void initClickListeners() {
         binding.btnSubmit.setOnClickListener(this);
-        binding.tvSkip.setOnClickListener(this);
     }
 
 
@@ -65,10 +65,33 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:
-                break;
-            case R.id.tv_skip:
+                if (checkIsWhereCallerGoSelected()) {
+                    if (isFormValid()) {
+                        Toast.makeText(mainActivity, "Success...", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 break;
         }
+    }
+
+    private boolean isFormValid() {
+        if (binding.edtReason.getText().toString().trim().isEmpty()) {
+            Toast.makeText(getActivity(), "Please enter reason.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean checkIsWhereCallerGoSelected() {
+        if (binding.rdbGoToEr.isChecked()) {
+            return true;
+        } else if (binding.rdbGoToUrgentCare.isChecked()) {
+            return true;
+        } else if (binding.rdbGoToPcp.isChecked()) {
+            return true;
+        }
+        Toast.makeText(mainActivity, "Please select where caller should go.", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
 

@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentFeedbackBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class FeedbackFragment extends Fragment implements View.OnClickListener {
@@ -36,6 +38,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             mainActivity.toolbarTitle.setText(R.string.feedback);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
+        initView();
         initClickListeners();
         return binding.getRoot();
     }
@@ -43,6 +46,10 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     private void initClickListeners() {
         binding.btnSubmit.setOnClickListener(this);
         binding.tvSkip.setOnClickListener(this);
+    }
+
+    private void initView() {
+        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
     }
 
 

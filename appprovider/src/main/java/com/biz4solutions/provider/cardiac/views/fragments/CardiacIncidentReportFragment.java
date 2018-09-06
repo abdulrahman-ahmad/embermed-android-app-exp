@@ -88,6 +88,7 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
     }
 
     private void initView() {
+        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
         binding.requestListCardiacItem.txtTime.setVisibility(View.GONE);
         binding.requestListCardiacItem.txtDistance.setVisibility(View.GONE);
         binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
