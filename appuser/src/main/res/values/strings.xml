@@ -43,4 +43,8 @@
     <string name="feedback_on_triage_call_text">Feedback on Triage call</string>
     <string name="comment">Comment</string>
     <string name="skip"><u>Skip</u></string>
+
+    <string name="please_wait">Please wait</string>
+    <string name="triage_will_submit_the_report_shortly">Triage will submit the report shortly</string>
+    <string name="triage_feedback_waiting_message">Screen will disappear ones the triage submit the report.</string>
 </resources>

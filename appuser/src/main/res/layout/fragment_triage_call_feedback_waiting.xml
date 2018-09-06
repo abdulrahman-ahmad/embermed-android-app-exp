@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="1535"
+        tools:ignore="SpUsage,UnusedAttribute">
+
+        <LinearLayout
+            android:id="@+id/header_waiting"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="440"
+            android:background="@color/blue_bg_color"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/please_wait"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/cardiac_call_big_text_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:text="@string/triage_will_submit_the_report_shortly"
+                android:textColor="@color/secondary_text_color"
+                android:textSize="@dimen/cardiac_call_small_text_size" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="250" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="380">
+
+            <ImageView
+                android:id="@+id/waiting_image"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@null"
+                android:scaleType="fitCenter"
+                android:src="@drawable/waiting_for_report" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="225" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginEnd="@dimen/default_left_right_margin"
+            android:layout_marginStart="@dimen/default_left_right_margin"
+            android:layout_weight="240"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="top|center_horizontal"
+            android:text="@string/triage_feedback_waiting_message"
+            android:textColor="@color/secondary_text_color"
+            android:textSize="@dimen/cardiac_call_small_text_size" />
+
+    </LinearLayout>
+</layout>
