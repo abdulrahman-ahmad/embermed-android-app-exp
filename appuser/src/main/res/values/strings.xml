@@ -47,4 +47,5 @@
     <string name="please_wait">Please wait</string>
     <string name="triage_will_submit_the_report_shortly">Triage will submit the report shortly</string>
     <string name="triage_feedback_waiting_message">Screen will disappear ones the triage submit the report.</string>
+    <string name="triage_call_is_in_progress_waiting_msg">Your triage service call is in progress from another device. Please wait until your call is completed.</string>
 </resources>

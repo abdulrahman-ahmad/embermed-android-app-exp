@@ -16,7 +16,9 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +42,7 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.triage.views.fragments.FeedbackFragment;
+import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -49,7 +52,7 @@ import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
     public NavigationView navigationView;
     public TextView toolbarTitle;
@@ -59,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BroadcastReceiver logoutBroadcastReceiver;
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
+    public LinearLayout btnLogOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +83,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
+            btnLogOut = binding.appBarMain.btnLogOut;
+            btnLogOut.setOnClickListener(this);
         }
 
         logoutBroadcastReceiver = new BroadcastReceiver() {
@@ -497,6 +503,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_log_out:
+                CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                    @Override
+                    public void onClose(Boolean result) {
+                        if (result) {
+                            callLogoutAPI();
+                        }
+                    }
+                });
+                break;
         }
     }
 }

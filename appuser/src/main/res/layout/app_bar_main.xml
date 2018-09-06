@@ -28,16 +28,45 @@
                 app:titleTextColor="@color/white"
                 tools:targetApi="lollipop">
 
-                <TextView
-                    android:id="@+id/toolbar_title"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center_vertical"
-                    android:text="@string/dashboard"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/toolbar_title_text_size"
-                    tools:ignore="SpUsage" />
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="UseCompoundDrawables">
+
+                    <TextView
+                        android:id="@+id/toolbar_title"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:gravity="center_vertical"
+                        android:text="@string/dashboard"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/toolbar_title_text_size"
+                        tools:ignore="SpUsage" />
+
+                    <LinearLayout
+                        android:id="@+id/btn_log_out"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ripple_default_bg"
+                        android:gravity="center"
+                        android:paddingEnd="16dp"
+                        android:paddingStart="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/log_out"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/toolbar_title_text_size" />
+                    </LinearLayout>
+                </LinearLayout>
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.AppBarLayout>
