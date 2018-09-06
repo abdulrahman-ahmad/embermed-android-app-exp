@@ -12,9 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.opentok.sdk.BuildConfig;
 import com.biz4solutions.opentok.sdk.R;
 import com.biz4solutions.opentok.sdk.databinding.ActivityOpentokBinding;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.opentok.android.BaseVideoRenderer;
 import com.opentok.android.OpentokError;
 import com.opentok.android.Publisher;
@@ -70,6 +74,7 @@ public class OpenTokActivity extends AppCompatActivity implements
         binding.ivMuteAudio.setOnClickListener(this);
         binding.ivVideo.setOnClickListener(this);
         binding.ivMuteVideo.setOnClickListener(this);
+        binding.btnEndCall.setOnClickListener(this);
     }
 
     /* Activity lifecycle methods */
@@ -234,6 +239,32 @@ public class OpenTokActivity extends AppCompatActivity implements
         } else if (view.getId() == R.id.iv_mute_video) {
             binding.ivVideo.setVisibility(View.VISIBLE);
             binding.ivMuteVideo.setVisibility(View.GONE);
+        } else if (view.getId() == R.id.btn_end_call) {
+            endCall();
         }
+    }
+
+    private void endCall() {
+        if (CommonFunctions.getInstance().isOffline(this)) {
+            Toast.makeText(this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(this);
+        String requestId = "34f6ef09-2787-4b51-b3c5-abd4b233c37c";
+        new ApiServices().endCall(this, requestId, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                EmptyResponse emptyResponse = (EmptyResponse) response;
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(OpenTokActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                finish();
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(OpenTokActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

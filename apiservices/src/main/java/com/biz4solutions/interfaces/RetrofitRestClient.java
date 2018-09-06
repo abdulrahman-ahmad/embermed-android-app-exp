@@ -2,6 +2,7 @@ package com.biz4solutions.interfaces;
 
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
@@ -88,4 +89,13 @@ public interface RetrofitRestClient {
 
     @DELETE("v1/users/logout")
     Call<EmptyResponse> logout();
+
+    @POST("v1/triage/endCall")
+    Call<EmptyResponse> endCall(@Query("requestId") String requestId);
+
+    @POST("v1/users/submitUserFeedBack")
+    Call<EmptyResponse> submitUserFeedBack(@Body FeedbackRequest body);
+
+    @POST("v1/provider/submitProviderFeedBack")
+    Call<EmptyResponse> submitProviderFeedBack(@Body FeedbackRequest body);
 }

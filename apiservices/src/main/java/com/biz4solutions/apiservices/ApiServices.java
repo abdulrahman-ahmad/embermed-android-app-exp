@@ -6,6 +6,7 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
@@ -135,6 +136,21 @@ public class ApiServices {
     public void logout(final Context context, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .logout());
+    }
+
+    public void endCall(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .endCall(requestId));
+    }
+
+    public void submitUserFeedBack(final Context context, FeedbackRequest feedbackRequest, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .submitUserFeedBack(feedbackRequest));
+    }
+
+    public void submitProviderFeedBack(final Context context, FeedbackRequest feedbackRequest, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .submitProviderFeedBack(feedbackRequest));
     }
 
 }

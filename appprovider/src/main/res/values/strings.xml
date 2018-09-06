@@ -50,4 +50,6 @@
     <string name="reason_colon">Reason:</string>
     <string name="see_more"><u>SEE MORE</u></string>
     <string name="see_less"><u>SEE LESS</u></string>
+    <string name="error_select_caller_feedback">Please select caller feedback.</string>
+    <string name="error_empty_reason">Please enter reason.</string>
 </resources>

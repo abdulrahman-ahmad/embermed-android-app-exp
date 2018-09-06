@@ -5,16 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentTriageCallerFeedbackBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
+
+import java.util.HashMap;
 
 public class TriageCallerFeedbackFragment extends Fragment implements View.OnClickListener {
 
@@ -67,16 +71,51 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
             case R.id.btn_submit:
                 if (checkIsWhereCallerGoSelected()) {
                     if (isFormValid()) {
-                        Toast.makeText(mainActivity, "Success...", Toast.LENGTH_SHORT).show();
+                        completeRequest();
                     }
                 }
                 break;
         }
     }
 
+    private void completeRequest() {
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("requestId", "d1b7681d-56f9-44db-8963-71f8a8000981");
+        body.put("reason", binding.edtReason.getText().toString().trim());
+        String providerFeedback = "";
+        if (binding.rdbGoToEr.isChecked()) {
+            providerFeedback = "ER";
+        } else if (binding.rdbGoToUrgentCare.isChecked()) {
+            providerFeedback = "URGENT_CARE";
+        } else if (binding.rdbGoToPcp.isChecked()) {
+            providerFeedback = "PCP";
+        }
+        body.put("providerFeedback", providerFeedback);//ER//URGENT_CARE//PCP
+        new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                EmptyResponse createEmsResponse = (EmptyResponse) response;
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
     private boolean isFormValid() {
         if (binding.edtReason.getText().toString().trim().isEmpty()) {
-            Toast.makeText(getActivity(), "Please enter reason.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.error_empty_reason, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -90,7 +129,7 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
         } else if (binding.rdbGoToPcp.isChecked()) {
             return true;
         }
-        Toast.makeText(mainActivity, "Please select where caller should go.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mainActivity, R.string.error_select_caller_feedback, Toast.LENGTH_SHORT).show();
         return false;
     }
 

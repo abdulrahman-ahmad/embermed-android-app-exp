@@ -89,7 +89,7 @@
                         android:visibility="gone" />
 
                     <Button
-                        android:id="@+id/btn_cancel_request"
+                        android:id="@+id/btn_end_call"
                         style="@style/BtnStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_50dp"
