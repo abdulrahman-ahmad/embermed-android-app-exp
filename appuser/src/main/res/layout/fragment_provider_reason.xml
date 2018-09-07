@@ -180,6 +180,7 @@
                     android:id="@+id/tv_urgent_cares"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@drawable/ripple_default_bg"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/look_for_urgent_cares_around_you"
@@ -195,8 +196,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_85dp"
                 android:gravity="center_horizontal"
-                android:visibility="gone"
                 android:paddingBottom="@dimen/_16dp"
+                android:visibility="gone"
                 android:weightSum="1080">
 
                 <Button

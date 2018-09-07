@@ -60,6 +60,8 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
         binding.btnBookUber.setOnClickListener(this);
         binding.tvSeeMore.setOnClickListener(this);
         binding.tvSeeLess.setOnClickListener(this);
+        binding.tvUrgentCares.setOnClickListener(this);
+        binding.btnBookPcp.setOnClickListener(this);
     }
 
     @Override
@@ -70,6 +72,8 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.btn_book_pcp:
+            case R.id.tv_urgent_cares:
             case R.id.btn_book_uber:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                 break;
