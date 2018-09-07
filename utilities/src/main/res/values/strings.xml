@@ -55,4 +55,6 @@
     <string name="info_notification_title">Ember is running.</string>
     <string name="info_notification_message">App will be using GPS and Data only when required.</string>
     <string name="error_gps_off">Please turn on location service.</string>
+    <string name="error_empty_comment">Please enter comment.</string>
+    <string name="error_empty_rating">Please give rating.</string>
 </resources>

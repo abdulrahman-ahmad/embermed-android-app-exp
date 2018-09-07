@@ -27,13 +27,14 @@ android {
     productFlavors {
         dev {
             //dev/local
-            buildConfigField 'String', 'HOST', '"http://192.168.1.83:8085/api/"'
+//            buildConfigField 'String', 'HOST', '"http://192.168.1.83:8085/api/"'    //Keerti server
+            buildConfigField 'String', 'HOST', '" http://192.168.1.44:9095/api/"'     //Shrinivas server
         }
         qaTest {
             //Internal testing
             buildConfigField 'String', 'HOST', '"http://osiris-qa-test-env.us-west-2.elasticbeanstalk.com/api/"'
         }
-        staging{
+        staging {
             //uat
             buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-2.elasticbeanstalk.com/api/"'
         }
@@ -46,7 +47,6 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    //implementation 'com.android.support:support-v4:27.1.1'
     implementation 'com.google.code.gson:gson:2.8.5'       // Retrofit web service call
     implementation 'com.squareup.retrofit2:retrofit:2.4.0' // Retrofit web service call
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0' // Retrofit web service call

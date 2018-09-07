@@ -5,11 +5,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.request.IncidentReport;
+import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentTriageIncidentReportBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
@@ -64,7 +67,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (isFormValid()) {
-                    Toast.makeText(mainActivity, "Success...", Toast.LENGTH_SHORT).show();
+                    submitIncidentReport();
                 }
                 break;
             case R.id.tv_see_more:
@@ -100,6 +103,34 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             return false;
         }
         return true;
+    }
+
+    private void submitIncidentReport() {
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        IncidentReport body = new IncidentReport();
+        body.setTitle(binding.edtTitle.getText().toString().trim());
+        body.setComment(binding.edtComment.getText().toString().trim());
+        body.setRequestId("d1b7681d-56f9-44db-8963-71f8a8000981");
+
+        new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                EmptyResponse createEmsResponse = (EmptyResponse) response;
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                mainActivity.reOpenDashBoardFragment();
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }
