@@ -153,4 +153,9 @@ public class ApiServices {
                 .submitProviderFeedBack(feedbackRequest));
     }
 
+    public void getUrgentCareList(final Context context,double latitude,double longitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getUrgentCareList(0, 2000,latitude,longitude));
+    }
+
 }

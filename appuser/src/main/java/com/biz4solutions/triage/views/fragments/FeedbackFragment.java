@@ -82,8 +82,6 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         if (binding.rbRatingBar.getRating() == 0) {
             Toast.makeText(mainActivity, R.string.error_empty_rating, Toast.LENGTH_SHORT).show();
             return false;
-        } else if (binding.edtComment.getText().toString().trim().isEmpty()) {
-            Toast.makeText(mainActivity, R.string.error_empty_comment, Toast.LENGTH_SHORT).show();
         }
         return true;
     }

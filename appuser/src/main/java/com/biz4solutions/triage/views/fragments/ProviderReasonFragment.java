@@ -11,9 +11,14 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
+import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentProviderReasonBinding;
+import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.response.UrgentCaresDataResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
+import com.biz4solutions.utilities.CommonFunctions;
 
 public class ProviderReasonFragment extends Fragment implements View.OnClickListener {
 
@@ -73,9 +78,11 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_book_pcp:
-            case R.id.tv_urgent_cares:
             case R.id.btn_book_uber:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.tv_urgent_cares:
+                getUrgentCareList();
                 break;
             case R.id.tv_see_more:
                 binding.tvSeeMore.setVisibility(View.GONE);
@@ -92,4 +99,39 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
         }
     }
 
+    private void getUrgentCareList() {
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        new ApiServices().getUrgentCareList(getContext(), request.getLatitude(), request.getLongitude(), new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                try {
+                    UrgentCaresResponse urgentCaresResponse = (UrgentCaresResponse) response;
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(mainActivity, urgentCaresResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    openUrgentCareMapFragment(urgentCaresResponse.getData());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openUrgentCareMapFragment(UrgentCaresDataResponse urgentCaresDataResponse) {
+        mainActivity.getSupportFragmentManager().executePendingTransactions();
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, UrgentCareMapFragment.newInstance(urgentCaresDataResponse))
+                .addToBackStack(UrgentCareMapFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
 }

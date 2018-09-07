@@ -12,6 +12,7 @@ import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.models.response.SymptomResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 
@@ -98,4 +99,7 @@ public interface RetrofitRestClient {
 
     @POST("v1/provider/submitProviderFeedBack")
     Call<EmptyResponse> submitProviderFeedBack(@Body FeedbackRequest body);
+
+    @GET("v1/users/getUrgentCareList")
+    Call<UrgentCaresResponse> getUrgentCareList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
 }
