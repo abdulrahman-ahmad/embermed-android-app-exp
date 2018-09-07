@@ -15,6 +15,7 @@ import com.biz4solutions.databinding.FragmentTriageCallWaitingBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -61,27 +62,27 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
             @Override
             public void onSuccess(EmsRequest data) {
                 request = data;
-                setRequestView(request);
+                setRequestView();
             }
         });
         binding.btnCancelRequest.setOnClickListener(this);
-        setRequestView(request);
+        setRequestView();
         return binding.getRoot();
     }
 
-    private void setRequestView(EmsRequest request) {
+    private void setRequestView() {
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
                 case Constants.STATUS_ACCEPTED:
-
+                    mainActivity.startVideoCall(request.getId());
                     break;
                 case Constants.STATUS_COMPLETED:
-                    if (!isCRCDone) {
+                    /*if (!isCRCDone) {
                         isCRCDone = true;
                         Toast.makeText(mainActivity, R.string.message_request_completed, Toast.LENGTH_SHORT).show();
                         mainActivity.reOpenDashBoardFragment();
                     }
-                    break;
+                    break;*/
                 case Constants.STATUS_REJECTED:
                     if (!isCRCDone) {
                         isCRCDone = true;

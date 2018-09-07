@@ -1,5 +1,6 @@
 package com.biz4solutions.main.views.activities;
 
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.activities.LoginActivity;
+import com.biz4solutions.activities.OpenTokActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.cardiac.views.fragments.EmsAlertCardiacCallFragment;
@@ -36,6 +38,7 @@ import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseMessagingService;
@@ -50,6 +53,8 @@ import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -437,12 +442,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (deviceId != null && !deviceId.isEmpty() && deviceId.equals(ApiServiceUtil.getInstance().getDeviceID(MainActivity.this))) {
                     if (Constants.STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
                         openTriageCallWaitingFragment(data);
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())) {
+                        startVideoCall(data.getId());
                     }
                 } else {
                     openTriageCallInProgressWaitingFragment(data);
                 }
             }
         }
+    }
+
+    public void startVideoCall(String requestId) {
+        FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                if (!isOpenTokActivityRunning()) {
+                    Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
+                    intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
+                    intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getPatientToken());
+                    startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
+                }
+            }
+        });
+    }
+
+    private boolean isOpenTokActivityRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(Integer.MAX_VALUE);
+            for (int i = 0; i < tasksInfo.size(); i++) {
+                if (tasksInfo.get(i).baseActivity.getClassName().contains("com.biz4solutions.activities.OpenTokActivity"))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public void openEmsAlertUnconsciousFragment() {
