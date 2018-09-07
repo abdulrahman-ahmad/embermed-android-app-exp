@@ -51,7 +51,9 @@
     <string name="our_medical_professional_has_recommended">Our Medical Professional\nhas recommended</string>
     <string name="go_to_er">Go to ER</string>
     <string name="book_uber">Book Uber</string>
+    <string name="book_pcp">Book PCP</string>
     <string name="reason">Reason</string>
     <string name="see_more"><u>SEE MORE</u></string>
     <string name="see_less"><u>SEE LESS</u></string>
+    <string name="look_for_urgent_cares_around_you"><u>Look for Urgent Cares around you</u></string>
 </resources>

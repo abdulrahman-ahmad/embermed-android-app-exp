@@ -11,24 +11,24 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.databinding.FragmentGoToErBinding;
+import com.biz4solutions.databinding.FragmentProviderReasonBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
 
-public class GoToERFragment extends Fragment implements View.OnClickListener {
+public class ProviderReasonFragment extends Fragment implements View.OnClickListener {
 
-    public static final String fragmentName = "GoToERFragment";
+    public static final String fragmentName = "ProviderReasonFragment";
     private MainActivity mainActivity;
-    private FragmentGoToErBinding binding;
+    private FragmentProviderReasonBinding binding;
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private EmsRequest request;
 
-    public GoToERFragment() {
+    public ProviderReasonFragment() {
         // Required empty public constructor
     }
 
-    public static GoToERFragment newInstance(EmsRequest data) {
-        GoToERFragment fragment = new GoToERFragment();
+    public static ProviderReasonFragment newInstance(EmsRequest data) {
+        ProviderReasonFragment fragment = new ProviderReasonFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_DETAILS, data);
         fragment.setArguments(args);
@@ -46,7 +46,7 @@ public class GoToERFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_go_to_er, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_provider_reason, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);

@@ -10,11 +10,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:weightSum="1535"
             tools:ignore="SpUsage,UnusedAttribute,NestedWeights,RelativeOverlap">
 
+            <!--blue header layout-->
             <LinearLayout
-                android:id="@+id/header_waiting"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/blue_bg_color"
@@ -32,6 +31,7 @@
                     android:textSize="@dimen/_18dp" />
 
                 <TextView
+                    android:id="@+id/tv_provider_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
@@ -61,6 +61,7 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:fontFamily="sans-serif"
                     android:maxLines="5"
+                    android:text="awdw iwuahduiwha dihi udhaidhiuwhdiuhwihwiuahdiwhdiu hwidh i wahd ihiwdhiwhd iuwhd iuhwiu hadiuhw iudhwiu hiuw hdiuhd iuwhdi uhdiu hiu dhiuwhd iuwhd iuahd uihw iuh iuahwiud haihdiuwahd iuhwd iuhwid hiuwahd iwh diuhwiaud hwidh ihwd uiwhd iwhdui hwd ahih diuwhduihwd iuhd iuh iuwhdui hiu dhuwi dhuiw dhiu dhiuhw diuhd iuh diuwh diuwhd"
                     android:textColor="@color/reason_txt_color"
                     android:textSize="@dimen/_15dp" />
 
@@ -121,37 +122,91 @@
 
             </LinearLayout>
 
+            <!--Book Uber layout-->
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_140dp"
-                android:layout_marginBottom="@dimen/_8dp"
-                android:layout_marginTop="@dimen/_8dp"
-                android:gravity="center">
-
-                <ImageView
-                    android:id="@+id/waiting_image"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:contentDescription="@null"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/uber" />
-            </LinearLayout>
-
-            <LinearLayout
+                android:id="@+id/ll_book_uber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_140dp"
+                    android:layout_marginBottom="@dimen/_8dp"
+                    android:layout_marginTop="@dimen/_8dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/uber" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingBottom="@dimen/_16dp"
+                    android:weightSum="1080">
+
+                    <Button
+                        android:id="@+id/btn_book_uber"
+                        style="@style/BtnStyle"
+                        android:layout_width="0dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="550"
+                        android:background="@drawable/ripple_default_button"
+                        android:text="@string/book_uber" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--Urgent Cares layout-->
+            <LinearLayout
+                android:id="@+id/ll_urgent_cares"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_60dp"
+                    android:layout_marginBottom="@dimen/_16dp"
+                    android:layout_marginTop="@dimen/_55dp"
+                    android:contentDescription="@null"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/map_logo" />
+
+                <TextView
+                    android:id="@+id/tv_urgent_cares"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/look_for_urgent_cares_around_you"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_16dp" />
+
+            </LinearLayout>
+
+            <!--Book PCP layout-->
+            <LinearLayout
+                android:id="@+id/ll_book_pcp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_85dp"
+                android:gravity="center_horizontal"
+                android:visibility="gone"
                 android:paddingBottom="@dimen/_16dp"
                 android:weightSum="1080">
 
                 <Button
-                    android:id="@+id/btn_book_uber"
+                    android:id="@+id/btn_book_pcp"
                     style="@style/BtnStyle"
                     android:layout_width="0dp"
                     android:layout_margin="0dp"
                     android:layout_weight="550"
                     android:background="@drawable/ripple_default_button"
-                    android:text="@string/book_uber" />
+                    android:text="@string/book_pcp" />
 
             </LinearLayout>
 
