@@ -56,4 +56,5 @@
     <string name="see_more"><u>SEE MORE</u></string>
     <string name="see_less"><u>SEE LESS</u></string>
     <string name="look_for_urgent_cares_around_you"><u>Look for Urgent Cares around you</u></string>
+    <string name="urgent_cares_around_you_text">Urgent Cares around you</string>
 </resources>
