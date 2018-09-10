@@ -118,12 +118,12 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
                 break;
             case R.id.tv_see_more:
                 binding.tvSeeMore.setVisibility(View.GONE);
-                binding.tvSeeLess.setVisibility(View.VISIBLE);
+                //binding.tvSeeLess.setVisibility(View.VISIBLE);
                 binding.ivThreeDots.setVisibility(View.GONE);
                 binding.tvReason.setMaxLines(100);
                 break;
             case R.id.tv_see_less:
-                binding.tvSeeLess.setVisibility(View.GONE);
+                //binding.tvSeeLess.setVisibility(View.GONE);
                 binding.tvSeeMore.setVisibility(View.VISIBLE);
                 binding.ivThreeDots.setVisibility(View.VISIBLE);
                 binding.tvReason.setMaxLines(5);

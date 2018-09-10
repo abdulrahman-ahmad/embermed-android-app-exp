@@ -1,8 +1,10 @@
 package com.biz4solutions.provider.triage.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.response.EmptyResponse;
@@ -24,13 +27,28 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     public static final String fragmentName = "TriageIncidentReportFragment";
     private MainActivity mainActivity;
     private FragmentTriageIncidentReportBinding binding;
+    private final static String REQUEST_ID = "REQUEST_ID";
+    private String requestId;
 
     public TriageIncidentReportFragment() {
         // Required empty public constructor
     }
 
-    public static TriageIncidentReportFragment newInstance() {
-        return new TriageIncidentReportFragment();
+    public static TriageIncidentReportFragment newInstance(String requestId) {
+        TriageIncidentReportFragment fragment = new TriageIncidentReportFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(REQUEST_ID, requestId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        if (getArguments() != null) {
+            requestId = getArguments().getString(REQUEST_ID);
+        }
     }
 
     @Override
@@ -42,12 +60,13 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
-        initView();
         initClickListeners();
         return binding.getRoot();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initClickListeners() {
+        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
         binding.btnSubmit.setOnClickListener(this);
         binding.tvSeeMore.setOnClickListener(this);
         binding.tvSeeLess.setOnClickListener(this);
@@ -67,26 +86,29 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (isFormValid()) {
-                    submitIncidentReport();
+                    CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.submit_incident_report_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                        @Override
+                        public void onClose(Boolean result) {
+                            if (result) {
+                                submitIncidentReport();
+                            }
+                        }
+                    });
                 }
                 break;
             case R.id.tv_see_more:
                 binding.tvSeeMore.setVisibility(View.GONE);
-                binding.tvSeeLess.setVisibility(View.VISIBLE);
+                //binding.tvSeeLess.setVisibility(View.VISIBLE);
                 binding.ivThreeDots.setVisibility(View.GONE);
                 binding.tvReason.setMaxLines(100);
                 break;
             case R.id.tv_see_less:
-                binding.tvSeeLess.setVisibility(View.GONE);
+                //binding.tvSeeLess.setVisibility(View.GONE);
                 binding.tvSeeMore.setVisibility(View.VISIBLE);
                 binding.ivThreeDots.setVisibility(View.VISIBLE);
                 binding.tvReason.setMaxLines(4);
                 break;
         }
-    }
-
-    private void initView() {
-        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
     }
 
     @Override
@@ -114,7 +136,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         IncidentReport body = new IncidentReport();
         body.setTitle(binding.edtTitle.getText().toString().trim());
         body.setComment(binding.edtComment.getText().toString().trim());
-        body.setRequestId("d1b7681d-56f9-44db-8963-71f8a8000981");
+        body.setRequestId(requestId);
 
         new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {
             @Override

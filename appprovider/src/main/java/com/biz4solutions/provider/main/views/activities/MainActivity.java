@@ -489,6 +489,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     reOpenDashBoardFragment();
                     break;
                 case FeedbackFragment.fragmentName:
+                case TriageCallerFeedbackFragment.fragmentName:
                     // do nothing
                     break;
                 default:

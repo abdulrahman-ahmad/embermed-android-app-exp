@@ -114,7 +114,7 @@
                 android:paddingStart="@dimen/_10dp"
                 android:paddingTop="@dimen/_5dp"
                 android:text="@string/skip"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/blue_link_color"
                 android:textSize="@dimen/_18dp" />
 
         </LinearLayout>

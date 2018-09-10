@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmptyResponse;
@@ -84,10 +85,18 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (isFormValid()) {
-                    submitProviderFeedBack();
+                    CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.submit_feedback_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                        @Override
+                        public void onClose(Boolean result) {
+                            if (result) {
+                                submitProviderFeedBack();
+                            }
+                        }
+                    });
                 }
                 break;
             case R.id.tv_skip:
+                openTriageIncidentReportFragment();
                 break;
         }
     }
@@ -122,6 +131,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                openTriageIncidentReportFragment();
             }
 
             @Override
@@ -130,6 +140,23 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openTriageIncidentReportFragment() {
+        try {
+            Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof TriageIncidentReportFragment) {
+                return;
+            }
+            mainActivity.getSupportFragmentManager().executePendingTransactions();
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, TriageIncidentReportFragment.newInstance(requestId))
+                    .addToBackStack(TriageIncidentReportFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.biz4solutions.provider.cardiac.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -87,6 +88,7 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
         super.onSaveInstanceState(outState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initView() {
         binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
         binding.requestListCardiacItem.txtTime.setVisibility(View.GONE);

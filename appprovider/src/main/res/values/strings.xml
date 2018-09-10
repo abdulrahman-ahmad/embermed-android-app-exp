@@ -12,6 +12,7 @@
     <string name="reject_request_message">Are you sure, you want to reject this request?</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit this feedback?</string>
     <string name="accepted_request_message">Another provider has accepted this request.</string>
     <string name="canceled_request_message">The user has canceled this request.</string>
     <string name="patient_disease">Patient Disease:</string>

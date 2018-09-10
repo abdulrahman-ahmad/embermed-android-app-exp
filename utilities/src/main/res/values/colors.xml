@@ -14,5 +14,6 @@
     <color name="drawer_selected_bg">#dee7ec</color>
     <color name="drawer_bg_color">#f2ffffff</color>
     <color name="blue_bg_color">#ebf5fa</color>
+    <color name="blue_link_color">#0bacf4</color>
 
 </resources>

@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
@@ -86,7 +87,14 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
             case R.id.btn_submit:
                 if (checkIsWhereCallerGoSelected()) {
                     if (isFormValid()) {
-                        completeRequest();
+                        CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.submit_feedback_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                            @Override
+                            public void onClose(Boolean result) {
+                                if (result) {
+                                    completeRequest();
+                                }
+                            }
+                        });
                     }
                 }
                 break;
@@ -117,6 +125,7 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                openFeedbackFragment();
             }
 
             @Override
@@ -125,6 +134,23 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openFeedbackFragment() {
+        try {
+            Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof FeedbackFragment) {
+                return;
+            }
+            mainActivity.getSupportFragmentManager().executePendingTransactions();
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
+                    .addToBackStack(FeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

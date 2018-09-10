@@ -95,7 +95,7 @@
                         android:paddingStart="@dimen/_16dp"
                         android:paddingTop="@dimen/_8dp"
                         android:text="@string/see_more"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/blue_link_color"
                         android:textSize="@dimen/_14dp" />
 
                     <TextView
@@ -113,7 +113,7 @@
                         android:paddingStart="@dimen/_16dp"
                         android:paddingTop="@dimen/_8dp"
                         android:text="@string/see_less"
-                        android:textColor="@color/colorPrimary"
+                        android:textColor="@color/blue_link_color"
                         android:textSize="@dimen/_14dp"
                         android:visibility="gone" />
 
@@ -183,7 +183,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"
                     android:text="@string/look_for_urgent_cares_around_you"
-                    android:textColor="@color/colorPrimary"
+                    android:textColor="@color/blue_link_color"
                     android:textSize="@dimen/_16dp" />
 
             </LinearLayout>
