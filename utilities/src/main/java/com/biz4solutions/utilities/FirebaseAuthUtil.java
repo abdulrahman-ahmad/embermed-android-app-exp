@@ -107,7 +107,7 @@ public class FirebaseAuthUtil {
     public void initDB(FirebaseCallbackListener<Boolean> callback) {
         try {
             mDatabase = FirebaseDatabase.getInstance().getReference();
-            if(callback != null){
+            if (callback != null) {
                 callback.onSuccess(true);
             }
         } catch (Exception e) {
@@ -119,6 +119,16 @@ public class FirebaseAuthUtil {
         try {
             if (mDatabase != null) {
                 mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBKey).setValue(mapParams);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void storeSingleData(@NonNull final String firebaseDBRef, @NonNull final String firebaseDBId, @NonNull final String firebaseDBKey, Object firebaseDBValue) {
+        try {
+            if (mDatabase != null) {
+                mDatabase.child(BuildConfig.FIREBACE_DB_ENVIROMENT).child(firebaseDBRef).child(firebaseDBId).child(firebaseDBKey).setValue(firebaseDBValue);
             }
         } catch (Exception e) {
             e.printStackTrace();

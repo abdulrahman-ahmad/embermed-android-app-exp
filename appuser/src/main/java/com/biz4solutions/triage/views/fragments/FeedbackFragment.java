@@ -14,11 +14,17 @@ import android.widget.Toast;
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.databinding.FragmentFeedbackBinding;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
+import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
+import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
 public class FeedbackFragment extends Fragment implements View.OnClickListener {
@@ -28,6 +34,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     private FragmentFeedbackBinding binding;
     private final static String REQUEST_ID = "REQUEST_ID";
     private String requestId;
+    private EmsRequest request;
 
     public FeedbackFragment() {
         // Required empty public constructor
@@ -60,7 +67,17 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
         initListeners();
+        addFirebaseRequestEvent();
         return binding.getRoot();
+    }
+
+    private void addFirebaseRequestEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(requestId, new FirebaseCallbackListener<EmsRequest>() {
+            @Override
+            public void onSuccess(EmsRequest data) {
+                request = data;
+            }
+        });
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -76,6 +93,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         if (mainActivity != null) {
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
     }
 
     @Override
@@ -83,10 +101,18 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.btn_submit:
                 if (isFormValid()) {
-                    submitUserFeedBack();
+                    CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.submit_feedback_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                        @Override
+                        public void onClose(Boolean result) {
+                            if (result) {
+                                submitUserFeedBack();
+                            }
+                        }
+                    });
                 }
                 break;
             case R.id.tv_skip:
+                openNextFragment();
                 break;
         }
     }
@@ -121,6 +147,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                openNextFragment();
             }
 
             @Override
@@ -129,6 +156,15 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openNextFragment() {
+        FirebaseAuthUtil.getInstance().storeSingleData(Constants.FIREBASE_REQUEST_TABLE, requestId, Constants.FIREBASE_IS_PATIENT_FEEDBACK_SUBMITTED_KEY, true);
+        if (request != null && request.getProviderFeedback() != null && !request.getProviderFeedback().isEmpty()) {
+            mainActivity.openProviderReasonFragment(request);
+        } else {
+            mainActivity.openTriageCallFeedbackWaitingFragment(requestId);
+        }
     }
 
 }

@@ -47,6 +47,8 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.triage.views.fragments.FeedbackFragment;
+import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
+import com.biz4solutions.triage.views.fragments.TriageCallFeedbackWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -65,7 +67,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public TextView toolbarTitle;
     private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
-    public String currentRequestId;
     private BroadcastReceiver logoutBroadcastReceiver;
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
@@ -279,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void clearVariables() {
-        currentRequestId = null;
         SharedPrefsManager.getInstance().clearPreference(this, Constants.USER_PREFERENCE);
     }
 
@@ -397,10 +397,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     unconsciousOnBackClick();
                     break;
                 case EmsAlertCardiacCallFragment.fragmentName:
-                    showCancelRequestAlert();
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    showCancelRequestAlert(((EmsAlertCardiacCallFragment) currentFragment).requestId);
                     break;
                 case TriageCallWaitingFragment.fragmentName:
                 case FeedbackFragment.fragmentName:
+                case TriageCallFeedbackWaitingFragment.fragmentName:
                     // not do any think
                     break;
                 default:
@@ -431,25 +433,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void showCancelRequestAlert() {
+    public void showCancelRequestAlert(final String requestId) {
         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.cancel_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
             @Override
             public void onClose(Boolean result) {
                 if (result) {
-                    cancelRequest();
+                    cancelRequest(requestId);
                 }
             }
         });
     }
 
-    private void cancelRequest() {
+    private void cancelRequest(String requestId) {
         if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        if (currentRequestId != null && !currentRequestId.isEmpty()) {
+        if (requestId != null && !requestId.isEmpty()) {
             CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
-            new ApiServices().cancelRequest(MainActivity.this, currentRequestId, new RestClientResponse() {
+            new ApiServices().cancelRequest(MainActivity.this, requestId, new RestClientResponse() {
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
@@ -470,7 +472,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onSuccess(final User data) {
                 if (data != null) {
-                    currentRequestId = data.getPatientCurrentRequestId();
                     if (data.getPatientCurrentRequestId() != null && !data.getPatientCurrentRequestId().isEmpty()) {
                         FirebaseEventUtil.getInstance().getFirebaseRequest(data.getPatientCurrentRequestId(), new FirebaseCallbackListener<EmsRequest>() {
                             @Override
@@ -489,7 +490,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         System.out.println("aa --------Firebase Request deviceId=" + deviceId);
         if (data != null) {
             if (data.getIsUnconscious()) {
-                openEmsAlertCardiacCallFragment(false, data);
+                openEmsAlertCardiacCallFragment(false, data, data.getId());
             } else if (Constants.STATUS_HIGH.equals("" + data.getPriority())) {
                 if (deviceId != null && !deviceId.isEmpty() && deviceId.equals(ApiServiceUtil.getInstance().getDeviceID(MainActivity.this))) {
                     if (Constants.STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
@@ -500,6 +501,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && !data.getIsPatientFeedbackSubmitted()) {
                         openFeedbackFragment(data.getId());
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && data.getProviderFeedback() != null && !data.getProviderFeedback().isEmpty()) {
+                        openProviderReasonFragment(data);
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && data.getIsPatientFeedbackSubmitted()) {
+                        openTriageCallFeedbackWaitingFragment(data.getId());
                     }
                 } else {
                     openTriageCallInProgressWaitingFragment(data);
@@ -563,11 +570,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue) {
-        openEmsAlertCardiacCallFragment(isNeedToShowQue, null);
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, String requestId) {
+        openEmsAlertCardiacCallFragment(isNeedToShowQue, null, requestId);
     }
 
-    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, EmsRequest data) {
+    public void openEmsAlertCardiacCallFragment(boolean isNeedToShowQue, EmsRequest data, String requestId) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof EmsAlertCardiacCallFragment) {
@@ -576,7 +583,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data))
+                    .replace(R.id.main_container, EmsAlertCardiacCallFragment.newInstance(isNeedToShowQue, data, requestId))
                     .addToBackStack(EmsAlertCardiacCallFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
@@ -633,6 +640,40 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
                     .addToBackStack(FeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openTriageCallFeedbackWaitingFragment(String requestId) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof TriageCallFeedbackWaitingFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, TriageCallFeedbackWaitingFragment.newInstance(requestId))
+                    .addToBackStack(TriageCallFeedbackWaitingFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openProviderReasonFragment(EmsRequest request) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof ProviderReasonFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, ProviderReasonFragment.newInstance(request))
+                    .addToBackStack(ProviderReasonFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();

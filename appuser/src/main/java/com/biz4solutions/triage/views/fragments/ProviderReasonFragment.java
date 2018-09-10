@@ -19,6 +19,8 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.response.UrgentCaresDataResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.FirebaseAuthUtil;
 
 public class ProviderReasonFragment extends Fragment implements View.OnClickListener {
 
@@ -57,8 +59,38 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.triage_call);
         }
+        initView();
         initClickListeners();
         return binding.getRoot();
+    }
+
+    private void initView() {
+        if (request != null) {
+            FirebaseAuthUtil.getInstance().storeSingleData(Constants.FIREBASE_REQUEST_TABLE, request.getId(), Constants.FIREBASE_TRIAGE_CALL_STATUS_KEY, Constants.STATUS_COMPLETED);
+            if (request.getProviderFeedbackReason() != null) {
+                binding.tvReason.setText(request.getProviderFeedbackReason());
+            }
+            switch ("" + request.getProviderFeedback()) {
+                case Constants.TRIAGE_FEEDBACK_ER:
+                    binding.tvProviderReason.setText(R.string.go_to_er);
+                    binding.llBookUber.setVisibility(View.VISIBLE);
+                    binding.llUrgentCares.setVisibility(View.GONE);
+                    binding.llBookPcp.setVisibility(View.GONE);
+                    break;
+                case Constants.TRIAGE_FEEDBACK_URGENT_CARE:
+                    binding.tvProviderReason.setText(R.string.go_to_urgent_care);
+                    binding.llBookUber.setVisibility(View.GONE);
+                    binding.llUrgentCares.setVisibility(View.VISIBLE);
+                    binding.llBookPcp.setVisibility(View.GONE);
+                    break;
+                case Constants.TRIAGE_FEEDBACK_PCP:
+                    binding.tvProviderReason.setText(R.string.go_to_pcp);
+                    binding.llBookUber.setVisibility(View.GONE);
+                    binding.llUrgentCares.setVisibility(View.GONE);
+                    binding.llBookPcp.setVisibility(View.VISIBLE);
+                    break;
+            }
+        }
     }
 
     private void initClickListeners() {

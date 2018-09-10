@@ -33,6 +33,8 @@ public class Constants implements Serializable {
     public static final String FIREBASE_REQUEST_TABLE = "Request";
     public static final String FIREBASE_ALERT_TABLE = "Alert";
     public static final String FIREBASE_OPEN_TOK_TABLE = "OpenTok";
+    public static final String FIREBASE_IS_PATIENT_FEEDBACK_SUBMITTED_KEY = "isPatientFeedbackSubmitted";
+    public static final String FIREBASE_TRIAGE_CALL_STATUS_KEY = "triageCallStatus";
 
     public static final String EMBER_MEDICS_CHANNEL_ID = "200";
     public static final String EMBER_MEDICS_CARDIAC_CHANNEL_ID = "201";
@@ -53,6 +55,10 @@ public class Constants implements Serializable {
     public static final String STATUS_CANCELLED = "CANCELLED";
     public static final String STATUS_END = "END";
     public static final String STATUS_START = "START";
+
+    public static final String TRIAGE_FEEDBACK_ER = "ER";
+    public static final String TRIAGE_FEEDBACK_URGENT_CARE = "URGENT_CARE";
+    public static final String TRIAGE_FEEDBACK_PCP = "PCP";
 
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";

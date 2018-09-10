@@ -58,7 +58,7 @@ public class TriageCallInProgressWaitingFragment extends Fragment implements Vie
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(request.getId(), new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest request) {
                 setRequestView(request);
@@ -105,7 +105,7 @@ public class TriageCallInProgressWaitingFragment extends Fragment implements Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel_request:
-                mainActivity.showCancelRequestAlert();
+                mainActivity.showCancelRequestAlert(request.getId());
                 break;
         }
     }

@@ -61,7 +61,6 @@
                     android:layout_marginStart="@dimen/_16dp"
                     android:fontFamily="sans-serif"
                     android:maxLines="5"
-                    android:text="awdw iwuahduiwha dihi udhaidhiuwhdiuhwihwiuahdiwhdiu hwidh i wahd ihiwdhiwhd iuwhd iuhwiu hadiuhw iudhwiu hiuw hdiuhd iuwhdi uhdiu hiu dhiuwhd iuwhd iuahd uihw iuh iuahwiud haihdiuwahd iuhwd iuhwid hiuwahd iwh diuhwiaud hwidh ihwd uiwhd iwhdui hwd ahih diuwhduihwd iuhd iuh iuwhdui hiu dhuwi dhuiw dhiu dhiuhw diuhd iuh diuwh diuwhd"
                     android:textColor="@color/reason_txt_color"
                     android:textSize="@dimen/_15dp" />
 

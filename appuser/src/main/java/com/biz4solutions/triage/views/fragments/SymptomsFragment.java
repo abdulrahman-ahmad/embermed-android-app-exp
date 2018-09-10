@@ -155,7 +155,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 CreateEmsResponse createEmsResponse = (CreateEmsResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (createEmsResponse != null && createEmsResponse.getData() != null) {
-                    mainActivity.currentRequestId = createEmsResponse.getData().getId();
                     mainActivity.openTriageCallWaitingFragment();
                 } else {
                     if (createEmsResponse != null) {

@@ -15,7 +15,6 @@ import com.biz4solutions.databinding.FragmentTriageCallWaitingBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
-import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -58,7 +57,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(request.getId(), new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
                 request = data;
@@ -119,7 +118,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel_request:
-                mainActivity.showCancelRequestAlert();
+                mainActivity.showCancelRequestAlert(request.getId());
                 break;
         }
     }

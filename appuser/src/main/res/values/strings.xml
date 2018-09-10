@@ -9,6 +9,7 @@
     <string name="is_victim_unconscious">Is victim unconscious?</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit this feedback?</string>
     <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
     <string name="ems_has_been_notified">EMS has been notified</string>
     <string name="ems_has_been_accepted">EMS has been accepted</string>
@@ -41,7 +42,7 @@
 
     <!--Feedback Screen-->
     <string name="feedback">Feedback</string>
-    <string name="feedback_on_triage_call_text">Feedback on Triage call</string>
+    <string name="feedback_on_triage_call_text">Rate Callee</string>
     <string name="comment">Comment</string>
     <string name="skip"><u>Skip</u></string>
 
@@ -51,6 +52,8 @@
     <string name="triage_call_is_in_progress_waiting_msg">Your triage service call is in progress from another device. Please wait until your call is completed.</string>
     <string name="our_medical_professional_has_recommended">Our Medical Professional\nhas recommended</string>
     <string name="go_to_er">Go to ER</string>
+    <string name="go_to_urgent_care">Go to Urgent Care</string>
+    <string name="go_to_pcp">Go to PCP</string>
     <string name="book_uber">Book Uber</string>
     <string name="book_pcp">Book PCP</string>
     <string name="reason">Reason</string>

@@ -19,6 +19,7 @@ import com.biz4solutions.provider.databinding.FragmentTriageCallerFeedbackBindin
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
 
@@ -103,11 +104,11 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
         body.put("reason", binding.edtReason.getText().toString().trim());
         String providerFeedback = "";
         if (binding.rdbGoToEr.isChecked()) {
-            providerFeedback = "ER";
+            providerFeedback = Constants.TRIAGE_FEEDBACK_ER;
         } else if (binding.rdbGoToUrgentCare.isChecked()) {
-            providerFeedback = "URGENT_CARE";
+            providerFeedback = Constants.TRIAGE_FEEDBACK_URGENT_CARE;
         } else if (binding.rdbGoToPcp.isChecked()) {
-            providerFeedback = "PCP";
+            providerFeedback = Constants.TRIAGE_FEEDBACK_PCP;
         }
         body.put("providerFeedback", providerFeedback);//ER//URGENT_CARE//PCP
         new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
