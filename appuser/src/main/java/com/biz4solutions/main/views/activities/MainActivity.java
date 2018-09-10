@@ -1,10 +1,12 @@
 package com.biz4solutions.main.views.activities;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -68,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean isActivityOpen = false;
     public LinearLayout btnLogOut;
     private boolean isOpenTokActivityOpen = false;
+    private static final int PERMISSION_REQUEST_CODE = 124;
+    private String tempRequestId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +187,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            boolean userAllowedAllRequestPermissions = true;
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    userAllowedAllRequestPermissions = false;
+                }
+            }
+
+            if (userAllowedAllRequestPermissions) {
+                switch (requestCode) {
+                    case PERMISSION_REQUEST_CODE:
+                        startVideoCall(tempRequestId);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -473,7 +496,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         openTriageCallWaitingFragment(data);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && Constants.STATUS_START.equals("" + data.getVideoCallStatus())) {
-                        startVideoCall(data.getId());
+                        startVideoCallWithPermissions(data.getId());
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && !data.getIsPatientFeedbackSubmitted()) {
                         openFeedbackFragment(data.getId());
@@ -485,7 +508,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void startVideoCall(final String requestId) {
+    public void startVideoCallWithPermissions(String requestId) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tempRequestId = requestId;
+                String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+                requestPermissions(perms, PERMISSION_REQUEST_CODE);
+            } else {
+                startVideoCall(requestId);
+            }
+        } else {
+            startVideoCall(requestId);
+        }
+    }
+
+    private void startVideoCall(final String requestId) {
         FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
             @Override
             public void onSuccess(OpenTok data) {

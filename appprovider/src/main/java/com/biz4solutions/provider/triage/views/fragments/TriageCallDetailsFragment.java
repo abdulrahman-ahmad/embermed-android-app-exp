@@ -243,7 +243,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             @Override
             public void onSuccess(Object response, int statusCode) {
                 final EmptyResponse createEmsResponse = (EmptyResponse) response;
-                mainActivity.startVideoCall(currentRequestId);
+                mainActivity.startVideoCallWithPermissions(currentRequestId);
                 if (mainActivity != null) {
                     Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }

@@ -74,7 +74,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
                 case Constants.STATUS_ACCEPTED:
-                    mainActivity.startVideoCall(request.getId());
+                    mainActivity.startVideoCallWithPermissions(request.getId());
                     break;
                 case Constants.STATUS_COMPLETED:
                     /*if (!isCRCDone) {
