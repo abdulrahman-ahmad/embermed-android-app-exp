@@ -191,4 +191,24 @@ public class FirebaseEventUtil {
         }
     }
 
+    public void getFirebaseRequest(String requestId, final FirebaseCallbackListener<EmsRequest> callbackListener) {
+        try {
+            FirebaseAuthUtil.getInstance().addListenerForSingleValueEvent(Constants.FIREBASE_REQUEST_TABLE, requestId, new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    EmsRequest emsRequest = dataSnapshot.getValue(EmsRequest.class);
+                    //System.out.println("aa ---------- EmsRequest = " + emsRequest);
+                    callbackListener.onSuccess(emsRequest);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

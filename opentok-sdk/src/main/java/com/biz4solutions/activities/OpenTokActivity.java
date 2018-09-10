@@ -1,6 +1,10 @@
 package com.biz4solutions.activities;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.opengl.GLSurfaceView;
@@ -38,18 +42,23 @@ public class OpenTokActivity extends AppCompatActivity implements
     public static final String OPENTOK_SESSION_ID = "OPENTOK_SESSION_ID";
     public static final String OPENTOK_SUBSCRIBER_TOKEN = "OPENTOK_SUBSCRIBER_TOKEN";
     public static final String OPENTOK_PUBLISHER_TOKEN = "OPENTOK_PUBLISHER_TOKEN";
+    public static final String OPENTOK_REQUEST_ID = "OPENTOK_REQUEST_ID";
+    public static final String OPENTOK_END_CALL_RECEIVER = "OPENTOK_END_CALL_RECEIVER";
 
     private String mSessionId;
     private String mSubscriberToken;
     private String mPublisherToken;
+    private String requestId;
 
     private Session mSession;
     private Subscriber mSubscriber;
 
     private ActivityOpentokBinding binding;
+    private BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("aa ------OpenTokActivity----- onCreate");
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_opentok);
 
@@ -64,9 +73,33 @@ public class OpenTokActivity extends AppCompatActivity implements
             if (bundle.containsKey(OPENTOK_PUBLISHER_TOKEN)) {
                 mPublisherToken = bundle.getString(OPENTOK_PUBLISHER_TOKEN);
             }
+            if (bundle.containsKey(OPENTOK_REQUEST_ID)) {
+                requestId = bundle.getString(OPENTOK_REQUEST_ID);
+            }
         }
         initClickListeners();
         requestPermissions();
+        registerBroadcastReceiver();
+    }
+
+    private void registerBroadcastReceiver() {
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //method call here
+                String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case OPENTOK_END_CALL_RECEIVER:
+                            finishOpenTokActivity(RESULT_OK);
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(OPENTOK_END_CALL_RECEIVER);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private void initClickListeners() {
@@ -80,6 +113,7 @@ public class OpenTokActivity extends AppCompatActivity implements
     /* Activity lifecycle methods */
     @Override
     protected void onPause() {
+        System.out.println("aa ------OpenTokActivity----- onPause");
         super.onPause();
         if (mSession != null) {
             mSession.onPause();
@@ -88,6 +122,7 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     protected void onResume() {
+        System.out.println("aa ------OpenTokActivity----- onResume");
         super.onResume();
         if (mSession != null) {
             mSession.onResume();
@@ -95,7 +130,16 @@ public class OpenTokActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (broadcastReceiver != null) {
+            unregisterReceiver(broadcastReceiver);
+        }
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        System.out.println("aa ------OpenTokActivity----- onRequestPermissionsResult");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             boolean userAllowedAllRequestPermissions = true;
@@ -150,6 +194,7 @@ public class OpenTokActivity extends AppCompatActivity implements
     /* Session Listener methods */
     @Override
     public void onConnected(Session session) {
+        System.out.println("aa ------OpenTokActivity----- onConnected");
         // initialize Publisher and set this object to listen to Publisher events
         Publisher mPublisher = new Publisher.Builder(this).build();
         mPublisher.setPublisherListener(this);
@@ -167,10 +212,12 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onDisconnected(Session session) {
+        System.out.println("aa ------OpenTokActivity----- onDisconnected");
     }
 
     @Override
     public void onStreamReceived(Session session, Stream stream) {
+        System.out.println("aa ------OpenTokActivity----- onStreamReceived");
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
             mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
@@ -182,6 +229,7 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onStreamDropped(Session session, Stream stream) {
+        System.out.println("aa ------OpenTokActivity----- onStreamDropped");
         if (mSubscriber != null) {
             mSubscriber = null;
             binding.subscriberContainer.removeAllViews();
@@ -190,39 +238,46 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onError(Session session, OpentokError opentokError) {
+        System.out.println("aa ------OpenTokActivity----- onError");
         showOpenTokError(opentokError);
     }
 
     /* Publisher Listener methods */
     @Override
     public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onStreamCreated");
     }
 
     @Override
     public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onStreamDestroyed");
     }
 
     @Override
     public void onError(PublisherKit publisherKit, OpentokError opentokError) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onError");
         showOpenTokError(opentokError);
     }
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onConnected");
     }
 
     @Override
     public void onDisconnected(SubscriberKit subscriberKit) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onDisconnected");
     }
 
     @Override
     public void onError(SubscriberKit subscriberKit, OpentokError opentokError) {
+        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onError");
         showOpenTokError(opentokError);
     }
 
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-        finish();
+        finishOpenTokActivity(RESULT_CANCELED);
     }
 
     @Override
@@ -250,14 +305,13 @@ public class OpenTokActivity extends AppCompatActivity implements
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(this);
-        String requestId = "34f6ef09-2787-4b51-b3c5-abd4b233c37c";
         new ApiServices().endCall(this, requestId, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse emptyResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(OpenTokActivity.this, emptyResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                finish();
+                finishOpenTokActivity(RESULT_OK);
             }
 
             @Override
@@ -266,5 +320,15 @@ public class OpenTokActivity extends AppCompatActivity implements
                 Toast.makeText(OpenTokActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void finishOpenTokActivity(int resultCode) {
+        if (mSession != null) {
+            mSession.disconnect();
+        }
+        Intent intent = new Intent();
+        intent.putExtra(OPENTOK_REQUEST_ID, requestId);
+        setResult(resultCode, intent);
+        finish();
     }
 }

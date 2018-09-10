@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.activities.LoginActivity;
+import com.biz4solutions.activities.OpenTokActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
@@ -30,6 +31,7 @@ import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private void openNotificationDetailsView(Intent intent) {
         String requestId = intent.getStringExtra(Constants.NOTIFICATION_REQUEST_ID_KEY);
         if (requestId != null && !requestId.isEmpty()) {
-            getRequestDetails(requestId, "", true);
+            getRequestDetails(requestId, "", true, "");
         }
     }
 
@@ -126,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
     }
 
     private void initView() {
@@ -177,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        getRequestDetails(data.getProviderCurrentRequestId(), "", true);
+                        getRequestDetails(data.getProviderCurrentRequestId(), "", true, data.getDeviceId());
                     }
                 }
             }
@@ -291,9 +294,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 149) {
-            initView();
+        switch (requestCode) {
+            case 149:
+                initView();
+                break;
+            case OpenTokActivity.RC_OPENTOK_ACTIVITY:
+                FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                if (resultCode == RESULT_OK) {
+                    //open
+                }
+                break;
         }
+    }
+
+    private void addFirebaseOpenTokEvent(String requestId) {
+        FirebaseEventUtil.getInstance().addFirebaseOpenTokEvent(requestId, new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                if (data != null && data.getVideoCallStatus() != null && data.getVideoCallStatus().equals(Constants.STATUS_END)) {
+                    FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                    Intent intent = new Intent();
+                    intent.setAction(OpenTokActivity.OPENTOK_END_CALL_RECEIVER);
+                    sendBroadcast(intent);
+                }
+            }
+        });
     }
 
     private void openCardiacCallDetailsFragment(EmsRequest data, String distanceStr, boolean isOpenDuplicateFragment) {
@@ -455,7 +480,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void getRequestDetails(String requestId, final String distanceStr, final boolean isOpenDuplicateFragment) {
+    public void getRequestDetails(String requestId, final String distanceStr, final boolean isOpenDuplicateFragment, final String deviceId) {
         if (requestId != null && !requestId.isEmpty()) {
             if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
                 Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -466,11 +491,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    EmsRequest data = ((EmsRequestDetailsResponse) response).getData();
-                    if (Constants.STATUS_IMMEDIATE.equals("" + data.getPriority())) {
-                        openCardiacCallDetailsFragment(data, distanceStr, isOpenDuplicateFragment);
-                    } else {
-                        openTriageCallDetailsFragment(data, distanceStr, isOpenDuplicateFragment);
+                    if (response != null) {
+                        handledRequestData(((EmsRequestDetailsResponse) response).getData(), distanceStr, isOpenDuplicateFragment, deviceId);
                     }
                 }
 
@@ -481,6 +503,42 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+    }
+
+    private void handledRequestData(final EmsRequest emsRequest, final String distanceStr, final boolean isOpenDuplicateFragment, String deviceId) {
+        if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
+            openCardiacCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+        } else if (Constants.STATUS_HIGH.equals("" + emsRequest.getPriority())) {
+            FirebaseEventUtil.getInstance().getFirebaseRequest(emsRequest.getId(), new FirebaseCallbackListener<EmsRequest>() {
+                @Override
+                public void onSuccess(EmsRequest data) {
+                    if (Constants.STATUS_ACCEPTED.equals("" + data.getRequestStatus())) {
+                        startVideoCall(data.getId());
+                    } else {
+                        openTriageCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+                    }
+                }
+            });
+        }
+    }
+
+    public void startVideoCall(final String requestId) {
+        FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                try {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
+                    intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
+                    intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getProviderToken());
+                    intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, requestId);
+                    startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
+                    addFirebaseOpenTokEvent(requestId);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void startGpsService() {

@@ -20,13 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.biz4solutions.activities.OpenTokActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
-import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
@@ -245,20 +243,10 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             @Override
             public void onSuccess(Object response, int statusCode) {
                 final EmptyResponse createEmsResponse = (EmptyResponse) response;
-                FirebaseEventUtil.getInstance().getFirebaseOpenTok(currentRequestId, new FirebaseCallbackListener<OpenTok>() {
-                    @Override
-                    public void onSuccess(OpenTok data) {
-                        try {
-                            CommonFunctions.getInstance().dismissProgressDialog();
-                            startVideoCall(data);
-                            if (mainActivity != null) {
-                                Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                mainActivity.startVideoCall(currentRequestId);
+                if (mainActivity != null) {
+                    Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -269,12 +257,6 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         });
     }
 
-    private void startVideoCall(OpenTok data) {
-        Intent intent = new Intent(getActivity(), OpenTokActivity.class);
-        intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
-        intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getProviderToken());
-        startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
-    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {

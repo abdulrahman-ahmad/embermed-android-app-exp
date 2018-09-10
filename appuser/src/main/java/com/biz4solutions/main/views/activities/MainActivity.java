@@ -117,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (logoutBroadcastReceiver != null) {
             unregisterReceiver(logoutBroadcastReceiver);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
     }
 
     private void initView() {
@@ -268,9 +269,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 149) {
-            initView();
+        switch (requestCode) {
+            case 149:
+                initView();
+                break;
+            case OpenTokActivity.RC_OPENTOK_ACTIVITY:
+                FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                if (resultCode == RESULT_OK) {
+                    //open
+                }
+                break;
         }
+    }
+
+    private void addFirebaseOpenTokEvent(String requestId) {
+        FirebaseEventUtil.getInstance().addFirebaseOpenTokEvent(requestId, new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                if (data != null && data.getVideoCallStatus() != null && data.getVideoCallStatus().equals(Constants.STATUS_END)) {
+                    FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                    Intent intent = new Intent();
+                    intent.setAction(OpenTokActivity.OPENTOK_END_CALL_RECEIVER);
+                    sendBroadcast(intent);
+                }
+            }
+        });
     }
 
     private void openDashBoardFragment() {
@@ -452,7 +475,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void startVideoCall(String requestId) {
+    public void startVideoCall(final String requestId) {
         FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
             @Override
             public void onSuccess(OpenTok data) {
@@ -460,7 +483,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
                     intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
                     intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getPatientToken());
+                    intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, requestId);
                     startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
+                    addFirebaseOpenTokEvent(requestId);
                 }
             }
         });
