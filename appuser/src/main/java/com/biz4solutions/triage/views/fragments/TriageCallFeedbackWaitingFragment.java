@@ -53,7 +53,7 @@ public class TriageCallFeedbackWaitingFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {

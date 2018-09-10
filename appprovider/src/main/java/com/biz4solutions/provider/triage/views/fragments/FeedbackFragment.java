@@ -1,8 +1,10 @@
 package com.biz4solutions.provider.triage.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,13 +26,28 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     public static final String fragmentName = "FeedbackFragment";
     private MainActivity mainActivity;
     private FragmentFeedbackBinding binding;
+    private final static String REQUEST_ID = "REQUEST_ID";
+    private String requestId;
 
     public FeedbackFragment() {
         // Required empty public constructor
     }
 
-    public static FeedbackFragment newInstance() {
-        return new FeedbackFragment();
+    public static FeedbackFragment newInstance(String requestId) {
+        FeedbackFragment fragment = new FeedbackFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(REQUEST_ID, requestId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        if (getArguments() != null) {
+            requestId = getArguments().getString(REQUEST_ID);
+        }
     }
 
     @Override
@@ -39,19 +56,16 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        initView();
-        initClickListeners();
+        initListeners();
         return binding.getRoot();
     }
 
-    private void initView() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void initListeners() {
         binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
-    }
-
-    private void initClickListeners() {
         binding.btnSubmit.setOnClickListener(this);
         binding.tvSkip.setOnClickListener(this);
     }
@@ -100,8 +114,8 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setComment(binding.edtComment.getText().toString().trim());
-        feedbackRequest.setRequestId("d1b7681d-56f9-44db-8963-71f8a8000981");
-        feedbackRequest.setRating(4);
+        feedbackRequest.setRequestId(requestId);
+        feedbackRequest.setRating(binding.rbRatingBar.getRating());
         new ApiServices().submitProviderFeedBack(mainActivity, feedbackRequest, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {

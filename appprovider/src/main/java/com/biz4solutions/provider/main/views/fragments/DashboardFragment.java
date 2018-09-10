@@ -350,7 +350,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         try {
             int index = position - 1;
             if (emsRequests != null && emsRequests.size() > index && index >= 0) {
-                mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false, "");
+                mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
             }
         } catch (Exception e) {
             e.printStackTrace();

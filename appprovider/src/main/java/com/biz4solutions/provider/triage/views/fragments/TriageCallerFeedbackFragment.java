@@ -1,8 +1,10 @@
 package com.biz4solutions.provider.triage.views.fragments;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +27,28 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
     public static final String fragmentName = "TriageCallerFeedbackFragment";
     private MainActivity mainActivity;
     private FragmentTriageCallerFeedbackBinding binding;
+    private final static String REQUEST_ID = "REQUEST_ID";
+    private String requestId;
 
     public TriageCallerFeedbackFragment() {
         // Required empty public constructor
     }
 
-    public static TriageCallerFeedbackFragment newInstance() {
-        return new TriageCallerFeedbackFragment();
+    public static TriageCallerFeedbackFragment newInstance(String requestId) {
+        TriageCallerFeedbackFragment fragment = new TriageCallerFeedbackFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(REQUEST_ID, requestId);
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mainActivity = (MainActivity) getActivity();
+        if (getArguments() != null) {
+            requestId = getArguments().getString(REQUEST_ID);
+        }
     }
 
     @Override
@@ -40,19 +57,16 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        initView();
-        initClickListeners();
+        initListeners();
         return binding.getRoot();
     }
 
-    private void initView() {
+    @SuppressLint("ClickableViewAccessibility")
+    private void initListeners() {
         binding.edtReason.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtReason.getId()));
-    }
-
-    private void initClickListeners() {
         binding.btnSubmit.setOnClickListener(this);
     }
 
@@ -85,7 +99,7 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         HashMap<String, Object> body = new HashMap<>();
-        body.put("requestId", "d1b7681d-56f9-44db-8963-71f8a8000981");
+        body.put("requestId", requestId);
         body.put("reason", binding.edtReason.getText().toString().trim());
         String providerFeedback = "";
         if (binding.rdbGoToEr.isChecked()) {

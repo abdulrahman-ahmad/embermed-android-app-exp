@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     public LinearLayout btnLogOut;
+    private boolean isOpenTokActivityOpen = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -198,14 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         openNewsFeedFragment();
                         break;
                     case R.id.nav_log_out:
-                        CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
-                            @Override
-                            public void onClose(Boolean result) {
-                                if (result) {
-                                    callLogoutAPI();
-                                }
-                            }
-                        });
+                        showLogOutAlertDialog();
                         break;
                     case R.id.nav_log_in:
                         doLogOut();
@@ -217,6 +211,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }, 250);
         return true;
+    }
+
+    private void showLogOutAlertDialog() {
+        CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+            @Override
+            public void onClose(Boolean result) {
+                if (result) {
+                    callLogoutAPI();
+                }
+            }
+        });
     }
 
     private void callLogoutAPI() {
@@ -274,9 +279,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 initView();
                 break;
             case OpenTokActivity.RC_OPENTOK_ACTIVITY:
+                isOpenTokActivityOpen = false;
                 FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
                 if (resultCode == RESULT_OK) {
-                    //open
+                    openFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
                 }
                 break;
         }
@@ -465,8 +471,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (deviceId != null && !deviceId.isEmpty() && deviceId.equals(ApiServiceUtil.getInstance().getDeviceID(MainActivity.this))) {
                     if (Constants.STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
                         openTriageCallWaitingFragment(data);
-                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())) {
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && Constants.STATUS_START.equals("" + data.getVideoCallStatus())) {
                         startVideoCall(data.getId());
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && !data.getIsPatientFeedbackSubmitted()) {
+                        openFeedbackFragment(data.getId());
                     }
                 } else {
                     openTriageCallInProgressWaitingFragment(data);
@@ -479,7 +489,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
             @Override
             public void onSuccess(OpenTok data) {
-                if (!isOpenTokActivityRunning()) {
+                if (!isOpenTokActivityRunning() && !isOpenTokActivityOpen) {
+                    isOpenTokActivityOpen = true;
                     Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
                     intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
                     intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getPatientToken());
@@ -573,18 +584,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    private void openFeedbackFragment(String requestId) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof FeedbackFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
+                    .addToBackStack(FeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btn_log_out:
-                CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
-                    @Override
-                    public void onClose(Boolean result) {
-                        if (result) {
-                            callLogoutAPI();
-                        }
-                    }
-                });
+                showLogOutAlertDialog();
                 break;
         }
     }

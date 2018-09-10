@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.opentok.sdk.BuildConfig;
@@ -295,7 +296,14 @@ public class OpenTokActivity extends AppCompatActivity implements
             binding.ivVideo.setVisibility(View.VISIBLE);
             binding.ivMuteVideo.setVisibility(View.GONE);
         } else if (view.getId() == R.id.btn_end_call) {
-            endCall();
+            CommonFunctions.getInstance().showAlertDialog(OpenTokActivity.this, R.string.end_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                @Override
+                public void onClose(Boolean result) {
+                    if (result) {
+                        endCall();
+                    }
+                }
+            });
         }
     }
 
@@ -330,5 +338,10 @@ public class OpenTokActivity extends AppCompatActivity implements
         intent.putExtra(OPENTOK_REQUEST_ID, requestId);
         setResult(resultCode, intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // not do anything
     }
 }

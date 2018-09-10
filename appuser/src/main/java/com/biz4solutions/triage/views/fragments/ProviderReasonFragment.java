@@ -55,7 +55,7 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
         }
         initClickListeners();
         return binding.getRoot();

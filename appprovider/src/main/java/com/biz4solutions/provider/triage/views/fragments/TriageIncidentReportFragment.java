@@ -39,7 +39,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_service);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
         initView();

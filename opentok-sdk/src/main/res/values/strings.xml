@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="end">End</string>
+    <string name="end_message">Are you sure, you want to end video call?</string>
+    <string name="triage_call">Triage Call</string>
 </resources>
