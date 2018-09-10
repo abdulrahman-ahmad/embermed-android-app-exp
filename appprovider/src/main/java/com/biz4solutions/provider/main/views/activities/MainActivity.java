@@ -50,6 +50,7 @@ import com.biz4solutions.provider.services.GpsServices;
 import com.biz4solutions.provider.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
+import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -430,6 +431,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (currentFragment instanceof DashboardFragment) {
                 return;
             }
+            isUpdateList = true;
             getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -486,6 +488,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showRejectRequestAlert();
                     break;
                 case CardiacIncidentReportFragment.fragmentName:
+                case TriageIncidentReportFragment.fragmentName:
                     reOpenDashBoardFragment();
                     break;
                 case FeedbackFragment.fragmentName:
@@ -578,6 +581,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     CommonFunctions.getInstance().dismissProgressDialog();
                     if (!isOpenTokActivityRunning() && !isOpenTokActivityOpen) {
+                        isOpenTokActivityOpen = true;
                         Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
                         intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
                         intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getProviderToken());

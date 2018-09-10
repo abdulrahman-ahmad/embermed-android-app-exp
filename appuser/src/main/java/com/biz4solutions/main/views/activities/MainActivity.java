@@ -591,10 +591,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void openTriageCallWaitingFragment() {
-        openTriageCallWaitingFragment(null);
-    }
-
     public void openTriageCallWaitingFragment(EmsRequest data) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
@@ -21,23 +22,24 @@ import com.biz4solutions.provider.databinding.FragmentTriageIncidentReportBindin
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.Constants;
 
 public class TriageIncidentReportFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "TriageIncidentReportFragment";
     private MainActivity mainActivity;
     private FragmentTriageIncidentReportBinding binding;
-    private final static String REQUEST_ID = "REQUEST_ID";
-    private String requestId;
+    private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
+    private EmsRequest request;
 
     public TriageIncidentReportFragment() {
         // Required empty public constructor
     }
 
-    public static TriageIncidentReportFragment newInstance(String requestId) {
+    public static TriageIncidentReportFragment newInstance(EmsRequest request) {
         TriageIncidentReportFragment fragment = new TriageIncidentReportFragment();
         Bundle args = new Bundle();
-        args.putSerializable(REQUEST_ID, requestId);
+        args.putSerializable(REQUEST_DETAILS, request);
         fragment.setArguments(args);
         return fragment;
     }
@@ -47,7 +49,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            requestId = getArguments().getString(REQUEST_ID);
+            request = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
         }
     }
 
@@ -60,8 +62,28 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
+        initView();
         initClickListeners();
         return binding.getRoot();
+    }
+
+    private void initView() {
+        if (request != null) {
+            if (request.getProviderFeedbackReason() != null) {
+                binding.tvReason.setText(request.getProviderFeedbackReason());
+            }
+            switch ("" + request.getProviderFeedback()) {
+                case Constants.TRIAGE_FEEDBACK_ER:
+                    binding.tvProviderReason.setText(R.string.go_to_er);
+                    break;
+                case Constants.TRIAGE_FEEDBACK_URGENT_CARE:
+                    binding.tvProviderReason.setText(R.string.go_to_urgent_care);
+                    break;
+                case Constants.TRIAGE_FEEDBACK_PCP:
+                    binding.tvProviderReason.setText(R.string.go_to_pcp);
+                    break;
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -71,7 +93,6 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         binding.tvSeeMore.setOnClickListener(this);
         binding.tvSeeLess.setOnClickListener(this);
     }
-
 
     @Override
     public void onDestroyView() {
@@ -136,7 +157,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
         IncidentReport body = new IncidentReport();
         body.setTitle(binding.edtTitle.getText().toString().trim());
         body.setComment(binding.edtComment.getText().toString().trim());
-        body.setRequestId(requestId);
+        body.setRequestId(request.getId());
 
         new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {
             @Override

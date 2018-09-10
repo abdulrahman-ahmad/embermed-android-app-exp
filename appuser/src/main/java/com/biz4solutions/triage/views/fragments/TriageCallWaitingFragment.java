@@ -74,14 +74,15 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
             switch (request.getRequestStatus()) {
                 case Constants.STATUS_ACCEPTED:
                     mainActivity.startVideoCallWithPermissions(request.getId());
+                    FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
                     break;
                 case Constants.STATUS_COMPLETED:
                     /*if (!isCRCDone) {
                         isCRCDone = true;
                         Toast.makeText(mainActivity, R.string.message_request_completed, Toast.LENGTH_SHORT).show();
                         mainActivity.reOpenDashBoardFragment();
-                    }
-                    break;*/
+                    }*/
+                    break;
                 case Constants.STATUS_REJECTED:
                     if (!isCRCDone) {
                         isCRCDone = true;

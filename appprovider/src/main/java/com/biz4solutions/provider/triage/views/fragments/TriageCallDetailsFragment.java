@@ -103,7 +103,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
         addFirebaseRequestEvent();
         if (requestDetails != null) {
-            setCardiacCallView();
+            setRequestView();
         }
         initView();
         binding.btnRespond.setOnClickListener(this);
@@ -136,7 +136,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
                             requestDetails.setRequestStatus(data.getRequestStatus());
                             requestDetails.setProviderId(data.getProviderId());
                         }
-                        setCardiacCallView();
+                        setRequestView();
                     }
                 }
             }
@@ -155,7 +155,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         mainActivity.registerReceiver(clockBroadcastReceiver, new IntentFilter(Intent.ACTION_TIME_TICK));
     }
 
-    private void setCardiacCallView() {
+    private void setRequestView() {
         if (requestDetails != null && requestDetails.getRequestStatus() != null) {
             switch (requestDetails.getRequestStatus()) {
                 case "ACCEPTED":

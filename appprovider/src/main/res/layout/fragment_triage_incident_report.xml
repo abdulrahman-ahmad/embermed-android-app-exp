@@ -38,11 +38,12 @@
                         android:textSize="@dimen/_18dp" />
 
                     <TextView
+                        android:id="@+id/tv_provider_reason"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="7"
                         android:fontFamily="sans-serif"
-                        android:text="Go to ER"
+                        android:text="@string/go_to_er"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_18dp" />
                 </LinearLayout>
@@ -68,7 +69,6 @@
                         android:layout_weight="7"
                         android:fontFamily="sans-serif"
                         android:maxLines="4"
-                        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled"
                         android:textColor="@color/text_color"
                         android:textSize="@dimen/_18dp" />
                 </LinearLayout>
@@ -87,7 +87,8 @@
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="7"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:minHeight="@dimen/_14dp">
 
                         <ImageView
                             android:id="@+id/iv_three_dots"

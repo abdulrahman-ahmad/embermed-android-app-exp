@@ -29,12 +29,8 @@ public class CrashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent startMain = new Intent(Intent.ACTION_MAIN);
-                startMain.addCategory(Intent.CATEGORY_HOME);
-                startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(startMain);
-                /*Intent intent = new Intent(CrashActivity.this, MainActivity.class);
-                startActivity(intent);*/
+                Intent intent = new Intent(CrashActivity.this, MainActivity.class);
+                startActivity(intent);
                 finish();
             }
         }, 200);

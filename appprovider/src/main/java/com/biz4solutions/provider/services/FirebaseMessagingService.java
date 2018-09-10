@@ -83,17 +83,21 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private void sendNotification(Service service, String message) {
-        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_notification_tranperant)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
-                .setContentTitle(service.getString(R.string.app_name))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setContentIntent(pendingIntent)
-                .build();
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, notification);
+        try {
+            Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.icon_notification_tranperant)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setContentTitle(service.getString(R.string.app_name))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setContentText(message)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            if (notificationManager != null) {
+                notificationManager.notify(notificationId, notification);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -124,28 +128,32 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private void sendCustomNotification(Service service, String patientName, String age, String gender) {
-        String genderAge = gender + ", " + age + "yrs";
+        try {
+            String genderAge = gender + ", " + age + "yrs";
 
-        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
-        notificationLayout.setTextViewText(R.id.patientName, patientName);
-        notificationLayout.setTextViewText(R.id.genderAge, genderAge);
-        notificationLayout.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
+            RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_small_cardiac);
+            notificationLayout.setTextViewText(R.id.patientName, patientName);
+            notificationLayout.setTextViewText(R.id.genderAge, genderAge);
+            notificationLayout.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
 
-        RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
-        notificationLayoutExpanded.setTextViewText(R.id.patientName, patientName);
-        notificationLayoutExpanded.setTextViewText(R.id.genderAge, genderAge);
-        notificationLayoutExpanded.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
+            RemoteViews notificationLayoutExpanded = new RemoteViews(getPackageName(), R.layout.notification_large_cardiac);
+            notificationLayoutExpanded.setTextViewText(R.id.patientName, patientName);
+            notificationLayoutExpanded.setTextViewText(R.id.genderAge, genderAge);
+            notificationLayoutExpanded.setOnClickPendingIntent(R.id.btn_view, pendingIntent);
 
-        // Apply the layouts to the notification
-        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_notification_tranperant)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
-                .setCustomContentView(notificationLayout)
-                .setCustomBigContentView(notificationLayoutExpanded)
-                .build();
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, notification);
+            // Apply the layouts to the notification
+            Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.icon_notification_tranperant)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setCustomContentView(notificationLayout)
+                    .setCustomBigContentView(notificationLayoutExpanded)
+                    .build();
+            if (notificationManager != null) {
+                notificationManager.notify(notificationId, notification);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
