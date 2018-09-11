@@ -9,7 +9,7 @@
     <string name="is_victim_unconscious">Is victim unconscious?</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
-    <string name="submit_feedback_message">Are you sure, you want to submit this feedback?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>
     <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
     <string name="ems_has_been_notified">EMS has been notified</string>
     <string name="ems_has_been_accepted">EMS has been accepted</string>

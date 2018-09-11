@@ -12,7 +12,7 @@
     <string name="reject_request_message">Are you sure, you want to reject this request?</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
-    <string name="submit_feedback_message">Are you sure, you want to submit this feedback?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>
     <string name="accepted_request_message">Another provider has accepted this request.</string>
     <string name="canceled_request_message">The user has canceled this request.</string>
     <string name="patient_disease">Patient Disease:</string>
@@ -38,7 +38,7 @@
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
-    <string name="submit_incident_report_message">Are you sure, you want to submit this incident report?</string>
+    <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
     <string name="skip"><u>Skip</u></string>
