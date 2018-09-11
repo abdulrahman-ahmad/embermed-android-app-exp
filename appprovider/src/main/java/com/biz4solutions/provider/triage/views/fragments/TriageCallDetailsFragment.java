@@ -62,6 +62,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     private LocationManager mLocationManager;
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
     public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
+    private EmsRequest request;
 
     public TriageCallDetailsFragment() {
         // Required empty public constructor
@@ -130,6 +131,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         FirebaseEventUtil.getInstance().addFirebaseRequestEvent(currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
+                request = data;
                 if (isPageOpen) {
                     if (requestDetails != null) {
                         if (data != null) {
@@ -221,14 +223,16 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_respond:
-                CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.accept_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
-                    @Override
-                    public void onClose(Boolean result) {
-                        if (result) {
-                            acceptRequest();
+                if (request != null) {
+                    CommonFunctions.getInstance().showAlertDialog(mainActivity, R.string.accept_request_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                        @Override
+                        public void onClose(Boolean result) {
+                            if (result) {
+                                acceptRequest();
+                            }
                         }
-                    }
-                });
+                    });
+                }
                 break;
         }
     }
@@ -243,7 +247,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             @Override
             public void onSuccess(Object response, int statusCode) {
                 final EmptyResponse createEmsResponse = (EmptyResponse) response;
-                mainActivity.startVideoCallWithPermissions(currentRequestId);
+                mainActivity.startVideoCallWithPermissions(request);
                 if (mainActivity != null) {
                     Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 }

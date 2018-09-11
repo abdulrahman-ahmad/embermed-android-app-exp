@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public LinearLayout btnLogOut;
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 124;
-    private String tempRequestId;
+    private EmsRequest tempRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (userAllowedAllRequestPermissions) {
                 switch (requestCode) {
                     case PERMISSION_REQUEST_CODE:
-                        startVideoCall(tempRequestId);
+                        startVideoCall(tempRequest);
                         break;
                 }
             }
@@ -500,7 +500,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         openTriageCallWaitingFragment(data);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && Constants.STATUS_START.equals("" + data.getVideoCallStatus())) {
-                        startVideoCallWithPermissions(data.getId());
+                        startVideoCallWithPermissions(data);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && !data.getIsPatientFeedbackSubmitted()) {
                         openFeedbackFragment(data.getId());
@@ -518,23 +518,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void startVideoCallWithPermissions(String requestId) {
+    public void startVideoCallWithPermissions(EmsRequest request) {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                tempRequestId = requestId;
+                tempRequest = request;
                 String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
                 requestPermissions(perms, PERMISSION_REQUEST_CODE);
             } else {
-                startVideoCall(requestId);
+                startVideoCall(request);
             }
         } else {
-            startVideoCall(requestId);
+            startVideoCall(request);
         }
     }
 
-    private void startVideoCall(final String requestId) {
-        FirebaseEventUtil.getInstance().getFirebaseOpenTok(requestId, new FirebaseCallbackListener<OpenTok>() {
+    private void startVideoCall(final EmsRequest request) {
+        FirebaseEventUtil.getInstance().getFirebaseOpenTok(request.getId(), new FirebaseCallbackListener<OpenTok>() {
             @Override
             public void onSuccess(OpenTok data) {
                 if (!isOpenTokActivityRunning() && !isOpenTokActivityOpen) {
@@ -542,9 +542,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
                     intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
                     intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getPatientToken());
-                    intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, requestId);
+                    intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, request.getId());
+                    intent.putExtra(OpenTokActivity.OPENTOK_CALLER_NAME, request.getProviderName());
+                    intent.putExtra(OpenTokActivity.OPENTOK_CALLER_SUB_TEXT, request.getProviderSpecialization());
                     startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
-                    addFirebaseOpenTokEvent(requestId);
+                    addFirebaseOpenTokEvent(request.getId());
                 }
             }
         });

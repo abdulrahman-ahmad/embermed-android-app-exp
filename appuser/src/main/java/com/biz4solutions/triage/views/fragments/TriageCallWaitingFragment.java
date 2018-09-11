@@ -73,7 +73,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
         if (request != null && request.getRequestStatus() != null) {
             switch (request.getRequestStatus()) {
                 case Constants.STATUS_ACCEPTED:
-                    mainActivity.startVideoCallWithPermissions(request.getId());
+                    mainActivity.startVideoCallWithPermissions(request);
                     FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
                     break;
                 case Constants.STATUS_COMPLETED:

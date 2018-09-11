@@ -44,6 +44,8 @@ public class OpenTokActivity extends AppCompatActivity implements
     public static final String OPENTOK_SUBSCRIBER_TOKEN = "OPENTOK_SUBSCRIBER_TOKEN";
     public static final String OPENTOK_PUBLISHER_TOKEN = "OPENTOK_PUBLISHER_TOKEN";
     public static final String OPENTOK_REQUEST_ID = "OPENTOK_REQUEST_ID";
+    public static final String OPENTOK_CALLER_NAME = "OPENTOK_CALLER_NAME";
+    public static final String OPENTOK_CALLER_SUB_TEXT = "OPENTOK_CALLER_SUB_TEXT";
     public static final String OPENTOK_END_CALL_RECEIVER = "OPENTOK_END_CALL_RECEIVER";
 
     private String mSessionId;
@@ -53,6 +55,7 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     private Session mSession;
     private Subscriber mSubscriber;
+    private Publisher mPublisher;
 
     private ActivityOpentokBinding binding;
     private BroadcastReceiver broadcastReceiver;
@@ -77,6 +80,16 @@ public class OpenTokActivity extends AppCompatActivity implements
             if (bundle.containsKey(OPENTOK_REQUEST_ID)) {
                 requestId = bundle.getString(OPENTOK_REQUEST_ID);
             }
+            String name = "";
+            String subText = "";
+            if (bundle.containsKey(OPENTOK_CALLER_NAME)) {
+                name = bundle.getString(OPENTOK_CALLER_NAME);
+            }
+            if (bundle.containsKey(OPENTOK_CALLER_SUB_TEXT)) {
+                subText = bundle.getString(OPENTOK_CALLER_SUB_TEXT);
+            }
+            binding.tvCallerName.setText(name);
+            binding.tvSubText.setText(subText);
         }
         initClickListeners();
         requestPermissions();
@@ -197,7 +210,7 @@ public class OpenTokActivity extends AppCompatActivity implements
     public void onConnected(Session session) {
         System.out.println("aa ------OpenTokActivity----- onConnected");
         // initialize Publisher and set this object to listen to Publisher events
-        Publisher mPublisher = new Publisher.Builder(this).build();
+        mPublisher = new Publisher.Builder(this).build();
         mPublisher.setPublisherListener(this);
 
         // set publisher video style to fill view
@@ -278,7 +291,8 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-        finishOpenTokActivity(RESULT_CANCELED);
+        //finishOpenTokActivity(RESULT_CANCELED);
+        endCall();
     }
 
     @Override
@@ -286,15 +300,19 @@ public class OpenTokActivity extends AppCompatActivity implements
         if (view.getId() == R.id.iv_audio) {
             binding.ivAudio.setVisibility(View.GONE);
             binding.ivMuteAudio.setVisibility(View.VISIBLE);
+            mPublisher.setPublishAudio(false);
         } else if (view.getId() == R.id.iv_mute_audio) {
             binding.ivAudio.setVisibility(View.VISIBLE);
             binding.ivMuteAudio.setVisibility(View.GONE);
+            mPublisher.setPublishAudio(true);
         } else if (view.getId() == R.id.iv_video) {
             binding.ivVideo.setVisibility(View.GONE);
             binding.ivMuteVideo.setVisibility(View.VISIBLE);
+            mPublisher.setPublishVideo(false);
         } else if (view.getId() == R.id.iv_mute_video) {
             binding.ivVideo.setVisibility(View.VISIBLE);
             binding.ivMuteVideo.setVisibility(View.GONE);
+            mPublisher.setPublishVideo(true);
         } else if (view.getId() == R.id.btn_end_call) {
             CommonFunctions.getInstance().showAlertDialog(OpenTokActivity.this, R.string.end_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
                 @Override
