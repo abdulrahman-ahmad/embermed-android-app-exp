@@ -59,14 +59,11 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
     private View mapView;
     private LocationManager mLocationManager;
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
-    public int UPDATE_MIN_DISTANCE = 0;    // 5 sec;
+    public int UPDATE_MIN_DISTANCE = 0;       // 0 meter
     public int ZOOM_LEVEL = 17;
-    private Location mLocation;
     private Marker userMarker;
-    private Marker urgentCareMarker;
     private boolean isMapZoom = false;
-    public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
-    private boolean isShowMapDirection = false;
+    public int ANIMATE_SPEED_TURN = 500;      // 0.5 sec;
     private ClusterManager<MapClusterItem> clusterManager;
     private final static String URGENT_CARES_RESPONSE = "URGENT_CARES_RESPONSE";
     private UrgentCaresDataResponse urgentCaresDataResponse;
@@ -193,17 +190,16 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
             return;
         }
         if (clusterManager == null) {
-            clusterManager = new ClusterManager<MapClusterItem>(getActivity(), googleMap);
+            clusterManager = new ClusterManager<>(getActivity(), googleMap);
         }
 
-        clusterManager.setRenderer(new CustomMapClusterRenderer<MapClusterItem>(getActivity(), googleMap, clusterManager));
+        clusterManager.setRenderer(new CustomMapClusterRenderer<>(getActivity(), googleMap, clusterManager));
         clusterManager.clearItems();
         clearItems();
         googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
         googleMap.setOnMarkerClickListener(clusterManager);
         //noinspection deprecation
         googleMap.setOnCameraChangeListener(clusterManager);
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.getCameraPosition().target, ZOOM_LEVEL));
         clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapClusterItem>() {
             @Override
             public boolean onClusterClick(Cluster<MapClusterItem> cluster) {
@@ -217,7 +213,6 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
                 return false;
             }
         });
-        LatLng latLngCg = null;
         clusterItems = new ArrayList<>();
         clusterManager.getMarkerCollection().setOnInfoWindowAdapter(
                 new MyCustomAdapterForItems());
@@ -238,7 +233,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         });
         for (int i = 0; i < urgentCares.size(); i++) {
             UrgentCare item = urgentCares.get(i);
-            latLngCg = new LatLng(item.getLatitude(), item.getLongitude());
+            LatLng latLngCg = new LatLng(item.getLatitude(), item.getLongitude());
             MapClusterItem urgentCareItem = new MapClusterItem(latLngCg, item.getId(), item.getName());
             clusterItems.add(urgentCareItem);
             clusterManager.addItem(urgentCareItem);
@@ -315,6 +310,9 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         super.onDestroyView();
         if (mainActivity != null) {
             NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        }
+        if (mLocationManager != null) {
+            mLocationManager.removeUpdates(this);
         }
     }
 
@@ -449,17 +447,13 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         private final View myContentsView;
 
         MyCustomAdapterForItems() {
-            myContentsView = getLayoutInflater().inflate(
-                    R.layout.info_window, null);
+            myContentsView = getLayoutInflater().inflate(R.layout.info_window, null);
         }
 
         @Override
         public View getInfoWindow(Marker marker) {
-
-            TextView tvTitle = ((TextView) myContentsView
-                    .findViewById(R.id.txtTitle));
+            TextView tvTitle = myContentsView.findViewById(R.id.txtTitle);
             tvTitle.setText(selectedClusterItem.getName());
-
             return myContentsView;
         }
 

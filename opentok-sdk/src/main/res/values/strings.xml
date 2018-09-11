@@ -3,4 +3,5 @@
     <string name="end">End</string>
     <string name="end_message">Are you sure, you want to end video call?</string>
     <string name="triage_call">Triage Call</string>
+    <string name="_00_00_00">00:00:00</string>
 </resources>

@@ -1,12 +1,14 @@
 package com.biz4solutions.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.databinding.ObservableField;
 import android.opengl.GLSurfaceView;
 import android.os.Build;
 import android.os.Bundle;
@@ -33,6 +35,10 @@ import com.opentok.android.Stream;
 import com.opentok.android.Subscriber;
 import com.opentok.android.SubscriberKit;
 
+import java.util.Calendar;
+import java.util.Timer;
+import java.util.concurrent.TimeUnit;
+
 public class OpenTokActivity extends AppCompatActivity implements
         Session.SessionListener,
         PublisherKit.PublisherListener,
@@ -43,16 +49,18 @@ public class OpenTokActivity extends AppCompatActivity implements
     public static final String OPENTOK_SESSION_ID = "OPENTOK_SESSION_ID";
     public static final String OPENTOK_SUBSCRIBER_TOKEN = "OPENTOK_SUBSCRIBER_TOKEN";
     public static final String OPENTOK_PUBLISHER_TOKEN = "OPENTOK_PUBLISHER_TOKEN";
+    public static final String OPENTOK_END_CALL_RECEIVER = "OPENTOK_END_CALL_RECEIVER";
+    public static final String OPENTOK_SESSION_EXPIRED_RECEIVER = "OPENTOK_SESSION_EXPIRED_RECEIVER";
     public static final String OPENTOK_REQUEST_ID = "OPENTOK_REQUEST_ID";
     public static final String OPENTOK_CALLER_NAME = "OPENTOK_CALLER_NAME";
     public static final String OPENTOK_CALLER_SUB_TEXT = "OPENTOK_CALLER_SUB_TEXT";
-    public static final String OPENTOK_END_CALL_RECEIVER = "OPENTOK_END_CALL_RECEIVER";
-    public static final String OPENTOK_SESSION_EXPIRED_RECEIVER = "OPENTOK_SESSION_EXPIRED_RECEIVER";
+    public static final String OPENTOK_CALL_START_TIME = "OPENTOK_CALL_START_TIME";
 
     private String mSessionId;
     private String mSubscriberToken;
     private String mPublisherToken;
     private String requestId;
+    private long startTime = 0;
 
     private Session mSession;
     private Subscriber mSubscriber;
@@ -61,9 +69,12 @@ public class OpenTokActivity extends AppCompatActivity implements
     private ActivityOpentokBinding binding;
     private BroadcastReceiver broadcastReceiver;
 
+    private Timer timer = new Timer();
+    private TimerTask timerTask;
+    private ObservableField<String> callTime = new ObservableField<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("aa ------OpenTokActivity----- onCreate");
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_opentok);
 
@@ -81,6 +92,9 @@ public class OpenTokActivity extends AppCompatActivity implements
             if (bundle.containsKey(OPENTOK_REQUEST_ID)) {
                 requestId = bundle.getString(OPENTOK_REQUEST_ID);
             }
+            if (bundle.containsKey(OPENTOK_CALL_START_TIME)) {
+                startTime = bundle.getLong(OPENTOK_CALL_START_TIME, 0);
+            }
             String name = "";
             String subText = "";
             if (bundle.containsKey(OPENTOK_CALLER_NAME)) {
@@ -95,6 +109,10 @@ public class OpenTokActivity extends AppCompatActivity implements
         initClickListeners();
         requestPermissions();
         registerBroadcastReceiver();
+        reSetTimer();
+        calculateCallTime();
+        callTime.set(getString(R.string._00_00_00));
+        binding.setCallTime(callTime);
     }
 
     private void registerBroadcastReceiver() {
@@ -132,7 +150,6 @@ public class OpenTokActivity extends AppCompatActivity implements
     /* Activity lifecycle methods */
     @Override
     protected void onPause() {
-        System.out.println("aa ------OpenTokActivity----- onPause");
         super.onPause();
         if (mSession != null) {
             mSession.onPause();
@@ -141,7 +158,6 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     protected void onResume() {
-        System.out.println("aa ------OpenTokActivity----- onResume");
         super.onResume();
         if (mSession != null) {
             mSession.onResume();
@@ -154,11 +170,11 @@ public class OpenTokActivity extends AppCompatActivity implements
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
+        stopTimer();
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        System.out.println("aa ------OpenTokActivity----- onRequestPermissionsResult");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             boolean userAllowedAllRequestPermissions = true;
@@ -213,7 +229,6 @@ public class OpenTokActivity extends AppCompatActivity implements
     /* Session Listener methods */
     @Override
     public void onConnected(Session session) {
-        System.out.println("aa ------OpenTokActivity----- onConnected");
         // initialize Publisher and set this object to listen to Publisher events
         mPublisher = new Publisher.Builder(this).build();
         mPublisher.setPublisherListener(this);
@@ -231,12 +246,10 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onDisconnected(Session session) {
-        System.out.println("aa ------OpenTokActivity----- onDisconnected");
     }
 
     @Override
     public void onStreamReceived(Session session, Stream stream) {
-        System.out.println("aa ------OpenTokActivity----- onStreamReceived");
         if (mSubscriber == null) {
             mSubscriber = new Subscriber.Builder(this, stream).build();
             mSubscriber.getRenderer().setStyle(BaseVideoRenderer.STYLE_VIDEO_SCALE, BaseVideoRenderer.STYLE_VIDEO_FILL);
@@ -248,7 +261,6 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onStreamDropped(Session session, Stream stream) {
-        System.out.println("aa ------OpenTokActivity----- onStreamDropped");
         if (mSubscriber != null) {
             mSubscriber = null;
             binding.subscriberContainer.removeAllViews();
@@ -257,46 +269,38 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onError(Session session, OpentokError opentokError) {
-        System.out.println("aa ------OpenTokActivity----- onError");
         showOpenTokError(opentokError);
     }
 
     /* Publisher Listener methods */
     @Override
     public void onStreamCreated(PublisherKit publisherKit, Stream stream) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onStreamCreated");
     }
 
     @Override
     public void onStreamDestroyed(PublisherKit publisherKit, Stream stream) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onStreamDestroyed");
     }
 
     @Override
     public void onError(PublisherKit publisherKit, OpentokError opentokError) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onError");
         showOpenTokError(opentokError);
     }
 
     @Override
     public void onConnected(SubscriberKit subscriberKit) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onConnected");
     }
 
     @Override
     public void onDisconnected(SubscriberKit subscriberKit) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onDisconnected");
     }
 
     @Override
     public void onError(SubscriberKit subscriberKit, OpentokError opentokError) {
-        System.out.println("aa ------OpenTokActivity--Publisher Listener methods--- onError");
         showOpenTokError(opentokError);
     }
 
     private void showOpenTokError(OpentokError opentokError) {
         Toast.makeText(this, opentokError.getErrorDomain().name() + ": " + opentokError.getMessage() + " Please, see the logcat.", Toast.LENGTH_LONG).show();
-        //finishOpenTokActivity(RESULT_CANCELED);
         endCall();
     }
 
@@ -366,5 +370,46 @@ public class OpenTokActivity extends AppCompatActivity implements
     @Override
     public void onBackPressed() {
         // not do anything
+    }
+
+    private void reSetTimer() {
+        stopTimer();
+        timerTask = new TimerTask();
+        timer.schedule(timerTask, 1000); //1 sec
+    }
+
+    private void stopTimer() {
+        if (timerTask != null) {
+            timerTask.cancel();
+            timer.purge();
+        }
+    }
+
+    private class TimerTask extends java.util.TimerTask {
+        @Override
+        public void run() {
+            calculateCallTime();
+            reSetTimer();
+        }
+    }
+
+    @SuppressLint("DefaultLocale")
+    private void calculateCallTime() {
+        try {
+            Calendar calendar = Calendar.getInstance();
+            if (startTime > 0) {
+                long millis = calendar.getTimeInMillis() - startTime;
+                String callTimeStr = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+                        TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                        TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+                if (callTimeStr != null) {
+                    callTime.set(callTimeStr);
+                }
+            } else {
+                stopTimer();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
