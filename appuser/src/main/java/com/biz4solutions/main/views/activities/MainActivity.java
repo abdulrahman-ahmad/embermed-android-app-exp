@@ -544,7 +544,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getPatientToken());
                     intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, request.getId());
                     intent.putExtra(OpenTokActivity.OPENTOK_CALLER_NAME, request.getProviderName());
-                    intent.putExtra(OpenTokActivity.OPENTOK_CALLER_SUB_TEXT, request.getProviderSpecialization());
+                    intent.putExtra(OpenTokActivity.OPENTOK_CALLER_SUB_TEXT, request.getProviderProfession());
                     startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
                     addFirebaseOpenTokEvent(request.getId());
                 }

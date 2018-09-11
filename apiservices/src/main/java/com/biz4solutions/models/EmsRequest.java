@@ -24,6 +24,7 @@ public class EmsRequest implements Serializable {
     private String patientSymptoms;
     private String videoCallStatus;
     private String providerFeedbackReason;
+    private String providerProfession;
 
     public String getId() {
         return id;
@@ -193,6 +194,14 @@ public class EmsRequest implements Serializable {
         this.providerFeedbackReason = providerFeedbackReason;
     }
 
+    public String getProviderProfession() {
+        return providerProfession;
+    }
+
+    public void setProviderProfession(String providerProfession) {
+        this.providerProfession = providerProfession;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -217,6 +226,7 @@ public class EmsRequest implements Serializable {
                 ", patientSymptoms='" + patientSymptoms + '\'' +
                 ", videoCallStatus='" + videoCallStatus + '\'' +
                 ", providerFeedbackReason='" + providerFeedbackReason + '\'' +
+                ", providerProfession='" + providerProfession + '\'' +
                 '}';
     }
 }
