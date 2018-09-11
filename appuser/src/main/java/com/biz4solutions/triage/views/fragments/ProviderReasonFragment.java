@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
@@ -16,8 +17,10 @@ import com.biz4solutions.databinding.FragmentProviderReasonBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.UrgentCaresDataResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
@@ -59,17 +62,30 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.triage_call);
         }
-        initView();
         initClickListeners();
+        initView();
         return binding.getRoot();
     }
 
     private void initView() {
         if (request != null) {
             FirebaseAuthUtil.getInstance().storeSingleData(Constants.FIREBASE_REQUEST_TABLE, request.getId(), Constants.FIREBASE_TRIAGE_CALL_STATUS_KEY, Constants.STATUS_COMPLETED);
+            User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            if (user != null) {
+                FirebaseAuthUtil.getInstance().storeData(Constants.FIREBASE_USER_TABLE, user.getUserId(), null);
+            }
             if (request.getProviderFeedbackReason() != null) {
                 binding.tvReason.setText(request.getProviderFeedbackReason());
             }
+            binding.tvReason.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    if (binding.tvReason.getLayout().getLineCount() <= 5) {
+                        binding.tvSeeMore.performClick();
+                    }
+                    return true;
+                }
+            });
             switch ("" + request.getProviderFeedback()) {
                 case Constants.TRIAGE_FEEDBACK_ER:
                     binding.tvProviderReason.setText(R.string.go_to_er);

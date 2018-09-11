@@ -405,6 +405,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case TriageCallFeedbackWaitingFragment.fragmentName:
                     // not do any think
                     break;
+                case ProviderReasonFragment.fragmentName:
+                    reOpenDashBoardFragment();
+                    break;
                 default:
                     getSupportFragmentManager().popBackStack();
                     break;

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
@@ -62,8 +63,8 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
-        initView();
         initClickListeners();
+        initView();
         return binding.getRoot();
     }
 
@@ -72,6 +73,16 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             if (request.getProviderFeedbackReason() != null) {
                 binding.tvReason.setText(request.getProviderFeedbackReason());
             }
+            binding.tvReason.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    if (binding.tvReason.getLayout().getLineCount() <= 4) {
+                        binding.tvSeeMore.performClick();
+                    }
+                    return true;
+                }
+            });
+
             switch ("" + request.getProviderFeedback()) {
                 case Constants.TRIAGE_FEEDBACK_ER:
                     binding.tvProviderReason.setText(R.string.go_to_er);
