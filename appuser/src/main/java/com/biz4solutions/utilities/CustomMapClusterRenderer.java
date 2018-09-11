@@ -9,6 +9,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+import com.biz4solutions.R;
 
 /**
  * custom map cluster renderer to set cluster size
@@ -36,7 +37,7 @@ public class CustomMapClusterRenderer<MapClusterItem extends MarkerClusterItem> 
                                                MarkerOptions markerOptions) {
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(
                 BitmapDescriptorFactory.HUE_GREEN));
-//        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_victim));
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_victim));
     }
 
     @Override

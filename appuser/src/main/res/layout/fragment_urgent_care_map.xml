@@ -29,6 +29,7 @@
                 android:layout_width="0dp"
                 android:layout_margin="0dp"
                 android:layout_weight="550"
+                android:visibility="gone"
                 android:background="@drawable/ripple_default_button"
                 android:text="@string/book_uber" />
         </LinearLayout>

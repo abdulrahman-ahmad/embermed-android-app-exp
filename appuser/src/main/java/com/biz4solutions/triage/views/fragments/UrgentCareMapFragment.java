@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentUrgentCareMapBinding;
@@ -29,7 +31,10 @@ import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.UrgentCare;
 import com.biz4solutions.models.response.UrgentCaresDataResponse;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.CustomMapClusterRenderer;
+import com.biz4solutions.utilities.MapClusterItem;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -40,6 +45,8 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 
@@ -52,7 +59,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
     private View mapView;
     private LocationManager mLocationManager;
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
-    public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
+    public int UPDATE_MIN_DISTANCE = 0;    // 5 sec;
     public int ZOOM_LEVEL = 17;
     private Location mLocation;
     private Marker userMarker;
@@ -60,8 +67,10 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
     private boolean isMapZoom = false;
     public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
     private boolean isShowMapDirection = false;
+    private ClusterManager<MapClusterItem> clusterManager;
     private final static String URGENT_CARES_RESPONSE = "URGENT_CARES_RESPONSE";
     private UrgentCaresDataResponse urgentCaresDataResponse;
+    private MapClusterItem selectedClusterItem;
 
     public UrgentCareMapFragment() {
         // Required empty public constructor
@@ -97,7 +106,12 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         } else {
             startLocationUpdates();
         }
+        initClickListeners();
         return binding.getRoot();
+    }
+
+    private void initClickListeners() {
+        binding.btnBookUber.setOnClickListener(this);
     }
 
     private void initBindingView(@NonNull LayoutInflater inflater, ViewGroup container) {
@@ -137,12 +151,15 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         googleMap.clear();
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
+//        clusterManager = new ClusterManager<>(getActivity(), googleMap);
+
         ArrayList<UrgentCare> urgentCares = urgentCaresDataResponse.getList();
-        if (urgentCares != null) {
+        showClusterItems(urgentCares);
+        /*if (urgentCares != null) {
             for (int i = 0; i < urgentCares.size(); i++) {
                 addUrgentCareMarker(urgentCares.get(i).getLatitude(), urgentCares.get(i).getLongitude());
             }
-        }
+        }*/
         try {
             if (mapView != null &&
                     mapView.findViewById(Integer.parseInt("1")) != null) {
@@ -158,6 +175,77 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
                 }
             }
             startLocationUpdates();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    ArrayList<MapClusterItem> clusterItems;
+
+    void clearItems() {
+        for (int i = 0; clusterItems != null && i < clusterItems.size(); i++) {
+            clusterItems.get(i).setMarker(null);
+        }
+    }
+
+    private void showClusterItems(ArrayList<UrgentCare> urgentCares) {
+        if (getActivity() == null) {
+            return;
+        }
+        if (clusterManager == null) {
+            clusterManager = new ClusterManager<MapClusterItem>(getActivity(), googleMap);
+        }
+
+        clusterManager.setRenderer(new CustomMapClusterRenderer<MapClusterItem>(getActivity(), googleMap, clusterManager));
+        clusterManager.clearItems();
+        clearItems();
+        googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
+        googleMap.setOnMarkerClickListener(clusterManager);
+        //noinspection deprecation
+        googleMap.setOnCameraChangeListener(clusterManager);
+//        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(googleMap.getCameraPosition().target, ZOOM_LEVEL));
+        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapClusterItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<MapClusterItem> cluster) {
+                if (cluster != null && googleMap != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(cluster.getPosition())
+                            .zoom(googleMap.getCameraPosition().zoom + 2).build();
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    googleMap.moveCamera(cameraUpdate);
+                }
+                return false;
+            }
+        });
+        LatLng latLngCg = null;
+        clusterItems = new ArrayList<>();
+        clusterManager.getMarkerCollection().setOnInfoWindowAdapter(
+                new MyCustomAdapterForItems());
+        googleMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
+            @Override
+            public void onInfoWindowClose(Marker marker) {
+                binding.btnBookUber.setVisibility(View.GONE);
+            }
+        });
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(MapClusterItem clusterItem) {
+                Toast.makeText(mainActivity, clusterItem.getUserId(), Toast.LENGTH_SHORT).show();
+                selectedClusterItem = clusterItem;
+                binding.btnBookUber.setVisibility(View.VISIBLE);
+                return false;
+            }
+        });
+        for (int i = 0; i < urgentCares.size(); i++) {
+            UrgentCare item = urgentCares.get(i);
+            latLngCg = new LatLng(item.getLatitude(), item.getLongitude());
+            MapClusterItem urgentCareItem = new MapClusterItem(latLngCg, item.getId(), item.getName());
+            clusterItems.add(urgentCareItem);
+            clusterManager.addItem(urgentCareItem);
+        }
+
+        try {
+            clusterManager.cluster();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -271,6 +359,10 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
                             .anchor(0.5f, 0.5f)
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_current_location))
                             .position(latLng));
+                    if (!isMapZoom) {
+                        isMapZoom = true;
+                        animateCamera(latLng, ZOOM_LEVEL);
+                    }
                 } else {
                     animateMarker(userMarker, latLng);
                 }
@@ -343,30 +435,39 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    private void addUrgentCareMarker(double latitude, double longitude) {
-        try {
-            if (googleMap != null) {
-                LatLng latLng = new LatLng(latitude, longitude);
-                if (urgentCareMarker == null) {
-                    urgentCareMarker = googleMap.addMarker(new MarkerOptions()
-                            .title("")
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_marker_victim))
-                            .position(latLng));
-                    if (!isMapZoom) {
-                        isMapZoom = true;
-                        animateCamera(latLng, ZOOM_LEVEL);
-                    }
-                } else {
-                    animateMarker(urgentCareMarker, latLng);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.btn_book_uber:
+                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
-    @Override
-    public void onClick(View view) {
+    public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+
+        private final View myContentsView;
+
+        MyCustomAdapterForItems() {
+            myContentsView = getLayoutInflater().inflate(
+                    R.layout.info_window, null);
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+
+            TextView tvTitle = ((TextView) myContentsView
+                    .findViewById(R.id.txtTitle));
+            tvTitle.setText(selectedClusterItem.getName());
+
+            return myContentsView;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
 
     }
+
 }
