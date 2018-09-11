@@ -47,6 +47,7 @@ public class OpenTokActivity extends AppCompatActivity implements
     public static final String OPENTOK_CALLER_NAME = "OPENTOK_CALLER_NAME";
     public static final String OPENTOK_CALLER_SUB_TEXT = "OPENTOK_CALLER_SUB_TEXT";
     public static final String OPENTOK_END_CALL_RECEIVER = "OPENTOK_END_CALL_RECEIVER";
+    public static final String OPENTOK_SESSION_EXPIRED_RECEIVER = "OPENTOK_SESSION_EXPIRED_RECEIVER";
 
     private String mSessionId;
     private String mSubscriberToken;
@@ -107,12 +108,16 @@ public class OpenTokActivity extends AppCompatActivity implements
                         case OPENTOK_END_CALL_RECEIVER:
                             finishOpenTokActivity(RESULT_OK);
                             break;
+                        case OPENTOK_SESSION_EXPIRED_RECEIVER:
+                            finishOpenTokActivity(RESULT_CANCELED);
+                            break;
                     }
                 }
             }
         };
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(OPENTOK_END_CALL_RECEIVER);
+        intentFilter.addAction(OPENTOK_SESSION_EXPIRED_RECEIVER);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 

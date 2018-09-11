@@ -5,6 +5,7 @@ public class OpenTok {
     private String providerToken;
     private String sessionId;
     private String videoCallStatus;
+    private long startTime;
 
     public String getPatientToken() {
         return patientToken;
@@ -38,6 +39,14 @@ public class OpenTok {
         this.videoCallStatus = videoCallStatus;
     }
 
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
     @Override
     public String toString() {
         return "OpenTok{" +
@@ -45,6 +54,7 @@ public class OpenTok {
                 ", providerToken='" + providerToken + '\'' +
                 ", sessionId='" + sessionId + '\'' +
                 ", videoCallStatus='" + videoCallStatus + '\'' +
+                ", startTime='" + startTime + '\'' +
                 '}';
     }
 }

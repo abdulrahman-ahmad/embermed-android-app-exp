@@ -108,8 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            doLogOut();
+                            unauthorizedLogOut();
                             break;
                         case Constants.LOCAL_NOTIFICATION_ACTION_VIEW:
                             openNotificationDetailsView(intent);
@@ -124,6 +123,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         registerReceiver(broadcastReceiver, intentFilter);
 
         openNotificationDetailsView(getIntent());
+    }
+
+    private void unauthorizedLogOut() {
+        Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        doLogOut();
     }
 
     private void openNotificationDetailsView(Intent intent) {
@@ -191,7 +195,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        getRequestDetails(data.getProviderCurrentRequestId(), "", true);
+                        if (data.getDeviceId() != null && !data.getDeviceId().isEmpty() && !data.getDeviceId().equals(ApiServiceUtil.getInstance().getDeviceID(MainActivity.this))) {
+                            Intent intent = new Intent();
+                            intent.setAction(OpenTokActivity.OPENTOK_SESSION_EXPIRED_RECEIVER);
+                            sendBroadcast(intent);
+                        } else {
+                            getRequestDetails(data.getProviderCurrentRequestId(), "", true);
+                        }
                     }
                 }
             }
@@ -332,6 +342,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 isOpenTokActivityOpen = false;
                 if (resultCode == RESULT_OK) {
                     openTriageCallerFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
+                } else if (resultCode == RESULT_CANCELED) {
+                    unauthorizedLogOut();
                 }
                 break;
         }
