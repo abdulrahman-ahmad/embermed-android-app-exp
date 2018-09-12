@@ -306,31 +306,43 @@ public class OpenTokActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.iv_audio) {
-            binding.ivAudio.setVisibility(View.GONE);
-            binding.ivMuteAudio.setVisibility(View.VISIBLE);
-            mPublisher.setPublishAudio(false);
-        } else if (view.getId() == R.id.iv_mute_audio) {
-            binding.ivAudio.setVisibility(View.VISIBLE);
-            binding.ivMuteAudio.setVisibility(View.GONE);
-            mPublisher.setPublishAudio(true);
-        } else if (view.getId() == R.id.iv_video) {
-            binding.ivVideo.setVisibility(View.GONE);
-            binding.ivMuteVideo.setVisibility(View.VISIBLE);
-            mPublisher.setPublishVideo(false);
-        } else if (view.getId() == R.id.iv_mute_video) {
-            binding.ivVideo.setVisibility(View.VISIBLE);
-            binding.ivMuteVideo.setVisibility(View.GONE);
-            mPublisher.setPublishVideo(true);
-        } else if (view.getId() == R.id.btn_end_call) {
-            CommonFunctions.getInstance().showAlertDialog(OpenTokActivity.this, R.string.end_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
-                @Override
-                public void onClose(Boolean result) {
-                    if (result) {
-                        endCall();
-                    }
+        try {
+            if (view.getId() == R.id.iv_audio) {
+                if (mPublisher != null) {
+                    binding.ivAudio.setVisibility(View.GONE);
+                    binding.ivMuteAudio.setVisibility(View.VISIBLE);
+                    mPublisher.setPublishAudio(false);
                 }
-            });
+            } else if (view.getId() == R.id.iv_mute_audio) {
+                if (mPublisher != null) {
+                    binding.ivAudio.setVisibility(View.VISIBLE);
+                    binding.ivMuteAudio.setVisibility(View.GONE);
+                    mPublisher.setPublishAudio(true);
+                }
+            } else if (view.getId() == R.id.iv_video) {
+                if (mPublisher != null) {
+                    binding.ivVideo.setVisibility(View.GONE);
+                    binding.ivMuteVideo.setVisibility(View.VISIBLE);
+                    mPublisher.setPublishVideo(false);
+                }
+            } else if (view.getId() == R.id.iv_mute_video) {
+                if (mPublisher != null) {
+                    binding.ivVideo.setVisibility(View.VISIBLE);
+                    binding.ivMuteVideo.setVisibility(View.GONE);
+                    mPublisher.setPublishVideo(true);
+                }
+            } else if (view.getId() == R.id.btn_end_call) {
+                CommonFunctions.getInstance().showAlertDialog(OpenTokActivity.this, R.string.end_message, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                    @Override
+                    public void onClose(Boolean result) {
+                        if (result) {
+                            endCall();
+                        }
+                    }
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

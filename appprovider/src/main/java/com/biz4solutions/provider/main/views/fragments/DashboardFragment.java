@@ -189,7 +189,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                             public void run() {
                                 getNewRequestList(false);
                             }
-                        }, 1000);
+                        }, 3000);
                     } else {
                         setErrorView();
                     }

@@ -225,7 +225,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
             @Override
             public boolean onClusterItemClick(MapClusterItem clusterItem) {
-                Toast.makeText(mainActivity, clusterItem.getUserId(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mainActivity, clusterItem.getUserId(), Toast.LENGTH_SHORT).show();
                 selectedClusterItem = clusterItem;
                 binding.btnBookUber.setVisibility(View.VISIBLE);
                 return false;
