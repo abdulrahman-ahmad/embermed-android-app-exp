@@ -179,6 +179,7 @@
                     android:id="@+id/tv_urgent_cares"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_40dp"
                     android:background="@drawable/ripple_default_bg"
                     android:fontFamily="sans-serif-medium"
                     android:gravity="center"

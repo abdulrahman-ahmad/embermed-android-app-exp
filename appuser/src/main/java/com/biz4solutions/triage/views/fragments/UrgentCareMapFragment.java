@@ -110,6 +110,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
 
     private void initClickListeners() {
         binding.btnBookUber.setOnClickListener(this);
+        binding.myLocation.setOnClickListener(this);
     }
 
     private void initBindingView(@NonNull LayoutInflater inflater, ViewGroup container) {
@@ -220,7 +221,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         googleMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
             @Override
             public void onInfoWindowClose(Marker marker) {
-                binding.btnBookUber.setVisibility(View.GONE);
+                binding.llBookUber.setVisibility(View.GONE);
             }
         });
         clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
@@ -228,7 +229,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
             public boolean onClusterItemClick(MapClusterItem clusterItem) {
                 //Toast.makeText(mainActivity, clusterItem.getUserId(), Toast.LENGTH_SHORT).show();
                 selectedClusterItem = clusterItem;
-                binding.btnBookUber.setVisibility(View.VISIBLE);
+                binding.llBookUber.setVisibility(View.VISIBLE);
                 return false;
             }
         });
@@ -439,6 +440,11 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.btn_book_uber:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.my_location:
+                if (userMarker != null && googleMap != null) {
+                    animateCamera(userMarker.getPosition(), ZOOM_LEVEL);
+                }
                 break;
         }
     }

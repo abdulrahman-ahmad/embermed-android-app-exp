@@ -19,20 +19,36 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/_30dp"
-            android:gravity="center"
-            android:weightSum="1080">
+            android:orientation="vertical">
 
-            <Button
-                android:id="@+id/btn_book_uber"
-                style="@style/BtnStyle"
-                android:layout_width="0dp"
-                android:layout_margin="0dp"
-                android:layout_weight="550"
+            <ImageView
+                android:id="@+id/my_location"
+                android:layout_width="@dimen/_40dp"
+                android:layout_height="@dimen/_40dp"
+                android:layout_gravity="end"
+                android:layout_marginBottom="@dimen/_8dp"
+                android:layout_marginEnd="@dimen/_15dp"
+                android:contentDescription="@null"
+                android:src="@drawable/selector_map_current_icon" />
+
+            <LinearLayout
+                android:id="@+id/ll_book_uber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_30dp"
+                android:gravity="center"
                 android:visibility="gone"
-                android:background="@drawable/ripple_default_button"
-                android:text="@string/book_uber" />
-        </LinearLayout>
+                android:weightSum="1080">
 
+                <Button
+                    android:id="@+id/btn_book_uber"
+                    style="@style/BtnStyle"
+                    android:layout_width="0dp"
+                    android:layout_margin="0dp"
+                    android:layout_weight="550"
+                    android:background="@drawable/ripple_default_button"
+                    android:text="@string/book_uber" />
+            </LinearLayout>
+        </LinearLayout>
     </RelativeLayout>
 </layout>
