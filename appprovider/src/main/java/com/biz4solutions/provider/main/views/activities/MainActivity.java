@@ -380,6 +380,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data, distanceStr))
                     .addToBackStack(CardiacCallDetailsFragment.fragmentName)
                     .commitAllowingStateLoss();
@@ -405,6 +406,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, TriageCallDetailsFragment.newInstance(data, distanceStr))
                     .addToBackStack(TriageCallDetailsFragment.fragmentName)
                     .commitAllowingStateLoss();
