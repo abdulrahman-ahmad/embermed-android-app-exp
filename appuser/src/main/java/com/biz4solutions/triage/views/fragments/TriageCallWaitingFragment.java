@@ -8,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentTriageCallWaitingBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 
@@ -22,6 +24,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
     public static final String fragmentName = "TriageCallWaitingFragment";
     public static final String REQUEST_DETAILS = "REQUEST_DETAILS";
     private MainActivity mainActivity;
+    private boolean isCRCDone = false;
     private EmsRequest request;
 
     public TriageCallWaitingFragment() {
@@ -51,18 +54,51 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.ems_alert);
+            mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(request.getId(), new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
                 request = data;
-                //setCardiacCallView();
+                setRequestView();
             }
         });
         binding.btnCancelRequest.setOnClickListener(this);
+        setRequestView();
         return binding.getRoot();
+    }
+
+    private void setRequestView() {
+        if (request != null && request.getRequestStatus() != null) {
+            switch (request.getRequestStatus()) {
+                case Constants.STATUS_ACCEPTED:
+                    mainActivity.startVideoCallWithPermissions(request);
+                    FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
+                    break;
+                case Constants.STATUS_COMPLETED:
+                    /*if (!isCRCDone) {
+                        isCRCDone = true;
+                        Toast.makeText(mainActivity, R.string.message_request_completed, Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
+                    }*/
+                    break;
+                case Constants.STATUS_REJECTED:
+                    if (!isCRCDone) {
+                        isCRCDone = true;
+                        Toast.makeText(mainActivity, R.string.message_request_rejected, Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
+                    }
+                    break;
+                case Constants.STATUS_CANCELLED:
+                    if (!isCRCDone) {
+                        isCRCDone = true;
+                        Toast.makeText(mainActivity, R.string.message_request_cancelled, Toast.LENGTH_SHORT).show();
+                        mainActivity.reOpenDashBoardFragment();
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
@@ -71,6 +107,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
         if (mainActivity != null) {
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseRequestEvent();
     }
 
     @Override
@@ -82,7 +119,7 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel_request:
-                mainActivity.showCancelRequestAlert();
+                mainActivity.showCancelRequestAlert(request.getId());
                 break;
         }
     }

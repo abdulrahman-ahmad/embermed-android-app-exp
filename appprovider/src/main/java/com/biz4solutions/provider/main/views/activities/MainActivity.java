@@ -1,9 +1,12 @@
 package com.biz4solutions.provider.main.views.activities;
 
+import android.Manifest;
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.activities.LoginActivity;
+import com.biz4solutions.activities.OpenTokActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
@@ -30,6 +35,7 @@ import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -41,7 +47,10 @@ import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
+import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
+import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -49,6 +58,8 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
 import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.GoogleUtil;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
@@ -62,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean isUpdateList = false;
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
+    private boolean isOpenTokActivityOpen = false;
+    private static final int PERMISSION_REQUEST_CODE = 124;
+    private EmsRequest tempRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,8 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            doLogOut();
+                            unauthorizedLogOut();
                             break;
                         case Constants.LOCAL_NOTIFICATION_ACTION_VIEW:
                             openNotificationDetailsView(intent);
@@ -112,6 +125,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         openNotificationDetailsView(getIntent());
     }
 
+    private void unauthorizedLogOut() {
+        Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        doLogOut();
+    }
+
     private void openNotificationDetailsView(Intent intent) {
         String requestId = intent.getStringExtra(Constants.NOTIFICATION_REQUEST_ID_KEY);
         if (requestId != null && !requestId.isEmpty()) {
@@ -125,6 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (broadcastReceiver != null) {
             unregisterReceiver(broadcastReceiver);
         }
+        FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
     }
 
     private void initView() {
@@ -176,7 +195,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(User data) {
                 if (data != null) {
                     if (data.getProviderCurrentRequestId() != null && !data.getProviderCurrentRequestId().isEmpty()) {
-                        getRequestDetails(data.getProviderCurrentRequestId(), "", true);
+                        if (data.getDeviceId() != null && !data.getDeviceId().isEmpty() && !data.getDeviceId().equals(ApiServiceUtil.getInstance().getDeviceID(MainActivity.this))) {
+                            Intent intent = new Intent();
+                            intent.setAction(OpenTokActivity.OPENTOK_SESSION_EXPIRED_RECEIVER);
+                            sendBroadcast(intent);
+                        } else {
+                            getRequestDetails(data.getProviderCurrentRequestId(), "", true);
+                        }
                     }
                 }
             }
@@ -200,6 +225,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            boolean userAllowedAllRequestPermissions = true;
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    userAllowedAllRequestPermissions = false;
+                }
+            }
+
+            if (userAllowedAllRequestPermissions) {
+                switch (requestCode) {
+                    case PERMISSION_REQUEST_CODE:
+                        startVideoCall(tempRequest);
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -290,9 +333,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 149) {
-            initView();
+        switch (requestCode) {
+            case 149:
+                initView();
+                break;
+            case OpenTokActivity.RC_OPENTOK_ACTIVITY:
+                FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                isOpenTokActivityOpen = false;
+                if (resultCode == RESULT_OK) {
+                    openTriageCallerFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
+                } else if (resultCode == RESULT_CANCELED) {
+                    unauthorizedLogOut();
+                }
+                break;
         }
+    }
+
+    private void addFirebaseOpenTokEvent(String requestId) {
+        FirebaseEventUtil.getInstance().addFirebaseOpenTokEvent(requestId, new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                if (data != null && data.getVideoCallStatus() != null && data.getVideoCallStatus().equals(Constants.STATUS_END)) {
+                    FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
+                    Intent intent = new Intent();
+                    intent.setAction(OpenTokActivity.OPENTOK_END_CALL_RECEIVER);
+                    sendBroadcast(intent);
+                }
+            }
+        });
     }
 
     private void openCardiacCallDetailsFragment(EmsRequest data, String distanceStr, boolean isOpenDuplicateFragment) {
@@ -312,8 +380,35 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, CardiacCallDetailsFragment.newInstance(data, distanceStr))
                     .addToBackStack(CardiacCallDetailsFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openTriageCallDetailsFragment(EmsRequest data, String distanceStr, boolean isOpenDuplicateFragment) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (!isOpenDuplicateFragment) {
+                if (currentFragment instanceof TriageCallDetailsFragment) {
+                    return;
+                }
+            } else {
+                if (currentFragment instanceof TriageCallDetailsFragment) {
+                    if (((TriageCallDetailsFragment) currentFragment).currentRequestId != null
+                            && ((TriageCallDetailsFragment) currentFragment).currentRequestId.equals("" + data.getId())) {
+                        return;
+                    }
+                }
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, TriageCallDetailsFragment.newInstance(data, distanceStr))
+                    .addToBackStack(TriageCallDetailsFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
@@ -350,6 +445,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (currentFragment instanceof DashboardFragment) {
                 return;
             }
+            isUpdateList = true;
             getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
@@ -406,7 +502,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     showRejectRequestAlert();
                     break;
                 case CardiacIncidentReportFragment.fragmentName:
+                case TriageIncidentReportFragment.fragmentName:
                     reOpenDashBoardFragment();
+                    break;
+                case FeedbackFragment.fragmentName:
+                case TriageCallerFeedbackFragment.fragmentName:
+                    // do nothing
                     break;
                 default:
                     getSupportFragmentManager().popBackStack();
@@ -419,12 +520,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof CardiacCallDetailsFragment) {
             if (!((CardiacCallDetailsFragment) currentFragment).isRequestAcceptedByMe) {
-                getSupportFragmentManager().popBackStack();
-            } /*else {
-                // do nothing
-            }*/
-        } else if (currentFragment instanceof TriageCallDetailsFragment) {
-            if (!((TriageCallDetailsFragment) currentFragment).isRequestAcceptedByMe) {
                 getSupportFragmentManager().popBackStack();
             } /*else {
                 // do nothing
@@ -443,7 +538,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 @Override
                 public void onSuccess(Object response, int statusCode) {
                     CommonFunctions.getInstance().dismissProgressDialog();
-                    openCardiacCallDetailsFragment(((EmsRequestDetailsResponse) response).getData(), distanceStr, isOpenDuplicateFragment);
+                    if (response != null) {
+                        handledRequestData(((EmsRequestDetailsResponse) response).getData(), distanceStr, isOpenDuplicateFragment);
+                    }
                 }
 
                 @Override
@@ -453,6 +550,79 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             });
         }
+    }
+
+    private void handledRequestData(final EmsRequest emsRequest, final String distanceStr, final boolean isOpenDuplicateFragment) {
+        if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
+            openCardiacCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+        } else if (Constants.STATUS_HIGH.equals("" + emsRequest.getPriority())) {
+            FirebaseEventUtil.getInstance().getFirebaseRequest(emsRequest.getId(), new FirebaseCallbackListener<EmsRequest>() {
+                @Override
+                public void onSuccess(EmsRequest data) {
+                    if (Constants.STATUS_PENDING.equals("" + data.getTriageCallStatus())) {
+                        openTriageCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && Constants.STATUS_START.equals("" + data.getVideoCallStatus())) {
+                        startVideoCallWithPermissions(data);
+                    } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
+                            && (data.getProviderFeedback() == null || data.getProviderFeedback().isEmpty())) {
+                        openTriageCallerFeedbackFragment(data.getId());
+                    }
+                }
+            });
+        }
+    }
+
+    public void startVideoCallWithPermissions(EmsRequest request) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                tempRequest = request;
+                String[] perms = {Manifest.permission.CAMERA, Manifest.permission.RECORD_AUDIO};
+                requestPermissions(perms, PERMISSION_REQUEST_CODE);
+            } else {
+                startVideoCall(request);
+            }
+        } else {
+            startVideoCall(request);
+        }
+    }
+
+    private void startVideoCall(final EmsRequest request) {
+        FirebaseEventUtil.getInstance().getFirebaseOpenTok(request.getId(), new FirebaseCallbackListener<OpenTok>() {
+            @Override
+            public void onSuccess(OpenTok data) {
+                try {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    if (!isOpenTokActivityRunning() && !isOpenTokActivityOpen) {
+                        isOpenTokActivityOpen = true;
+                        Intent intent = new Intent(MainActivity.this, OpenTokActivity.class);
+                        intent.putExtra(OpenTokActivity.OPENTOK_SESSION_ID, data.getSessionId());
+                        intent.putExtra(OpenTokActivity.OPENTOK_PUBLISHER_TOKEN, data.getProviderToken());
+                        intent.putExtra(OpenTokActivity.OPENTOK_REQUEST_ID, request.getId());
+                        intent.putExtra(OpenTokActivity.OPENTOK_CALLER_NAME, request.getPatientName());
+                        intent.putExtra(OpenTokActivity.OPENTOK_CALLER_SUB_TEXT, request.getPatientSymptoms());
+                        intent.putExtra(OpenTokActivity.OPENTOK_CALL_START_TIME, data.getStartTime());
+                        startActivityForResult(intent, OpenTokActivity.RC_OPENTOK_ACTIVITY);
+                        addFirebaseOpenTokEvent(request.getId());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private boolean isOpenTokActivityRunning() {
+        ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            List<ActivityManager.RunningTaskInfo> tasksInfo = activityManager.getRunningTasks(Integer.MAX_VALUE);
+            for (int i = 0; i < tasksInfo.size(); i++) {
+                if (tasksInfo.get(i).baseActivity.getClassName().contains("com.biz4solutions.activities.OpenTokActivity"))
+                    return true;
+            }
+        }
+        return false;
     }
 
     public void startGpsService() {
@@ -477,6 +647,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.btn_call_alerter:
                 Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                 break;
+        }
+    }
+
+    private void openTriageCallerFeedbackFragment(String requestId) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof TriageCallerFeedbackFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, TriageCallerFeedbackFragment.newInstance(requestId))
+                    .addToBackStack(TriageCallerFeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

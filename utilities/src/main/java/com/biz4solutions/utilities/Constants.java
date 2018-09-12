@@ -21,7 +21,7 @@ public class Constants implements Serializable {
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
     public static final String USER_PREFERENCE_KEY = "USER_PREFERENCE_KEY";
     public static final String USER_AUTH_KEY = "USER_AUTH_KEY";
-//    public static final String USER_CURRENT_REQUEST_ID_KEY = "USER_CURRENT_REQUEST_ID_KEY";
+    //    public static final String USER_CURRENT_REQUEST_ID_KEY = "USER_CURRENT_REQUEST_ID_KEY";
     public static final String ROLE_NAME = "ROLE_NAME";
     public static final String ROLE_NAME_USER = "USER";
     public static final String ROLE_NAME_PROVIDER = "PROVIDER";
@@ -32,6 +32,9 @@ public class Constants implements Serializable {
     public static final String FIREBASE_USER_TABLE = "User";
     public static final String FIREBASE_REQUEST_TABLE = "Request";
     public static final String FIREBASE_ALERT_TABLE = "Alert";
+    public static final String FIREBASE_OPEN_TOK_TABLE = "OpenTok";
+    public static final String FIREBASE_IS_PATIENT_FEEDBACK_SUBMITTED_KEY = "isPatientFeedbackSubmitted";
+    public static final String FIREBASE_TRIAGE_CALL_STATUS_KEY = "triageCallStatus";
 
     public static final String EMBER_MEDICS_CHANNEL_ID = "200";
     public static final String EMBER_MEDICS_CARDIAC_CHANNEL_ID = "201";
@@ -45,12 +48,19 @@ public class Constants implements Serializable {
 
     public static final String STATUS_PENDING = "PENDING";
     public static final String STATUS_IMMEDIATE = "IMMEDIATE";
+    public static final String STATUS_HIGH = "HIGH";
     public static final String STATUS_ACCEPTED = "ACCEPTED";
     public static final String STATUS_COMPLETED = "COMPLETED";
     public static final String STATUS_REJECTED = "REJECTED";
     public static final String STATUS_CANCELLED = "CANCELLED";
+    public static final String STATUS_END = "END";
+    public static final String STATUS_START = "START";
+
+    public static final String TRIAGE_FEEDBACK_ER = "ER";
+    public static final String TRIAGE_FEEDBACK_URGENT_CARE = "URGENT_CARE";
+    public static final String TRIAGE_FEEDBACK_PCP = "PCP";
 
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
-
+    public static final int MINIMUM_CLUSTER_SIZE = 2;
 }

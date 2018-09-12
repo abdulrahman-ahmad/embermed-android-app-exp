@@ -9,8 +9,9 @@ import android.widget.BaseAdapter;
 
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.databinding.RequestListItemBinding;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,25 +52,48 @@ public class RequestListViewAdapter extends BaseAdapter {
     @SuppressLint("ViewHolder")
     public View getView(final int position, View convertView, ViewGroup parent) {
         RequestListItemBinding binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.request_list_item, parent, false);
+        binding.requestListCardiacItem.cardView.setVisibility(View.GONE);
+        binding.requestListTriageItem.cardView.setVisibility(View.GONE);
         EmsRequest emsRequest = emsRequests.get(position);
 
         String name = emsRequest.getUserDetails().getFirstName() + " " + emsRequest.getUserDetails().getLastName();
-        binding.requestListCardiacItem.txtName.setText(name);
         String genderAge = emsRequest.getUserDetails().getGender() + ", " + emsRequest.getUserDetails().getAge() + "yrs";
-        binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
-        binding.requestListCardiacItem.distanceLoader.setVisibility(View.VISIBLE);
         String distance = mainActivity.getString(R.string.away);
         if (distanceHashMap != null && !distanceHashMap.isEmpty()
                 && distanceHashMap.get(emsRequest.getId()) != null && !distanceHashMap.get(emsRequest.getId()).isEmpty()) {
-            binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
             distance = distanceHashMap.get(emsRequest.getId()) + mainActivity.getString(R.string.away);
         }
-        if (durationHashMap != null && !durationHashMap.isEmpty()
-                && durationHashMap.get(emsRequest.getId()) != null && !durationHashMap.get(emsRequest.getId()).isEmpty()) {
-            binding.requestListCardiacItem.txtTime.setText(durationHashMap.get(emsRequest.getId()));
-        }
-        binding.requestListCardiacItem.txtDistance.setText(distance);
 
+        if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
+            binding.requestListCardiacItem.cardView.setVisibility(View.VISIBLE);
+            binding.requestListCardiacItem.txtName.setText(name);
+            binding.requestListCardiacItem.txtGenderAge.setText(genderAge);
+            binding.requestListCardiacItem.distanceLoader.setVisibility(View.VISIBLE);
+            if (distanceHashMap != null && !distanceHashMap.isEmpty()
+                    && distanceHashMap.get(emsRequest.getId()) != null && !distanceHashMap.get(emsRequest.getId()).isEmpty()) {
+                binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
+            }
+            if (durationHashMap != null && !durationHashMap.isEmpty()
+                    && durationHashMap.get(emsRequest.getId()) != null && !durationHashMap.get(emsRequest.getId()).isEmpty()) {
+                binding.requestListCardiacItem.txtTime.setText(durationHashMap.get(emsRequest.getId()));
+            }
+            binding.requestListCardiacItem.txtDistance.setText(distance);
+        } else {
+            binding.requestListTriageItem.cardView.setVisibility(View.VISIBLE);
+
+            binding.requestListTriageItem.txtName.setText(name);
+            binding.requestListTriageItem.txtGenderAge.setText(genderAge);
+            binding.requestListTriageItem.distanceLoader.setVisibility(View.VISIBLE);
+            if (distanceHashMap != null && !distanceHashMap.isEmpty()
+                    && distanceHashMap.get(emsRequest.getId()) != null && !distanceHashMap.get(emsRequest.getId()).isEmpty()) {
+                binding.requestListTriageItem.distanceLoader.setVisibility(View.GONE);
+            }
+            if (durationHashMap != null && !durationHashMap.isEmpty()
+                    && durationHashMap.get(emsRequest.getId()) != null && !durationHashMap.get(emsRequest.getId()).isEmpty()) {
+                binding.requestListTriageItem.txtTime.setText(durationHashMap.get(emsRequest.getId()));
+            }
+            binding.requestListTriageItem.txtDistance.setText(distance);
+        }
         return binding.getRoot();
     }
 
@@ -78,7 +102,7 @@ public class RequestListViewAdapter extends BaseAdapter {
         super.notifyDataSetChanged();
     }
 
-    public void add(List<EmsRequest> emsRequests,HashMap<String, String> durationHashMap) {
+    public void add(List<EmsRequest> emsRequests, HashMap<String, String> durationHashMap) {
         this.emsRequests = emsRequests;
         this.durationHashMap = durationHashMap;
         notifyDataSetChanged();

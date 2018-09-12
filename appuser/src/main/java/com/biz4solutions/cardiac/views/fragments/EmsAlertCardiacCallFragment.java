@@ -41,6 +41,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private FragmentEmsAlertCardiacCallBinding binding;
     private final static String IS_NEED_TO_SHOW_QUE = "IS_NEED_TO_SHOW_QUE";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
+    private final static String REQUEST_ID = "REQUEST_ID";
     List<Integer> gifList = new ArrayList<>();
     private int gifPosition = 0;
     private boolean isGifPlaying = true;
@@ -56,16 +57,18 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private ObservableField<String> arrivalTimeInMin = new ObservableField<>();
     private ObservableBoolean loaderVisibility = new ObservableBoolean();
     private ObservableField<String> arrivalTimeUnit = new ObservableField<>();
+    public String requestId;
 
     public EmsAlertCardiacCallFragment() {
         // Required empty public constructor
     }
 
-    public static EmsAlertCardiacCallFragment newInstance(boolean isNeedToShowQue, EmsRequest data) {
+    public static EmsAlertCardiacCallFragment newInstance(boolean isNeedToShowQue, EmsRequest data, String requestId) {
         EmsAlertCardiacCallFragment fragment = new EmsAlertCardiacCallFragment();
         Bundle args = new Bundle();
         args.putBoolean(IS_NEED_TO_SHOW_QUE, isNeedToShowQue);
         args.putSerializable(REQUEST_DETAILS, data);
+        args.putSerializable(REQUEST_ID, requestId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -77,6 +80,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         if (getArguments() != null) {
             isNeedToShowQue = getArguments().getBoolean(IS_NEED_TO_SHOW_QUE, false);
             request = (EmsRequest) getArguments().getSerializable(REQUEST_DETAILS);
+            requestId = getArguments().getString(REQUEST_ID);
         }
     }
 
@@ -90,12 +94,12 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
-                    mainActivity.showCancelRequestAlert();
+                    mainActivity.showCancelRequestAlert(requestId);
                 }
             });
         }
         binding.waitingImage.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.heartbeat));
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(mainActivity.currentRequestId, new FirebaseCallbackListener<EmsRequest>() {
+        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(requestId, new FirebaseCallbackListener<EmsRequest>() {
             @Override
             public void onSuccess(EmsRequest data) {
                 request = data;

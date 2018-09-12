@@ -2,6 +2,7 @@ package com.biz4solutions.interfaces;
 
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.request.CreateEmsRequest;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
@@ -11,6 +12,7 @@ import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.models.response.SymptomResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 
@@ -72,7 +74,7 @@ public interface RetrofitRestClient {
     Call<EmptyResponse> rejectRequest(@Query("requestId") String requestId);
 
     @PUT("v1/provider/request/complete")
-    Call<EmptyResponse> completeRequest(@Query("requestId") String requestId);
+    Call<EmptyResponse> completeRequest(@Body HashMap<String, Object> body);
 
     @GET("v1/provider/requestDetail")
     Call<EmsRequestDetailsResponse> getRequestDetails(@Query("requestId") String requestId);
@@ -88,4 +90,16 @@ public interface RetrofitRestClient {
 
     @DELETE("v1/users/logout")
     Call<EmptyResponse> logout();
+
+    @POST("v1/triage/endCall")
+    Call<EmptyResponse> endCall(@Query("requestId") String requestId);
+
+    @POST("v1/users/submitUserFeedBack")
+    Call<EmptyResponse> submitUserFeedBack(@Body FeedbackRequest body);
+
+    @POST("v1/provider/submitProviderFeedBack")
+    Call<EmptyResponse> submitProviderFeedBack(@Body FeedbackRequest body);
+
+    @GET("v1/users/getUrgentCareList")
+    Call<UrgentCaresResponse> getUrgentCareList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
 }

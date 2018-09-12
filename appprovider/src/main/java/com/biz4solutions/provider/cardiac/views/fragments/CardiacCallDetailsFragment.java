@@ -61,6 +61,7 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
 
@@ -442,7 +443,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        new ApiServices().completeRequest(mainActivity, currentRequestId, new RestClientResponse() {
+        HashMap<String, Object> body = new HashMap<>();
+        body.put("requestId", currentRequestId);
+        new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="SpUsage,NestedWeights,UnusedAttribute">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_bg_color"
+                android:orientation="vertical"
+                android:padding="@dimen/_16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/where_should_caller_go"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_18dp" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="-3dp"
+                    android:layout_marginTop="@dimen/_10dp"
+                    android:orientation="vertical"
+                    tools:ignore="RtlHardcoded">
+
+                    <RadioButton
+                        android:id="@+id/rdb_go_to_er"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/go_to_er"
+                        android:buttonTint="@android:color/black"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/requester_name_text_size" />
+
+                    <RadioButton
+                        android:id="@+id/rdb_go_to_urgent_care"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/go_to_urgent_care"
+                        android:buttonTint="@android:color/black"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/requester_name_text_size" />
+
+                    <RadioButton
+                        android:id="@+id/rdb_go_to_pcp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/go_to_pcp"
+                        android:buttonTint="@android:color/black"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/requester_name_text_size" />
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/_16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/reason"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_18dp" />
+
+                <EditText
+                    android:id="@+id/edt_reason"
+                    style="@style/EditTextStyle"
+                    android:layout_height="@dimen/comment_et_height"
+                    android:layout_marginEnd="0dp"
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="@dimen/comment_margin_top"
+                    android:background="@drawable/shape_border"
+                    android:gravity="start"
+                    android:overScrollMode="always"
+                    android:scrollbarStyle="insideInset"
+                    android:scrollbars="vertical"
+                    android:hint="@string/reason"
+                    android:inputType="textMultiLine"
+                    android:maxLength="500"
+                    android:padding="@dimen/incident_report_input_text_padding"
+                    android:theme="@style/EditTextHint" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/submit_button_margin_top"
+                    android:gravity="center"
+                    android:weightSum="1080">
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        style="@style/BtnStyle"
+                        android:layout_width="0dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="500"
+                        android:text="@string/submit" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+</layout>

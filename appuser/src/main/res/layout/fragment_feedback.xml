@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="SpUsage,NestedWeights">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_bg_color"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_25dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:gravity="center"
+                    android:text="@string/feedback_on_triage_call_text"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_18dp" />
+
+                <com.biz4solutions.utilities.ratingBar.RotationRatingBar
+                    android:id="@+id/rb_rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/_15dp"
+                    app:srb_clearRatingEnabled="true"
+                    app:srb_drawableEmpty="@drawable/star_empty"
+                    app:srb_drawableFilled="@drawable/star_filled"
+                    app:srb_numStars="5"
+                    app:srb_scrollable="true"
+                    app:srb_starHeight="@dimen/_30dp"
+                    app:srb_starPadding="@dimen/_5dp"
+                    app:srb_starWidth="@dimen/_30dp"
+                    app:srb_stepSize="0.5" />
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_140dp"
+                    android:layout_marginEnd="@dimen/_16dp"
+                    android:layout_marginStart="@dimen/_16dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:divider="@android:color/transparent"
+                    android:dividerHeight="0dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="6dp"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="false"
+                    tools:ignore="SpUsage">
+
+                    <EditText
+                        android:id="@+id/edt_comment"
+                        style="@style/EditTextStyle"
+                        android:layout_height="match_parent"
+                        android:layout_margin="0dp"
+                        android:background="@drawable/shape_border_feedback"
+                        android:gravity="start"
+                        android:hint="@string/comment"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:padding="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="@dimen/_40dp"
+                    android:layout_marginTop="@dimen/_40dp"
+                    android:layout_weight="325"
+                    android:gravity="center"
+                    android:weightSum="1080">
+
+                    <Button
+                        android:id="@+id/btn_submit"
+                        style="@style/BtnStyle"
+                        android:layout_width="0dp"
+                        android:layout_margin="0dp"
+                        android:layout_weight="500"
+                        android:background="@drawable/ripple_default_button"
+                        android:text="@string/submit" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/tv_skip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/_65dp"
+                android:background="@drawable/ripple_default_bg"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_5dp"
+                android:paddingEnd="@dimen/_10dp"
+                android:paddingStart="@dimen/_10dp"
+                android:paddingTop="@dimen/_5dp"
+                android:text="@string/skip"
+                android:textColor="@color/blue_link_color"
+                android:textSize="@dimen/_18dp" />
+
+        </LinearLayout>
+    </ScrollView>
+</layout>
