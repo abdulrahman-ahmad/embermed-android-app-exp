@@ -161,8 +161,12 @@ public class CommonFunctions implements Serializable {
      * method used to dismiss loader.
      */
     public void dismissProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.dismiss();
+        try {
+            if (mProgressBar != null) {
+                mProgressBar.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
