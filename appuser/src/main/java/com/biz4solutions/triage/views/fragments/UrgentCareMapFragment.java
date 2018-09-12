@@ -1,6 +1,7 @@
 package com.biz4solutions.triage.views.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -446,6 +447,7 @@ public class UrgentCareMapFragment extends Fragment implements View.OnClickListe
 
         private final View myContentsView;
 
+        @SuppressLint("InflateParams")
         MyCustomAdapterForItems() {
             myContentsView = getLayoutInflater().inflate(R.layout.info_window, null);
         }
