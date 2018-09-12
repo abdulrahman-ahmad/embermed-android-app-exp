@@ -70,17 +70,21 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
     private void sendNotification(Service service, String message) {
-        Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_notification_tranperant)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
-                .setContentTitle(service.getString(R.string.app_name))
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
-                .setContentText(message)
-                .setContentIntent(pendingIntent)
-                .build();
-        if (notificationManager != null) {
-            notificationManager.notify(notificationId, notification);
+        try {
+            Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.icon_notification_tranperant)
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
+                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setContentTitle(service.getString(R.string.app_name))
+                    .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
+                    .setContentText(message)
+                    .setContentIntent(pendingIntent)
+                    .build();
+            if (notificationManager != null) {
+                notificationManager.notify(notificationId, notification);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

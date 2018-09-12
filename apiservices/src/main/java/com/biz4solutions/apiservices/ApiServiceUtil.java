@@ -136,10 +136,11 @@ public class ApiServiceUtil {
 
     /*use to get deviceId*/
     @SuppressLint("HardwareIds")
-    private String getDeviceID(Context context) {
+    public String getDeviceID(Context context) {
         try {
             if (context != null) {
-                return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                String deviceId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                return deviceId != null ? deviceId : "";
             }
             return "";
         } catch (Exception e) {
@@ -169,7 +170,7 @@ public class ApiServiceUtil {
     }
 
     /*use to get device name*/
-    public String getDeviceName() {
+    private String getDeviceName() {
         return Build.BRAND + " " + Build.MODEL;
     }
 

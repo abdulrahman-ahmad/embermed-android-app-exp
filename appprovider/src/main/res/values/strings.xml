@@ -4,6 +4,7 @@
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="triage_call">Triage Call</string>
+    <string name="triage_service">Triage Service</string>
     <string name="immediate">Immediate</string>
     <string name="high">High</string>
     <string name="pull_to_refresh">Pull to refresh</string>
@@ -11,9 +12,11 @@
     <string name="reject_request_message">Are you sure, you want to reject this request?</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>
     <string name="accepted_request_message">Another provider has accepted this request.</string>
     <string name="canceled_request_message">The user has canceled this request.</string>
     <string name="patient_disease">Patient Disease:</string>
+    <string name="patient_symptoms">Patient Symptom:</string>
     <string name="complete_request">Complete Request</string>
     <string name="respond">Respond</string>
     <string name="respond_for_">Respond for $</string>
@@ -35,6 +38,19 @@
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
-    <string name="submit_incident_report_message">Are you sure, you want to submit this incident report?</string>
+    <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
     <string name="view">View</string>
+    <string name="rate_caller">Rate Caller</string>
+    <string name="skip"><u>Skip</u></string>
+    <string name="where_should_caller_go">Where should caller go?</string>
+    <string name="go_to_er">Go to ER</string>
+    <string name="go_to_urgent_care">Go to Urgent Care</string>
+    <string name="go_to_pcp">Go to PCP</string>
+    <string name="reason">Reason</string>
+    <string name="caller_visit">Caller Visit:</string>
+    <string name="reason_colon">Reason:</string>
+    <string name="see_more"><u>SEE MORE</u></string>
+    <string name="see_less"><u>SEE LESS</u></string>
+    <string name="error_select_caller_feedback">Please select caller feedback.</string>
+    <string name="error_empty_reason">Please enter reason.</string>
 </resources>

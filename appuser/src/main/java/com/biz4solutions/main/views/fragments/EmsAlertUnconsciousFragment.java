@@ -125,8 +125,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                 CreateEmsResponse createEmsResponse = (CreateEmsResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (createEmsResponse != null && createEmsResponse.getData() != null) {
-                    mainActivity.currentRequestId = createEmsResponse.getData().getId();
-                    mainActivity.openEmsAlertCardiacCallFragment(true);
+                    mainActivity.openEmsAlertCardiacCallFragment(true, createEmsResponse.getData().getId());
                 } else {
                     if (createEmsResponse != null) {
                         Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();

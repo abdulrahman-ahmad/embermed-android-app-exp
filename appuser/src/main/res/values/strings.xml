@@ -2,11 +2,14 @@
     <string name="app_name">Ember</string>
     <string name="news_feed">News Feed</string>
     <string name="ems_alert">EMS Alert</string>
+    <string name="triage_call">Triage Call</string>
+    <string name="triage_service">Triage Service</string>
     <string name="symptoms">Symptoms</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
+    <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>
     <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
     <string name="ems_has_been_notified">EMS has been notified</string>
     <string name="ems_has_been_accepted">EMS has been accepted</string>
@@ -23,7 +26,7 @@
     <string name="submit">Submit</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_symptoms_available">No symptoms available</string>
-    <string name="error_validation_symptom_select">Please select at least one symptom.</string>
+    <string name="error_validation_symptom_select">Please select a symptom.</string>
     <string name="triage_waiting_message">Triage Medical Professional\nwill be with you soon.</string>
     <!--Side menus-->
     <string name="account_settings">Account Settings</string>
@@ -37,4 +40,25 @@
     <string name="message_request_rejected">Your request was rejected.</string>
     <string name="message_request_cancelled">Your request was cancelled.</string>
 
+    <!--Feedback Screen-->
+    <string name="feedback">Feedback</string>
+    <string name="feedback_on_triage_call_text">Rate Callee</string>
+    <string name="comment">Comment</string>
+    <string name="skip"><u>Skip</u></string>
+
+    <string name="please_wait">Please wait</string>
+    <string name="triage_will_submit_the_report_shortly">Triage will submit the report shortly</string>
+    <string name="triage_feedback_waiting_message">Screen will disappear ones the triage submit the report.</string>
+    <string name="triage_call_is_in_progress_waiting_msg">Your triage service call is in progress from another device. Please wait until your call is completed.</string>
+    <string name="our_medical_professional_has_recommended">Our Medical Professional\nhas recommended</string>
+    <string name="go_to_er">Go to ER</string>
+    <string name="go_to_urgent_care">Go to Urgent Care</string>
+    <string name="go_to_pcp">Go to PCP</string>
+    <string name="book_uber">Book Uber</string>
+    <string name="book_pcp">Book PCP</string>
+    <string name="reason">Reason</string>
+    <string name="see_more"><u>SEE MORE</u></string>
+    <string name="see_less"><u>SEE LESS</u></string>
+    <string name="look_for_urgent_cares_around_you"><u>Look for Urgent Cares around you</u></string>
+    <string name="urgent_cares_around_you_text">Urgent Cares around you</string>
 </resources>

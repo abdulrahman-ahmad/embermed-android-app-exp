@@ -189,7 +189,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                             public void run() {
                                 getNewRequestList(false);
                             }
-                        },1000);
+                        }, 3000);
                     } else {
                         setErrorView();
                     }
@@ -347,9 +347,13 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int index = position -1;
-        if (emsRequests != null && emsRequests.size() > index && index >= 0) {
-            mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+        try {
+            int index = position - 1;
+            if (emsRequests != null && emsRequests.size() > index && index >= 0) {
+                mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

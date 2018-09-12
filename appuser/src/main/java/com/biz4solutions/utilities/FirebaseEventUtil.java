@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.Location;
+import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +21,7 @@ public class FirebaseEventUtil {
     private String providerId;
     private String requestId;
     private String userId;
+    private String otRequestId;
 
     private FirebaseEventUtil() {
     }
@@ -128,6 +130,59 @@ public class FirebaseEventUtil {
             };
             this.providerId = providerId;
             FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_PROVIDER_LOCATION_TABLE, providerId, providerEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeFirebaseOpenTokEvent() {
+        try {
+            if (requestEventListener != null && otRequestId != null && !otRequestId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_OPEN_TOK_TABLE, otRequestId, requestEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addFirebaseOpenTokEvent(String requestId, final FirebaseCallbackListener<OpenTok> callbackListener) {
+        removeFirebaseOpenTokEvent();
+        try {
+            requestEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    OpenTok openTok = dataSnapshot.getValue(OpenTok.class);
+                    System.out.println("aa ---------- OpenTok = " + openTok);
+                    callbackListener.onSuccess(openTok);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            this.otRequestId = requestId;
+            FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_OPEN_TOK_TABLE, otRequestId, requestEventListener);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getFirebaseOpenTok(String requestId, final FirebaseCallbackListener<OpenTok> callbackListener) {
+        try {
+            FirebaseAuthUtil.getInstance().addListenerForSingleValueEvent(Constants.FIREBASE_OPEN_TOK_TABLE, requestId, new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    OpenTok openTok = dataSnapshot.getValue(OpenTok.class);
+                    //System.out.println("aa ---------- openTok = " + openTok);
+                    callbackListener.onSuccess(openTok);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }
