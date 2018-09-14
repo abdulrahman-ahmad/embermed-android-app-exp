@@ -42,6 +42,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:support-v4:27.1.1'
-    application project(':appuser')
-    application project(':appprovider')
+    api project(':apiservices')
 }
