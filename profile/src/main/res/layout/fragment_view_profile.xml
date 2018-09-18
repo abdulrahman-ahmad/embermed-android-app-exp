@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_20dp">
+
+
+            <ImageView
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="@dimen/_100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20dp"
+                android:src="@drawable/ic_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/_20dp"
+                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginTop="@dimen/_10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/first_name"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_first_name"
+                    style="@style/tv_value"
+                    android:text="@string/first_name"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/last_name"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_last_name"
+                    style="@style/tv_value"
+                    android:text="Smith"
+                    tools:ignore="SpUsage"
+                    tools:text="@tools:sample/last_names" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/email"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/tv_value"
+                    android:text="Abc@mailinator.com"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/date_of_birth"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_dob"
+                    style="@style/tv_value"
+                    android:text="May 15, 1984"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/_15dp"
+                    android:paddingTop="@dimen/_15dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="4"
+                        android:text="@string/gender"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tv_gender"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="5"
+                        android:text="Male"
+                        tools:ignore="SpUsage" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_20dp"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/btn_dropdown"
+                        android:visibility="invisible" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/_15dp"
+                    android:paddingTop="@dimen/_15dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="4"
+                        android:text="Change Password"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tv_pwd"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center_vertical"
+                        android:text="abcabc."
+                        tools:ignore="SpUsage" />
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="@dimen/_20dp"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_weight="1"
+                        android:background="@android:drawable/btn_dropdown" />
+
+                </LinearLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

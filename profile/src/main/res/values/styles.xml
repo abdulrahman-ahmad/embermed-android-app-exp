@@ -1,0 +1,37 @@
+<resources>
+
+    <style name="tv_label">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_12dp</item>
+        <item name="android:textColor">@color/text_hint_color</item>
+        <item name="android:layout_marginTop">@dimen/_15dp</item>
+    </style>
+
+    <style name="tv_center_label" parent="tv_label">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="tv_center_value" parent="tv_value">
+        <item name="android:layout_marginTop">0dp</item>
+    </style>
+
+    <style name="tv_value">
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:layout_marginTop">@dimen/_5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/_15dp</item>
+        <item name="android:textColor">@color/text_color</item>
+    </style>
+
+
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@color/text_color</item>
+        <item name="android:layout_height">0.7dp</item>
+        <item name="android:layout_marginTop">@dimen/_10dp</item>
+    </style>
+
+</resources>

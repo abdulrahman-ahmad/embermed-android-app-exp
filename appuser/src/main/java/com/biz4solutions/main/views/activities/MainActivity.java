@@ -37,6 +37,7 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.main.views.fragments.AccountSettingFragment;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.NewsFeedFragment;
@@ -222,6 +223,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_news_feed:
                         openNewsFeedFragment();
                         break;
+                    case R.id.nav_account_settings:
+                        openAccountSettingFragment();
+                        break;
                     case R.id.nav_log_out:
                         showLogOutAlertDialog();
                         break;
@@ -346,6 +350,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
                 .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openAccountSettingFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof AccountSettingFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, AccountSettingFragment.newInstance())
+                .addToBackStack(AccountSettingFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 
