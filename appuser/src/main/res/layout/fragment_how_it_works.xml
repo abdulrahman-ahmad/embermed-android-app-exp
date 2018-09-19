@@ -2,91 +2,62 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:ignore="SpUsage,UnusedAttribute,RtlSymmetry,ContentDescription">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_create_alert"
-            style="@style/cv_how_it_works">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            tools:ignore="SpUsage,UnusedAttribute,RtlSymmetry,ContentDescription">
 
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_create_alert" />
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_cardiac_service"
+                style="@style/cv_how_it_works">
 
-            <ImageView style="@style/iv_forward_arrow" />
-        </android.support.v7.widget.CardView>
+                <TextView
+                    style="@style/tv_how_it_works"
+                    android:text="@string/info_cardiac_call" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_cardiac_service"
-            style="@style/cv_how_it_works"
-            tools:ignore="SpUsage,UnusedAttribute">
+                <ImageView style="@style/iv_forward_arrow" />
+            </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_triage_service"
+                style="@style/cv_how_it_works">
 
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_cardiac_call" />
+                <TextView
+                    style="@style/tv_how_it_works"
+                    android:text="@string/info_triage_call" />
 
-            <ImageView style="@style/iv_forward_arrow" />
-        </android.support.v7.widget.CardView>
+                <ImageView style="@style/iv_forward_arrow" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_triage_service"
-            style="@style/cv_how_it_works"
-            tools:ignore="SpUsage,UnusedAttribute">
+            </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_change_subscription"
+                style="@style/cv_how_it_works">
 
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_triage_call" />
+                <TextView
+                    style="@style/tv_how_it_works"
+                    android:text="@string/info_change_subscription_plan" />
 
-            <ImageView style="@style/iv_forward_arrow" />
+                <ImageView style="@style/iv_forward_arrow" />
 
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_alert_history"
-            style="@style/cv_how_it_works"
-            tools:ignore="SpUsage,UnusedAttribute">
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_add_subscription"
+                style="@style/cv_how_it_works">
 
+                <TextView
+                    style="@style/tv_how_it_works"
+                    android:text="@string/info_add_subscription_plan" />
 
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_alert_history" />
+                <ImageView style="@style/iv_forward_arrow" />
 
-            <ImageView style="@style/iv_forward_arrow" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_medical_profile"
-            style="@style/cv_how_it_works"
-            tools:ignore="SpUsage,UnusedAttribute">
-
-
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_medical_profile" />
-
-            <ImageView style="@style/iv_forward_arrow" />
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/cv_subscription_plan"
-            style="@style/cv_how_it_works"
-            tools:ignore="SpUsage,UnusedAttribute">
-
-
-            <TextView
-                style="@style/tv_how_it_works"
-                android:text="@string/info_subscription_plan" />
-
-            <ImageView style="@style/iv_forward_arrow" />
-
-
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 </layout>

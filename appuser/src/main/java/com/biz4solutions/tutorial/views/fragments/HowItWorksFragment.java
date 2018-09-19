@@ -58,34 +58,19 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
     }
 
     private void initListeners() {
-        binding.cvCreateAlert.setOnClickListener(this);
-        binding.cvAlertHistory.setOnClickListener(this);
         binding.cvCardiacService.setOnClickListener(this);
-        binding.cvSubscriptionPlan.setOnClickListener(this);
         binding.cvTriageService.setOnClickListener(this);
-        binding.cvMedicalProfile.setOnClickListener(this);
+        binding.cvAddSubscription.setOnClickListener(this);
+        binding.cvChangeSubscription.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cv_create_alert:
-                openAlertFragment();
-//                Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-                break;
             case R.id.cv_cardiac_service:
-                Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
+                openAlertFragment();
                 break;
-            case R.id.cv_triage_service:
-                Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.cv_alert_history:
-                Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.cv_medical_profile:
-                Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.cv_subscription_plan:
+            default:
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                 break;
         }

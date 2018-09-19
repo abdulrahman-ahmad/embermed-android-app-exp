@@ -64,10 +64,8 @@
 
 
     <!--for how it works screen-->
-    <string name="info_create_alert">How to Create Alert?</string>
-    <string name="info_cardiac_call">Cardiac Call Service</string>
-    <string name="info_triage_call">Triage Call Service</string>
-    <string name="info_alert_history">How to Check Alert History?</string>
-    <string name="info_medical_profile">How to Check Medical Profile?</string>
-    <string name="info_subscription_plan">How to Change Subscription Plan?</string>
+    <string name="info_cardiac_call">How to Create Cardiac Alert?</string>
+    <string name="info_triage_call">How to Create Triage Call?</string>
+    <string name="info_change_subscription_plan">How to Change Subscription Plan?</string>
+    <string name="info_add_subscription_plan">How to Get Subscription Plan?</string>
 </resources>
