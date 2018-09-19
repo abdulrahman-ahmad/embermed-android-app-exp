@@ -3,6 +3,7 @@ package com.biz4solutions.main.views.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.customs.taptargetview.TapTargetSequence;
 import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -21,6 +23,10 @@ import com.biz4solutions.triage.views.fragments.SymptomsFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.utilities.TargetViewUtil;
+import com.biz4solutions.utilities.models.TargetModel;
+
+import java.util.ArrayList;
 
 public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +34,8 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
+    private boolean isTutorialMode = false;
+    private TapTargetSequence sequencedTutorial;
 
     public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
@@ -57,10 +65,10 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (isTutorialMode) {
+            showTutorial();
         }
     }
 
@@ -145,5 +153,27 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private void showTutorial() {
+        sequencedTutorial = TargetViewUtil.showTargetSequenceRoundedForBtn(mainActivity, prepareList());
+    }
+
+    private ArrayList<TargetModel> prepareList() {
+        ArrayList<TargetModel> targetModels = new ArrayList<>();
+        targetModels.add(new TargetModel(binding.btnNo, "No btn title", "No btn desc"));
+        targetModels.add(new TargetModel(binding.btnYes, "yes btn title", "Yes btn desc"));
+        return targetModels;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mainActivity != null) {
+            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        }
+        if (isTutorialMode && sequencedTutorial != null) {
+            sequencedTutorial.cancel();
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.biz4solutions.utilities;
 
 import android.app.Activity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.biz4solutions.customs.taptargetview.TapCircleTargetView;
@@ -45,29 +46,40 @@ public class TargetViewUtil {
 //                });
 //    }
 
+    /**
+     * @param activity Activity
+     *                 usage-> TargetViewUtil.showTargetViewForToolbar(this, binding.appBarMain.toolbar, "toolbar title", "toolbar description", false);
+     *                 ->creates circular view for Toolbar navigation items.
+     */
+    public static void showTargetViewForToolbar(Activity activity, View v, String title, String description, boolean cancelable) {
+        TapCircleTargetView.showFor(activity,
+                TapTarget.forToolbarNavigationIcon((Toolbar) v, title, description).cancelable(cancelable), null);
+    }
 
-//    public void showTargetViewForToolbar(Activity activity, View v) {
-//        TapTargetView.showFor(activity,
-//                TapTarget.forToolbarMenuItem((Toolbar) v,activity.getString(R.string.already_have_an_account),
-//
-//                        activity.getString(R.string.coming_soon))
-//                        // 3
-//                        .cancelable(false)
-//                        // 4
-//                        .tintTarget(true), null);
-//
-//    }
+
+    /**
+     * @param activity    Activity
+     * @param title       title
+     * @param description usage-> new TargetViewUtil().showTargetCircleForBigBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
+     */
+    public static TapCircleTargetView showTargetCircleForBigBtn(Activity activity, View v, String title, String description, boolean cancellable) {
+        return TapCircleTargetView.showFor(activity,
+                TapTarget.forView(v, title, description)
+                        .targetRadius(100)
+                        .cancelable(cancellable)
+                        .transparentTarget(true), null);
+    }
 
     /**
      * @param activity    Activity
      * @param title       title
      * @param description usage-> new TargetViewUtil().showTargetCircleForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
-     *                    ->creates circular view.
+     *                    ->creates circular view for big alert button .
      */
     public static void showTargetCircleForBtn(Activity activity, View v, String title, String description, boolean cancellable) {
         TapCircleTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
-                        .targetRadius(100)
+                        .targetRadius(20)
                         .cancelable(cancellable)
                         .transparentTarget(true), null);
     }
@@ -78,7 +90,7 @@ public class TargetViewUtil {
      * @param description usage-> new TargetViewUtil().showTargetRoundedForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc");
      */
     public static TapTargetView showTargetRoundedForBtn(Activity activity, View v, String title, String description, boolean cancellable) {
-        TapTargetView tapTargetView = TapTargetView.showFor(activity,
+        return TapTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
                         .cancelable(cancellable)
@@ -90,18 +102,16 @@ public class TargetViewUtil {
                         super.onTargetClick(view);      // This call is optional
                     }
                 });
-        return tapTargetView;
     }
 
     /**
      * Method for showing views in sequence
-     *
-     * @param activity Activity
+     *  @param activity Activity
      * @param vList    List of views
      */
-    public static void showTargetSequenceRoundedForBtn(Activity activity, ArrayList<TargetModel> vList) {
+    public static TapTargetSequence showTargetSequenceRoundedForBtn(Activity activity, ArrayList<TargetModel> vList) {
         ArrayList<TapTarget> targetModelArrayList = prepareTarget(vList);
-        new TapTargetSequence(activity)
+        TapTargetSequence sequence = new TapTargetSequence(activity)
                 .targets(targetModelArrayList)
                 .listener(new TapTargetSequence.Listener() {
                     @Override
@@ -118,7 +128,9 @@ public class TargetViewUtil {
                     public void onSequenceCanceled(TapTarget lastTarget) {
 
                     }
-                }).start();
+                });
+        sequence.start();
+        return sequence;
     }
 
 

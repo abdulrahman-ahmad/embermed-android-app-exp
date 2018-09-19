@@ -18,14 +18,19 @@ import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.application.Application;
+import com.biz4solutions.customs.taptargetview.TapCircleTargetView;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.TargetViewUtil;
 
 public class DashboardFragment extends Fragment {
 
     public static final String fragmentName = "DashboardFragment";
     private MainActivity mainActivity;
+    private FragmentDashboardBinding binding;
+    private TapCircleTargetView tutorial;
+    private boolean isTutorialMode = false;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -43,7 +48,7 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentDashboardBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
@@ -61,6 +66,14 @@ public class DashboardFragment extends Fragment {
         });
         isLocationPermissionGranted(101);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (isTutorialMode) {
+            showTutorial();
+        }
     }
 
     @Override
@@ -134,6 +147,18 @@ public class DashboardFragment extends Fragment {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void showTutorial() {
+        tutorial = TargetViewUtil.showTargetCircleForBigBtn(mainActivity, binding.alertBtn, "Alert btn title", "Alert btn desc", false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (isTutorialMode && tutorial != null) {
+            tutorial.dismiss(false);
         }
     }
 }

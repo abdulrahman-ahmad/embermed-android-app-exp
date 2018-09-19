@@ -4,4 +4,8 @@
     <color name="no_symptoms_text_color">#acacac</color>
     <color name="notification_bg_color">#fafafa</color>
     <color name="reason_txt_color">#545e69</color>
+
+
+    <!--for how it works fragment-->
+    <color name="bg_card">#eef4f7</color>
 </resources>

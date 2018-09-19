@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.biz4solutions.R;
 import com.biz4solutions.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.databinding.FragmentSymptomsBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
@@ -28,6 +30,7 @@ import com.biz4solutions.models.response.SymptomResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.utilities.TargetViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,8 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     private int page = 0;
     private boolean isLoadMore = true;
     private List<Symptom> symptomList;
+    private boolean isTutorialMode = false;
+    private TapTargetView tutorial;
 
     public SymptomsFragment() {
         // Required empty public constructor
@@ -81,6 +86,13 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 R.color.text_hint_color);
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (isTutorialMode)
+            showTutorial();
+    }
+
     private void initListView() {
         if (adapter != null) {
             binding.loadMoreListView.setAdapter(adapter);
@@ -92,14 +104,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         if (mInflater != null) {
             @SuppressLint("InflateParams") RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.symptoms_list_header, null, false);
             binding.loadMoreListView.addHeaderView(header);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
     }
 
@@ -272,6 +276,21 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         } else {
             binding.emptyAlertLayout.setVisibility(View.GONE);
             binding.viewSubmit.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showTutorial() {
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mainActivity != null) {
+            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        }
+        if (isTutorialMode && tutorial != null) {
+            tutorial.dismiss(false);
         }
     }
 }

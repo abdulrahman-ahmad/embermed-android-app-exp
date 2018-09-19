@@ -52,6 +52,7 @@ import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallFeedbackWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
+import com.biz4solutions.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
@@ -170,6 +171,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             openDashBoardFragment();
         }
+
+
     }
 
     @Override
@@ -225,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_account_settings:
                         openAccountSettingFragment();
+                        break;
+                    case R.id.nav_how_it_works:
+                        openHowItWorksFragment();
                         break;
                     case R.id.nav_log_out:
                         showLogOutAlertDialog();
@@ -362,6 +368,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, AccountSettingFragment.newInstance())
                 .addToBackStack(AccountSettingFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openHowItWorksFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof HowItWorksFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, HowItWorksFragment.newInstance())
+                .addToBackStack(HowItWorksFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 
