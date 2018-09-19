@@ -27,8 +27,7 @@ android {
     productFlavors {
         dev {
             //dev/local
-            buildConfigField 'String', 'HOST', '"http://192.168.1.83:8085/api/"'    //Keerti
-            //buildConfigField 'String', 'HOST', '" http://192.168.1.44:9095/api/"'   //Shrinivas
+            buildConfigField 'String', 'HOST', '"http://192.168.1.44:8085/api/"'   //Keerti
         }
         qaTest {
             //Internal testing

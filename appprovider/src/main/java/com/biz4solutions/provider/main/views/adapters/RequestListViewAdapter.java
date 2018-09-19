@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.adapters;
+package com.biz4solutions.provider.main.views.adapters;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;

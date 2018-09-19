@@ -45,6 +45,7 @@ import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportF
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
 import com.biz4solutions.provider.triage.views.fragments.FeedbackFragment;
@@ -272,6 +273,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_log_in:
                         doLogOut();
+                        break;
+                    case R.id.nav_incidents_reports:
+                        openIncidentReportsListFragment();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -661,6 +665,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, TriageCallerFeedbackFragment.newInstance(requestId))
                     .addToBackStack(TriageCallerFeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openIncidentReportsListFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof IncidentReportsListFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
+                    .addToBackStack(IncidentReportsListFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();

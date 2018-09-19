@@ -32,7 +32,7 @@ import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.adapters.RequestListViewAdapter;
+import com.biz4solutions.provider.main.views.adapters.RequestListViewAdapter;
 import com.biz4solutions.provider.application.Application;
 import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;

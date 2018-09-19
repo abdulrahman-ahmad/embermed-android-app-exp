@@ -153,9 +153,19 @@ public class ApiServices {
                 .submitProviderFeedBack(feedbackRequest));
     }
 
-    public void getUrgentCareList(final Context context,double latitude,double longitude, final RestClientResponse restClientResponse) {
+    public void getUrgentCareList(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
-                .getUrgentCareList(0, 2000,latitude,longitude));
+                .getUrgentCareList(0, 2000, latitude, longitude));
+    }
+
+    public void getUserCompletedRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getUserCompletedRequestList(page, 20));
+    }
+
+    public void getProviderCompletedRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getProviderCompletedRequestList(page, 20));
     }
 
 }
