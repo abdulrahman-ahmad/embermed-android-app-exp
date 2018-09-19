@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#efefef"
+        android:orientation="vertical"
+        android:padding="@dimen/_20dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_call_alerter" />
+
+        <LinearLayout
+            android:id="@+id/ll_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:fontFamily="sans-serif-medium"
+                android:text="Amount:"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+
+            <TextView
+                android:id="@+id/tv_provider_reason"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:fontFamily="sans-serif"
+                android:text="$250.00"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_amount"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/_5dp"
+            android:paddingTop="@dimen/_5dp"
+            android:visibility="visible">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:fontFamily="sans-serif-medium"
+                android:text="Call Duration:"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+
+            <TextView
+
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:fontFamily="sans-serif"
+                android:text="25 min 30 sec"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_completed_on"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_duration"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="4"
+                android:fontFamily="sans-serif-medium"
+                android:text="Completed On:"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:fontFamily="sans-serif"
+                android:text="15 Sept, 2018, 04:00 PM"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_clock" />
+    </RelativeLayout>
+</layout>
