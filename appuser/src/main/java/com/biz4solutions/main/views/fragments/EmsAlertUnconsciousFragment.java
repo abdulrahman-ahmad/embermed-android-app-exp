@@ -34,7 +34,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
-    private boolean isTutorialMode = true;
+    private boolean isTutorialMode = false;
     private boolean isTutorialDisplayed =false;
     private TapTargetSequence sequencedTutorial;
 

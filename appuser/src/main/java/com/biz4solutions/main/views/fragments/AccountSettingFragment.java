@@ -31,6 +31,7 @@ public class AccountSettingFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
+
     }
 
     @Override

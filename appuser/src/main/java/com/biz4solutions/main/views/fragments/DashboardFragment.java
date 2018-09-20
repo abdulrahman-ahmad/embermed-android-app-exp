@@ -31,7 +31,7 @@ public class DashboardFragment extends Fragment implements TargetViewUtil.OnTarg
     private MainActivity mainActivity;
     private FragmentDashboardBinding binding;
     private TapCircleTargetView tutorial;
-    private boolean isTutorialMode = true;
+    private boolean isTutorialMode = false;
     private boolean isTutorialDisplayed =false;
 
     public DashboardFragment() {
