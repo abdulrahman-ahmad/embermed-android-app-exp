@@ -16,6 +16,15 @@ import java.util.ArrayList;
  * Created by saurabh.asati on 9/17/2018.
  */
 public class TargetViewUtil {
+
+
+    public interface OnTargetClickListener {
+        void onTargetClickListener();
+    }
+
+    public interface OnTargetSequenceClickListener {
+        void onTargetSequenceClickListener(int targetNo);
+    }
 //
 //    public void showTargetView(View v, Activity activity) {
 //        TapTargetView.showFor(activity,                 // `this` is an Activity
@@ -62,12 +71,20 @@ public class TargetViewUtil {
      * @param title       title
      * @param description usage-> new TargetViewUtil().showTargetCircleForBigBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
      */
-    public static TapCircleTargetView showTargetCircleForBigBtn(Activity activity, View v, String title, String description, boolean cancellable) {
+    public static TapCircleTargetView showTargetCircleForBigBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
         return TapCircleTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(100)
                         .cancelable(cancellable)
-                        .transparentTarget(true), null);
+                        .transparentTarget(true), new TapCircleTargetView.Listener() {
+                    @Override
+                    public void onTargetClick(TapCircleTargetView view) {
+                        super.onTargetClick(view);
+                        if (onTargetClickListener != null)
+                            onTargetClickListener.onTargetClickListener();
+                    }
+                });
+
     }
 
     /**
@@ -76,12 +93,19 @@ public class TargetViewUtil {
      * @param description usage-> new TargetViewUtil().showTargetCircleForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
      *                    ->creates circular view for big alert button .
      */
-    public static void showTargetCircleForBtn(Activity activity, View v, String title, String description, boolean cancellable) {
+    public static void showTargetCircleForBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
         TapCircleTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
                         .cancelable(cancellable)
-                        .transparentTarget(true), null);
+                        .transparentTarget(true), new TapCircleTargetView.Listener() {
+                    @Override
+                    public void onTargetClick(TapCircleTargetView view) {
+                        super.onTargetClick(view);
+                        if (onTargetClickListener != null)
+                            onTargetClickListener.onTargetClickListener();
+                    }
+                });
     }
 
     /**
@@ -89,7 +113,7 @@ public class TargetViewUtil {
      * @param title       title
      * @param description usage-> new TargetViewUtil().showTargetRoundedForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc");
      */
-    public static TapTargetView showTargetRoundedForBtn(Activity activity, View v, String title, String description, boolean cancellable) {
+    public static TapTargetView showTargetRoundedForBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
         return TapTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
@@ -100,13 +124,16 @@ public class TargetViewUtil {
                     @Override
                     public void onTargetClick(TapTargetView view) {
                         super.onTargetClick(view);      // This call is optional
+                        if (onTargetClickListener != null)
+                            onTargetClickListener.onTargetClickListener();
                     }
                 });
     }
 
     /**
      * Method for showing views in sequence
-     *  @param activity Activity
+     *
+     * @param activity Activity
      * @param vList    List of views
      */
     public static TapTargetSequence showTargetSequenceRoundedForBtn(Activity activity, ArrayList<TargetModel> vList) {

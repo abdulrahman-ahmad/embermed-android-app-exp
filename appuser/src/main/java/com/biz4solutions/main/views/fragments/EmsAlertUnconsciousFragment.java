@@ -34,7 +34,8 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
-    private boolean isTutorialMode = false;
+    private boolean isTutorialMode = true;
+    private boolean isTutorialDisplayed =false;
     private TapTargetSequence sequencedTutorial;
 
     public EmsAlertUnconsciousFragment() {
@@ -67,7 +68,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (isTutorialMode) {
+        if (isTutorialMode && !isTutorialDisplayed) {
             showTutorial();
         }
     }

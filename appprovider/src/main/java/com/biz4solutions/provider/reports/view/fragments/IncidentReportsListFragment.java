@@ -144,6 +144,7 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
                     setErrorView();
                 } catch (Exception e) {
                     e.printStackTrace();
+
                 }
             }
         });

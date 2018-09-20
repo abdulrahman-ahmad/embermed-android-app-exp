@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -11,62 +11,42 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include layout="@layout/request_list_triage_item" />
+            <include
+                android:id="@+id/layout_request_list_triage"
+                layout="@layout/request_list_triage_item" />
+
+            <include
+                android:id="@+id/layout_request_cardiac"
+                layout="@layout/request_list_cardiac_item" />
+
 
             <include
                 android:id="@+id/cardiac_patient_disease_item"
                 layout="@layout/cardiac_patient_disease_item" />
 
-            <include layout="@layout/layout_incident_amount" />
+            <include
+                android:id="@+id/layout_incident_amount"
+                layout="@layout/layout_incident_amount" />
+
+            <include
+                android:id="@+id/layout_caller_pending"
+                layout="@layout/layout_caller_pending" />
+
+
+            <include
+                android:id="@+id/layout_caller_rating_details"
+                layout="@layout/layout_rated_caller_details" />
+
+            <include
+                android:id="@+id/layout_caller_visit"
+                layout="@layout/layout_caller_visit" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/_20dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Rate Caller:"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/_20dp" />
-
-                <com.biz4solutions.utilities.ratingBar.RotationRatingBar
-                    android:id="@+id/rb_rating_bar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_15dp"
-                    app:srb_clearRatingEnabled="false"
-                    app:srb_drawableEmpty="@drawable/star_empty"
-                    app:srb_drawableFilled="@drawable/star_filled"
-                    app:srb_numStars="5"
-                    app:srb_scrollable="false"
-                    app:srb_starHeight="@dimen/_30dp"
-                    app:srb_starPadding="@dimen/_5dp"
-                    app:srb_starWidth="@dimen/_30dp"
-                    app:srb_stepSize="0.5" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:text="Go to  adflkadjf;l kadfdfad fsdfsd fdfd fsdfsdfsdfsdf jlas djfl ajsd flajk sdf;lakj sdfl;k ajsdf;lka jsdfl; kajsddfl;kajdsf;lakjsdfl;kajsdflaksjdf"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_18dp" />
-
-
-            </LinearLayout>
-
-            <include layout="@layout/layout_caller_visit" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/request_card_padding_start_end">
+                android:padding="@dimen/request_card_padding_start_end"
+                android:visibility="visible">
 
                 <TextView
                     android:id="@+id/txt_incident_report_title"
@@ -100,11 +80,11 @@
                         android:textSize="@dimen/requester_name_text_size" />
 
                     <RadioGroup
-                        tools:ignore="RtlHardcoded"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/radio_button_margin_left"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        tools:ignore="RtlHardcoded">
 
                         <RadioButton
                             android:id="@+id/rdb_victim_life_saved_yes"
@@ -173,7 +153,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-
+            <include layout="@layout/layout_view_incident_report" />
         </LinearLayout>
     </ScrollView>
 </layout>

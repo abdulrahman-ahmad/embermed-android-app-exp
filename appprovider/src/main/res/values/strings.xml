@@ -32,6 +32,7 @@
 
     <string name="submit">Submit</string>
     <string name="incident_report">Incident Report</string>
+    <string name="incident_report_details">Incident Report Details</string>
     <string name="is_victim_life_saved">Is victim life saved?</string>
     <string name="title">Title</string>
     <string name="comment">Comment</string>

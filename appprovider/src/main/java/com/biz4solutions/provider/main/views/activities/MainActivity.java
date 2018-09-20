@@ -45,6 +45,7 @@ import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportF
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.reports.view.fragments.IncidentReportDetailsFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -275,7 +276,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         doLogOut();
                         break;
                     case R.id.nav_incidents_reports:
-                        openIncidentReportsListFragment();
+//                        openIncidentReportsListFragment();
+                        openIncidentReportDetailsFragment();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -466,6 +468,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, CardiacIncidentReportFragment.newInstance(requestDetails))
                 .addToBackStack(CardiacIncidentReportFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openIncidentReportDetailsFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof IncidentReportDetailsFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance())
+                .addToBackStack(IncidentReportDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

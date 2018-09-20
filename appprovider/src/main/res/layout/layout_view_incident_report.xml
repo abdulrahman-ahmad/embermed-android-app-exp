@@ -3,64 +3,93 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/ll_caller_visit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blue_bg_color"
         android:orientation="vertical"
-        android:paddingEnd="@dimen/_16dp"
-        android:paddingStart="@dimen/_16dp"
-        android:paddingTop="@dimen/_16dp">
+        android:padding="@dimen/_18dp"
+        tools:ignore="SpUsage">
+
+        <TextView
+            android:id="@+id/label_incident_reports"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Incident Report"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_20dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/label_is_victim_saved"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/caller_visit"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_18dp" />
+                android:text="@string/is_victim_life_saved"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_20dp" />
 
             <TextView
-                android:id="@+id/tv_provider_reason"
-                android:layout_width="0dp"
+                android:id="@+id/tv_victim_saved"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_marginStart="@dimen/_10dp"
                 android:fontFamily="sans-serif"
-                android:text="@string/go_to_er"
-                android:textColor="@color/text_color"
+                android:text="Yes"
+                android:textColor="@color/tv_incident_report"
                 android:textSize="@dimen/_18dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/label_report_title"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/reason_colon"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_18dp" />
+                android:text="Title:"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_20dp" />
 
             <TextView
-                android:id="@+id/tv_reason"
-                android:layout_width="0dp"
+                android:id="@+id/tv_report_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="7"
+                android:layout_marginStart="@dimen/_5dp"
                 android:fontFamily="sans-serif"
-                android:maxLines="4"
-                android:textColor="@color/text_color"
+                android:text="Lorem Ipsum"
+                android:textColor="@color/tv_incident_report"
                 android:textSize="@dimen/_18dp" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/label_report_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="Comment:"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_20dp" />
+
+        <TextView
+            android:id="@+id/tv_report_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_5dp"
+            android:fontFamily="sans-serif"
+            android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
+            android:textColor="@color/tv_incident_report"
+            android:textSize="@dimen/_18dp" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -129,7 +158,15 @@
 
         </LinearLayout>
 
-
+        <TextView
+            android:id="@+id/tv_report_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="@dimen/_8dp"
+            android:fontFamily="sans-serif"
+            android:text="17 Sept, 2018, 05:50 PM"
+            android:textColor="@color/tv_incident_report"
+            android:textSize="@dimen/_12dp" />
     </LinearLayout>
-
 </layout>

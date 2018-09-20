@@ -68,4 +68,10 @@
     <string name="info_triage_call">How to Create Triage Call?</string>
     <string name="info_change_subscription_plan">How to Change Subscription Plan?</string>
     <string name="info_add_subscription_plan">How to Get Subscription Plan?</string>
+
+
+    <!--incident report details-->
+    <string name="reason_colon">Reason:</string>
+    <string name="is_victim_life_saved">Is victim life saved?</string>
+    <string name="caller_visit">Caller Visit:</string>
 </resources>

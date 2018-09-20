@@ -35,7 +35,7 @@ import com.biz4solutions.utilities.TargetViewUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SymptomsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener {
+public class SymptomsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener, TargetViewUtil.OnTargetClickListener {
 
     public static final String fragmentName = "SymptomsFragment";
     private MainActivity mainActivity;
@@ -280,7 +280,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void showTutorial() {
-        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false);
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false,this);
     }
 
     @Override
@@ -292,5 +292,10 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         if (isTutorialMode && tutorial != null) {
             tutorial.dismiss(false);
         }
+    }
+
+    @Override
+    public void onTargetClickListener() {
+
     }
 }

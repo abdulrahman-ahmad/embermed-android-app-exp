@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.reports.view.fragments;
+package com.biz4solutions.reports.views.fragments;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -9,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.databinding.FragmentIncidentReportDetailsBinding;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.R;
+import com.biz4solutions.databinding.FragmentIncidentReportDetailsBinding;
+import com.biz4solutions.main.views.activities.MainActivity;
+
 
 public class IncidentReportDetailsFragment extends Fragment {
 
-    public static final String fragmentName = "IncidentReportDetailsFragment";
+    public static final String fragmentName = "IncidentReport";
     private MainActivity mainActivity;
+    private FragmentIncidentReportDetailsBinding binding;
 
     public IncidentReportDetailsFragment() {
         // Required empty public constructor
@@ -34,13 +36,13 @@ public class IncidentReportDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentIncidentReportDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
 
             //TODO: need to change the below lines
             mainActivity.navigationView.setCheckedItem(R.id.nav_incidents_reports);
-            mainActivity.toolbarTitle.setText(R.string.incident_report);
+            mainActivity.toolbarTitle.setText(R.string.incidents_reports);
         }
         return binding.getRoot();
     }

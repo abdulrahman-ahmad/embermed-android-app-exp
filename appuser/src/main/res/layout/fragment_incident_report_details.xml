@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!--<include-->
+            <!--android:id="@+id/layout_request_list_triage"-->
+            <!--layout="@layout/request_list_triage_item" />-->
+
+            <!--<include-->
+            <!--android:id="@+id/layout_request_cardiac"-->
+            <!--layout="@layout/request_list_cardiac_item" />-->
+
+            <!--<include-->
+            <!--android:id="@+id/cardiac_patient_disease_item"-->
+            <!--layout="@layout/cardiac_patient_disease_item" />-->
+
+            <include
+                android:id="@+id/layout_incident_amount"
+                layout="@layout/layout_incident_amount" />
+
+            <include
+                android:id="@+id/layout_caller_pending"
+                layout="@layout/layout_caller_pending" />
+
+            <include
+                android:id="@+id/layout_caller_rating_details"
+                layout="@layout/layout_rated_caller_details" />
+
+            <include
+                android:id="@+id/layout_caller_visit"
+                layout="@layout/layout_caller_visit" />
+
+            <include
+                android:id="@+id/layout_view_report"
+                layout="@layout/layout_view_incident_report" />
+        </LinearLayout>
+    </ScrollView>
+</layout>

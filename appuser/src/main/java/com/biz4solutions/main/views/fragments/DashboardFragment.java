@@ -15,6 +15,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.application.Application;
@@ -24,13 +25,14 @@ import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.TargetViewUtil;
 
-public class DashboardFragment extends Fragment {
+public class DashboardFragment extends Fragment implements TargetViewUtil.OnTargetClickListener {
 
     public static final String fragmentName = "DashboardFragment";
     private MainActivity mainActivity;
     private FragmentDashboardBinding binding;
     private TapCircleTargetView tutorial;
-    private boolean isTutorialMode = false;
+    private boolean isTutorialMode = true;
+    private boolean isTutorialDisplayed =false;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -71,7 +73,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (isTutorialMode) {
+        if (isTutorialMode && !isTutorialDisplayed) {
             showTutorial();
         }
     }
@@ -151,7 +153,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void showTutorial() {
-        tutorial = TargetViewUtil.showTargetCircleForBigBtn(mainActivity, binding.alertBtn, "Alert btn title", "Alert btn desc", false);
+        tutorial = TargetViewUtil.showTargetCircleForBigBtn(mainActivity, binding.alertBtn, "Alert btn title", "Alert btn desc", false, this);
     }
 
     @Override
@@ -160,5 +162,11 @@ public class DashboardFragment extends Fragment {
         if (isTutorialMode && tutorial != null) {
             tutorial.dismiss(false);
         }
+    }
+
+    @Override
+    public void onTargetClickListener() {
+        isTutorialDisplayed=true;
+        Toast.makeText(mainActivity, "clicked target.", Toast.LENGTH_SHORT).show();
     }
 }
