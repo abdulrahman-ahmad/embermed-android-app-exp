@@ -23,7 +23,7 @@ import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
+import com.biz4solutions.provider.databinding.FragmentIncidentReportsListBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.reports.view.adapters.ReportsListViewAdapter;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -36,7 +36,7 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
     public static final String fragmentName = "IncidentReportsListFragment";
     private MainActivity mainActivity;
     private int page = 0;
-    private FragmentDashboardBinding binding;
+    private FragmentIncidentReportsListBinding binding;
     private boolean isLoadMore = true;
     private ReportsListViewAdapter adapter;
     private List<EmsRequest> emsRequests = new ArrayList<>();
@@ -57,11 +57,11 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_reports_list, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_incidents_reports);
-            mainActivity.toolbarTitle.setText(R.string.dashboard);
+            mainActivity.toolbarTitle.setText(R.string.incident_reports);
         }
 
         initswipeContainer();

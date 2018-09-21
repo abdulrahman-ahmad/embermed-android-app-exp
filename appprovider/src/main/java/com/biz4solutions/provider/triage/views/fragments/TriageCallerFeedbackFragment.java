@@ -18,7 +18,6 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentTriageCallerFeedbackBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -126,7 +125,7 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                openFeedbackFragment();
+                mainActivity.openFeedbackFragment(requestId, false);
             }
 
             @Override
@@ -136,24 +135,6 @@ public class TriageCallerFeedbackFragment extends Fragment implements View.OnCli
             }
         });
     }
-
-    private void openFeedbackFragment() {
-        try {
-            Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
-            if (currentFragment instanceof FeedbackFragment) {
-                return;
-            }
-            mainActivity.getSupportFragmentManager().executePendingTransactions();
-            mainActivity.getSupportFragmentManager().beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
-                    .addToBackStack(FeedbackFragment.fragmentName)
-                    .commitAllowingStateLoss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
 
     private boolean isFormValid() {
         if (binding.edtReason.getText().toString().trim().isEmpty()) {

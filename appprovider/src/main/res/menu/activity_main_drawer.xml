@@ -19,7 +19,7 @@
         <item
             android:id="@+id/nav_incidents_reports"
             android:icon="@drawable/icn_incidents_reports"
-            android:title="@string/incidents_reports" />
+            android:title="@string/incident_reports" />
         <item
             android:id="@+id/nav_medical_profile"
             android:icon="@drawable/icn_medical_profile"

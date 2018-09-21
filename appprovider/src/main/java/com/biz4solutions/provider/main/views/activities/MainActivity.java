@@ -44,12 +44,11 @@ import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFrag
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
+import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
-import com.biz4solutions.provider.reports.view.fragments.IncidentReportDetailsFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
-import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
@@ -441,6 +440,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
                 .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof FeedbackFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .addToBackStack(FeedbackFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

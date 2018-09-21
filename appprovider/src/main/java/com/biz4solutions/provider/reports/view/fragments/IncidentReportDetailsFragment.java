@@ -16,10 +16,11 @@ import com.biz4solutions.provider.databinding.FragmentIncidentReportDetailsBindi
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 
-public class IncidentReportDetailsFragment extends Fragment {
+public class IncidentReportDetailsFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "IncidentReportDetailsFragment";
     private MainActivity mainActivity;
+    private FragmentIncidentReportDetailsBinding binding;
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private final static String USER_DETAILS = "USER_DETAILS";
     private EmsRequest request;
@@ -50,7 +51,7 @@ public class IncidentReportDetailsFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentIncidentReportDetailsBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_incidents_reports);
@@ -61,6 +62,13 @@ public class IncidentReportDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initListeners();
+    }
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
@@ -69,5 +77,21 @@ public class IncidentReportDetailsFragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private void initListeners() {
+        binding.providerLayoutCallerPending.providerLlCallerPending.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == binding.providerLayoutCallerPending.providerLlCallerPending.getId()) {
+            openFeedbackFragment();
+        }
+    }
+
+    private void openFeedbackFragment() {
+        if (mainActivity != null && request != null)
+            mainActivity.openFeedbackFragment(request.getId(), true);
     }
 }

@@ -33,15 +33,17 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     private FragmentFeedbackBinding binding;
     private final static String REQUEST_ID = "REQUEST_ID";
     private String requestId;
+    private boolean isFromIncidentReport;
 
     public FeedbackFragment() {
         // Required empty public constructor
     }
 
-    public static FeedbackFragment newInstance(String requestId) {
+    public static FeedbackFragment newInstance(String requestId, boolean isFromIncidentReport) {
         FeedbackFragment fragment = new FeedbackFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_ID, requestId);
+        args.putBoolean("isFromIncidentReport", isFromIncidentReport);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,6 +54,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
             requestId = getArguments().getString(REQUEST_ID);
+            isFromIncidentReport = getArguments().getBoolean("isFromIncidentReport");
         }
     }
 
@@ -59,13 +62,22 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_feedback, container, false);
         mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.triage_call);
-            NavigationUtil.getInstance().hideMenu(mainActivity);
-        }
+        setUpViews();
         initListeners();
         return binding.getRoot();
+    }
+
+    private void setUpViews() {
+        if (isFromIncidentReport) {
+            NavigationUtil.getInstance().showBackArrow(mainActivity);
+            binding.tvSkip.setVisibility(View.GONE);
+        } else {
+            if (mainActivity != null) {
+                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+                mainActivity.toolbarTitle.setText(R.string.triage_call);
+                NavigationUtil.getInstance().hideMenu(mainActivity);
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -79,7 +91,9 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mainActivity != null) {
+        if (isFromIncidentReport) {
+            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        } else {
             NavigationUtil.getInstance().showMenu(mainActivity);
         }
     }

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
+        android:id="@+id/ll_caller_pending"
+        android:background="?attr/selectableItemBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -27,7 +29,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:fontFamily="sans-serif-medium"
-                android:text="@string/rate_caller_colon"
+                android:text="@string/rate_callee_colon"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_18dp" />
 

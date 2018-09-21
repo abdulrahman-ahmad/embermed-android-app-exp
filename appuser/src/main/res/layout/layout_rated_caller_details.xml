@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Rate Caller:"
+                android:text="@string/rate_callee_colon"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_18dp" />
 

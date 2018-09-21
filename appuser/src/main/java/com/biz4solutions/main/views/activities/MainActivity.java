@@ -40,6 +40,7 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.main.views.fragments.AccountSettingFragment;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
+import com.biz4solutions.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
@@ -48,7 +49,6 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.reports.views.fragments.IncidentReportDetailsFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
-import com.biz4solutions.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallFeedbackWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
@@ -241,9 +241,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_incidents_reports:
                         openIncidentReportsDetailsFragement();
-
                         break;
-
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
@@ -321,7 +319,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 isOpenTokActivityOpen = false;
                 FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
                 if (resultCode == RESULT_OK) {
-                    openFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
+                    openFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID), false);
                 }
                 break;
         }
@@ -555,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startVideoCallWithPermissions(data);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && !data.getIsPatientFeedbackSubmitted()) {
-                        openFeedbackFragment(data.getId());
+                        openFeedbackFragment(data.getId(), false);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && data.getProviderFeedback() != null && !data.getProviderFeedback().isEmpty()) {
                         openProviderReasonFragment(data);
@@ -684,7 +682,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openFeedbackFragment(String requestId) {
+    public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof FeedbackFragment) {
@@ -693,7 +691,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
+                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
                     .addToBackStack(FeedbackFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {

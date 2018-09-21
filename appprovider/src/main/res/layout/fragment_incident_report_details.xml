@@ -29,7 +29,7 @@
                 layout="@layout/layout_incident_amount" />
 
             <include
-                android:id="@+id/layout_caller_pending"
+                android:id="@+id/provider_layout_caller_pending"
                 layout="@layout/layout_caller_pending" />
 
             <include

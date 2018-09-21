@@ -9,6 +9,7 @@
     <string name="high">High</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_alerts_available">No alerts available</string>
+    <string name="no_incident_reports_available">No incident reports available</string>
     <string name="reject_request_message">Are you sure, you want to reject this request?</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
@@ -23,7 +24,7 @@
     <string name="away">&#160;away</string>
     <!--Side menus-->
     <string name="account_settings">Account Settings</string>
-    <string name="incidents_reports">Incident Reports</string>
+    <string name="incident_reports">Incident Reports</string>
     <string name="medical_profile">Medical Profile</string>
     <string name="how_it_works">How It Works</string>
     <string name="aed_maps">AED Maps</string>

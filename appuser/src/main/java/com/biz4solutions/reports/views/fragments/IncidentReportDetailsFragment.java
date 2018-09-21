@@ -14,7 +14,7 @@ import com.biz4solutions.databinding.FragmentIncidentReportDetailsBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
 
 
-public class IncidentReportDetailsFragment extends Fragment {
+public class IncidentReportDetailsFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "IncidentReport";
     private MainActivity mainActivity;
@@ -48,7 +48,30 @@ public class IncidentReportDetailsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initListeners();
+    }
+
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+
+    private void initListeners() {
+        binding.layoutCallerPending.llCallerPending.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == binding.layoutCallerPending.llCallerPending.getId()) {
+            openFeedbackFragment();
+        }
+    }
+
+    private void openFeedbackFragment() {
+        if (mainActivity != null)
+            mainActivity.openFeedbackFragment("abc", true);
     }
 }
