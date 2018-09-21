@@ -63,10 +63,11 @@
 
 
     <!--for how it works screen-->
-    <string name="info_cardiac_call">How to Create Cardiac Alert?</string>
-    <string name="info_triage_call">How to Create Triage Call?</string>
-    <string name="info_change_subscription_plan">How to Change Subscription Plan?</string>
-    <string name="info_add_subscription_plan">How to Get Subscription Plan?</string>
+    <string name="info_cardiac_call">How to make cardiac call?</string>
+    <string name="info_triage_call">How to make triage call?</string>
+    <string name="info_concierge_call">How to make concierge call?</string>
+    <string name="info_change_subscription_plan">How to change subscription plan?</string>
+    <string name="info_add_subscription_plan">How to subscribe?</string>
 
 
     <!--incident report details-->

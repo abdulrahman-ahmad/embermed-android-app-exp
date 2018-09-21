@@ -52,6 +52,7 @@ import com.biz4solutions.provider.services.GpsServices;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
+import com.biz4solutions.provider.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -277,6 +278,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_incident_reports:
                         openIncidentReportsListFragment();
                         break;
+                    case R.id.nav_how_it_works:
+                        openHowItWorksFragment();
+                        break;
+
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
@@ -682,6 +687,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void openHowItWorksFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof HowItWorksFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, HowItWorksFragment.newInstance())
+                .addToBackStack(HowItWorksFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 
     private void openIncidentReportsListFragment() {

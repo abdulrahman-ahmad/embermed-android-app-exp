@@ -10,4 +10,8 @@
 
     <!--for incident report screen-->
     <color name="tv_incident_report">#64798A</color>
+
+
+    <!--for how it works fragment-->
+    <color name="bg_card">#eef4f7</color>
 </resources>

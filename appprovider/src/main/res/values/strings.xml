@@ -62,4 +62,10 @@
     <string name="call_duration">Call Duration:</string>
     <string name="completed_on">Completed On:</string>
     <string name="pending">Pending</string>
+
+    <!--for how it works screen-->
+    <string name="info_cardiac_call">How to attend cardiac call?</string>
+    <string name="info_triage_call">How to attend triage call?</string>
+    <string name="info_concierge_call">How to attend concierge call?</string>
+    <string name="info_add_subscription_plan">How to subscribe?</string>
 </resources>
