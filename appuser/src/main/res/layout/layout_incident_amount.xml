@@ -1,110 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#efefef"
+        android:background="@color/alert_bg_color"
         android:orientation="vertical"
-        tools:contentDescription="@null"
-        android:padding="@dimen/_20dp">
+        android:padding="@dimen/_16dp"
+        tools:ignore="SpUsage">
 
-        <LinearLayout
-            android:id="@+id/ll_amount"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/img_incident_map"
-            android:layout_marginEnd="@dimen/_20dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="0dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/amount"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/space1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:fontFamily="sans-serif-medium"
-                android:text="Amount:"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
-
-            <TextView
-                android:id="@+id/tv_provider_reason"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:fontFamily="sans-serif"
-                android:text="$250.00"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_duration"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/tv_amount_value"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_amount"
-            android:layout_marginEnd="@dimen/_20dp"
-            android:layout_toStartOf="@+id/img_incident_map"
-            android:orientation="horizontal"
-            android:paddingBottom="@dimen/_5dp"
-            android:paddingTop="@dimen/_5dp"
-            android:visibility="visible">
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif"
+            android:text="$250"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_15dp"
+            app:layout_constraintBottom_toTopOf="@+id/space1"
+            app:layout_constraintStart_toEndOf="@+id/textView2" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:fontFamily="sans-serif-medium"
-                android:text="Call Duration:"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
-
-            <TextView
-                android:id="@+id/tv_incident_duration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:fontFamily="sans-serif"
-                android:text="25 min 30 sec"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:id="@+id/ll_completed_on"
+        <Space
+            android:id="@+id/space1"
             android:layout_width="match_parent"
+            android:layout_height="@dimen/_5dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView3" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_duration"
-            android:layout_toStartOf="@+id/img_incident_map"
-            android:layout_marginEnd="@dimen/_20dp"
-            android:orientation="horizontal">
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/call_duration"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16dp"
+            app:layout_constraintBottom_toTopOf="@+id/space"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="4"
-                android:fontFamily="sans-serif-medium"
-                android:text="Completed On:"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
+        <TextView
+            android:id="@+id/tv_incident_duration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif"
+            android:text="25 min 30 sec"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_15dp"
+            app:layout_constraintBottom_toTopOf="@+id/space"
+            app:layout_constraintStart_toEndOf="@+id/textView2" />
 
-            <TextView
-                android:id="@+id/tv_incident_date_time"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:fontFamily="sans-serif"
-                android:text="15 Sept, 2018, 04:00 PM"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/_16dp" />
-        </LinearLayout>
+        <Space
+            android:id="@+id/space"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5dp"
+            app:layout_constraintBottom_toTopOf="@+id/textView2" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/completed_on"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_incident_date_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif"
+            android:text="15 Sept, 2018, 04:00 PM"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView2" />
 
         <ImageView
             android:id="@+id/img_incident_map"
             android:layout_width="@dimen/_30dp"
             android:layout_height="@dimen/_30dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/map_icon" />
-    </RelativeLayout>
+            android:layout_marginBottom="0dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/map_logo"
+            android:contentDescription="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 </layout>

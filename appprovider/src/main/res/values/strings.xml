@@ -31,13 +31,13 @@
     <string name="triage">Triage</string>
 
     <string name="submit">Submit</string>
-    <string name="incident_report">Incident Report</string>
     <string name="incident_report_details">Incident Report Details</string>
     <string name="is_victim_life_saved">Is victim life saved?</string>
     <string name="title">Title</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="comment_colon">Comment:</string>
     <string name="title_colon">Title:</string>
     <string name="comment">Comment</string>
-    <string name="comment_colon">Comment:</string>
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>

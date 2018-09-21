@@ -74,4 +74,21 @@
     <string name="reason_colon">Reason:</string>
     <string name="is_victim_life_saved">Is victim life saved?</string>
     <string name="caller_visit">Caller Visit:</string>
+
+    <string name="title_colon">Title:</string>
+    <string name="comment_colon">Comment:</string>
+    <string name="rate_caller_colon">Rate Caller:</string>
+    <string name="amount">Amount:</string>
+    <string name="call_duration">Call Duration:</string>
+    <string name="completed_on">Completed On:</string>
+    <string name="pending">Pending</string>
+
+    <string name="high">High</string>
+    <string name="patient_disease">Patient Disease:</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="title">Title</string>
+
+    <string name="cardiac_call">Cardiac Call</string>
+    <string name="immediate">Immediate</string>
+    <string name="away">&#160;away</string>
 </resources>

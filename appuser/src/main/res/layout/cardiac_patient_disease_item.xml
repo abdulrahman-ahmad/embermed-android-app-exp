@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="@dimen/request_card_elevation"
+        app:cardPreventCornerOverlap="false"
+        tools:ignore="SpUsage">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/_16dp"
+            android:paddingStart="@dimen/_16dp">
+
+            <TextView
+                android:id="@+id/txt_patient_disease_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif-medium"
+                android:maxWidth="@dimen/requester_name_max_width"
+                android:paddingTop="@dimen/_8dp"
+                android:singleLine="true"
+                android:text="@string/patient_disease"
+                android:textColor="@color/provider_secondary_text_color"
+                android:textSize="@dimen/_16dp" />
+
+            <!--<ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
+                android:layout_marginTop="0dp">-->
+
+            <TextView
+                android:id="@+id/txt_patient_disease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="5"
+                android:paddingBottom="@dimen/_5dp"
+                android:paddingTop="@dimen/_8dp"
+                android:textColor="@color/provider_gender_age_text_color"
+                android:textSize="@dimen/request_medium_text_size" />
+            <!-- </ScrollView>-->
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+</layout>

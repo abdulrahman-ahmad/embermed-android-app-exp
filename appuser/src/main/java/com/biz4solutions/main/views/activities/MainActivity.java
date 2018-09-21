@@ -45,6 +45,7 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.reports.views.fragments.IncidentReportDetailsFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.triage.views.fragments.FeedbackFragment;
@@ -238,6 +239,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_log_in:
                         doLogOut();
                         break;
+                    case R.id.nav_incidents_reports:
+                        openIncidentReportsDetailsFragement();
+
+                        break;
+
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
@@ -380,6 +386,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, HowItWorksFragment.newInstance())
                 .addToBackStack(HowItWorksFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openIncidentReportsDetailsFragement() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof IncidentReportDetailsFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance())
+                .addToBackStack(IncidentReportDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 
