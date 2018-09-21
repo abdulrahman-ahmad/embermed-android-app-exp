@@ -38,6 +38,7 @@ import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
@@ -85,6 +86,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.dashboard);
+            NavigationUtil.getInstance().showMenu(mainActivity);
         }
 
         initswipeContainer();

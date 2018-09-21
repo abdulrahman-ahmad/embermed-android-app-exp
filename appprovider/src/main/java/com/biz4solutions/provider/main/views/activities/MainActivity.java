@@ -276,8 +276,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         doLogOut();
                         break;
                     case R.id.nav_incidents_reports:
-//                        openIncidentReportsListFragment();
-                        openIncidentReportDetailsFragment();
+                        openIncidentReportsListFragment();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -468,19 +467,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, CardiacIncidentReportFragment.newInstance(requestDetails))
                 .addToBackStack(CardiacIncidentReportFragment.fragmentName)
-                .commitAllowingStateLoss();
-    }
-
-    public void openIncidentReportDetailsFragment() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof IncidentReportDetailsFragment) {
-            return;
-        }
-        getSupportFragmentManager().executePendingTransactions();
-        getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance())
-                .addToBackStack(IncidentReportDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

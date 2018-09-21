@@ -168,4 +168,9 @@ public class ApiServices {
                 .getProviderCompletedRequestList(page, 20));
     }
 
+    public void getIncidentReportDetail(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getIncidentReportDetail(requestId));
+    }
+
 }

@@ -108,4 +108,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/provider/getProviderCompletedRequestList")
     Call<EmsRequestResponse> getProviderCompletedRequestList(@Query("page") int page, @Query("size") int size);
+
+    @GET("v1/incidentReport/getIncidentReportDetail")
+    Call<EmsRequestDetailsResponse> getIncidentReportDetail(@Query("requestId") String requestId);
 }

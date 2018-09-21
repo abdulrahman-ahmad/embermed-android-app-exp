@@ -25,6 +25,22 @@ public class EmsRequest implements Serializable {
     private String videoCallStatus;
     private String providerFeedbackReason;
     private String providerProfession;
+    private String incidentReportId;
+    private long createdAt;
+    private String submittedBy;
+    private String title;// report title
+    private String description;// report comment
+    private boolean isVictimLifeSaved;
+    private long incidentReportSubmittedAt;
+    private float userRating;
+    private float providerRating;
+    private String commentForUser;// rating comment
+    private String commentForProvider;// rating comment
+    private long completedAt;
+    private long completedLatitude;
+    private long completedLongitude;
+    private long triageCallDuration;
+    private boolean isIncidentReportSubmitted;
 
     public String getId() {
         return id;
@@ -202,6 +218,134 @@ public class EmsRequest implements Serializable {
         this.providerProfession = providerProfession;
     }
 
+    public String getIncidentReportId() {
+        return incidentReportId;
+    }
+
+    public void setIncidentReportId(String incidentReportId) {
+        this.incidentReportId = incidentReportId;
+    }
+
+    public long getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(long createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getSubmittedBy() {
+        return submittedBy;
+    }
+
+    public void setSubmittedBy(String submittedBy) {
+        this.submittedBy = submittedBy;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean getIsVictimLifeSaved() {
+        return isVictimLifeSaved;
+    }
+
+    public void setIsVictimLifeSaved(boolean victimLifeSaved) {
+        isVictimLifeSaved = victimLifeSaved;
+    }
+
+    public long getIncidentReportSubmittedAt() {
+        return incidentReportSubmittedAt;
+    }
+
+    public void setIncidentReportSubmittedAt(long incidentReportSubmittedAt) {
+        this.incidentReportSubmittedAt = incidentReportSubmittedAt;
+    }
+
+    public float getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(float userRating) {
+        this.userRating = userRating;
+    }
+
+    public float getProviderRating() {
+        return providerRating;
+    }
+
+    public void setProviderRating(float providerRating) {
+        this.providerRating = providerRating;
+    }
+
+    public String getCommentForUser() {
+        return commentForUser;
+    }
+
+    public void setCommentForUser(String commentForUser) {
+        this.commentForUser = commentForUser;
+    }
+
+    public String getCommentForProvider() {
+        return commentForProvider;
+    }
+
+    public void setCommentForProvider(String commentForProvider) {
+        this.commentForProvider = commentForProvider;
+    }
+
+    public long getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(long completedAt) {
+        this.completedAt = completedAt;
+    }
+
+    public long getCompletedLatitude() {
+        return completedLatitude;
+    }
+
+    public void setCompletedLatitude(long completedLatitude) {
+        this.completedLatitude = completedLatitude;
+    }
+
+    public long getCompletedLongitude() {
+        return completedLongitude;
+    }
+
+    public void setCompletedLongitude(long completedLongitude) {
+        this.completedLongitude = completedLongitude;
+    }
+
+    public long getTriageCallDuration() {
+        return triageCallDuration;
+    }
+
+    public void setTriageCallDuration(long triageCallDuration) {
+        this.triageCallDuration = triageCallDuration;
+    }
+
+    public boolean getIsIncidentReportSubmitted() {
+        return isIncidentReportSubmitted;
+    }
+
+    public void setIsIncidentReportSubmitted(boolean incidentReportSubmitted) {
+        isIncidentReportSubmitted = incidentReportSubmitted;
+    }
+
     @Override
     public String toString() {
         return "EmsRequest{" +
@@ -227,6 +371,22 @@ public class EmsRequest implements Serializable {
                 ", videoCallStatus='" + videoCallStatus + '\'' +
                 ", providerFeedbackReason='" + providerFeedbackReason + '\'' +
                 ", providerProfession='" + providerProfession + '\'' +
+                ", incidentReportId='" + incidentReportId + '\'' +
+                ", createdAt=" + createdAt +
+                ", submittedBy='" + submittedBy + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", isVictimLifeSaved=" + isVictimLifeSaved +
+                ", incidentReportSubmittedAt=" + incidentReportSubmittedAt +
+                ", userRating=" + userRating +
+                ", providerRating=" + providerRating +
+                ", commentForUser='" + commentForUser + '\'' +
+                ", commentForProvider='" + commentForProvider + '\'' +
+                ", completedAt=" + completedAt +
+                ", completedLatitude=" + completedLatitude +
+                ", completedLongitude=" + completedLongitude +
+                ", triageCallDuration=" + triageCallDuration +
+                ", isIncidentReportSubmitted=" + isIncidentReportSubmitted +
                 '}';
     }
 }

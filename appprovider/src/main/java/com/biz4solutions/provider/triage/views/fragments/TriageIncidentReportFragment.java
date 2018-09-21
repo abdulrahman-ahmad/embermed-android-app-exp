@@ -106,14 +106,6 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideMenu(mainActivity);
-        }
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_submit:

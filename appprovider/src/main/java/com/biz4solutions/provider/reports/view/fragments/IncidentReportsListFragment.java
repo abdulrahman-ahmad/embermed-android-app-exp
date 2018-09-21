@@ -19,6 +19,8 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.User;
+import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
@@ -69,14 +71,6 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
             getNewRequestList(true);
         }
         return binding.getRoot();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-        }
     }
 
     private void initListView() {
@@ -196,7 +190,52 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        try {
+            int index = position - 1;
+            if (emsRequests != null && emsRequests.size() > index && index >= 0) {
+                getIncidentReportDetail(emsRequests.get(index));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void getIncidentReportDetail(final EmsRequest request) {
+        if (request != null && !request.getId().isEmpty()) {
+            if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+                Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                return;
+            }
+            CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+            new ApiServices().getIncidentReportDetail(mainActivity, request.getId(), new RestClientResponse() {
+                @Override
+                public void onSuccess(Object response, int statusCode) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    if (response != null && ((EmsRequestDetailsResponse) response).getData() != null) {
+                        openIncidentReportDetailsFragment(((EmsRequestDetailsResponse) response).getData(), request.getUserDetails());
+                    }
+                }
+
+                @Override
+                public void onFailure(String errorMessage, int statusCode) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+    private void openIncidentReportDetailsFragment(EmsRequest request, User userDetails) {
+        Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof IncidentReportDetailsFragment) {
+            return;
+        }
+        mainActivity.getSupportFragmentManager().executePendingTransactions();
+        mainActivity.getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance(request, userDetails))
+                .addToBackStack(IncidentReportDetailsFragment.fragmentName)
+                .commitAllowingStateLoss();
     }
 
     @Override
