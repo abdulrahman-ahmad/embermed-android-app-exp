@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:paddingEnd="@dimen/request_card_padding_start_end"
-            android:paddingStart="@dimen/request_card_padding_start_end">
+            android:paddingEnd="@dimen/_16dp"
+            android:paddingStart="@dimen/_16dp">
 
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,7 +40,7 @@
                     android:maxWidth="@dimen/requester_name_max_width"
                     android:singleLine="true"
                     android:textColor="@color/provider_secondary_text_color"
-                    android:textSize="@dimen/requester_name_text_size"
+                    android:textSize="@dimen/_16dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 

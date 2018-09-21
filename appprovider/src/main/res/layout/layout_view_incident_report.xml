@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_18dp"
+        android:padding="@dimen/_16dp"
         tools:ignore="SpUsage">
 
         <TextView
@@ -14,9 +14,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
-            android:text="Incident Report"
+            android:text="@string/incident_report"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/_20dp" />
+            android:textSize="@dimen/_18dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,7 +31,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/is_victim_life_saved"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_20dp" />
+                android:textSize="@dimen/_18dp" />
 
             <TextView
                 android:id="@+id/tv_victim_saved"
@@ -55,9 +55,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Title:"
+                android:text="@string/title_colon"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_20dp" />
+                android:textSize="@dimen/_18dp" />
 
             <TextView
                 android:id="@+id/tv_report_title"
@@ -67,7 +67,7 @@
                 android:fontFamily="sans-serif"
                 android:text="Lorem Ipsum"
                 android:textColor="@color/tv_incident_report"
-                android:textSize="@dimen/_18dp" />
+                android:textSize="@dimen/_16dp" />
         </LinearLayout>
 
         <TextView
@@ -76,9 +76,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_15dp"
             android:fontFamily="sans-serif-medium"
-            android:text="Comment:"
+            android:text="@string/comment_colon"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_20dp" />
+            android:textSize="@dimen/_18dp" />
 
         <TextView
             android:id="@+id/tv_report_comment"
@@ -88,7 +88,62 @@
             android:fontFamily="sans-serif"
             android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries"
             android:textColor="@color/tv_incident_report"
-            android:textSize="@dimen/_18dp" />
+            android:textSize="@dimen/_16dp" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/_14dp">
+
+            <ImageView
+                android:id="@+id/iv_three_dots"
+                android:layout_width="@dimen/_14dp"
+                android:layout_height="@dimen/_14dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_three_dots"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:id="@+id/tv_see_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_n_16dp"
+                android:background="@drawable/ripple_default_bg"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_8dp"
+                android:paddingEnd="@dimen/_16dp"
+                android:paddingStart="@dimen/_16dp"
+                android:paddingTop="@dimen/_8dp"
+                android:text="@string/see_more"
+                android:textColor="@color/blue_link_color"
+                android:textSize="@dimen/_14dp"
+                tools:ignore="RelativeOverlap" />
+
+            <TextView
+                android:id="@+id/tv_see_less"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="end"
+                android:layout_marginEnd="@dimen/_n_16dp"
+                android:background="@drawable/ripple_default_bg"
+                android:fontFamily="sans-serif-medium"
+                android:gravity="center"
+                android:paddingBottom="@dimen/_8dp"
+                android:paddingEnd="@dimen/_16dp"
+                android:paddingStart="@dimen/_16dp"
+                android:paddingTop="@dimen/_8dp"
+                android:text="@string/see_less"
+                android:textColor="@color/blue_link_color"
+                android:textSize="@dimen/_14dp"
+                android:visibility="gone" />
+
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_report_date_time"
@@ -100,73 +155,5 @@
             android:text="17 Sept, 2018, 05:50 PM"
             android:textColor="@color/tv_incident_report"
             android:textSize="@dimen/_12dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <Space
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3" />
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7"
-                android:gravity="center_vertical"
-                android:minHeight="@dimen/_14dp">
-
-                <ImageView
-                    android:id="@+id/iv_three_dots"
-                    android:layout_width="@dimen/_14dp"
-                    android:layout_height="@dimen/_14dp"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_three_dots"
-                    android:contentDescription="@null" />
-
-                <TextView
-                    android:id="@+id/tv_see_more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/_n_16dp"
-                    android:background="@drawable/ripple_default_bg"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/_8dp"
-                    android:paddingEnd="@dimen/_16dp"
-                    android:paddingStart="@dimen/_16dp"
-                    android:paddingTop="@dimen/_8dp"
-                    android:text="@string/see_more"
-                    android:textColor="@color/blue_link_color"
-                    android:textSize="@dimen/_14dp"
-                    tools:ignore="RelativeOverlap" />
-
-                <TextView
-                    android:id="@+id/tv_see_less"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_gravity="end"
-                    android:layout_marginEnd="@dimen/_n_16dp"
-                    android:background="@drawable/ripple_default_bg"
-                    android:fontFamily="sans-serif-medium"
-                    android:gravity="center"
-                    android:paddingBottom="@dimen/_8dp"
-                    android:paddingEnd="@dimen/_16dp"
-                    android:paddingStart="@dimen/_16dp"
-                    android:paddingTop="@dimen/_8dp"
-                    android:text="@string/see_less"
-                    android:textColor="@color/blue_link_color"
-                    android:textSize="@dimen/_14dp"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
     </LinearLayout>
 </layout>

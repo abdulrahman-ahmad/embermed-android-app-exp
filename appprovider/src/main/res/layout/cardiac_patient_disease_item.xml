@@ -7,7 +7,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_75dp"
+        android:layout_height="wrap_content"
         android:clipChildren="false"
         android:clipToPadding="false"
         android:divider="@android:color/transparent"
@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:paddingEnd="@dimen/request_card_padding_start_end"
-            android:paddingStart="@dimen/request_card_padding_start_end">
+            android:paddingEnd="@dimen/_16dp"
+            android:paddingStart="@dimen/_16dp">
 
             <TextView
                 android:id="@+id/txt_patient_disease_title"
@@ -38,24 +38,26 @@
                 android:singleLine="true"
                 android:text="@string/patient_disease"
                 android:textColor="@color/provider_secondary_text_color"
-                android:textSize="@dimen/requester_name_text_size" />
+                android:textSize="@dimen/_16dp" />
 
-            <ScrollView
+            <!--<ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="0dp"
-                android:layout_marginTop="0dp">
+                android:layout_marginTop="0dp">-->
 
-                <TextView
-                    android:id="@+id/txt_patient_disease"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:paddingBottom="@dimen/_5dp"
-                    android:paddingTop="@dimen/_8dp"
-                    android:textColor="@color/provider_gender_age_text_color"
-                    android:textSize="@dimen/request_medium_text_size" />
-            </ScrollView>
+            <TextView
+                android:id="@+id/txt_patient_disease"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="5"
+                android:paddingBottom="@dimen/_5dp"
+                android:paddingTop="@dimen/_8dp"
+                android:textColor="@color/provider_gender_age_text_color"
+                android:textSize="@dimen/request_medium_text_size" />
+            <!-- </ScrollView>-->
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

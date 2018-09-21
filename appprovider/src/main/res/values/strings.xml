@@ -35,13 +35,16 @@
     <string name="incident_report_details">Incident Report Details</string>
     <string name="is_victim_life_saved">Is victim life saved?</string>
     <string name="title">Title</string>
+    <string name="title_colon">Title:</string>
     <string name="comment">Comment</string>
+    <string name="comment_colon">Comment:</string>
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
     <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
+    <string name="rate_caller_colon">Rate Caller:</string>
     <string name="skip"><u>Skip</u></string>
     <string name="where_should_caller_go">Where should caller go?</string>
     <string name="go_to_er">Go to ER</string>
@@ -54,4 +57,8 @@
     <string name="see_less"><u>SEE LESS</u></string>
     <string name="error_select_caller_feedback">Please select caller feedback.</string>
     <string name="error_empty_reason">Please enter reason.</string>
+    <string name="amount">Amount:</string>
+    <string name="call_duration">Call Duration:</string>
+    <string name="completed_on">Completed On:</string>
+    <string name="pending">Pending</string>
 </resources>

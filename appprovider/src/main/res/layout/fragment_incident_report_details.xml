@@ -9,7 +9,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            tools:ignore="SpUsage">
 
             <include
                 android:id="@+id/layout_request_list_triage"
@@ -32,7 +33,6 @@
                 android:id="@+id/layout_caller_pending"
                 layout="@layout/layout_caller_pending" />
 
-
             <include
                 android:id="@+id/layout_caller_rating_details"
                 layout="@layout/layout_rated_caller_details" />
@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="@dimen/request_card_padding_start_end"
+                android:padding="@dimen/_16dp"
                 android:visibility="visible">
 
                 <TextView
@@ -58,7 +58,7 @@
                     android:singleLine="true"
                     android:text="@string/incident_report"
                     android:textColor="@color/provider_secondary_text_color"
-                    android:textSize="@dimen/incident_report_text_size" />
+                    android:textSize="@dimen/_18dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -77,7 +77,7 @@
                         android:singleLine="true"
                         android:text="@string/is_victim_life_saved"
                         android:textColor="@color/text_color"
-                        android:textSize="@dimen/requester_name_text_size" />
+                        android:textSize="@dimen/_18dp" />
 
                     <RadioGroup
                         android:layout_width="wrap_content"
@@ -92,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/yes"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/requester_name_text_size" />
+                            android:textSize="@dimen/_18dp" />
 
                         <RadioButton
                             android:id="@+id/rdb_victim_life_saved_no"
@@ -101,7 +101,7 @@
                             android:layout_marginLeft="@dimen/request_card_padding_start_end"
                             android:text="@string/no"
                             android:textColor="@color/text_color"
-                            android:textSize="@dimen/requester_name_text_size" />
+                            android:textSize="@dimen/_18dp" />
                     </RadioGroup>
 
                 </LinearLayout>
@@ -116,13 +116,13 @@
                     android:inputType="textCapWords"
                     android:maxLength="100"
                     android:maxLines="1"
-                    android:padding="@dimen/incident_report_input_text_padding"
+                    android:padding="@dimen/_8dp"
                     android:theme="@style/EditTextHint" />
 
                 <EditText
                     android:id="@+id/edt_comment"
                     style="@style/EditTextStyle"
-                    android:layout_height="@dimen/comment_et_height"
+                    android:layout_height="@dimen/_140dp"
                     android:layout_marginEnd="0dp"
                     android:layout_marginStart="0dp"
                     android:layout_marginTop="@dimen/comment_margin_top"
@@ -131,7 +131,7 @@
                     android:hint="@string/comment"
                     android:inputType="textMultiLine"
                     android:maxLength="500"
-                    android:padding="@dimen/incident_report_input_text_padding"
+                    android:padding="@dimen/_8dp"
                     android:theme="@style/EditTextHint" />
 
 
@@ -153,7 +153,9 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <include layout="@layout/layout_view_incident_report" />
+            <include
+                android:id="@+id/layout_view_incident_report"
+                layout="@layout/layout_view_incident_report" />
         </LinearLayout>
     </ScrollView>
 </layout>
