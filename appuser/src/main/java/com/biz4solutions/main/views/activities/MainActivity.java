@@ -46,7 +46,7 @@ import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
-import com.biz4solutions.reports.views.fragments.IncidentReportDetailsFragment;
+import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
 import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             openNewsFeedFragment();
@@ -150,7 +150,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             FirebaseMessagingService.setFcmToken(MainActivity.this);
@@ -239,8 +239,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_log_in:
                         doLogOut();
                         break;
-                    case R.id.nav_incidents_reports:
-                        openIncidentReportsDetailsFragement();
+                    case R.id.nav_incident_reports:
+                        openIncidentReportsListFragment();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -387,16 +387,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    private void openIncidentReportsDetailsFragement() {
-        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
-        if (currentFragment instanceof IncidentReportDetailsFragment) {
-            return;
+    private void openIncidentReportsListFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof IncidentReportsListFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
+                    .addToBackStack(IncidentReportsListFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        getSupportFragmentManager().executePendingTransactions();
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance())
-                .addToBackStack(IncidentReportDetailsFragment.fragmentName)
-                .commitAllowingStateLoss();
     }
 
     public void reOpenDashBoardFragment() {

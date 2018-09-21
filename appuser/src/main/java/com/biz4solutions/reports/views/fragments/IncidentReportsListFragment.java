@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.reports.view.fragments;
+package com.biz4solutions.reports.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -15,17 +15,17 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
+import com.biz4solutions.databinding.FragmentIncidentReportsListBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
-import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.databinding.FragmentIncidentReportsListBinding;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.provider.reports.view.adapters.ReportsListViewAdapter;
+import com.biz4solutions.reports.views.adapters.ReportsListViewAdapter;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.ArrayList;
@@ -115,7 +115,7 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
         if (showLoader) {
             CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         }
-        new ApiServices().getProviderCompletedRequestList(getContext(), page, new RestClientResponse() {
+        new ApiServices().getUserCompletedRequestList(getContext(), page, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 try {

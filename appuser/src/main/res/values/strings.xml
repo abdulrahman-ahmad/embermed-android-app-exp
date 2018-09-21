@@ -30,7 +30,6 @@
     <string name="triage_waiting_message">Triage Medical Professional\nwill be with you soon.</string>
     <!--Side menus-->
     <string name="account_settings">Account Settings</string>
-    <string name="incidents_reports">Incident Reports</string>
     <string name="medical_profile">Medical Profile</string>
     <string name="how_it_works">How It Works</string>
     <string name="contact_us">Contact Us</string>
@@ -91,4 +90,6 @@
     <string name="cardiac_call">Cardiac Call</string>
     <string name="immediate">Immediate</string>
     <string name="away">&#160;away</string>
+    <string name="incident_reports">Incident Reports</string>
+    <string name="no_incident_reports_available">No incident reports available</string>
 </resources>

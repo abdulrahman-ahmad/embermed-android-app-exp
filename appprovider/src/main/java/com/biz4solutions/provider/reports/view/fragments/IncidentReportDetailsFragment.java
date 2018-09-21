@@ -54,7 +54,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_incidents_reports);
+            mainActivity.navigationView.setCheckedItem(R.id.nav_incident_reports);
             mainActivity.toolbarTitle.setText(R.string.incident_report);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }

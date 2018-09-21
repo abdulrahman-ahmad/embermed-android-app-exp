@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentIncidentReportDetailsBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
+import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.User;
+import com.biz4solutions.utilities.NavigationUtil;
 
 
 public class IncidentReportDetailsFragment extends Fragment implements View.OnClickListener {
@@ -19,13 +22,20 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
     public static final String fragmentName = "IncidentReport";
     private MainActivity mainActivity;
     private FragmentIncidentReportDetailsBinding binding;
+    private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
+    private final static String USER_DETAILS = "USER_DETAILS";
 
     public IncidentReportDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static IncidentReportDetailsFragment newInstance() {
-        return new IncidentReportDetailsFragment();
+    public static IncidentReportDetailsFragment newInstance(EmsRequest request, User userDetails) {
+        IncidentReportDetailsFragment fragment = new IncidentReportDetailsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(REQUEST_DETAILS, request);
+        args.putSerializable(USER_DETAILS, userDetails);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -39,12 +49,20 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_incident_report_details, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-
-            //TODO: need to change the below lines
-            mainActivity.navigationView.setCheckedItem(R.id.nav_incidents_reports);
-            mainActivity.toolbarTitle.setText(R.string.incidents_reports);
+            mainActivity.navigationView.setCheckedItem(R.id.nav_incident_reports);
+            mainActivity.toolbarTitle.setText(R.string.incident_report);
+            NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mainActivity != null) {
+            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        }
+
     }
 
     @Override

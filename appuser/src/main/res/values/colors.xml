@@ -18,4 +18,6 @@
     <color name="triage_text_color">#0b68f4</color>
     <color name="triage_bg_color">#ecf9ff</color>
     <color name="cardiac_bg_color">#ffefef</color>
+
+    <color name="no_alert_text_color">#acacac</color>
 </resources>

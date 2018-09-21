@@ -47,4 +47,6 @@
     <dimen name="submit_button_margin_top">30dp</dimen>
     <dimen name="incident_report_input_text_padding">15dp</dimen>
     <dimen name="comment_margin_top">18dp</dimen>
+
+    <dimen name="empty_alert_height">325dp</dimen>
 </resources>

@@ -48,4 +48,5 @@ Device
 
     <dimen name="incident_report_input_text_padding">10dp</dimen>
     <dimen name="comment_margin_top">12dp</dimen>
+    <dimen name="empty_alert_height">225dp</dimen>
 </resources>

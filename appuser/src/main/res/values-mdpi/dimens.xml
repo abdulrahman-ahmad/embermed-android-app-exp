@@ -47,4 +47,6 @@
 
     <dimen name="incident_report_input_text_padding">8.5dp</dimen>
     <dimen name="comment_margin_top">10.2dp</dimen>
+
+    <dimen name="empty_alert_height">225dp</dimen>
 </resources>

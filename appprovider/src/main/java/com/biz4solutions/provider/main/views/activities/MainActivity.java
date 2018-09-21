@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_log_in:
                         doLogOut();
                         break;
-                    case R.id.nav_incidents_reports:
+                    case R.id.nav_incident_reports:
                         openIncidentReportsListFragment();
                         break;
                     default:

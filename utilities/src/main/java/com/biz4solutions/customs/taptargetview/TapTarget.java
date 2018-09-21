@@ -216,7 +216,6 @@ public class TapTarget {
   }
 
   /** Specify the color value for the outer circle **/
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget outerCircleColorInt(@ColorInt int color) {
     this.outerCircleColor = color;
     return this;
@@ -238,7 +237,6 @@ public class TapTarget {
   }
 
   /** Specify the color value for the target circle **/
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget targetCircleColorInt(@ColorInt int color) {
     this.targetCircleColor = color;
     return this;
@@ -252,7 +250,6 @@ public class TapTarget {
   }
 
   /** Specify the color value for all text **/
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget textColorInt(@ColorInt int color) {
     this.titleTextColor = color;
     this.descriptionTextColor = color;
@@ -266,7 +263,7 @@ public class TapTarget {
   }
 
   /** Specify the color value for the title text **/
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
+
   public TapTarget titleTextColorInt(@ColorInt int color) {
     this.titleTextColor = color;
     return this;
@@ -279,7 +276,6 @@ public class TapTarget {
   }
 
   /** Specify the color value for the description text **/
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget descriptionTextColorInt(@ColorInt int color) {
     this.descriptionTextColor = color;
     return this;
@@ -365,7 +361,6 @@ public class TapTarget {
    * <p>
    * <b>Note:</b> The given color will have its opacity modified to 30% automatically
    */
-  // TODO(Hilal): In v2, this API should be cleaned up / torched
   public TapTarget dimColorInt(@ColorInt int color) {
     this.dimColor = color;
     return this;
