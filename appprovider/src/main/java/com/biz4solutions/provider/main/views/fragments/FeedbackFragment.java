@@ -1,4 +1,4 @@
-package com.biz4solutions.provider.triage.views.fragments;
+package com.biz4solutions.provider.main.views.fragments;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
@@ -21,6 +21,7 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentFeedbackBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
