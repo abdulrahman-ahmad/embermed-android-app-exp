@@ -67,8 +67,7 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
         initswipeContainer();
         initListView();
 
-        if (adapter == null || mainActivity.isUpdateIncidentReportList) {
-            mainActivity.isUpdateIncidentReportList = false;
+        if (adapter == null) {
             getNewRequestList(true);
         }
         return binding.getRoot();

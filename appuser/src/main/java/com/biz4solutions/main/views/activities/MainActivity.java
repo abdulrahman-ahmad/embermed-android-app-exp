@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
-    public boolean isUpdateIncidentReportList = false;
     public FeedbackRequest feedbackRequest;
 
     @Override
