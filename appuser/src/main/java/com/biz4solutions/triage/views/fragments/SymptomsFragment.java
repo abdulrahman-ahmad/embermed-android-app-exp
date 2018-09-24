@@ -5,7 +5,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -46,7 +45,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     private int page = 0;
     private boolean isLoadMore = true;
     private List<Symptom> symptomList;
-    private boolean isTutorialMode = false;
     private TapTargetView tutorial;
 
     public SymptomsFragment() {
@@ -62,13 +60,20 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_symptoms, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            if (!mainActivity.isTutorialMode) {
+                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            }
             mainActivity.toolbarTitle.setText(R.string.symptoms);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
-        initswipeContainer();
+
+        if (mainActivity != null && mainActivity.isTutorialMode) {
+            showTutorial();
+        } else {
+            initswipeContainer();
+            binding.btnSubmit.setOnClickListener(this);
+        }
         initListView();
-        binding.btnSubmit.setOnClickListener(this);
         getNewSymptomList(true);
         return binding.getRoot();
     }
@@ -85,13 +90,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 R.color.colorPrimaryDark,
                 R.color.text_color,
                 R.color.text_hint_color);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isTutorialMode)
-            showTutorial();
     }
 
     private void initListView() {
@@ -281,21 +279,28 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void showTutorial() {
-        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false, new OnTargetClickListener() {
-            @Override
-            public void onTargetClick() {
-
-            }
-        });
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                binding.btnSubmit, getString(R.string.tutorial_title_symptoms_submit_btn),
+                getString(R.string.tutorial_description_symptoms_submit_btn),
+                new OnTargetClickListener() {
+                    @Override
+                    public void onTargetClick() {
+                        mainActivity.reHowItWorksFragment();
+                    }
+                });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            if (mainActivity.isTutorialMode) {
+                NavigationUtil.getInstance().showMenu(mainActivity);
+            } else {
+                NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            }
         }
-        if (isTutorialMode && tutorial != null) {
+        if (tutorial != null) {
             tutorial.dismiss(false);
         }
     }

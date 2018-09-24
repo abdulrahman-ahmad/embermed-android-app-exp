@@ -406,6 +406,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                     request.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());
                     request.setDescription(binding.layoutTriageIncidentReport.edtComment.getText().toString().trim());
                 }
+                request.setIncidentReportSubmittedAt(Calendar.getInstance().getTimeInMillis());
                 setIncidentReportView();
             }
 

@@ -22,6 +22,7 @@ import com.biz4solutions.databinding.FragmentDashboardBinding;
 import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
+import com.biz4solutions.utilities.NavigationUtil;
 import com.biz4solutions.utilities.TargetViewUtil;
 
 public class DashboardFragment extends Fragment {
@@ -44,8 +45,11 @@ public class DashboardFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            if (!mainActivity.isTutorialMode) {
+            if (mainActivity.isTutorialMode) {
+                NavigationUtil.getInstance().hideMenu(mainActivity);
+            } else {
                 mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+                NavigationUtil.getInstance().showMenu(mainActivity);
             }
             mainActivity.toolbarTitle.setText(R.string.dashboard);
         }
@@ -163,6 +167,9 @@ public class DashboardFragment extends Fragment {
         super.onDestroyView();
         if (tutorial != null) {
             tutorial.dismiss(false);
+        }
+        if (mainActivity.isTutorialMode) {
+            NavigationUtil.getInstance().showMenu(mainActivity);
         }
     }
 }

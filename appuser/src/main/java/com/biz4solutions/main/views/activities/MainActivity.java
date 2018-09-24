@@ -358,6 +358,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, DashboardFragment.newInstance())
                 .addToBackStack(DashboardFragment.fragmentName)
                 .commitAllowingStateLoss();
@@ -769,6 +770,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.btn_log_out:
                 showLogOutAlertDialog();
                 break;
+        }
+    }
+
+    public void reHowItWorksFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof HowItWorksFragment) {
+                return;
+            }
+            Toast.makeText(MainActivity.this, R.string.tutorial_end_message, Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().popBackStack(HowItWorksFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

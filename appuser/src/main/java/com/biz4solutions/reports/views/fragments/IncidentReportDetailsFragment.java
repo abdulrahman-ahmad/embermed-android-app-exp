@@ -98,9 +98,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                 binding.requestListCardiacItem.txtTime.setText(requestDate);
                 binding.requestListCardiacItem.txtBottomTime.setVisibility(View.VISIBLE);
                 binding.requestListCardiacItem.txtBottomTime.setText(requestTime);
-                if (request.getPatientDisease() != null) {
-                    binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(request.getPatientDisease());
-                }
+                binding.cardiacPatientDiseaseItem.cardView.setVisibility(View.GONE);
                 binding.layoutIncidentAmount.tvIncidentDuration.setVisibility(View.GONE);
                 binding.layoutIncidentAmount.tvIncidentDurationTitle.setVisibility(View.GONE);
                 binding.layoutIncidentAmount.space.setVisibility(View.GONE);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentHowItWorksBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
+import com.biz4solutions.utilities.CommonFunctions;
 
 public class HowItWorksFragment extends Fragment implements View.OnClickListener {
 
@@ -71,6 +72,10 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
 
     @Override
     public void onClick(View v) {
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
         switch (v.getId()) {
             case R.id.cv_cardiac_service:
                 mainActivity.isTutorialMode = true;
@@ -78,6 +83,9 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
                 mainActivity.openDashBoardFragment();
                 break;
             case R.id.cv_triage_service:
+                mainActivity.isTutorialMode = true;
+                mainActivity.tutorialId = 2;
+                mainActivity.openDashBoardFragment();
                 break;
             default:
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();

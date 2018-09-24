@@ -3,7 +3,6 @@ package com.biz4solutions.main.views.fragments;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +11,10 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
-import com.biz4solutions.customs.taptargetview.TapTargetSequence;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.request.CreateEmsRequest;
@@ -24,9 +24,6 @@ import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 import com.biz4solutions.utilities.TargetViewUtil;
-import com.biz4solutions.utilities.models.TargetModel;
-
-import java.util.ArrayList;
 
 public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClickListener {
 
@@ -34,8 +31,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
-    private boolean isTutorialMode = false;
-    private TapTargetSequence sequencedTutorial;
+    private TapTargetView tutorial;
 
     public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
@@ -51,19 +47,25 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.toolbarTitle.setText(R.string.ems_alert);
-
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
-                @Override
-                public void onBackPress() {
-                    mainActivity.unconsciousOnBackClick();
-                }
-            });
+            if (mainActivity.isTutorialMode) {
+                NavigationUtil.getInstance().hideMenu(mainActivity);
+            } else {
+                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+                NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
+                    @Override
+                    public void onBackPress() {
+                        if (!mainActivity.isTutorialMode) {
+                            mainActivity.unconsciousOnBackClick();
+                        }
+                    }
+                });
+            }
         }
-        binding.btnYes.setOnClickListener(this);
-        binding.btnNo.setOnClickListener(this);
-        if (isTutorialMode) {
+        if (mainActivity != null && mainActivity.isTutorialMode) {
             showTutorial();
+        } else {
+            binding.btnYes.setOnClickListener(this);
+            binding.btnNo.setOnClickListener(this);
         }
         return binding.getRoot();
     }
@@ -82,6 +84,10 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     }
 
     private void openSymptomsFragment() {
+        Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof SymptomsFragment) {
+            return;
+        }
         mainActivity.getSupportFragmentManager().executePendingTransactions();
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
@@ -152,24 +158,41 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     }
 
     private void showTutorial() {
-        sequencedTutorial = TargetViewUtil.showTargetSequenceRoundedForBtn(mainActivity, prepareList());
-    }
-
-    private ArrayList<TargetModel> prepareList() {
-        ArrayList<TargetModel> targetModels = new ArrayList<>();
-        targetModels.add(new TargetModel(binding.btnNo, "No btn title", "No btn desc"));
-        targetModels.add(new TargetModel(binding.btnYes, "yes btn title", "Yes btn desc"));
-        return targetModels;
+        if (mainActivity.tutorialId == 1) {
+            tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                    binding.btnYes, getString(R.string.tutorial_title_ems_yes_btn),
+                    getString(R.string.tutorial_description_ems_yes_btn),
+                    new OnTargetClickListener() {
+                        @Override
+                        public void onTargetClick() {
+                            mainActivity.reHowItWorksFragment();
+                        }
+                    });
+        } else if (mainActivity.tutorialId == 2) {
+            tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                    binding.btnNo, getString(R.string.tutorial_title_ems_no_btn),
+                    getString(R.string.tutorial_description_ems_no_btn),
+                    new OnTargetClickListener() {
+                        @Override
+                        public void onTargetClick() {
+                            openSymptomsFragment();
+                        }
+                    });
+        }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            if (mainActivity.isTutorialMode) {
+                NavigationUtil.getInstance().showMenu(mainActivity);
+            } else {
+                NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            }
         }
-        if (isTutorialMode && sequencedTutorial != null) {
-            sequencedTutorial.cancel();
+        if (tutorial != null) {
+            tutorial.dismiss(false);
         }
     }
 }

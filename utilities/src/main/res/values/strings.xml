@@ -58,4 +58,5 @@
     <string name="error_gps_off">Please turn on location service.</string>
     <string name="error_empty_comment">Please enter comment.</string>
     <string name="error_empty_rating">Please give rating.</string>
+    <string name="tutorial_end_message">Congratulation! you\'re educated now.</string>
 </resources>

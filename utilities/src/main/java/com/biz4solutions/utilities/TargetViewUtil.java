@@ -87,11 +87,11 @@ public class TargetViewUtil {
      * @param description usage-> new TargetViewUtil().showTargetCircleForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
      *                    ->creates circular view for big alert button .
      */
-    public static void showTargetCircleForBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
+    public static void showTargetCircleForBtn(Activity activity, View v, String title, String description, final OnTargetClickListener onTargetClickListener) {
         TapCircleTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
-                        .cancelable(cancellable)
+                        .cancelable(false)
                         .transparentTarget(true), new TapCircleTargetView.Listener() {
                     @Override
                     public void onTargetClick(TapCircleTargetView view) {
@@ -108,11 +108,11 @@ public class TargetViewUtil {
      * @param title       title
      * @param description usage-> new TargetViewUtil().showTargetRoundedForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc");
      */
-    public static TapTargetView showTargetRoundedForBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
+    public static TapTargetView showTargetRoundedForBtn(Activity activity, View v, String title, String description, final OnTargetClickListener onTargetClickListener) {
         return TapTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
-                        .cancelable(cancellable)
+                        .cancelable(false)
                         .transparentTarget(true),
 
                 new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels

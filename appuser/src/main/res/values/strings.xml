@@ -95,7 +95,13 @@
     <string name="callee_rating">Callee Rating:</string>
     <string name="patient_symptoms">Patient Symptom:</string>
 
-    <string name="tutorial_title_dashboard">Alert Button</string>
-    <string name="tutorial_description_dashboard">Click to big red button create alert request.</string>
+    <string name="tutorial_title_dashboard">Action 1</string>
+    <string name="tutorial_description_dashboard">Click here to make a request.</string>
+    <string name="tutorial_title_ems_yes_btn">Action 2</string>
+    <string name="tutorial_description_ems_yes_btn">Click here to make a cardiac call request.</string>
+    <string name="tutorial_title_ems_no_btn">Action 2</string>
+    <string name="tutorial_description_ems_no_btn">Click here to request a triage Call.</string>
+    <string name="tutorial_title_symptoms_submit_btn">Action 3</string>
+    <string name="tutorial_description_symptoms_submit_btn">Choose a symptom and click here to make a triage call request.</string>
 
 </resources>
