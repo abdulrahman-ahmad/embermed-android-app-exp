@@ -44,6 +44,7 @@ import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
+import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -90,6 +91,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private boolean isShowMapDirection = false;
     private Polyline routesPolyline;
     private boolean isApiInProgress = false;
+    private boolean isCompleteApiInProgress = false;
     private String distanceStr;
     private Timer timer = new Timer();
     private TimerTask timerTask;
@@ -443,22 +445,45 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        HashMap<String, Object> body = new HashMap<>();
-        body.put("requestId", currentRequestId);
-        new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
+        GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
             @Override
-            public void onSuccess(Object response, int statusCode) {
-                EmptyResponse createEmsResponse = (EmptyResponse) response;
-                CommonFunctions.getInstance().dismissProgressDialog();
-                Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                mainActivity.getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
-                mainActivity.openCardiacIncidentReportFragment(requestDetails);
+            public void onSuccess(double latitude, double longitude) {
+                if (isCompleteApiInProgress) {
+                    return;
+                }
+                if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                isCompleteApiInProgress = true;
+                HashMap<String, Object> body = new HashMap<>();
+                body.put("requestId", currentRequestId);
+                body.put("providerReachedLatitude", latitude);
+                body.put("providerReachedLongitude", longitude);
+                new ApiServices().completeRequest(mainActivity, body, new RestClientResponse() {
+                    @Override
+                    public void onSuccess(Object response, int statusCode) {
+                        isCompleteApiInProgress = false;
+                        EmptyResponse createEmsResponse = (EmptyResponse) response;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        mainActivity.openCardiacIncidentReportFragment(requestDetails);
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, int statusCode) {
+                        isCompleteApiInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
-            public void onFailure(String errorMessage, int statusCode) {
+            public void onError() {
                 CommonFunctions.getInstance().dismissProgressDialog();
-                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mainActivity, R.string.error_location_fetch, Toast.LENGTH_SHORT).show();
             }
         });
     }

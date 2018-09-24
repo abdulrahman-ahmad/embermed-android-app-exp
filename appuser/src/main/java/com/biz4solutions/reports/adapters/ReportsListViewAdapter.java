@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.ReportsListItemBinding;
+import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.utilities.Constants;
 
 import java.text.SimpleDateFormat;
@@ -69,10 +69,10 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListCardiacItem.txtDistance.setVisibility(View.GONE);
             binding.requestListCardiacItem.txtTime.setText(requestDate);
             binding.requestListCardiacItem.txtBottomTime.setVisibility(View.VISIBLE);
-            if (!emsRequest.getIsIncidentReportSubmitted()) {
-                binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
-            } else {
+            if (emsRequest.getIsIncidentReportSubmitted()) {
                 binding.requestListCardiacItem.txtBottomTime.setText("");
+            } else {
+                binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
             }
         } else {
             binding.requestListTriageItem.cardView.setVisibility(View.VISIBLE);
@@ -82,10 +82,10 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListTriageItem.txtDistance.setVisibility(View.GONE);
             binding.requestListTriageItem.txtTime.setText(requestDate);
             binding.requestListTriageItem.txtBottomTime.setVisibility(View.VISIBLE);
-            if (!emsRequest.getIsIncidentReportSubmitted()) {
-                binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
-            } else {
+            if (emsRequest.getIsIncidentReportSubmitted()) {
                 binding.requestListTriageItem.txtBottomTime.setText("");
+            } else {
+                binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
             }
         }
         return binding.getRoot();

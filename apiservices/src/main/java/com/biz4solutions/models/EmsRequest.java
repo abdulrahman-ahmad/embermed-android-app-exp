@@ -36,8 +36,8 @@ public class EmsRequest implements Serializable {
     private String commentForUser;// rating comment
     private String commentForProvider;// rating comment
     private long completedAt;
-    private long completedLatitude;
-    private long completedLongitude;
+    private long providerReachedLatitude;
+    private long providerReachedLongitude;
     private long triageCallDuration;
     private boolean isIncidentReportSubmitted;
 
@@ -305,22 +305,6 @@ public class EmsRequest implements Serializable {
         this.completedAt = completedAt;
     }
 
-    public long getCompletedLatitude() {
-        return completedLatitude;
-    }
-
-    public void setCompletedLatitude(long completedLatitude) {
-        this.completedLatitude = completedLatitude;
-    }
-
-    public long getCompletedLongitude() {
-        return completedLongitude;
-    }
-
-    public void setCompletedLongitude(long completedLongitude) {
-        this.completedLongitude = completedLongitude;
-    }
-
     public long getTriageCallDuration() {
         return triageCallDuration;
     }
@@ -335,6 +319,22 @@ public class EmsRequest implements Serializable {
 
     public void setIsIncidentReportSubmitted(boolean incidentReportSubmitted) {
         isIncidentReportSubmitted = incidentReportSubmitted;
+    }
+
+    public long getProviderReachedLatitude() {
+        return providerReachedLatitude;
+    }
+
+    public void setProviderReachedLatitude(long providerReachedLatitude) {
+        this.providerReachedLatitude = providerReachedLatitude;
+    }
+
+    public long getProviderReachedLongitude() {
+        return providerReachedLongitude;
+    }
+
+    public void setProviderReachedLongitude(long providerReachedLongitude) {
+        this.providerReachedLongitude = providerReachedLongitude;
     }
 
     @Override
@@ -373,8 +373,8 @@ public class EmsRequest implements Serializable {
                 ", commentForUser='" + commentForUser + '\'' +
                 ", commentForProvider='" + commentForProvider + '\'' +
                 ", completedAt=" + completedAt +
-                ", completedLatitude=" + completedLatitude +
-                ", completedLongitude=" + completedLongitude +
+                ", providerReachedLatitude=" + providerReachedLatitude +
+                ", providerReachedLongitude=" + providerReachedLongitude +
                 ", triageCallDuration=" + triageCallDuration +
                 ", isIncidentReportSubmitted=" + isIncidentReportSubmitted +
                 '}';

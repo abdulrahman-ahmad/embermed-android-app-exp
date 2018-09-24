@@ -4,13 +4,11 @@
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="triage_call">Triage Call</string>
-    <string name="triage_service">Triage Service</string>
     <string name="immediate">Immediate</string>
     <string name="high">High</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_alerts_available">No alerts available</string>
     <string name="no_incident_reports_available">No incident reports available</string>
-    <string name="reject_request_message">Are you sure, you want to reject this request?</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
     <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>

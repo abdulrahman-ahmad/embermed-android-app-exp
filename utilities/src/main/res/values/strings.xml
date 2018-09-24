@@ -4,6 +4,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="oops">Oops..!</string>
     <string name="error_network_unavailable">Please check your internet connection and try again.</string>
+    <string name="error_location_fetch">Unable to fetch your current location. Please make sure your GPS is enabled and try again later.</string>
 
     <string name="email">Email</string>
     <string name="password">Password</string>
