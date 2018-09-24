@@ -54,7 +54,7 @@ public class ReportsListViewAdapter extends BaseAdapter {
 
         EmsRequest emsRequest = emsRequests.get(position);
         String name = emsRequest.getUserDetails().getFirstName() + " " + emsRequest.getUserDetails().getLastName();
-        String genderAge = emsRequest.getUserDetails().getGender() + ", " + emsRequest.getUserDetails().getAge() + "yrs";
+        String genderAge = emsRequest.getProviderSpecialization();
         String requestDate = "";
         if (emsRequest.getRequestTime() > 0) {
             calendar.setTimeInMillis(emsRequest.getRequestTime());
@@ -71,8 +71,10 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListCardiacItem.txtBottomTime.setVisibility(View.VISIBLE);
             if (emsRequest.getIsIncidentReportSubmitted()) {
                 binding.requestListCardiacItem.txtBottomTime.setText("");
+                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.GONE);
             } else {
                 binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
+                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.VISIBLE);
             }
         } else {
             binding.requestListTriageItem.cardView.setVisibility(View.VISIBLE);
@@ -84,8 +86,10 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListTriageItem.txtBottomTime.setVisibility(View.VISIBLE);
             if (emsRequest.getIsIncidentReportSubmitted()) {
                 binding.requestListTriageItem.txtBottomTime.setText("");
+                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.GONE);
             } else {
                 binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
+                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.VISIBLE);
             }
         }
         return binding.getRoot();

@@ -8,6 +8,7 @@ import com.biz4solutions.customs.taptargetview.TapCircleTargetView;
 import com.biz4solutions.customs.taptargetview.TapTarget;
 import com.biz4solutions.customs.taptargetview.TapTargetSequence;
 import com.biz4solutions.customs.taptargetview.TapTargetView;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.utilities.models.TargetModel;
 
 import java.util.ArrayList;
@@ -17,14 +18,6 @@ import java.util.ArrayList;
  */
 public class TargetViewUtil {
 
-
-    public interface OnTargetClickListener {
-        void onTargetClickListener();
-    }
-
-    public interface OnTargetSequenceClickListener {
-        void onTargetSequenceClickListener(int targetNo);
-    }
 //
 //    public void showTargetView(View v, Activity activity) {
 //        TapTargetView.showFor(activity,                 // `this` is an Activity
@@ -71,17 +64,18 @@ public class TargetViewUtil {
      * @param title       title
      * @param description usage-> new TargetViewUtil().showTargetCircleForBigBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc")
      */
-    public static TapCircleTargetView showTargetCircleForBigBtn(Activity activity, View v, String title, String description, boolean cancellable, final OnTargetClickListener onTargetClickListener) {
+    public static TapCircleTargetView showTargetCircleForBigBtn(Activity activity, View v, String title, String description, final OnTargetClickListener onTargetClickListener) {
         return TapCircleTargetView.showFor(activity,
                 TapTarget.forView(v, title, description)
                         .targetRadius(100)
-                        .cancelable(cancellable)
+                        .cancelable(false)
                         .transparentTarget(true), new TapCircleTargetView.Listener() {
                     @Override
                     public void onTargetClick(TapCircleTargetView view) {
                         super.onTargetClick(view);
-                        if (onTargetClickListener != null)
-                            onTargetClickListener.onTargetClickListener();
+                        if (onTargetClickListener != null) {
+                            onTargetClickListener.onTargetClick();
+                        }
                     }
                 });
 
@@ -102,8 +96,9 @@ public class TargetViewUtil {
                     @Override
                     public void onTargetClick(TapCircleTargetView view) {
                         super.onTargetClick(view);
-                        if (onTargetClickListener != null)
-                            onTargetClickListener.onTargetClickListener();
+                        if (onTargetClickListener != null) {
+                            onTargetClickListener.onTargetClick();
+                        }
                     }
                 });
     }
@@ -124,8 +119,9 @@ public class TargetViewUtil {
                     @Override
                     public void onTargetClick(TapTargetView view) {
                         super.onTargetClick(view);      // This call is optional
-                        if (onTargetClickListener != null)
-                            onTargetClickListener.onTargetClickListener();
+                        if (onTargetClickListener != null) {
+                            onTargetClickListener.onTargetClick();
+                        }
                     }
                 });
     }

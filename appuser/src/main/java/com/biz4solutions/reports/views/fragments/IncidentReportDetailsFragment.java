@@ -79,7 +79,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
     private void initView() {
         if (request != null) {
             String name = request.getUserDetails().getFirstName() + " " + request.getUserDetails().getLastName();
-            String genderAge = request.getUserDetails().getGender() + ", " + request.getUserDetails().getAge() + "yrs";
+            String genderAge = request.getProviderSpecialization();
             String requestDate = "";
             String requestTime = "";
             String requestCompletedTime = "";

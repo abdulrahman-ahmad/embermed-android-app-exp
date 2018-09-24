@@ -16,17 +16,18 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.triage.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.databinding.FragmentSymptomsBinding;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.Symptom;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.response.CreateEmsResponse;
 import com.biz4solutions.models.response.SymptomResponse;
+import com.biz4solutions.triage.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
@@ -35,7 +36,7 @@ import com.biz4solutions.utilities.TargetViewUtil;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SymptomsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener, TargetViewUtil.OnTargetClickListener {
+public class SymptomsFragment extends Fragment implements View.OnClickListener, AdapterView.OnItemClickListener, LoadMoreListView.OnLoadMoreListener {
 
     public static final String fragmentName = "SymptomsFragment";
     private MainActivity mainActivity;
@@ -280,7 +281,12 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     }
 
     private void showTutorial() {
-        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false,this);
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity, binding.btnSubmit, "Submit btn title", "Submit btn desc", false, new OnTargetClickListener() {
+            @Override
+            public void onTargetClick() {
+
+            }
+        });
     }
 
     @Override
@@ -292,10 +298,5 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         if (isTutorialMode && tutorial != null) {
             tutorial.dismiss(false);
         }
-    }
-
-    @Override
-    public void onTargetClickListener() {
-
     }
 }

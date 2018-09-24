@@ -45,6 +45,11 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
         return binding.getRoot();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        mainActivity.isTutorialMode = false;
+    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -68,7 +73,9 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.cv_cardiac_service:
-                openAlertFragment();
+                mainActivity.isTutorialMode = true;
+                mainActivity.tutorialId = 1;
+                mainActivity.openDashBoardFragment();
                 break;
             case R.id.cv_triage_service:
                 break;
@@ -76,9 +83,5 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                 break;
         }
-    }
-
-    private void openAlertFragment() {
-        mainActivity.reOpenDashBoardFragment();
     }
 }

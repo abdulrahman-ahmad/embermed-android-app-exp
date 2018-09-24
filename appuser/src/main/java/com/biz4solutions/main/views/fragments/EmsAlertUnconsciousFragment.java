@@ -35,7 +35,6 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
     private boolean isTutorialMode = false;
-    private boolean isTutorialDisplayed =false;
     private TapTargetSequence sequencedTutorial;
 
     public EmsAlertUnconsciousFragment() {
@@ -51,8 +50,9 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_unconscious, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.ems_alert);
+
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
@@ -62,15 +62,10 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         }
         binding.btnYes.setOnClickListener(this);
         binding.btnNo.setOnClickListener(this);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isTutorialMode && !isTutorialDisplayed) {
+        if (isTutorialMode) {
             showTutorial();
         }
+        return binding.getRoot();
     }
 
     @Override

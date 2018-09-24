@@ -70,8 +70,10 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListCardiacItem.txtTime.setText(requestDate);
             binding.requestListCardiacItem.txtBottomTime.setVisibility(View.VISIBLE);
             if (emsRequest.getIsIncidentReportSubmitted()) {
+                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.GONE);
                 binding.requestListCardiacItem.txtBottomTime.setText("");
             } else {
+                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.VISIBLE);
                 binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
             }
         } else {
@@ -84,7 +86,9 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListTriageItem.txtBottomTime.setVisibility(View.VISIBLE);
             if (emsRequest.getIsIncidentReportSubmitted()) {
                 binding.requestListTriageItem.txtBottomTime.setText("");
+                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.GONE);
             } else {
+                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.VISIBLE);
                 binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
             }
         }

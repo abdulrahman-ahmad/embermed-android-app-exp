@@ -36,8 +36,8 @@ public class EmsRequest implements Serializable {
     private String commentForUser;// rating comment
     private String commentForProvider;// rating comment
     private long completedAt;
-    private long providerReachedLatitude;
-    private long providerReachedLongitude;
+    private double providerReachedLatitude;
+    private double providerReachedLongitude;
     private long triageCallDuration;
     private boolean isIncidentReportSubmitted;
 
@@ -321,19 +321,19 @@ public class EmsRequest implements Serializable {
         isIncidentReportSubmitted = incidentReportSubmitted;
     }
 
-    public long getProviderReachedLatitude() {
+    public double getProviderReachedLatitude() {
         return providerReachedLatitude;
     }
 
-    public void setProviderReachedLatitude(long providerReachedLatitude) {
+    public void setProviderReachedLatitude(double providerReachedLatitude) {
         this.providerReachedLatitude = providerReachedLatitude;
     }
 
-    public long getProviderReachedLongitude() {
+    public double getProviderReachedLongitude() {
         return providerReachedLongitude;
     }
 
-    public void setProviderReachedLongitude(long providerReachedLongitude) {
+    public void setProviderReachedLongitude(double providerReachedLongitude) {
         this.providerReachedLongitude = providerReachedLongitude;
     }
 

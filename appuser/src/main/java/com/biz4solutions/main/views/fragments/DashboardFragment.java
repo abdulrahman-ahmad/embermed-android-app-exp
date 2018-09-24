@@ -9,30 +9,27 @@ import android.os.Bundle;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.application.Application;
 import com.biz4solutions.customs.taptargetview.TapCircleTargetView;
 import com.biz4solutions.databinding.FragmentDashboardBinding;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.TargetViewUtil;
 
-public class DashboardFragment extends Fragment implements TargetViewUtil.OnTargetClickListener {
+public class DashboardFragment extends Fragment {
 
     public static final String fragmentName = "DashboardFragment";
     private MainActivity mainActivity;
     private FragmentDashboardBinding binding;
     private TapCircleTargetView tutorial;
-    private boolean isTutorialMode = false;
-    private boolean isTutorialDisplayed =false;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -43,46 +40,42 @@ public class DashboardFragment extends Fragment implements TargetViewUtil.OnTarg
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mainActivity = (MainActivity) getActivity();
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            if (!mainActivity.isTutorialMode) {
+                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            }
             mainActivity.toolbarTitle.setText(R.string.dashboard);
         }
         binding.mainRippleBackground.startRippleAnimation();
-        binding.alertBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isLocationPermissionGranted(102) && CommonFunctions.getInstance().isGPSEnabled(mainActivity)) {
-                    mainActivity.openEmsAlertUnconsciousFragment();
-                }
-                vibrateEffect();
-            }
-        });
-        isLocationPermissionGranted(101);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (isTutorialMode && !isTutorialDisplayed) {
+        if (mainActivity.isTutorialMode) {
             showTutorial();
+        } else {
+            binding.alertBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isLocationPermissionGranted(102) && CommonFunctions.getInstance().isGPSEnabled(mainActivity)) {
+                        mainActivity.openEmsAlertUnconsciousFragment();
+                    }
+                    vibrateEffect();
+                }
+            });
+            isLocationPermissionGranted(101);
         }
+        return binding.getRoot();
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+        try {
+            if (!mainActivity.isTutorialMode) {
+                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -153,20 +146,23 @@ public class DashboardFragment extends Fragment implements TargetViewUtil.OnTarg
     }
 
     private void showTutorial() {
-        tutorial = TargetViewUtil.showTargetCircleForBigBtn(mainActivity, binding.alertBtn, "Alert btn title", "Alert btn desc", false, this);
+        tutorial = TargetViewUtil.showTargetCircleForBigBtn(mainActivity,
+                binding.alertBtn, getString(R.string.tutorial_title_dashboard),
+                getString(R.string.tutorial_description_dashboard),
+                new OnTargetClickListener() {
+                    @Override
+                    public void onTargetClick() {
+                        vibrateEffect();
+                        mainActivity.openEmsAlertUnconsciousFragment();
+                    }
+                });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (isTutorialMode && tutorial != null) {
+        if (tutorial != null) {
             tutorial.dismiss(false);
         }
-    }
-
-    @Override
-    public void onTargetClickListener() {
-        isTutorialDisplayed=true;
-        Toast.makeText(mainActivity, "clicked target.", Toast.LENGTH_SHORT).show();
     }
 }

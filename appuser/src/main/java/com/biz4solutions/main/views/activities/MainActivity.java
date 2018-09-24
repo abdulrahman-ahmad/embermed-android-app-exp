@@ -79,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
+    public boolean isTutorialMode = false;
+    public int tutorialId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -349,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void openDashBoardFragment() {
+    public void openDashBoardFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
             return;
@@ -392,6 +394,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, HowItWorksFragment.newInstance())
                 .addToBackStack(HowItWorksFragment.fragmentName)
                 .commitAllowingStateLoss();
@@ -428,6 +431,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        if (isTutorialMode) {
+            return;
+        }
         CommonFunctions.getInstance().hideSoftKeyBoard(MainActivity.this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -639,8 +645,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openEmsAlertUnconsciousFragment() {
-        startGpsService();
-
+        if (!isTutorialMode) {
+            startGpsService();
+        }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
