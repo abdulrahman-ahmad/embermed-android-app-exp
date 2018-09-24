@@ -35,12 +35,13 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     private final static String REQUEST_ID = "REQUEST_ID";
     private String requestId;
     private EmsRequest request;
-    private boolean isFromIncidentReport;
+    public boolean isFromIncidentReport;
+
     public FeedbackFragment() {
         // Required empty public constructor
     }
 
-    public static FeedbackFragment newInstance(String requestId,boolean isFromIncidentReport) {
+    public static FeedbackFragment newInstance(String requestId, boolean isFromIncidentReport) {
         FeedbackFragment fragment = new FeedbackFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUEST_ID, requestId);
@@ -81,7 +82,6 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             }
         }
     }
-
 
 
     private void addFirebaseRequestEvent() {
@@ -154,7 +154,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        FeedbackRequest feedbackRequest = new FeedbackRequest();
+        final FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setComment(binding.edtComment.getText().toString().trim());
         feedbackRequest.setRequestId(requestId);
         feedbackRequest.setRating(binding.rbRatingBar.getRating());
@@ -164,7 +164,12 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                openNextFragment();
+                if (isFromIncidentReport) {
+                    mainActivity.feedbackRequest = feedbackRequest;
+                    mainActivity.getSupportFragmentManager().popBackStack();
+                } else {
+                    openNextFragment();
+                }
             }
 
             @Override

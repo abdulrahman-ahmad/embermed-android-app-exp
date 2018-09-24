@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/ll_caller_pending"
-        android:background="?attr/selectableItemBackground"
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:orientation="vertical">
 
         <View
@@ -15,7 +17,7 @@
             android:background="@color/divider_color" />
 
         <RelativeLayout
-            android:id="@+id/rl_rate_caller_stripe"
+            android:id="@+id/provider_rl_rate_caller_stripe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

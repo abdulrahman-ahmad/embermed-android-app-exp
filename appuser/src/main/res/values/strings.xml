@@ -86,6 +86,7 @@
     <string name="high">High</string>
     <string name="patient_disease">Patient Disease:</string>
     <string name="incident_report">Incident Report</string>
+    <string name="incident_report_colon">Incident Report:</string>
     <string name="title">Title</string>
 
     <string name="cardiac_call">Cardiac Call</string>
@@ -93,4 +94,6 @@
     <string name="away">&#160;away</string>
     <string name="incident_reports">Incident Reports</string>
     <string name="no_incident_reports_available">No incident reports available</string>
+    <string name="callee_rating">Callee Rating:</string>
+    <string name="patient_symptoms">Patient Symptom:</string>
 </resources>

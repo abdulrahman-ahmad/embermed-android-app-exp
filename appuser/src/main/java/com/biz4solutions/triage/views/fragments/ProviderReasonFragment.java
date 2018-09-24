@@ -80,8 +80,12 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
             binding.tvReason.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    if (binding.tvReason.getLayout().getLineCount() <= 5) {
-                        binding.tvSeeMore.performClick();
+                    try {
+                        if (binding.tvReason.getLayout() != null && binding.tvReason.getLayout().getLineCount() <= 5) {
+                            binding.tvSeeMore.performClick();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     return true;
                 }

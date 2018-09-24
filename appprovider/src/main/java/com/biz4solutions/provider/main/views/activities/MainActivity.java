@@ -37,6 +37,7 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
@@ -73,11 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BroadcastReceiver broadcastReceiver;
     public boolean isSuccessfullyInitFirebase = false;
     public boolean isUpdateList = false;
+    public boolean isUpdateIncidentReportList = false;
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
+    public FeedbackRequest feedbackRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            unauthorizedLogOut();
+                            unauthorizedLogOut(intent.getStringExtra(Constants.LOGOUT_MESSAGE));
                             break;
                         case Constants.LOCAL_NOTIFICATION_ACTION_VIEW:
                             openNotificationDetailsView(intent);
@@ -127,8 +130,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         openNotificationDetailsView(getIntent());
     }
 
-    private void unauthorizedLogOut() {
-        Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+    private void unauthorizedLogOut(String message) {
+        if (message != null && !message.isEmpty()) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        }
         doLogOut();
     }
 
@@ -352,7 +359,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (resultCode == RESULT_OK) {
                     openTriageCallerFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
                 } else if (resultCode == RESULT_CANCELED) {
-                    unauthorizedLogOut();
+                    unauthorizedLogOut(null);
                 }
                 break;
         }
@@ -528,6 +535,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     reOpenDashBoardFragment();
                     break;
                 case FeedbackFragment.fragmentName:
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    if (currentFragment instanceof FeedbackFragment) {
+                        if (((FeedbackFragment) currentFragment).isFromIncidentReport) {
+                            getSupportFragmentManager().popBackStack();
+                        } /*else {
+                            // do nothing
+                        }*/
+                    }
+                    break;
                 case TriageCallerFeedbackFragment.fragmentName:
                     // do nothing
                     break;

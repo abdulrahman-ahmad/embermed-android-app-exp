@@ -68,4 +68,6 @@
     <string name="info_triage_call">How to attend triage call?</string>
     <string name="info_concierge_call">How to attend concierge call?</string>
     <string name="info_add_subscription_plan">How to subscribe?</string>
+
+    <string name="caller_rating">Caller Rating:</string>
 </resources>

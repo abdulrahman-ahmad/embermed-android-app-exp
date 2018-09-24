@@ -13,13 +13,12 @@
             tools:ignore="SpUsage">
 
             <include
-                android:id="@+id/layout_request_list_triage"
+                android:id="@+id/request_list_triage_item"
                 layout="@layout/request_list_triage_item" />
 
             <include
-                android:id="@+id/layout_request_cardiac"
+                android:id="@+id/request_list_cardiac_item"
                 layout="@layout/request_list_cardiac_item" />
-
 
             <include
                 android:id="@+id/cardiac_patient_disease_item"
@@ -32,14 +31,22 @@
             <include
                 android:id="@+id/layout_caller_pending"
                 layout="@layout/layout_caller_pending" />
-            
+
             <include
-                android:id="@+id/layout_caller_rating_details"
+                android:id="@+id/layout_rated_caller_details"
                 layout="@layout/layout_rated_caller_details" />
 
             <include
                 android:id="@+id/layout_caller_visit"
                 layout="@layout/layout_caller_visit" />
+
+            <include
+                android:id="@+id/layout_cardiac_incident_report"
+                layout="@layout/layout_cardiac_incident_report" />
+
+            <include
+                android:id="@+id/layout_triage_incident_report"
+                layout="@layout/layout_triage_incident_report" />
 
             <include
                 android:id="@+id/layout_view_incident_report"

@@ -26,7 +26,6 @@ public class EmsRequest implements Serializable {
     private String providerFeedbackReason;
     private String providerProfession;
     private String incidentReportId;
-    private long createdAt;
     private String submittedBy;
     private String title;// report title
     private String description;// report comment
@@ -226,14 +225,6 @@ public class EmsRequest implements Serializable {
         this.incidentReportId = incidentReportId;
     }
 
-    public long getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(long createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public String getSubmittedBy() {
         return submittedBy;
     }
@@ -372,7 +363,6 @@ public class EmsRequest implements Serializable {
                 ", providerFeedbackReason='" + providerFeedbackReason + '\'' +
                 ", providerProfession='" + providerProfession + '\'' +
                 ", incidentReportId='" + incidentReportId + '\'' +
-                ", createdAt=" + createdAt +
                 ", submittedBy='" + submittedBy + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

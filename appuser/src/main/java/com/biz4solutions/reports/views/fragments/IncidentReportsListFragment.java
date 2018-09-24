@@ -15,17 +15,17 @@ import android.widget.AdapterView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
-import com.biz4solutions.databinding.FragmentIncidentReportsListBinding;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
-import com.biz4solutions.reports.views.adapters.ReportsListViewAdapter;
+import com.biz4solutions.R;
+import com.biz4solutions.databinding.FragmentIncidentReportsListBinding;
+import com.biz4solutions.main.views.activities.MainActivity;
+import com.biz4solutions.reports.adapters.ReportsListViewAdapter;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.ArrayList;
@@ -67,7 +67,8 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
         initswipeContainer();
         initListView();
 
-        if (adapter == null) {
+        if (adapter == null || mainActivity.isUpdateIncidentReportList) {
+            mainActivity.isUpdateIncidentReportList = false;
             getNewRequestList(true);
         }
         return binding.getRoot();
@@ -222,6 +223,9 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
     }
 
     private void openIncidentReportDetailsFragment(EmsRequest request, User userDetails) {
+        if (request != null) {
+            request.setUserDetails(userDetails);
+        }
         Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof IncidentReportDetailsFragment) {
             return;
@@ -229,7 +233,7 @@ public class IncidentReportsListFragment extends Fragment implements AdapterView
         mainActivity.getSupportFragmentManager().executePendingTransactions();
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance(request, userDetails))
+                .replace(R.id.main_container, IncidentReportDetailsFragment.newInstance(request))
                 .addToBackStack(IncidentReportDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }

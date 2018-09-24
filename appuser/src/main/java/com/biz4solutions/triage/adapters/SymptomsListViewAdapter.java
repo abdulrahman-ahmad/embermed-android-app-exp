@@ -1,4 +1,4 @@
-package com.biz4solutions.adapters;
+package com.biz4solutions.triage.adapters;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;

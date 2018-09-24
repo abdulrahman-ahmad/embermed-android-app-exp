@@ -33,7 +33,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
     private FragmentFeedbackBinding binding;
     private final static String REQUEST_ID = "REQUEST_ID";
     private String requestId;
-    private boolean isFromIncidentReport;
+    public boolean isFromIncidentReport;
 
     public FeedbackFragment() {
         // Required empty public constructor
@@ -139,7 +139,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        FeedbackRequest feedbackRequest = new FeedbackRequest();
+        final FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setComment(binding.edtComment.getText().toString().trim());
         feedbackRequest.setRequestId(requestId);
         feedbackRequest.setRating(binding.rbRatingBar.getRating());
@@ -149,7 +149,13 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 //CommonFunctions.getInstance().dismissProgressDialog();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
-                openTriageIncidentReportFragment();
+                if (isFromIncidentReport) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    mainActivity.feedbackRequest = feedbackRequest;
+                    mainActivity.getSupportFragmentManager().popBackStack();
+                } else {
+                    openTriageIncidentReportFragment();
+                }
             }
 
             @Override

@@ -10,7 +10,8 @@
         android:orientation="vertical"
         android:paddingEnd="@dimen/_16dp"
         android:paddingStart="@dimen/_16dp"
-        android:paddingTop="@dimen/_16dp">
+        android:paddingTop="@dimen/_16dp"
+        tools:ignore="SpUsage">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,6 +57,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
+                android:paddingBottom="@dimen/_5dp"
                 android:fontFamily="sans-serif"
                 android:maxLines="4"
                 android:textColor="@color/text_color"
@@ -126,10 +128,6 @@
                     android:visibility="gone" />
 
             </RelativeLayout>
-
         </LinearLayout>
-
-
     </LinearLayout>
-
 </layout>

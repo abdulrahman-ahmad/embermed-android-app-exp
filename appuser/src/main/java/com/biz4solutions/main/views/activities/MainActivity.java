@@ -45,6 +45,7 @@ import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
+    public boolean isUpdateIncidentReportList = false;
+    public FeedbackRequest feedbackRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +112,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            doLogOut();
+                            unauthorizedLogOut(intent.getStringExtra(Constants.LOGOUT_MESSAGE));
                             break;
                     }
                 }
@@ -119,6 +121,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.LOGOUT_RECEIVER);
         registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    private void unauthorizedLogOut(String message) {
+        if (message != null && !message.isEmpty()) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        }
+        doLogOut();
     }
 
     @Override
@@ -426,6 +437,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 return;
             }
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             switch (fragmentName) {
                 case NewsFeedFragment.fragmentName:
@@ -452,11 +464,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     unconsciousOnBackClick();
                     break;
                 case EmsAlertCardiacCallFragment.fragmentName:
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
                     showCancelRequestAlert(((EmsAlertCardiacCallFragment) currentFragment).requestId);
                     break;
-                case TriageCallWaitingFragment.fragmentName:
                 case FeedbackFragment.fragmentName:
+                    if (currentFragment instanceof FeedbackFragment) {
+                        if (((FeedbackFragment) currentFragment).isFromIncidentReport) {
+                            getSupportFragmentManager().popBackStack();
+                        } /*else {
+                            // do nothing
+                        }*/
+                    }
+                    break;
+                case TriageCallWaitingFragment.fragmentName:
                 case TriageCallFeedbackWaitingFragment.fragmentName:
                     // not do any think
                     break;
