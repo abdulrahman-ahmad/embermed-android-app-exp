@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.biz4solutions.triage.viewmodels.UrgentCareMapViewModel" />
+            type="com.biz4solutions.provider.aedmaps.viewmodels.AedMapViewModel" />
     </data>
 
     <RelativeLayout

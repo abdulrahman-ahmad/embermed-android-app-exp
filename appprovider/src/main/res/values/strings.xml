@@ -68,4 +68,6 @@
     <string name="info_add_subscription_plan">How to subscribe?</string>
 
     <string name="caller_rating">Caller Rating:</string>
+
+    <string name="book_uber">Book Uber</string>
 </resources>

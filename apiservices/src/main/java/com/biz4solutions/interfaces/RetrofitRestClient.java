@@ -103,6 +103,9 @@ public interface RetrofitRestClient {
     @GET("v1/users/getUrgentCareList")
     Call<UrgentCaresResponse> getUrgentCareList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
 
+    @GET("/api/v1/provider/getAedList")
+    Call<UrgentCaresResponse> getAedList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
+
     @GET("v1/users/getUserCompletedRequestList")
     Call<EmsRequestResponse> getUserCompletedRequestList(@Query("page") int page, @Query("size") int size);
 

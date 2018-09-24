@@ -158,6 +158,11 @@ public class ApiServices {
                 .getUrgentCareList(0, 2000, latitude, longitude));
     }
 
+    public void getAedList(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getAedList(0, 2000, latitude, longitude));
+    }
+
     public void getUserCompletedRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getUserCompletedRequestList(page, 20));

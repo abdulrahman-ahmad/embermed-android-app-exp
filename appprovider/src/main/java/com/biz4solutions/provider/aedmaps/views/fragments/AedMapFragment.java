@@ -1,4 +1,4 @@
-package com.biz4solutions.triage.views.fragments;
+package com.biz4solutions.provider.aedmaps.views.fragments;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.content.pm.PackageManager;
@@ -11,29 +11,29 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.biz4solutions.R;
-import com.biz4solutions.databinding.FragmentUrgentCareMapBinding;
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.response.UrgentCaresDataResponse;
-import com.biz4solutions.triage.viewmodels.UrgentCareMapViewModel;
-import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.aedmaps.viewmodels.AedMapViewModel;
+import com.biz4solutions.provider.databinding.FragmentAedMapBinding;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.google.android.gms.maps.SupportMapFragment;
 
-public class UrgentCareMapFragment extends Fragment {
+public class AedMapFragment extends Fragment {
 
-    public static final String fragmentName = "UrgentCareMapFragment";
+    public static final String fragmentName = "AedMapFragment";
     private MainActivity mainActivity;
-    private FragmentUrgentCareMapBinding binding;
+    private FragmentAedMapBinding binding;
     private final static String URGENT_CARES_RESPONSE = "URGENT_CARES_RESPONSE";
     private UrgentCaresDataResponse urgentCaresDataResponse;
-    private UrgentCareMapViewModel viewModel;
+    private AedMapViewModel viewModel;
 
-    public UrgentCareMapFragment() {
+    public AedMapFragment() {
         // Required empty public constructor
     }
 
-    public static UrgentCareMapFragment newInstance(UrgentCaresDataResponse urgentCaresDataResponse) {
-        UrgentCareMapFragment fragment = new UrgentCareMapFragment();
+    public static AedMapFragment newInstance(UrgentCaresDataResponse urgentCaresDataResponse) {
+        AedMapFragment fragment = new AedMapFragment();
         Bundle args = new Bundle();
         args.putSerializable(URGENT_CARES_RESPONSE, urgentCaresDataResponse);
         fragment.setArguments(args);
@@ -54,12 +54,13 @@ public class UrgentCareMapFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            mainActivity.toolbarTitle.setText(R.string.urgent_cares_around_you_text);
+            mainActivity.toolbarTitle.setText(R.string.aed_maps);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
         initMapView();
         return binding.getRoot();
     }
+
 
     private void initBindingView(@NonNull LayoutInflater inflater, ViewGroup container) {
         if (binding != null) {
@@ -69,8 +70,8 @@ public class UrgentCareMapFragment extends Fragment {
             }
         }
         try {
-            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_urgent_care_map, container, false);
-            viewModel = new ViewModelProvider(this, new UrgentCareMapViewModel.UrgentCareMapFactory(getContext(), urgentCaresDataResponse)).get(UrgentCareMapViewModel.class);
+            binding = DataBindingUtil.inflate(inflater, R.layout.fragment_aed_map, container, false);
+            viewModel = new ViewModelProvider(this, new AedMapViewModel.AedMapFactory(getContext(), urgentCaresDataResponse)).get(AedMapViewModel.class);
             binding.setViewModel(viewModel);
             binding.setLifecycleOwner(this);
         } catch (Exception e) {

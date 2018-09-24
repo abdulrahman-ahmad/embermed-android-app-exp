@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -39,8 +40,11 @@ import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
+import com.biz4solutions.models.response.UrgentCaresDataResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.aedmaps.views.fragments.AedMapFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
@@ -56,6 +60,7 @@ import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFra
 import com.biz4solutions.provider.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
+import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
@@ -81,6 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
+    private boolean isAedApiInProgress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +253,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case PERMISSION_REQUEST_CODE:
                         startVideoCall(tempRequest);
                         break;
+                    case 102:
+                        getAedList();
+                        break;
                 }
             }
         } catch (Exception e) {
@@ -268,6 +277,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_news_feed:
                         openNewsFeedFragment();
+                        break;
+                    case R.id.nav_aed_maps:
+                        getAedList();
                         break;
                     case R.id.nav_log_out:
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
@@ -699,6 +711,91 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, TriageCallerFeedbackFragment.newInstance(requestId))
                     .addToBackStack(TriageCallerFeedbackFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isLocationPermissionGranted(int requestCode) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+                this.requestPermissions(perms, requestCode);
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private void getAedList() {
+        if (!isLocationPermissionGranted(102) || !CommonFunctions.getInstance().isGPSEnabled(this)) {
+            return;
+        }
+
+        if (CommonFunctions.getInstance().isOffline(this)) {
+            Toast.makeText(this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(this);
+        GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
+            @Override
+            public void onSuccess(double latitude, double longitude) {
+                if (isAedApiInProgress) {
+                    return;
+                }
+                if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                isAedApiInProgress = true;
+                new ApiServices().getAedList(MainActivity.this, latitude, longitude, new RestClientResponse() {
+                    @Override
+                    public void onSuccess(Object response, int statusCode) {
+                        isAedApiInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        try {
+                            UrgentCaresResponse urgentCaresResponse = (UrgentCaresResponse) response;
+                            Toast.makeText(MainActivity.this, urgentCaresResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            openAedMapFragment(urgentCaresResponse.getData());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, int statusCode) {
+                        isAedApiInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(MainActivity.this, R.string.error_location_fetch, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openAedMapFragment(UrgentCaresDataResponse response) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof AedMapFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, AedMapFragment.newInstance(response))
+                    .addToBackStack(AedMapFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
