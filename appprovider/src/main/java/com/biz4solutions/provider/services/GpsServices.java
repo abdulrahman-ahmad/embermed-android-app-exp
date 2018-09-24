@@ -20,7 +20,6 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -148,8 +147,8 @@ public class GpsServices extends Service implements LocationListener {
             }
             NotificationCompat.Builder mNotifyBuilder = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
                     .setSmallIcon(R.drawable.icon_notification_tranperant)
-                    .setLargeIcon(BitmapFactory.decodeResource(service.getResources(), R.drawable.icon_notification))
-                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setLargeIcon(BitmapFactory.decodeResource(service.getResources(), R.mipmap.ic_launcher))
+//                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                     .setContentTitle(service.getString(R.string.info_notification_title))
                     .setOngoing(true)
                     .setAutoCancel(false)

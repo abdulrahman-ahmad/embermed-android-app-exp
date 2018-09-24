@@ -70,6 +70,8 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
             case R.id.cv_cardiac_service:
                 openAlertFragment();
                 break;
+            case R.id.cv_triage_service:
+                break;
             default:
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                 break;

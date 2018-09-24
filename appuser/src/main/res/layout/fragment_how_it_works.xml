@@ -10,7 +10,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            tools:ignore="SpUsage,UnusedAttribute,RtlSymmetry,ContentDescription">
+            tools:ignore="SpUsage, UnusedAttribute, RtlSymmetry, ContentDescription">
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_cardiac_service"
@@ -25,7 +25,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_triage_service"
-                style="@style/cv_how_it_works">
+                style="@style/cv_how_it_works"
+                android:layout_marginBottom="@dimen/_20dp">
 
                 <TextView
                     style="@style/tv_how_it_works"
@@ -37,7 +38,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_change_subscription"
-                style="@style/cv_how_it_works">
+                style="@style/cv_how_it_works"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/tv_how_it_works"
@@ -49,7 +51,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_add_subscription"
-                style="@style/cv_how_it_works">
+                style="@style/cv_how_it_works"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/tv_how_it_works"
@@ -59,5 +62,8 @@
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
+        <!-- Add -->
+        <!-- android:layout_marginBottom="@dimen/_20dp" -->
+        <!-- for last layout -->
     </ScrollView>
 </layout>
