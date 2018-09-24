@@ -402,6 +402,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                 if (Constants.STATUS_IMMEDIATE.equals("" + request.getPriority())) {
                     request.setTitle(binding.layoutCardiacIncidentReport.edtTitle.getText().toString().trim());
                     request.setDescription(binding.layoutCardiacIncidentReport.edtComment.getText().toString().trim());
+                    request.setIsVictimLifeSaved(binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.isChecked());
                 } else {
                     request.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());
                     request.setDescription(binding.layoutTriageIncidentReport.edtComment.getText().toString().trim());

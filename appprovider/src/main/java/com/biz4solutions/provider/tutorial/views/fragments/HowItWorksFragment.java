@@ -66,9 +66,9 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cv_cardiac_service:
+            /*case R.id.cv_cardiac_service:
                 openAlertFragment();
-                break;
+                break;*/
             default:
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
                 break;
