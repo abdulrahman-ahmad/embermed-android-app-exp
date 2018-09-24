@@ -75,8 +75,6 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
     private ArrayList<MapClusterItem> clusterItems;
     public final ObservableBoolean showUberLayout;
 
-
-    //todo:Need to check the permission flow
     private AedMapViewModel(Context context, UrgentCaresDataResponse urgentCaresDataResponse) {
         //initMapView();
         this.context = context;
