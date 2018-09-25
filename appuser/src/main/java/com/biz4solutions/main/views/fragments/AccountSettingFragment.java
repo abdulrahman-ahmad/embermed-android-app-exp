@@ -14,10 +14,11 @@ import com.biz4solutions.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.NavigationUtil;
 
-public class AccountSettingFragment extends Fragment {
+public class AccountSettingFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "AccountSettingFragment";
     private MainActivity mainActivity;
+    private FragmentAccountSettingBinding binding;
 
     public AccountSettingFragment() {
         // Required empty public constructor
@@ -36,11 +37,11 @@ public class AccountSettingFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        FragmentAccountSettingBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_setting, container, false);
-//        FragmentViewProfileBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_profile, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_setting, container, false);
         initActivity();
         return binding.getRoot();
     }
+
 
     private void initActivity() {
         mainActivity = (MainActivity) getActivity();
@@ -65,5 +66,17 @@ public class AccountSettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initListeners();
+    }
+
+    private void initListeners() {
+        binding.cvMyProfile.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == binding.cvMyProfile.getId()) {
+            mainActivity.openProfileFragment();
+        }
     }
 }

@@ -4,12 +4,15 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/login_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_left_right_margin"
+            android:layout_marginRight="@dimen/default_left_right_margin"
             android:background="@android:color/transparent"
             android:orientation="vertical">
 
@@ -25,8 +28,8 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_centerInParent="true"
-                    android:layout_marginBottom="30dp"
                     android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
                     android:gravity="center">
 
                     <ImageView
@@ -36,19 +39,19 @@
                         android:layout_centerInParent="true"
                         android:contentDescription="@null"
                         android:focusable="true"
-                        android:src="@android:drawable/ic_menu_camera" />
+                        android:src="@drawable/ic_default_profile_pic" />
 
 
                     <ImageView
-                        android:id="@+id/iv_appr_upload_photo"
+                        android:id="@+id/iv_upload_photo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
                         android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
                         android:layout_marginTop="10dp"
                         android:contentDescription="@null"
                         android:padding="3dp"
-                        android:src="@android:drawable/ic_menu_camera" />
+                        android:src="@drawable/ic_upload_profile_pic" />
 
                 </RelativeLayout>
 
@@ -66,21 +69,16 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_left_right_margin"
-                    android:layout_marginRight="@dimen/default_left_right_margin"
-                    android:fontFamily="sans-serif-light"
+                    style="@style/edt_profile_label"
                     android:text="@string/first_name"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_10dp"
                     tools:ignore="SpUsage" />
 
                 <EditText
                     android:id="@+id/edt_first_name"
-                    style="@style/EditTextStyle"
+                    style="@style/profile_edt_style"
                     android:hint="@string/first_name"
                     android:inputType="textWebEmailAddress"
+                    android:maxLength="50"
                     android:theme="@style/EditTextHint" />
             </LinearLayout>
 
@@ -90,21 +88,16 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_left_right_margin"
-                    android:layout_marginRight="@dimen/default_left_right_margin"
-                    android:fontFamily="sans-serif-light"
+                    style="@style/edt_profile_label"
                     android:text="@string/last_name"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_10dp"
                     tools:ignore="SpUsage" />
 
                 <EditText
                     android:id="@+id/edt_last_name"
-                    style="@style/EditTextStyle"
+                    style="@style/profile_edt_style"
                     android:hint="@string/last_name"
                     android:inputType="textWebEmailAddress"
+                    android:maxLength="50"
                     android:theme="@style/EditTextHint" />
             </LinearLayout>
 
@@ -114,21 +107,16 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_left_right_margin"
-                    android:layout_marginRight="@dimen/default_left_right_margin"
-                    android:fontFamily="sans-serif-light"
+                    style="@style/edt_profile_label"
                     android:text="@string/email"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_10dp"
                     tools:ignore="SpUsage" />
 
                 <EditText
                     android:id="@+id/edt_email"
-                    style="@style/EditTextStyle"
+                    style="@style/profile_edt_style"
                     android:hint="@string/email"
-                    android:inputType="textWebEmailAddress"
+                    android:enabled="false"
+                    android:inputType="none"
                     android:theme="@style/EditTextHint" />
             </LinearLayout>
 
@@ -138,44 +126,42 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/default_left_right_margin"
-                    android:layout_marginRight="@dimen/default_left_right_margin"
-                    android:fontFamily="sans-serif-light"
+                    style="@style/edt_profile_label"
                     android:text="@string/date_of_birth"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/_10dp"
                     tools:ignore="SpUsage" />
 
                 <EditText
                     android:id="@+id/edt_dob"
-                    style="@style/EditTextStyle"
+                    style="@style/profile_edt_style"
+                    android:drawableEnd="@drawable/ic_calendar"
+                    android:gravity="center_vertical"
                     android:hint="@string/date_of_birth"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="none"
                     android:theme="@style/EditTextHint" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/default_left_right_margin"
-                android:layout_marginRight="@dimen/default_left_right_margin">
+                android:layout_height="@dimen/_40dp"
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/txt_patient_disease_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:ellipsize="end"
-                    android:fontFamily="sans-serif-medium"
+                    android:fontFamily="sans-serif-light"
                     android:singleLine="true"
                     android:text="@string/gender"
-                    android:textColor="@color/text_color" />
+                    android:textColor="@color/text_hint_color"
+                    android:textSize="@dimen/_12dp" />
 
                 <RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="2"
                     android:orientation="horizontal"
                     tools:ignore="RtlHardcoded">
 
@@ -183,25 +169,32 @@
                         android:id="@+id/rdb_victim_life_saved_yes"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:buttonTint="@color/colorPrimary"
                         android:text="@string/male"
-                        android:textColor="@color/text_color" />
+                        android:textColor="@color/colorPrimary" />
 
                     <RadioButton
                         android:id="@+id/rdb_victim_life_saved_no"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
+                        android:buttonTint="@color/colorPrimary"
                         android:text="@string/female"
-                        android:textColor="@color/text_color" />
+                        android:textColor="@color/colorPrimary" />
                 </RadioGroup>
 
             </LinearLayout>
 
+            <View
+                style="@style/divider"
+                android:layout_marginTop="@dimen/_8dp"
+                android:background="@color/text_hint_color" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginBottom="@dimen/_40dp"
                 android:layout_marginTop="@dimen/_40dp"
+                android:layout_marginBottom="@dimen/_40dp"
                 android:layout_weight="325"
                 android:gravity="center"
                 android:weightSum="1080">
@@ -209,9 +202,8 @@
                 <Button
                     android:id="@+id/btn_submit"
                     style="@style/BtnStyle"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_margin="0dp"
-                    android:layout_weight="500"
                     android:background="@drawable/ripple_default_button"
                     android:text="@string/save"
                     tools:ignore="NestedWeights" />

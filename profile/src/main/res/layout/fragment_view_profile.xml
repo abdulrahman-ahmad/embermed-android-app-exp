@@ -14,20 +14,19 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/_20dp">
 
-
             <ImageView
                 android:layout_width="@dimen/_100dp"
                 android:layout_height="@dimen/_100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_20dp"
-                android:src="@drawable/ic_logo" />
+                android:src="@drawable/ic_default_profile_pic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginEnd="@dimen/_20dp"
-                android:layout_marginStart="@dimen/_20dp"
+                android:layout_marginLeft="@dimen/default_left_right_margin"
                 android:layout_marginTop="@dimen/_10dp"
+                android:layout_marginRight="@dimen/default_left_right_margin"
                 android:orientation="vertical">
 
                 <TextView
@@ -38,7 +37,7 @@
                 <TextView
                     android:id="@+id/tv_first_name"
                     style="@style/tv_value"
-                    android:text="@string/first_name"
+                    tools:text="@string/first_name"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
@@ -51,7 +50,6 @@
                 <TextView
                     android:id="@+id/tv_last_name"
                     style="@style/tv_value"
-                    android:text="Smith"
                     tools:ignore="SpUsage"
                     tools:text="@tools:sample/last_names" />
 
@@ -64,8 +62,8 @@
 
                 <TextView
                     android:id="@+id/tv_email"
-                    style="@style/tv_value"
-                    android:text="Abc@mailinator.com"
+                    style="@style/tv_email_value"
+                    tools:text="Abc@mailinator.com"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
@@ -78,8 +76,8 @@
                 <TextView
                     android:id="@+id/tv_dob"
                     style="@style/tv_value"
-                    android:text="May 15, 1984"
-                    tools:ignore="SpUsage" />
+                    tools:ignore="SpUsage"
+                    tools:text="May 15, 1984" />
 
                 <View style="@style/divider" />
 
@@ -88,8 +86,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_15dp"
                     android:paddingTop="@dimen/_15dp"
+                    android:paddingBottom="@dimen/_15dp"
                     android:weightSum="10">
 
                     <TextView
@@ -105,18 +103,19 @@
                         style="@style/tv_center_value"
                         android:layout_width="0dp"
                         android:layout_marginTop="@dimen/_5dp"
-                        android:layout_weight="5"
-                        android:text="Male"
+                        android:layout_weight="6"
+                        android:text="@string/male"
                         tools:ignore="SpUsage" />
 
-                    <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="@dimen/_20dp"
-                        android:layout_gravity="center"
-                        android:layout_weight="1"
-                        android:background="@android:drawable/btn_dropdown"
-                        android:visibility="invisible" />
 
+                    <ImageView
+                        android:layout_width="@dimen/_20dp"
+                        android:layout_height="@dimen/_20dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_forward_arrow"
+                        android:visibility="invisible" />
                 </LinearLayout>
 
                 <View
@@ -128,8 +127,8 @@
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingBottom="@dimen/_15dp"
                     android:paddingTop="@dimen/_15dp"
+                    android:paddingBottom="@dimen/_15dp"
                     android:weightSum="10">
 
                     <TextView
@@ -144,21 +143,21 @@
                         android:id="@+id/tv_pwd"
                         style="@style/tv_center_value"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/_5dp"
-                        android:layout_weight="5"
-                        android:gravity="center_vertical"
                         android:layout_gravity="center_vertical"
-                        android:text="abcabc."
+                        android:layout_marginTop="@dimen/_5dp"
+                        android:layout_weight="6"
+                        android:gravity="center_vertical"
+                        tools:text="abcabc."
                         tools:ignore="SpUsage" />
 
                     <ImageView
-                        android:layout_width="0dp"
+                        android:layout_width="@dimen/_20dp"
                         android:layout_height="@dimen/_20dp"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_gravity="center_vertical|end"
+                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="1"
-                        android:background="@android:drawable/btn_dropdown" />
-
+                        android:contentDescription="@null"
+                        android:background="@drawable/ic_forward_arrow" />
                 </LinearLayout>
 
                 <View
@@ -166,7 +165,6 @@
                     android:layout_marginTop="@dimen/_8dp" />
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </layout>
