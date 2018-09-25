@@ -67,14 +67,16 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
 
+        initListView();
         if (mainActivity != null && mainActivity.isTutorialMode) {
+            getSymptomListForTutorial();
             showTutorial();
         } else {
             initswipeContainer();
+            getNewSymptomList(true);
             binding.btnSubmit.setOnClickListener(this);
         }
-        initListView();
-        getNewSymptomList(true);
+
         return binding.getRoot();
     }
 
@@ -199,6 +201,17 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     private void getNewSymptomList(boolean showLoader) {
         page = 0;
         getSymptomList(showLoader);
+    }
+
+    private void getSymptomListForTutorial() {
+        symptomList = new ArrayList<>();
+        symptomList.add(new Symptom("Symptom 1"));
+        symptomList.add(new Symptom("Symptom 2"));
+        symptomList.add(new Symptom("Symptom 3"));
+        symptomList.add(new Symptom("Symptom 4"));
+        adapter = new SymptomsListViewAdapter(symptomList);
+        binding.loadMoreListView.setAdapter(adapter);
+        setErrorView();
     }
 
     private void getSymptomList(boolean showLoader) {
