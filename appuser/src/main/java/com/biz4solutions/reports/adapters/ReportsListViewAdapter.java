@@ -2,6 +2,7 @@ package com.biz4solutions.reports.adapters;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,6 +76,7 @@ public class ReportsListViewAdapter extends BaseAdapter {
             } else {
                 binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
                 binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.VISIBLE);
+                binding.requestListCardiacItem.txtBottomTime.setTextColor(ContextCompat.getColor(binding.requestListCardiacItem.txtBottomTime.getContext(), R.color.dark_blue_text_color));
             }
         } else {
             binding.requestListTriageItem.cardView.setVisibility(View.VISIBLE);
@@ -90,6 +92,7 @@ public class ReportsListViewAdapter extends BaseAdapter {
             } else {
                 binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
                 binding.requestListTriageItem.ivPendingIcon.setVisibility(View.VISIBLE);
+                binding.requestListTriageItem.txtBottomTime.setTextColor(ContextCompat.getColor(binding.requestListTriageItem.txtBottomTime.getContext(), R.color.dark_blue_text_color));
             }
         }
         return binding.getRoot();
