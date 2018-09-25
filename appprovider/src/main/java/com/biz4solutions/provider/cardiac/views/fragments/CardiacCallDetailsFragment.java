@@ -251,6 +251,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                                 isAcceptedOpen = true;
                                 showMapRouteView();
                             }
+                            isShowAedClusters = true;
                         }
                     }
                     break;
@@ -539,10 +540,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 }
             }
             startLocationUpdates();
-            if (isShowAedClusters) {
-                isShowAedClusters = false;
-                plotAedClusters();
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -679,6 +676,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     isShowMapDirection = false;
                     showDirections();
                 }
+                if (isShowAedClusters) {
+                    isShowAedClusters = false;
+                    getAedList();
+                }
                 getDistance(location);
             }
         } catch (Exception e) {
@@ -770,6 +771,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void getAedList() {
+        if (googleMap == null) {
+            isShowAedClusters = true;
+            return;
+        }
         if (mLocation == null || isAedApiCalled) {
             return;
         }
@@ -787,11 +792,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                     if (urgentCaresResponse != null && urgentCaresResponse.getData() != null && urgentCaresResponse.getData().getList() != null && urgentCaresResponse.getData().getList().size() > 0) {
                         isAedApiCalled = true;
                         clusterList = urgentCaresResponse.getData().getList();
-                        if (googleMap != null) {
-                            plotAedClusters();
-                        } else {
-                            isShowAedClusters = true;
-                        }
+                        plotAedClusters();
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
