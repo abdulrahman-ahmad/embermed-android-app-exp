@@ -1,6 +1,7 @@
 package com.biz4solutions.provider.cardiac.views.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
@@ -34,8 +36,10 @@ import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.UrgentCare;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -43,11 +47,14 @@ import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentCardiacCallDetailsBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
+import com.biz4solutions.provider.utilities.CustomMapClusterRenderer;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
+import com.biz4solutions.provider.utilities.MapClusterItem;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -60,6 +67,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.maps.android.clustering.Cluster;
+import com.google.maps.android.clustering.ClusterManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,6 +108,12 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private BroadcastReceiver clockBroadcastReceiver;
     public String currentRequestId;
     public boolean isRequestAcceptedByMe = false;
+    private ClusterManager<MapClusterItem> clusterManager;
+    private ArrayList<MapClusterItem> clusterItems;
+    private MapClusterItem selectedClusterItem;
+    private boolean isAedApiCalled;
+    private ArrayList<UrgentCare> clusterList;
+    private boolean isShowAedClusters = false;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -348,6 +363,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 EmptyResponse createEmsResponse = (EmptyResponse) response;
                 CommonFunctions.getInstance().dismissProgressDialog();
                 showMapRouteView();
+                getAedList();
                 Toast.makeText(mainActivity, createEmsResponse.getMessage(), Toast.LENGTH_SHORT).show();
             }
 
@@ -510,8 +526,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         googleMap.getUiSettings().setCompassEnabled(false);
         addVictimMarker(requestDetails.getLatitude(), requestDetails.getLongitude());
         try {
-            if (mapView != null &&
-                    mapView.findViewById(Integer.parseInt("1")) != null) {
+            if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
                 // Get the button view
                 View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
                 if (locationButton != null) {
@@ -524,6 +539,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
                 }
             }
             startLocationUpdates();
+            if (isShowAedClusters) {
+                isShowAedClusters = false;
+                plotAedClusters();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -747,6 +766,123 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         public void run() {
             isTimerReset = true;
             reSetTimer();
+        }
+    }
+
+    private void getAedList() {
+        if (mLocation == null || isAedApiCalled) {
+            return;
+        }
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        new ApiServices().getAedList(mainActivity, mLocation.getLatitude(), mLocation.getLongitude(), new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                try {
+                    UrgentCaresResponse urgentCaresResponse = (UrgentCaresResponse) response;
+                    if (urgentCaresResponse != null && urgentCaresResponse.getData() != null && urgentCaresResponse.getData().getList() != null && urgentCaresResponse.getData().getList().size() > 0) {
+                        isAedApiCalled = true;
+                        clusterList = urgentCaresResponse.getData().getList();
+                        if (googleMap != null) {
+                            plotAedClusters();
+                        } else {
+                            isShowAedClusters = true;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                isAedApiCalled = false;
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void plotAedClusters() {
+        if (mainActivity == null || googleMap == null || clusterList == null || clusterList.isEmpty()) {
+            return;
+        }
+        if (clusterManager == null) {
+            clusterManager = new ClusterManager<>(mainActivity, googleMap);
+        }
+
+        clusterManager.setRenderer(new CustomMapClusterRenderer<>(mainActivity, googleMap, clusterManager));
+        clusterManager.clearItems();
+        clearItems();
+        googleMap.setInfoWindowAdapter(clusterManager.getMarkerManager());
+        googleMap.setOnMarkerClickListener(clusterManager);
+        //noinspection deprecation
+        googleMap.setOnCameraChangeListener(clusterManager);
+        clusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<MapClusterItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<MapClusterItem> cluster) {
+                if (cluster != null && googleMap != null) {
+                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                            .target(cluster.getPosition())
+                            .zoom(googleMap.getCameraPosition().zoom + 2).build();
+                    CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+                    googleMap.moveCamera(cameraUpdate);
+                }
+                return false;
+            }
+        });
+        clusterItems = new ArrayList<>();
+        clusterManager.getMarkerCollection().setOnInfoWindowAdapter(new MyCustomAdapterForItems());
+        clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(MapClusterItem clusterItem) {
+                selectedClusterItem = clusterItem;
+                return false;
+            }
+        });
+        for (int i = 0; i < clusterList.size(); i++) {
+            UrgentCare item = clusterList.get(i);
+            LatLng latLngCg = new LatLng(item.getLatitude(), item.getLongitude());
+            MapClusterItem urgentCareItem = new MapClusterItem(latLngCg, item.getId(), item.getName());
+            clusterItems.add(urgentCareItem);
+            clusterManager.addItem(urgentCareItem);
+        }
+
+        try {
+            clusterManager.cluster();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearItems() {
+        for (int i = 0; clusterItems != null && i < clusterItems.size(); i++) {
+            clusterItems.get(i).setMarker(null);
+        }
+    }
+
+    public class MyCustomAdapterForItems implements GoogleMap.InfoWindowAdapter {
+        private final View myContentsView;
+
+        @SuppressLint("InflateParams")
+        MyCustomAdapterForItems() {
+            myContentsView = (mainActivity.getLayoutInflater().inflate(R.layout.info_window, null));
+        }
+
+        @Override
+        public View getInfoWindow(Marker marker) {
+            TextView tvTitle = myContentsView.findViewById(R.id.txtTitle);
+            tvTitle.setText(selectedClusterItem.getName());
+            return myContentsView;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
         }
     }
 }
