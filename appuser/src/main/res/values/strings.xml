@@ -101,7 +101,9 @@
     <string name="tutorial_description_ems_yes_btn">Click here to create a cardiac call alert.</string>
     <string name="tutorial_title_ems_no_btn">Action 2</string>
     <string name="tutorial_description_ems_no_btn">Click here to create a triage call alert.</string>
-    <string name="tutorial_title_symptoms_submit_btn">Action 3</string>
-    <string name="tutorial_description_symptoms_submit_btn">Choose a symptom and click here to create a triage call alert.</string>
+    <string name="tutorial_title_symptoms_list">Action 3</string>
+    <string name="tutorial_description_symptoms_list">Click here to choose a symptom.</string>
+    <string name="tutorial_title_symptoms_submit_btn">Action 4</string>
+    <string name="tutorial_description_symptoms_submit_btn">Click here to create a triage call alert.</string>
 
 </resources>

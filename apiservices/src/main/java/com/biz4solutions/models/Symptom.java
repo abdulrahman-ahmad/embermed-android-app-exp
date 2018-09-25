@@ -6,7 +6,8 @@ public class Symptom {
     private String name;
     private String description;
 
-    public Symptom(String name) {
+    public Symptom(String id, String name) {
+        this.id = id;
         this.name = name;
     }
 

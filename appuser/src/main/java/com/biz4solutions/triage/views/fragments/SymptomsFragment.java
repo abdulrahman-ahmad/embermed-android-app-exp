@@ -70,7 +70,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         initListView();
         if (mainActivity != null && mainActivity.isTutorialMode) {
             getSymptomListForTutorial();
-            showTutorial();
         } else {
             initswipeContainer();
             getNewSymptomList(true);
@@ -205,11 +204,17 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
 
     private void getSymptomListForTutorial() {
         symptomList = new ArrayList<>();
-        symptomList.add(new Symptom("Symptom 1"));
-        symptomList.add(new Symptom("Symptom 2"));
-        symptomList.add(new Symptom("Symptom 3"));
-        symptomList.add(new Symptom("Symptom 4"));
-        adapter = new SymptomsListViewAdapter(symptomList);
+        symptomList.add(new Symptom("1", "Symptom 1"));
+        symptomList.add(new Symptom("2", "Symptom 2"));
+        symptomList.add(new Symptom("3", "Symptom 3"));
+        symptomList.add(new Symptom("4", "Symptom 4"));
+        symptomList.add(new Symptom("5", "Symptom 5"));
+        adapter = new SymptomsListViewAdapter(mainActivity, symptomList, new OnTargetClickListener() {
+            @Override
+            public void onTargetClick() {
+                showTutorial();
+            }
+        });
         binding.loadMoreListView.setAdapter(adapter);
         setErrorView();
     }
@@ -265,7 +270,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 page++;
 
                 if (adapter == null) {
-                    adapter = new SymptomsListViewAdapter(symptomList);
+                    adapter = new SymptomsListViewAdapter(mainActivity, symptomList, null);
                     binding.loadMoreListView.setAdapter(adapter);
                 } else {
                     adapter.add(symptomList);

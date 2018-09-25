@@ -511,7 +511,7 @@ public class TapTargetView extends View {
                 /*final boolean clickedInTarget =
                         distance(targetBounds.centerX(), targetBounds.centerY(), (int) lastTouchX, (int) lastTouchY) <= targetCircleRadius;*/
                 final boolean clickedInTarget = targetBounds.contains((int) lastTouchX, (int) lastTouchY);
-                        //distance(targetBounds.centerX(), targetBounds.centerY(), (int) lastTouchX, (int) lastTouchY) <= targetCircleRadius+20;
+                //distance(targetBounds.centerX(), targetBounds.centerY(), (int) lastTouchX, (int) lastTouchY) <= targetCircleRadius+20;
                 final double distanceToOuterCircleCenter = distance(outerCircleCenter[0], outerCircleCenter[1],
                         (int) lastTouchX, (int) lastTouchY);
                 final boolean clickedInsideOfOuterCircle = distanceToOuterCircleCenter <= outerCircleRadius;
@@ -686,7 +686,7 @@ public class TapTargetView extends View {
             }
             c.restoreToCount(saveCount);
         }
-        c.drawCircle(outerCircleCenter[0], outerCircleCenter[1], outerCircleRadius, outerCirclePaint);
+        c.drawCircle(outerCircleCenter[0], outerCircleCenter[1], outerCircleRadius + 100, outerCirclePaint);
 
         targetCirclePaint.setAlpha(targetCircleAlpha);
         if (targetCirclePulseAlpha > 0) {
@@ -703,7 +703,10 @@ public class TapTargetView extends View {
             }*/
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 c.drawRoundRect(targetBounds.left - targetCirclePulseRadius, targetBounds.top - targetCirclePulseRadius,
-                        targetBounds.right + targetCirclePulseRadius, targetBounds.bottom + targetCirclePulseRadius,500,500, targetCirclePulsePaint);
+                        targetBounds.right + targetCirclePulseRadius, targetBounds.bottom + targetCirclePulseRadius, 500, 500, targetCirclePulsePaint);
+            } else {
+                c.drawRect(targetBounds.left - targetCirclePulseRadius, targetBounds.top - targetCirclePulseRadius,
+                        targetBounds.right + targetCirclePulseRadius, targetBounds.bottom + targetCirclePulseRadius, targetCirclePulsePaint);
             }
         }
         /*c.drawCircle(targetBounds.centerX(), targetBounds.centerY(),
@@ -720,7 +723,10 @@ public class TapTargetView extends View {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             c.drawRoundRect(targetBounds.left - 10, targetBounds.top - 10,
-                    targetBounds.right + 10, targetBounds.bottom + 10,500,500, targetCirclePaint);
+                    targetBounds.right + 10, targetBounds.bottom + 10, 500, 500, targetCirclePaint);
+        } else {
+            c.drawRect(targetBounds.left - 10, targetBounds.top - 10,
+                    targetBounds.right + 10, targetBounds.bottom + 10, targetCirclePaint);
         }
 
         saveCount = c.save();
