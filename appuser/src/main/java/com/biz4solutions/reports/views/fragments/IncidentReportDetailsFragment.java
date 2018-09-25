@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentIncidentReportDetailsBinding;
@@ -322,8 +321,24 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
         if (v.getId() == binding.layoutCallerPending.mainLayout.getId()) {
             openFeedbackFragment();
         } else if (v.getId() == binding.layoutIncidentAmount.imgIncidentMap.getId()) {
-            //openMapFragment();
-            Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+            openMapFragment();
+        }
+    }
+
+    private void openMapFragment() {
+        try {
+            Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof CompleteLocationMapFragment) {
+                return;
+            }
+            mainActivity.getSupportFragmentManager().executePendingTransactions();
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, CompleteLocationMapFragment.newInstance(request.getProviderReachedLatitude(), request.getProviderReachedLongitude()))
+                    .addToBackStack(CompleteLocationMapFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

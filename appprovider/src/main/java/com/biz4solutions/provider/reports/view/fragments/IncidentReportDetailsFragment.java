@@ -40,6 +40,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
     private SimpleDateFormat formatterDate = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
     private SimpleDateFormat formatterTime = new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault());
     private Calendar calendar = Calendar.getInstance();
+    private IncidentReport tempIncidentReport;
 
     public IncidentReportDetailsFragment() {
         // Required empty public constructor
@@ -165,6 +166,9 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
         super.onResume();
         if (request != null && request.getUserRating() > 0) {
             binding.layoutRatedCallerDetails.rbRatingBar.setRating(request.getUserRating());
+        }
+        if (tempIncidentReport != null) {
+            setIncidentReportEditView();
         }
     }
 
@@ -336,8 +340,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
         if (v.getId() == binding.layoutCallerPending.mainLayout.getId()) {
             openFeedbackFragment();
         } else if (v.getId() == binding.layoutIncidentAmount.imgIncidentMap.getId()) {
-            //openMapFragment();
-            Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+            openMapFragment();
         } else if (v.getId() == binding.layoutCardiacIncidentReport.btnSubmit.getId()
                 || v.getId() == binding.layoutTriageIncidentReport.btnSubmit.getId()) {
             if (isFormValid()) {
@@ -349,6 +352,57 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                         }
                     }
                 });
+            }
+        }
+    }
+
+    private void openMapFragment() {
+        try {
+            Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof CompleteLocationMapFragment) {
+                return;
+            }
+            tempIncidentReport = getIncidentReport();
+            mainActivity.getSupportFragmentManager().executePendingTransactions();
+            mainActivity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, CompleteLocationMapFragment.newInstance(request.getProviderReachedLatitude(), request.getProviderReachedLongitude()))
+                    .addToBackStack(CompleteLocationMapFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private IncidentReport getIncidentReport() {
+        IncidentReport body = new IncidentReport();
+        if (Constants.STATUS_IMMEDIATE.equals("" + request.getPriority())) {
+            body.setTitle(binding.layoutCardiacIncidentReport.edtTitle.getText().toString().trim());
+            body.setComment(binding.layoutCardiacIncidentReport.edtComment.getText().toString().trim());
+            body.setVictimLifeSaved(binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.isChecked());
+        } else {
+            body.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());
+            body.setComment(binding.layoutTriageIncidentReport.edtComment.getText().toString().trim());
+        }
+        body.setRequestId(request.getId());
+        return body;
+    }
+
+    private void setIncidentReportEditView() {
+        if (tempIncidentReport != null && request != null) {
+            if (Constants.STATUS_IMMEDIATE.equals("" + request.getPriority())) {
+                binding.layoutCardiacIncidentReport.edtTitle.setText(tempIncidentReport.getTitle());
+                binding.layoutCardiacIncidentReport.edtComment.setText(tempIncidentReport.getComment());
+                if (tempIncidentReport.isVictimLifeSaved()) {
+                    binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.setChecked(true);
+                    binding.layoutCardiacIncidentReport.rdbVictimLifeSavedNo.setChecked(false);
+                } else {
+                    binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.setChecked(false);
+                    binding.layoutCardiacIncidentReport.rdbVictimLifeSavedNo.setChecked(true);
+                }
+            } else {
+                binding.layoutTriageIncidentReport.edtTitle.setText(tempIncidentReport.getTitle());
+                binding.layoutTriageIncidentReport.edtComment.setText(tempIncidentReport.getComment());
             }
         }
     }
@@ -381,18 +435,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        IncidentReport body = new IncidentReport();
-        if (Constants.STATUS_IMMEDIATE.equals("" + request.getPriority())) {
-            body.setTitle(binding.layoutCardiacIncidentReport.edtTitle.getText().toString().trim());
-            body.setComment(binding.layoutCardiacIncidentReport.edtComment.getText().toString().trim());
-            body.setVictimLifeSaved(binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.isChecked());
-        } else {
-            body.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());
-            body.setComment(binding.layoutTriageIncidentReport.edtComment.getText().toString().trim());
-        }
-        body.setRequestId(request.getId());
-
-        new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {
+        new ApiServices().submitIncidentReport(mainActivity, getIncidentReport(), new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 mainActivity.isUpdateIncidentReportList = true;
