@@ -1,0 +1,83 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": "123",
+      "isUnconscious": false,
+      "latitude": 18.5628324,
+      "longitude": 73.7825719,
+      "requestTime": 1537803647420,
+      "priority": "IMMEDIATE",
+      "amount": 250,
+      "patientDisease": "High Blood Pressure",
+      "userDetails": {
+        "userId": "123456",
+        "firstName": "Anna",
+        "lastName": "Malin",
+        "age": 44,
+        "gender": "Female"
+      },
+      "updatedAt": 1537803647420,
+      "patientSymptoms": "Breathing Problem",
+      "providerSpecialization": null,
+      "isIncidentReportSubmitted": null,
+      "completedAt": null,
+      "isCallRatingSubmitted": null,
+      "requestTimeForTutorial": "15 sec ago",
+      "distanceForTutorial": "1.8 mi"
+    },
+    {
+      "id": "123641",
+      "isUnconscious": false,
+      "latitude": 18.5628324,
+      "longitude": 73.7825719,
+      "requestTime": 1537803647420,
+      "priority": "IMMEDIATE",
+      "amount": 250,
+      "patientDisease": "High Blood Pressure",
+      "userDetails": {
+        "userId": "1234566514",
+        "firstName": "Steven",
+        "lastName": "Douglas",
+        "age": 44,
+        "gender": "Male"
+      },
+      "updatedAt": 1537803647420,
+      "patientSymptoms": "Breathing Problem",
+      "providerSpecialization": null,
+      "isIncidentReportSubmitted": null,
+      "completedAt": null,
+      "isCallRatingSubmitted": null,
+      "requestTimeForTutorial": "35 sec ago",
+      "distanceForTutorial": "1.2 mi"
+    },
+    {
+      "id": "1234",
+      "isUnconscious": false,
+      "latitude": 18.5628324,
+      "longitude": 73.7825719,
+      "requestTime": 1537803647420,
+      "priority": "HIGH",
+      "amount": 250,
+      "patientDisease": "High Blood Pressure",
+      "userDetails": {
+        "userId": "123456789",
+        "firstName": "David",
+        "lastName": "Millar",
+        "age": 30,
+        "gender": "Male"
+      },
+      "updatedAt": 1537803647420,
+      "patientSymptoms": "Breathing Problem",
+      "providerSpecialization": null,
+      "isIncidentReportSubmitted": null,
+      "completedAt": null,
+      "isCallRatingSubmitted": null,
+      "requestTimeForTutorial": "3 mins ago",
+      "distanceForTutorial": "4.5 mi"
+    }
+  ],
+  "page": 0,
+  "message": "Request list retrieved successfully.",
+  "status": "success"
+}

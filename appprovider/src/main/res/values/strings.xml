@@ -70,4 +70,7 @@
     <string name="caller_rating">Caller Rating:</string>
 
     <string name="book_uber">Book Uber</string>
+
+    <string name="tutorial_title_request_list">Action 1</string>
+    <string name="tutorial_description_request_list">Tap here to create an alert.</string>
 </resources>

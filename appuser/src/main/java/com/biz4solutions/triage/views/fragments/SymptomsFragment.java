@@ -302,7 +302,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 new OnTargetClickListener() {
                     @Override
                     public void onTargetClick() {
-                        mainActivity.reHowItWorksFragment();
+                        mainActivity.reOpenHowItWorksFragment();
                     }
                 });
     }

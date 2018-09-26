@@ -41,6 +41,9 @@ public class EmsRequest implements Serializable {
     private long triageCallDuration;
     private boolean isIncidentReportSubmitted;
 
+    private String requestTimeForTutorial;
+    private String distanceForTutorial;
+
     public String getId() {
         return id;
     }
@@ -335,6 +338,22 @@ public class EmsRequest implements Serializable {
 
     public void setProviderReachedLongitude(double providerReachedLongitude) {
         this.providerReachedLongitude = providerReachedLongitude;
+    }
+
+    public String getRequestTimeForTutorial() {
+        return requestTimeForTutorial;
+    }
+
+    public void setRequestTimeForTutorial(String requestTimeForTutorial) {
+        this.requestTimeForTutorial = requestTimeForTutorial;
+    }
+
+    public String getDistanceForTutorial() {
+        return distanceForTutorial;
+    }
+
+    public void setDistanceForTutorial(String distanceForTutorial) {
+        this.distanceForTutorial = distanceForTutorial;
     }
 
     @Override

@@ -25,7 +25,8 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_triage_service"
-                style="@style/cv_how_it_works">
+                style="@style/cv_how_it_works"
+                android:layout_marginBottom="@dimen/_20dp">
 
                 <TextView
                     style="@style/tv_how_it_works"
@@ -38,7 +39,8 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/cv_add_subscription"
                 style="@style/cv_how_it_works"
-                android:layout_marginBottom="@dimen/_20dp">
+                android:layout_marginBottom="@dimen/_20dp"
+                android:visibility="gone">
 
                 <TextView
                     style="@style/tv_how_it_works"

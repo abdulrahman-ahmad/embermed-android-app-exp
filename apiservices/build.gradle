@@ -46,7 +46,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.google.code.gson:gson:2.8.5'       // Retrofit web service call
+    api 'com.google.code.gson:gson:2.8.5'       // Retrofit web service call
     implementation 'com.squareup.retrofit2:retrofit:2.4.0' // Retrofit web service call
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0' // Retrofit web service call
     api project(':utilities')

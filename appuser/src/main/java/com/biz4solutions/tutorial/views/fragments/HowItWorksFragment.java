@@ -49,6 +49,7 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
     public void onResume() {
         super.onResume();
         mainActivity.isTutorialMode = false;
+        mainActivity.tutorialId = 0;
     }
 
     @Override
@@ -75,12 +76,12 @@ public class HowItWorksFragment extends Fragment implements View.OnClickListener
             case R.id.cv_cardiac_service:
                 mainActivity.isTutorialMode = true;
                 mainActivity.tutorialId = 1;
-                mainActivity.openDashBoardFragment();
+                mainActivity.openDashBoardFragmentWithAnimation();
                 break;
             case R.id.cv_triage_service:
                 mainActivity.isTutorialMode = true;
                 mainActivity.tutorialId = 2;
-                mainActivity.openDashBoardFragment();
+                mainActivity.openDashBoardFragmentWithAnimation();
                 break;
             default:
                 Toast.makeText(mainActivity, getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();

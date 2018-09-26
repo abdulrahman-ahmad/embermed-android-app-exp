@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
     private boolean isAedApiInProgress = false;
+    public boolean isTutorialMode = false;
+    public int tutorialId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -455,6 +457,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    public void openDashBoardFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof DashboardFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, DashboardFragment.newInstance())
+                .addToBackStack(DashboardFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void openNewsFeedFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof NewsFeedFragment) {
@@ -474,8 +489,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
                 .addToBackStack(FeedbackFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
@@ -717,12 +732,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private boolean isLocationPermissionGranted(int requestCode) {
+    private boolean isLocationPermissionGranted() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-                this.requestPermissions(perms, requestCode);
+                this.requestPermissions(perms, 102);
             } else {
                 return true;
             }
@@ -733,7 +748,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void getAedList() {
-        if (!isLocationPermissionGranted(102) || !CommonFunctions.getInstance().isGPSEnabled(this)) {
+        if (!isLocationPermissionGranted() || !CommonFunctions.getInstance().isGPSEnabled(this)) {
             return;
         }
 
@@ -826,6 +841,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
                     .addToBackStack(IncidentReportsListFragment.fragmentName)
                     .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenHowItWorksFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof HowItWorksFragment) {
+                return;
+            }
+            Toast.makeText(MainActivity.this, R.string.tutorial_end_message, Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().popBackStack(HowItWorksFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

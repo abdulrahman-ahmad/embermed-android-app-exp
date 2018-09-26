@@ -353,7 +353,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public void openDashBoardFragment() {
+    private void openDashBoardFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof DashboardFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, DashboardFragment.newInstance())
+                .addToBackStack(DashboardFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openDashBoardFragmentWithAnimation() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
             return;
@@ -798,7 +810,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void reHowItWorksFragment() {
+    public void reOpenHowItWorksFragment() {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof HowItWorksFragment) {

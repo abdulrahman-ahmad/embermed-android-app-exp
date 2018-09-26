@@ -161,7 +161,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
                     new OnTargetClickListener() {
                         @Override
                         public void onTargetClick() {
-                            mainActivity.reHowItWorksFragment();
+                            mainActivity.reOpenHowItWorksFragment();
                         }
                     });
         } else if (mainActivity.tutorialId == 2) {

@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -196,8 +197,12 @@ public class CommonFunctions implements Serializable {
     }
 
     public void dismissAlertDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
+        try {
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -312,5 +317,20 @@ public class CommonFunctions implements Serializable {
                 return false;
             }
         };
+    }
+
+    public String getAssetsJsonString(Context context, String fileName) {
+        String json = null;
+        try {
+            InputStream inputStream = context.getAssets().open(fileName);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            int read = inputStream.read(buffer);
+            inputStream.close();
+            json = new String(buffer, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

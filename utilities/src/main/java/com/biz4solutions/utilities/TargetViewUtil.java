@@ -5,6 +5,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.biz4solutions.customs.taptargetview.TapCircleTargetView;
+import com.biz4solutions.customs.taptargetview.TapRectTargetView;
 import com.biz4solutions.customs.taptargetview.TapTarget;
 import com.biz4solutions.customs.taptargetview.TapTargetSequence;
 import com.biz4solutions.customs.taptargetview.TapTargetView;
@@ -110,6 +111,32 @@ public class TargetViewUtil {
                         .transparentTarget(true), new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
                     @Override
                     public void onTargetClick(TapTargetView view) {
+                        super.onTargetClick(view);      // This call is optional
+                        if (onTargetClickListener != null) {
+                            onTargetClickListener.onTargetClick();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * @param activity    Activity
+     * @param title       title
+     * @param description usage-> new TargetViewUtil().showTargetRoundedForBtn(mainActivity, binding.btnNo, "No Button Title", "No button desc");
+     */
+    public static TapRectTargetView showTargetRectForBtn(Activity activity, View v, String title, String description, final OnTargetClickListener onTargetClickListener) {
+        return TapRectTargetView.showFor(activity,
+                TapTarget.forView(v, title, description)
+                        .targetRadius(20)
+                        .cancelable(false)
+                        .outerCircleAlpha(outerCircleAlpha)
+                        .descriptionTextAlpha(descriptionTextAlpha)
+                        .titleTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .outerCircleColor(R.color.colorPrimary)
+                        .transparentTarget(true), new TapRectTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                    @Override
+                    public void onTargetClick(TapRectTargetView view) {
                         super.onTargetClick(view);      // This call is optional
                         if (onTargetClickListener != null) {
                             onTargetClickListener.onTargetClick();
