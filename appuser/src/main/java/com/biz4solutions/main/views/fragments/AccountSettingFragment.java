@@ -1,5 +1,6 @@
 package com.biz4solutions.main.views.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentAccountSettingBinding;
+import com.biz4solutions.fragments.view.activities.ProfileActivity;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.NavigationUtil;
 
@@ -71,12 +73,16 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
 
     private void initListeners() {
         binding.cvMyProfile.setOnClickListener(this);
+        binding.cvSavedCards.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == binding.cvMyProfile.getId()) {
-            mainActivity.openProfileFragment();
+            // mainActivity.openProfileFragment();
+            startActivity(new Intent(mainActivity, ProfileActivity.class));
+        } else if (v.getId() == binding.cvSavedCards.getId()) {
+            //mainActivity.openEditProfileFragment();
         }
     }
 }

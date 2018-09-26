@@ -60,4 +60,8 @@
     <string name="error_empty_rating">Please give rating.</string>
     <string name="tutorial_end_message">Congratulation! You\'re educated now.</string>
     <string name="request_completed_marker_message">Request Completed\nLocation</string>
+
+
+    <!--filters-->
+    <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
 </resources>
