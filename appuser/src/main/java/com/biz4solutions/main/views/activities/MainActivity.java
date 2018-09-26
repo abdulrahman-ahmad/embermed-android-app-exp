@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     public LinearLayout btnLogOut;
+    public LinearLayout btnCall911;
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 124;
     private EmsRequest tempRequest;
@@ -103,7 +104,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
             btnLogOut = binding.appBarMain.btnLogOut;
+            btnCall911 = binding.appBarMain.btnCall911;
             btnLogOut.setOnClickListener(this);
+            btnCall911.setOnClickListener(this);
         }
 
         logoutBroadcastReceiver = new BroadcastReceiver() {
@@ -185,8 +188,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             openDashBoardFragment();
         }
-
-
     }
 
     @Override
@@ -784,9 +785,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View view) {
+        if (isTutorialMode) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.btn_log_out:
                 showLogOutAlertDialog();
+                break;
+            case R.id.btn_call_911:
+                Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                 break;
         }
     }

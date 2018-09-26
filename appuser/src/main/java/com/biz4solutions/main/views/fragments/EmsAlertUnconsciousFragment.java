@@ -47,19 +47,15 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.toolbarTitle.setText(R.string.ems_alert);
-            if (mainActivity.isTutorialMode) {
-                NavigationUtil.getInstance().hideMenu(mainActivity);
-            } else {
-                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-                NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
-                    @Override
-                    public void onBackPress() {
-                        if (!mainActivity.isTutorialMode) {
-                            mainActivity.unconsciousOnBackClick();
-                        }
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
+                @Override
+                public void onBackPress() {
+                    if (!mainActivity.isTutorialMode) {
+                        mainActivity.unconsciousOnBackClick();
                     }
-                });
-            }
+                }
+            });
         }
         if (mainActivity != null && mainActivity.isTutorialMode) {
             showTutorial();
@@ -184,13 +180,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mainActivity != null) {
-            if (mainActivity.isTutorialMode) {
-                NavigationUtil.getInstance().showMenu(mainActivity);
-            } else {
-                NavigationUtil.getInstance().hideBackArrow(mainActivity);
-            }
-        }
+        NavigationUtil.getInstance().hideBackArrow(mainActivity);
         if (tutorial != null) {
             tutorial.dismiss(false);
         }

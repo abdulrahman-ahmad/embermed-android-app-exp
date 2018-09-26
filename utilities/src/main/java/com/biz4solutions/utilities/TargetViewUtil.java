@@ -18,35 +18,8 @@ import java.util.ArrayList;
  */
 public class TargetViewUtil {
 
-//
-//    public void showTargetView(View v, Activity activity) {
-//        TapTargetView.showFor(activity,                 // `this` is an Activity
-//                TapTarget.forView(v, "This is a target", "We have the best targets, believe me")
-//                        // All options below are optional
-//                        .outerCircleColor(R.color.btn_bg_color)      // Specify a color for the outer circle
-////                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
-////                        .targetCircleColor(R.color.btn_bg_color)   // Specify a color for the target circle
-////                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
-////                        .titleTextColor(R.color.btn_bg_color)      // Specify the color of the title text
-////                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
-////                        .descriptionTextColor(R.color.rippelColor)  // Specify the color of the description text
-////                        .textColor(R.color.btn_bg_color)            // Specify a color for both the title and description text
-////                        .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
-////                        .dimColor(R.color.common_google_signin_btn_text_light_disabled)            // If set, will dim behind the view with 30% opacity of the given color
-////                        .drawShadow(true)                   // Whether to draw a drop shadow or not
-//                        .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
-////                        .tintTarget(true)                   // Whether to tint the target view's color
-////                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
-//                        .icon(v.getContext().getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark))              // Specify a custom drawable to draw as the target
-//                        .targetRadius(60),                  // Specify the target radius (in dp)
-//                new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
-//                    @Override
-//                    public void onTargetClick(TapTargetView view) {
-//                        super.onTargetClick(view);      // This call is optional
-//                        doSomething(view.getContext());
-//                    }
-//                });
-//    }
+    private static float outerCircleAlpha = 0.8f;
+    private static float descriptionTextAlpha = 0.8f;
 
     /**
      * @param activity Activity
@@ -55,9 +28,15 @@ public class TargetViewUtil {
      */
     public static void showTargetViewForToolbar(Activity activity, View v, String title, String description, boolean cancelable) {
         TapCircleTargetView.showFor(activity,
-                TapTarget.forToolbarNavigationIcon((Toolbar) v, title, description).cancelable(cancelable), null);
+                TapTarget.forToolbarNavigationIcon((Toolbar) v, title, description)
+                        .cancelable(cancelable)
+                        .outerCircleAlpha(outerCircleAlpha)
+                        .descriptionTextAlpha(descriptionTextAlpha)
+                        .titleTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .outerCircleColor(R.color.colorPrimary)
+                , null);
     }
-
 
     /**
      * @param activity    Activity
@@ -69,6 +48,11 @@ public class TargetViewUtil {
                 TapTarget.forView(v, title, description)
                         .targetRadius(100)
                         .cancelable(false)
+                        .outerCircleAlpha(outerCircleAlpha)
+                        .descriptionTextAlpha(descriptionTextAlpha)
+                        .titleTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .outerCircleColor(R.color.colorPrimary)
                         .transparentTarget(true), new TapCircleTargetView.Listener() {
                     @Override
                     public void onTargetClick(TapCircleTargetView view) {
@@ -92,6 +76,11 @@ public class TargetViewUtil {
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
                         .cancelable(false)
+                        .outerCircleAlpha(outerCircleAlpha)
+                        .descriptionTextAlpha(descriptionTextAlpha)
+                        .titleTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .outerCircleColor(R.color.colorPrimary)
                         .transparentTarget(true), new TapCircleTargetView.Listener() {
                     @Override
                     public void onTargetClick(TapCircleTargetView view) {
@@ -113,9 +102,12 @@ public class TargetViewUtil {
                 TapTarget.forView(v, title, description)
                         .targetRadius(20)
                         .cancelable(false)
-                        .transparentTarget(true),
-
-                new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+                        .outerCircleAlpha(outerCircleAlpha)
+                        .descriptionTextAlpha(descriptionTextAlpha)
+                        .titleTextColor(R.color.white)
+                        .textColor(R.color.white)
+                        .outerCircleColor(R.color.colorPrimary)
+                        .transparentTarget(true), new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
                     @Override
                     public void onTargetClick(TapTargetView view) {
                         super.onTargetClick(view);      // This call is optional
@@ -165,11 +157,47 @@ public class TargetViewUtil {
             targetModelArrayList.add(
                     TapTarget.forView(targetModel.getView(), targetModel.getTitle(), targetModel.getDesc())
                             .targetRadius(20)
+                            .cancelable(false)
+                            .outerCircleAlpha(outerCircleAlpha)
+                            .descriptionTextAlpha(descriptionTextAlpha)
+                            .titleTextColor(R.color.white)
+                            .textColor(R.color.white)
+                            .outerCircleColor(R.color.colorPrimary)
                             .targetCircleColor(R.color.colorPrimary)
-                            //.targetCircleColorInt(Color.parseColor("#FFFF00"))
                             .transparentTarget(true)
             );
         }
         return targetModelArrayList;
     }
+
+
+//
+//    public void showTargetView(View v, Activity activity) {
+//        TapTargetView.showFor(activity,                 // `this` is an Activity
+//                TapTarget.forView(v, "This is a target", "We have the best targets, believe me")
+//                        // All options below are optional
+//                        .outerCircleColor(R.color.btn_bg_color)      // Specify a color for the outer circle
+////                        .outerCircleAlpha(0.96f)            // Specify the alpha amount for the outer circle
+////                        .targetCircleColor(R.color.btn_bg_color)   // Specify a color for the target circle
+////                        .titleTextSize(20)                  // Specify the size (in sp) of the title text
+////                        .titleTextColor(R.color.btn_bg_color)      // Specify the color of the title text
+////                        .descriptionTextSize(10)            // Specify the size (in sp) of the description text
+////                        .descriptionTextColor(R.color.rippelColor)  // Specify the color of the description text
+////                        .textColor(R.color.btn_bg_color)            // Specify a color for both the title and description text
+////                        .textTypeface(Typeface.SANS_SERIF)  // Specify a typeface for the text
+////                        .dimColor(R.color.common_google_signin_btn_text_light_disabled)            // If set, will dim behind the view with 30% opacity of the given color
+////                        .drawShadow(true)                   // Whether to draw a drop shadow or not
+//                        .cancelable(false)                  // Whether tapping outside the outer circle dismisses the view
+////                        .tintTarget(true)                   // Whether to tint the target view's color
+////                        .transparentTarget(false)           // Specify whether the target is transparent (displays the content underneath)
+//                        .icon(v.getContext().getResources().getDrawable(R.drawable.common_google_signin_btn_icon_dark))              // Specify a custom drawable to draw as the target
+//                        .targetRadius(60),                  // Specify the target radius (in dp)
+//                new TapTargetView.Listener() {          // The listener can listen for regular clicks, long clicks or cancels
+//                    @Override
+//                    public void onTargetClick(TapTargetView view) {
+//                        super.onTargetClick(view);      // This call is optional
+//                        doSomething(view.getContext());
+//                    }
+//                });
+//    }
 }

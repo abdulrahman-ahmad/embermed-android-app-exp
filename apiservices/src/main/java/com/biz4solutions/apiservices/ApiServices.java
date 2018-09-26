@@ -178,4 +178,9 @@ public class ApiServices {
                 .getIncidentReportDetail(requestId));
     }
 
+    public void getServerTimeDiff(final Context context, long sysTime, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getServerTimeDiff(sysTime));
+    }
+
 }

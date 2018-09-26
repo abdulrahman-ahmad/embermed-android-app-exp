@@ -11,6 +11,7 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.models.response.ServerTimeDiffResponse;
 import com.biz4solutions.models.response.SymptomResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
@@ -114,4 +115,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/incidentReport/getIncidentReportDetail")
     Call<EmsRequestDetailsResponse> getIncidentReportDetail(@Query("requestId") String requestId);
+
+    @GET("v1/user/getDateDiff")
+    Call<ServerTimeDiffResponse> getServerTimeDiff(@Query("date") long sysTime);
 }

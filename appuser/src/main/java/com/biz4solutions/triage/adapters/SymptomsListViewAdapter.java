@@ -65,7 +65,7 @@ public class SymptomsListViewAdapter extends BaseAdapter {
             if (position == 3) {
                 TargetViewUtil.showTargetRoundedForBtn(mainActivity,
                         binding.txtName, mainActivity.getString(R.string.tutorial_title_symptoms_list),
-                        mainActivity.getString(R.string.tutorial_description_symptoms_submit_btn),
+                        mainActivity.getString(R.string.tutorial_description_symptoms_list),
                         new OnTargetClickListener() {
                             @Override
                             public void onTargetClick() {

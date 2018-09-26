@@ -45,12 +45,8 @@ public class DashboardFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_dashboard, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            if (mainActivity.isTutorialMode) {
-                NavigationUtil.getInstance().hideMenu(mainActivity);
-            } else {
-                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-                NavigationUtil.getInstance().showMenu(mainActivity);
-            }
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
+            NavigationUtil.getInstance().showMenu(mainActivity);
             mainActivity.toolbarTitle.setText(R.string.dashboard);
         }
         binding.mainRippleBackground.startRippleAnimation();
@@ -167,9 +163,6 @@ public class DashboardFragment extends Fragment {
         super.onDestroyView();
         if (tutorial != null) {
             tutorial.dismiss(false);
-        }
-        if (mainActivity.isTutorialMode) {
-            NavigationUtil.getInstance().showMenu(mainActivity);
         }
     }
 }

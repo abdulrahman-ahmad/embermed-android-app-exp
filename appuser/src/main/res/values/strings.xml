@@ -96,14 +96,14 @@
     <string name="patient_symptoms">Patient Symptom:</string>
 
     <string name="tutorial_title_dashboard">Action 1</string>
-    <string name="tutorial_description_dashboard">Click here to create an alert.</string>
+    <string name="tutorial_description_dashboard">Tap here to create an alert.</string>
     <string name="tutorial_title_ems_yes_btn">Action 2</string>
-    <string name="tutorial_description_ems_yes_btn">Click here to create a cardiac call alert.</string>
+    <string name="tutorial_description_ems_yes_btn">Tap here to create a cardiac call alert.</string>
     <string name="tutorial_title_ems_no_btn">Action 2</string>
-    <string name="tutorial_description_ems_no_btn">Click here to create a triage call alert.</string>
+    <string name="tutorial_description_ems_no_btn">Tap here to create a triage call alert.</string>
     <string name="tutorial_title_symptoms_list">Action 3</string>
-    <string name="tutorial_description_symptoms_list">Click here to choose a symptom.</string>
+    <string name="tutorial_description_symptoms_list">Tap here to choose a symptom.</string>
     <string name="tutorial_title_symptoms_submit_btn">Action 4</string>
-    <string name="tutorial_description_symptoms_submit_btn">Click here to create a triage call alert.</string>
+    <string name="tutorial_description_symptoms_submit_btn">Tap here to create a triage call alert.</string>
 
 </resources>

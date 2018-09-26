@@ -60,11 +60,10 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_symptoms, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            if (!mainActivity.isTutorialMode) {
-                mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
-            }
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.symptoms);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
+            mainActivity.btnCall911.setVisibility(View.VISIBLE);
         }
 
         initListView();
@@ -311,6 +310,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        mainActivity.btnCall911.setVisibility(View.GONE);
         if (mainActivity != null) {
             if (mainActivity.isTutorialMode) {
                 NavigationUtil.getInstance().showMenu(mainActivity);

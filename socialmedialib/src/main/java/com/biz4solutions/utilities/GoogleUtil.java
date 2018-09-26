@@ -62,7 +62,7 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
 
     public void doLogout() {
         try {
-            if(mGoogleApiClient != null) {
+            if (mGoogleApiClient != null) {
                 mGoogleApiClient.connect();
                 mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
                     @Override
@@ -95,7 +95,20 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
                     userData.setEmail(acct.getEmail());
                 }
                 if (acct.getDisplayName() != null) {
-                    userData.setFirstName(acct.getDisplayName());
+                    String parts[] = acct.getDisplayName().split(" ", 2);
+                    if (parts.length >= 1) {
+                        userData.setFirstName(parts[0]);
+                    } else {
+                        userData.setFirstName("");
+                    }
+                    if (parts.length >= 2) {
+                        userData.setLastName(parts[1]);
+                    } else {
+                        userData.setLastName("");
+                    }
+                } else {
+                    userData.setFirstName("");
+                    userData.setLastName("");
                 }
                 if (acct.getId() != null) {
                     userData.setSocialLoginId(acct.getId());
