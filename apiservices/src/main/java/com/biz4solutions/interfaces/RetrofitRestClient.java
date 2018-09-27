@@ -1,6 +1,7 @@
 package com.biz4solutions.interfaces;
 
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
@@ -118,4 +119,10 @@ public interface RetrofitRestClient {
 
     @GET("v1/user/getDateDiff")
     Call<ServerTimeDiffResponse> getServerTimeDiff(@Query("date") long sysTime);
+
+    @POST("/api/v1/provider/updateProfileDetail")
+    Call<EmptyResponse> updateProviderProfile(@Body User body);
+
+    @POST("/api/v1/users/updateProfileDetail")
+    Call<EmptyResponse> updateUserProfile(@Body User body);
 }

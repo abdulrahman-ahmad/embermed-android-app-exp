@@ -1,15 +1,17 @@
-package com.biz4solutions.fragments.view.activities;
+package com.biz4solutions.activities;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.biz4solutions.fragments.view.fragments.EditProfileFragment;
-import com.biz4solutions.fragments.view.fragments.ViewProfileFragment;
+import com.biz4solutions.fragments.EditProfileFragment;
+import com.biz4solutions.fragments.ViewProfileFragment;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.ActivityProfileBinding;
 
@@ -97,6 +99,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 getSupportFragmentManager().popBackStack();
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

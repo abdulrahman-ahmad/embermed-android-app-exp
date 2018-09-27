@@ -5,6 +5,7 @@ import android.content.Context;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
@@ -181,6 +182,16 @@ public class ApiServices {
     public void getServerTimeDiff(final Context context, long sysTime, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getServerTimeDiff(sysTime));
+    }
+
+    public void updateProviderProfile(final Context context, User user, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateProviderProfile(user));
+    }
+
+    public void updateUserProfile(final Context context, User user, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateUserProfile(user));
     }
 
 }

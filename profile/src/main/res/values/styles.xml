@@ -67,4 +67,21 @@
         <item name="colorControlNormal">@color/text_hint_color</item>
         <item name="colorControlActivated">@color/text_hint_color</item>
     </style>
+
+    <!--Calender View-->
+    <style name="MyCustomBetterPickersDialogs" >
+        <item name="bpPreHeaderBackgroundColor">@color/colorPrimary</item>
+        <item name="bpHeaderBackgroundColor">@color/colorPrimary</item>
+        <item name="bpHeaderSelectedTextColor">@color/white</item>
+        <item name="bpHeaderUnselectedTextColor">@color/white</item>
+        <item name="bpBodyBackgroundColor">@color/white</item>
+        <item name="bpBodySelectedTextColor">@color/colorPrimary</item>
+        <item name="bpBodyUnselectedTextColor">#000000</item>
+        <item name="bpRadialBackgroundColor">#FFEA7F5D</item>
+        <item name="bpRadialTextColor">@color/colorPrimary</item>
+        <item name="bpRadialPointerColor">@android:color/black</item>
+        <item name="bpButtonsBackgroundColor">#ffffff</item>
+        <item name="bpButtonsTextColor">@color/colorPrimary</item>
+    </style>
+
 </resources>

@@ -6,5 +6,7 @@
     <string name="other">Other</string>
     <string name="save">Save</string>
     <string name="save_n_proceed">Save &amp; Proceed</string>
-
+    <string name="label_change_password">Change Password</string>
+    <string name="gallery">Gallery</string>
+    <string name="capture">Capture</string>
 </resources>

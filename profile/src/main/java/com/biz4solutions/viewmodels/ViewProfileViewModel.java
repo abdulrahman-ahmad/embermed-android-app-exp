@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments.view.viewmodels;
+package com.biz4solutions.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

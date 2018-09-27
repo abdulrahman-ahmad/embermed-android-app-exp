@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments.utils;
+package com.biz4solutions.utilities;
 
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;

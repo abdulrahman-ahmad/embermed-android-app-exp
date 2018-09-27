@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name="com.biz4solutions.fragments.view.activities.ProfileActivity"
+            android:name="com.biz4solutions.activities.ProfileActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MainAppTheme"
             android:windowSoftInputMode="adjustResize|stateHidden" />

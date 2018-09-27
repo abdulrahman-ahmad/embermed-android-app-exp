@@ -6,7 +6,11 @@
 
         <variable
             name="viewmodel"
-            type="com.biz4solutions.fragments.view.viewmodels.EditProfileViewModel" />
+            type="com.biz4solutions.viewmodels.EditProfileViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.biz4solutions.fragments.EditProfileFragment" />
     </data>
 
     <ScrollView
@@ -54,6 +58,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="10dp"
+                        android:onClick="@{fragment.showAddMediaBottomSheet}"
                         android:contentDescription="@null"
                         android:padding="3dp"
                         android:src="@drawable/ic_upload_profile_pic" />
@@ -139,8 +144,8 @@
                     android:hint="@string/email"
                     android:paddingTop="@dimen/_10dp"
                     android:text="@{viewmodel.userData.email}"
-                    tools:text="abc@mailinator.com"
-                    android:theme="@style/EditTextHint" />
+                    android:theme="@style/EditTextHint"
+                    tools:text="abc@mailinator.com" />
             </android.support.design.widget.TextInputLayout>
 
             <View
@@ -150,23 +155,33 @@
             <!--style="@style/edt_profile_label"-->
             <!--android:text="@string/date_of_birth"-->
             <!--tools:ignore="SpUsage" />-->
+
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_15dp"
+                android:focusableInTouchMode="false"
+                android:orientation="vertical"
                 android:theme="@style/txtInputLayout">
 
                 <EditText
                     android:id="@+id/edt_dob"
-                    style="@style/profile_edt_style"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@null"
+                    android:clickable="true"
+                    android:cursorVisible="false"
                     android:drawableEnd="@drawable/ic_calendar"
+                    android:focusable="false"
                     android:gravity="center_vertical"
                     android:hint="@string/date_of_birth"
                     android:inputType="none"
+                    android:onClick="@{(v)->viewmodel.onDobEdtClick(v)}"
                     android:paddingTop="@dimen/_10dp"
-                    android:theme="@style/EditTextHint" />
+                    android:text="@{viewmodel.dateOfBirth}" />
             </android.support.design.widget.TextInputLayout>
+
 
             <View
                 style="@style/divider"

@@ -1,4 +1,4 @@
-package com.biz4solutions.fragments.view.fragments;
+package com.biz4solutions.fragments;
 
 import android.arch.lifecycle.ViewModelProvider;
 import android.databinding.DataBindingUtil;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.biz4solutions.fragments.view.activities.ProfileActivity;
-import com.biz4solutions.fragments.view.viewmodels.ViewProfileViewModel;
+import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.viewmodels.ViewProfileViewModel;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.profile.R;

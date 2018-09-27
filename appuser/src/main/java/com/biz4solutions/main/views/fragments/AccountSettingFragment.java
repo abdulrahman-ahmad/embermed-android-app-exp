@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentAccountSettingBinding;
-import com.biz4solutions.fragments.view.activities.ProfileActivity;
+import com.biz4solutions.activities.ProfileActivity;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.NavigationUtil;
 

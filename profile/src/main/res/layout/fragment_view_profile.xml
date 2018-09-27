@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.biz4solutions.fragments.view.viewmodels.ViewProfileViewModel" />
+            type="com.biz4solutions.viewmodels.ViewProfileViewModel" />
     </data>
 
     <ScrollView
@@ -147,7 +147,7 @@
                         style="@style/tv_center_label"
                         android:layout_width="0dp"
                         android:layout_weight="4"
-                        android:text="Change Password"
+                        android:text="@string/label_change_password"
                         tools:ignore="SpUsage" />
 
                     <EditText
