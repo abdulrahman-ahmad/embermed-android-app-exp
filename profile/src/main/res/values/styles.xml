@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/tools">
+<resources>
 
     <style name="tv_label">
         <item name="android:fontFamily">sans-serif-light</item>
@@ -6,12 +6,12 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/_12dp</item>
         <item name="android:textColor">@color/text_hint_color</item>
-        <item name="android:layout_marginTop">@dimen/_15dp</item>
+        <item name="android:layout_marginTop">@dimen/_12dp</item>
     </style>
 
-    <style name="edt_profile_label" parent="tv_label">
-        <item name="android:layout_marginTop">@dimen/_5dp</item>
-    </style>
+    <!--<style name="edt_profile_label" parent="tv_label">-->
+    <!--<item name="android:layout_marginTop">@dimen/_5dp</item>-->
+    <!--</style>-->
 
     <style name="tv_center_label" parent="tv_label">
         <item name="android:layout_marginTop">0dp</item>
@@ -36,7 +36,7 @@
 
     <style name="divider">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/text_color</item>
+        <item name="android:background">@color/text_hint_color</item>
         <item name="android:layout_height">0.7dp</item>
         <item name="android:layout_marginTop">@dimen/_10dp</item>
     </style>
@@ -47,14 +47,24 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:fontFamily">sans-serif</item>
         <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:layout_marginStart">-4dp</item>
         <item name="android:textColorHint">@color/text_hint_color</item>
         <item name="colorControlNormal">@color/text_hint_color</item>
         <item name="colorControlActivated">@color/text_hint_color</item>
         <item name="android:textCursorDrawable">@null</item>
-        <item name="android:textSize">@dimen/edit_text_size</item>
+        <item name="android:textSize">@dimen/_16dp</item>
         <!--<item name="android:importantForAutofill">no</item>-->
     </style>
 
+    <style name="profile_email_edt_style" parent="profile_edt_style">
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:background">@null</item>
+        <item name="android:enabled">false</item>
+        <item name="android:inputType">none</item>
+    </style>
 
+    <style name="txtInputLayout">
+        <item name="android:textColorHint">@color/text_hint_color</item>
+        <item name="colorControlNormal">@color/text_hint_color</item>
+        <item name="colorControlActivated">@color/text_hint_color</item>
+    </style>
 </resources>

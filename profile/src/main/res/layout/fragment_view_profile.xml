@@ -2,6 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.biz4solutions.fragments.view.viewmodels.ViewProfileViewModel" />
+    </data>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,30 +22,35 @@
             android:paddingBottom="@dimen/_20dp">
 
             <ImageView
+                circularImageUrl="@{viewModel.imageUrl}"
                 android:layout_width="@dimen/_100dp"
                 android:layout_height="@dimen/_100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@null"
                 android:src="@drawable/ic_default_profile_pic" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/default_left_right_margin"
-                android:layout_marginTop="@dimen/_10dp"
-                android:layout_marginRight="@dimen/default_left_right_margin"
+                android:layout_marginLeft="@dimen/_25dp"
+                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginRight="@dimen/_25dp"
                 android:orientation="vertical">
 
                 <TextView
                     style="@style/tv_label"
+                    android:layout_marginTop="0dp"
                     android:text="@string/first_name"
                     tools:ignore="SpUsage" />
 
                 <TextView
                     android:id="@+id/tv_first_name"
                     style="@style/tv_value"
-                    tools:text="@string/first_name"
-                    tools:ignore="SpUsage" />
+                    android:text="@{viewModel.userData.firstName}"
+                    tools:ignore="SpUsage"
+                    tools:text="@string/first_name" />
 
                 <View style="@style/divider" />
 
@@ -50,6 +62,7 @@
                 <TextView
                     android:id="@+id/tv_last_name"
                     style="@style/tv_value"
+                    android:text="@{viewModel.userData.lastName}"
                     tools:ignore="SpUsage"
                     tools:text="@tools:sample/last_names" />
 
@@ -63,7 +76,7 @@
                 <TextView
                     android:id="@+id/tv_email"
                     style="@style/tv_email_value"
-                    tools:text="Abc@mailinator.com"
+                    android:text="@{viewModel.userData.email}"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
@@ -76,24 +89,24 @@
                 <TextView
                     android:id="@+id/tv_dob"
                     style="@style/tv_value"
-                    tools:ignore="SpUsage"
-                    tools:text="May 15, 1984" />
+                    android:text="@{viewModel.userData.dob}"
+                    tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="@dimen/_15dp"
-                    android:paddingBottom="@dimen/_15dp"
+                    android:paddingTop="@dimen/_7dp"
+                    android:paddingBottom="@dimen/_7dp"
                     android:weightSum="10">
 
                     <TextView
                         style="@style/tv_center_label"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="4"
                         android:text="@string/gender"
                         tools:ignore="SpUsage" />
@@ -102,17 +115,15 @@
                         android:id="@+id/tv_gender"
                         style="@style/tv_center_value"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="6"
-                        android:text="@string/male"
+                        android:text="@{viewModel.userData.gender}"
                         tools:ignore="SpUsage" />
 
 
                     <ImageView
-                        android:layout_width="@dimen/_20dp"
-                        android:layout_height="@dimen/_20dp"
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="1"
                         android:background="@drawable/ic_forward_arrow"
                         android:visibility="invisible" />
@@ -125,44 +136,47 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
-                    android:paddingTop="@dimen/_15dp"
-                    android:paddingBottom="@dimen/_15dp"
+                    android:paddingTop="@dimen/_7dp"
+                    android:paddingBottom="@dimen/_7dp"
                     android:weightSum="10">
 
                     <TextView
                         style="@style/tv_center_label"
                         android:layout_width="0dp"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="4"
                         android:text="Change Password"
                         tools:ignore="SpUsage" />
 
-                    <TextView
+                    <EditText
                         android:id="@+id/tv_pwd"
                         style="@style/tv_center_value"
                         android:layout_width="0dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="6"
+                        android:background="@null"
+                        android:enabled="false"
                         android:gravity="center_vertical"
-                        tools:text="abcabc."
+                        android:inputType="textPassword"
+                        android:text="12345678912345"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_25dp"
                         tools:ignore="SpUsage" />
 
                     <ImageView
-                        android:layout_width="@dimen/_20dp"
-                        android:layout_height="@dimen/_20dp"
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp"
                         android:layout_gravity="center_vertical|end"
-                        android:layout_marginTop="@dimen/_5dp"
                         android:layout_weight="1"
-                        android:contentDescription="@null"
-                        android:background="@drawable/ic_forward_arrow" />
+                        android:background="@drawable/ic_forward_arrow"
+                        android:contentDescription="@null" />
                 </LinearLayout>
 
                 <View
                     style="@style/divider"
-                    android:layout_marginTop="@dimen/_8dp" />
+                    android:layout_marginTop="@dimen/_5dp" />
 
             </LinearLayout>
         </LinearLayout>

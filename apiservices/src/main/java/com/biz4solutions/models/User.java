@@ -5,7 +5,7 @@ import java.io.Serializable;
 /*
  * Created by ketan on 12/11/2017.
  */
-public class User implements Serializable{
+public class User implements Serializable {
 
     private String userId;
     private String firstName = "";
@@ -16,9 +16,28 @@ public class User implements Serializable{
     private String patientCurrentRequestId = "";
     private String providerCurrentRequestId = "";
     private String currentRequestPriority = "";
+    private String dob;
+    private String profileUrl;
     private String deviceId = "";
     private int age;
     private String gender;
+
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
 
     public String getUserId() {
         return userId;

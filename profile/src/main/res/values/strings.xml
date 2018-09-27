@@ -3,5 +3,8 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
+    <string name="other">Other</string>
     <string name="save">Save</string>
+    <string name="save_n_proceed">Save &amp; Proceed</string>
+
 </resources>
