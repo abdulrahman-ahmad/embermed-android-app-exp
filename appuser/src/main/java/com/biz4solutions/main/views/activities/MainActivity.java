@@ -33,8 +33,6 @@ import com.biz4solutions.apiservices.ApiServiceUtil;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.cardiac.views.fragments.EmsAlertCardiacCallFragment;
 import com.biz4solutions.databinding.ActivityMainBinding;
-import com.biz4solutions.fragments.view.fragments.EditProfileFragment;
-import com.biz4solutions.fragments.view.fragments.ViewProfileFragment;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -710,7 +708,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
     private void openTriageCallInProgressWaitingFragment(EmsRequest data) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
@@ -727,8 +724,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             e.printStackTrace();
         }
     }
-
-
 
     public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
         try {
