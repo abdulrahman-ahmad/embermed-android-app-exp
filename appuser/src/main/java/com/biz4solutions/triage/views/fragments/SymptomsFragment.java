@@ -191,8 +191,10 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
-            adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+        if (!mainActivity.isTutorialMode) {
+            if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
+                adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+            }
         }
     }
 
