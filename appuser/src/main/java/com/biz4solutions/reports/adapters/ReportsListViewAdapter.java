@@ -2,7 +2,6 @@ package com.biz4solutions.reports.adapters;
 
 import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ public class ReportsListViewAdapter extends BaseAdapter {
 
     private List<EmsRequest> emsRequests;
     private SimpleDateFormat formatterDate = new SimpleDateFormat(Constants.DATE_FORMAT, Locale.getDefault());
+    private SimpleDateFormat formatterTime = new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault());
     private Calendar calendar = Calendar.getInstance();
 
     public ReportsListViewAdapter(List<EmsRequest> emsRequests) {
@@ -57,9 +57,11 @@ public class ReportsListViewAdapter extends BaseAdapter {
         String name = emsRequest.getUserDetails().getFirstName() + " " + emsRequest.getUserDetails().getLastName();
         String genderAge = emsRequest.getProviderSpecialization();
         String requestDate = "";
+        String requestTime = "";
         if (emsRequest.getRequestTime() > 0) {
             calendar.setTimeInMillis(emsRequest.getRequestTime());
             requestDate = ("" + formatterDate.format(calendar.getTime()));
+            requestTime = ("" + formatterTime.format(calendar.getTime())).replaceAll("\\.", "").toUpperCase();
         }
 
         if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
@@ -70,13 +72,11 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListCardiacItem.txtDistance.setVisibility(View.GONE);
             binding.requestListCardiacItem.txtTime.setText(requestDate);
             binding.requestListCardiacItem.txtBottomTime.setVisibility(View.VISIBLE);
+            binding.requestListCardiacItem.txtBottomTime.setText(requestTime);
             if (emsRequest.getIsIncidentReportSubmitted()) {
-                binding.requestListCardiacItem.txtBottomTime.setText("");
-                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.GONE);
+                binding.requestListCardiacItem.pendingLayout.setVisibility(View.GONE);
             } else {
-                binding.requestListCardiacItem.txtBottomTime.setText(R.string.pending);
-                binding.requestListCardiacItem.ivPendingIcon.setVisibility(View.VISIBLE);
-                binding.requestListCardiacItem.txtBottomTime.setTextColor(ContextCompat.getColor(binding.requestListCardiacItem.txtBottomTime.getContext(), R.color.dark_blue_text_color));
+                binding.requestListCardiacItem.pendingLayout.setVisibility(View.VISIBLE);
             }
         } else {
             binding.requestListTriageItem.cardView.setVisibility(View.VISIBLE);
@@ -86,13 +86,11 @@ public class ReportsListViewAdapter extends BaseAdapter {
             binding.requestListTriageItem.txtDistance.setVisibility(View.GONE);
             binding.requestListTriageItem.txtTime.setText(requestDate);
             binding.requestListTriageItem.txtBottomTime.setVisibility(View.VISIBLE);
+            binding.requestListTriageItem.txtBottomTime.setText(requestTime);
             if (emsRequest.getIsIncidentReportSubmitted()) {
-                binding.requestListTriageItem.txtBottomTime.setText("");
-                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.GONE);
+                binding.requestListTriageItem.pendingLayout.setVisibility(View.GONE);
             } else {
-                binding.requestListTriageItem.txtBottomTime.setText(R.string.pending);
-                binding.requestListTriageItem.ivPendingIcon.setVisibility(View.VISIBLE);
-                binding.requestListTriageItem.txtBottomTime.setTextColor(ContextCompat.getColor(binding.requestListTriageItem.txtBottomTime.getContext(), R.color.dark_blue_text_color));
+                binding.requestListTriageItem.pendingLayout.setVisibility(View.VISIBLE);
             }
         }
         return binding.getRoot();

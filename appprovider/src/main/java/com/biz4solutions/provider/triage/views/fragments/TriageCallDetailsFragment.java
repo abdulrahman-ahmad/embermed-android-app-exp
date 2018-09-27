@@ -209,7 +209,11 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
-            binding.requestListTriageItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
+            if (mainActivity.isTutorialMode) {
+                binding.requestListTriageItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());
+            } else {
+                binding.requestListTriageItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
+            }
         }
     }
 
