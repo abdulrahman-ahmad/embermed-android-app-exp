@@ -41,6 +41,8 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
     private SimpleDateFormat formatterTime = new SimpleDateFormat(Constants.TIME_FORMAT, Locale.getDefault());
     private Calendar calendar = Calendar.getInstance();
     private IncidentReport tempIncidentReport;
+    private boolean isViewDraw = false;
+    private boolean isViewDraw1 = false;
 
     public IncidentReportDetailsFragment() {
         // Required empty public constructor
@@ -193,8 +195,11 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                 @Override
                 public boolean onPreDraw() {
                     try {
-                        if (binding.layoutViewIncidentReport.tvReportComment.getLayout() != null && binding.layoutViewIncidentReport.tvReportComment.getLayout().getLineCount() <= 5) {
-                            binding.layoutViewIncidentReport.tvSeeMore.performClick();
+                        if (!isViewDraw1) {
+                            if (binding.layoutViewIncidentReport.tvReportComment.getLayout() != null && binding.layoutViewIncidentReport.tvReportComment.getLayout().getLineCount() <= 5) {
+                                isViewDraw1 = true;
+                                binding.layoutViewIncidentReport.tvSeeMore.performClick();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -231,8 +236,11 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                 @Override
                 public boolean onPreDraw() {
                     try {
-                        if (binding.layoutCallerVisit.tvReason.getLayout() != null && binding.layoutCallerVisit.tvReason.getLayout().getLineCount() <= 4) {
-                            binding.layoutCallerVisit.tvSeeMore.performClick();
+                        if (!isViewDraw) {
+                            if (binding.layoutCallerVisit.tvReason.getLayout() != null && binding.layoutCallerVisit.tvReason.getLayout().getLineCount() <= 4) {
+                                isViewDraw = true;
+                                binding.layoutCallerVisit.tvSeeMore.performClick();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

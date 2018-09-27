@@ -95,7 +95,7 @@ public class RequestListViewAdapter extends BaseAdapter {
                                         if (targetView == null) {
                                             targetView = TargetViewUtil.showTargetRectForBtn(mainActivity,
                                                     binding.requestListCardiacItem.cardView, mainActivity.getString(R.string.tutorial_title_request_list),
-                                                    mainActivity.getString(R.string.tutorial_description_request_list),
+                                                    mainActivity.getString(R.string.tutorial_description_cardiac_request_list),
                                                     onTargetClickListener);
                                         }
                                     } catch (Exception e) {
@@ -131,7 +131,7 @@ public class RequestListViewAdapter extends BaseAdapter {
                                         if (targetView == null) {
                                             targetView = TargetViewUtil.showTargetRectForBtn(mainActivity,
                                                     binding.requestListTriageItem.cardView, mainActivity.getString(R.string.tutorial_title_request_list),
-                                                    mainActivity.getString(R.string.tutorial_description_request_list),
+                                                    mainActivity.getString(R.string.tutorial_description_triage_request_list),
                                                     onTargetClickListener);
                                         }
                                     } catch (Exception e) {

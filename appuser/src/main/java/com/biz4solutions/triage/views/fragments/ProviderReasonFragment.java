@@ -32,6 +32,7 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
     private FragmentProviderReasonBinding binding;
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private EmsRequest request;
+    private boolean isViewDraw = false;
 
     public ProviderReasonFragment() {
         // Required empty public constructor
@@ -81,8 +82,11 @@ public class ProviderReasonFragment extends Fragment implements View.OnClickList
                 @Override
                 public boolean onPreDraw() {
                     try {
-                        if (binding.tvReason.getLayout() != null && binding.tvReason.getLayout().getLineCount() <= 5) {
-                            binding.tvSeeMore.performClick();
+                        if (!isViewDraw) {
+                            if (binding.tvReason.getLayout() != null && binding.tvReason.getLayout().getLineCount() <= 5) {
+                                isViewDraw = true;
+                                binding.tvSeeMore.performClick();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();

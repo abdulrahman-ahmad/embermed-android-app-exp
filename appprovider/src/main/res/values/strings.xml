@@ -72,5 +72,6 @@
     <string name="book_uber">Book Uber</string>
 
     <string name="tutorial_title_request_list">Action 1</string>
-    <string name="tutorial_description_request_list">Tap here to create an alert.</string>
+    <string name="tutorial_description_cardiac_request_list">Tap here to view cardiac alert details.</string>
+    <string name="tutorial_description_triage_request_list">Tap here to view triage alert details.</string>
 </resources>

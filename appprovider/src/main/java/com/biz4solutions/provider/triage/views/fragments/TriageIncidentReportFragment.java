@@ -32,6 +32,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     private FragmentTriageIncidentReportBinding binding;
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private EmsRequest request;
+    private boolean isViewDraw = false;
 
     public TriageIncidentReportFragment() {
         // Required empty public constructor
@@ -77,8 +78,11 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
                 @Override
                 public boolean onPreDraw() {
                     try {
-                        if (binding.layoutCallerVisit.tvReason.getLayout() != null && binding.layoutCallerVisit.tvReason.getLayout().getLineCount() <= 4) {
-                            binding.layoutCallerVisit.tvSeeMore.performClick();
+                        if (!isViewDraw) {
+                            if (binding.layoutCallerVisit.tvReason.getLayout() != null && binding.layoutCallerVisit.tvReason.getLayout().getLineCount() <= 4) {
+                                isViewDraw = true;
+                                binding.layoutCallerVisit.tvSeeMore.performClick();
+                            }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
