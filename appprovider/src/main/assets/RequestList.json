@@ -4,11 +4,11 @@
     {
       "id": "123",
       "isUnconscious": false,
-      "latitude": 18.5628324,
-      "longitude": 73.7825719,
+      "latitude": 33.4325917,
+      "longitude": -112.0752221,
       "requestTime": 1537803647420,
       "priority": "IMMEDIATE",
-      "amount": 250,
+      "amount": 500,
       "patientDisease": "High Blood Pressure",
       "userDetails": {
         "userId": "123456",
@@ -29,11 +29,11 @@
     {
       "id": "123641",
       "isUnconscious": false,
-      "latitude": 18.5628324,
-      "longitude": 73.7825719,
+      "latitude": 33.4325917,
+      "longitude": -112.0752221,
       "requestTime": 1537803647420,
       "priority": "IMMEDIATE",
-      "amount": 250,
+      "amount": 500,
       "patientDisease": "High Blood Pressure",
       "userDetails": {
         "userId": "1234566514",

@@ -31,9 +31,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.UrgentCare;
@@ -54,6 +56,7 @@ import com.biz4solutions.provider.utilities.MapClusterItem;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.TargetViewUtil;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -114,6 +117,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private boolean isAedApiCalled;
     private ArrayList<UrgentCare> clusterList;
     private boolean isShowAedClusters = false;
+    private TapTargetView tutorial;
 
     public CardiacCallDetailsFragment() {
         // Required empty public constructor
@@ -150,22 +154,38 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         } else {
             startLocationUpdates();
         }
+
         initNavView();
-
-        user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-
-        addFirebaseRequestEvent();
-
-        isAcceptedOpen = false;
-        if (requestDetails != null) {
-            setCardiacCallView();
-        }
         initView();
-        initClickListeners();
         setDistanceValue(distanceStr);
-        reSetTimer();
-        addClockBroadcastReceiver();
+
+        if (!mainActivity.isTutorialMode) {
+            user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            addFirebaseRequestEvent();
+            isAcceptedOpen = false;
+            if (requestDetails != null) {
+                setCardiacCallView();
+            }
+            initClickListeners();
+            reSetTimer();
+            addClockBroadcastReceiver();
+        } else {
+            showTutorial();
+        }
+
         return binding.getRoot();
+    }
+
+    private void showTutorial() {
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                binding.btnRespond, getString(R.string.tutorial_title_request_details),
+                getString(R.string.tutorial_description_cardiac_request_details),
+                new OnTargetClickListener() {
+                    @Override
+                    public void onTargetClick() {
+                        mainActivity.reOpenHowItWorksFragment();
+                    }
+                });
     }
 
     private void initClickListeners() {
@@ -244,7 +264,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             switch (requestDetails.getRequestStatus()) {
                 case "ACCEPTED":
                     if (requestDetails.getProviderId() != null) {
-                        if (!requestDetails.getProviderId().equals(user.getUserId())) {
+                        if (user != null && !requestDetails.getProviderId().equals(user.getUserId())) {
                             showAlert(R.string.accepted_request_message);
                         } else {
                             if (!isAcceptedOpen) {
@@ -275,7 +295,11 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             }
             String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
             binding.btnRespond.setText(btnRespondText);
-            binding.requestListCardiacItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
+            if (mainActivity.isTutorialMode) {
+                binding.requestListCardiacItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());
+            } else {
+                binding.requestListCardiacItem.txtTime.setText(CommonFunctions.getInstance().getTimeAgo(System.currentTimeMillis() - requestDetails.getRequestTime()));
+            }
         }
     }
 
@@ -309,6 +333,9 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         stopTimer();
         if (clockBroadcastReceiver != null) {
             mainActivity.unregisterReceiver(clockBroadcastReceiver);
+        }
+        if (tutorial != null) {
+            tutorial.dismiss(false);
         }
     }
 
@@ -517,11 +544,13 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     void initMap() {
-        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
+        if (!mainActivity.isTutorialMode) {
+            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            googleMap.setMyLocationEnabled(false);
         }
-        googleMap.setMyLocationEnabled(false);
         googleMap.clear();
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
@@ -546,14 +575,16 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     }
 
     private void startLocationUpdates() {
-        if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
-        if (mLocationManager != null) {
-            mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
-            mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
+        if (!mainActivity.isTutorialMode) {
+            if (ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                    ActivityCompat.checkSelfPermission(mainActivity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                return;
+            }
+            mLocationManager = (LocationManager) mainActivity.getSystemService(Context.LOCATION_SERVICE);
+            if (mLocationManager != null) {
+                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, UPDATE_MIN_INTERVAL, UPDATE_MIN_DISTANCE, this);
+            }
         }
     }
 

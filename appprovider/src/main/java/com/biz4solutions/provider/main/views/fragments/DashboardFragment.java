@@ -292,7 +292,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
     private void getNewRequestListForTutorial() {
         try {
-            String json = CommonFunctions.getInstance().getAssetsJsonString(mainActivity, "ProviderRequestList.json");
+            String json = CommonFunctions.getInstance().getAssetsJsonString(mainActivity, "RequestList.json");
             if (json != null && !json.isEmpty()) {
                 EmsRequestResponse response = new Gson().fromJson(json, EmsRequestResponse.class);
                 if (response != null) {
@@ -303,7 +303,11 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
                         adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap, durationHashMap, new OnTargetClickListener() {
                             @Override
                             public void onTargetClick() {
-                                mainActivity.reOpenHowItWorksFragment();
+                                if (mainActivity.tutorialId == 1) {
+                                    mainActivity.handledRequestDataForTutorial(emsRequests.get(1), emsRequests.get(1).getDistanceForTutorial(), false);
+                                } else {
+                                    mainActivity.handledRequestDataForTutorial(emsRequests.get(2), emsRequests.get(2).getDistanceForTutorial(), false);
+                                }
                             }
                         });
                         binding.loadMoreListView.setAdapter(adapter);

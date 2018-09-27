@@ -74,4 +74,7 @@
     <string name="tutorial_title_request_list">Action 1</string>
     <string name="tutorial_description_cardiac_request_list">Tap here to view cardiac alert details.</string>
     <string name="tutorial_description_triage_request_list">Tap here to view triage alert details.</string>
+    <string name="tutorial_title_request_details">Action 2</string>
+    <string name="tutorial_description_cardiac_request_details">Tap here to accept a cardiac call alert.</string>
+    <string name="tutorial_description_triage_request_details">Tap here to accept a triage call alert.</string>
 </resources>

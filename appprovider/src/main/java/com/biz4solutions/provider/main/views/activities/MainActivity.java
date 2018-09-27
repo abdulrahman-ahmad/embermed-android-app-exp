@@ -523,6 +523,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        if (isTutorialMode) {
+            return;
+        }
         CommonFunctions.getInstance().hideSoftKeyBoard(MainActivity.this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -617,6 +620,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
+    public void handledRequestDataForTutorial(final EmsRequest emsRequest, final String distanceStr, final boolean isOpenDuplicateFragment) {
+        if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
+            openCardiacCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+        } else if (Constants.STATUS_HIGH.equals("" + emsRequest.getPriority())) {
+            openTriageCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+        }
+    }
+
     private void handledRequestData(final EmsRequest emsRequest, final String distanceStr, final boolean isOpenDuplicateFragment) {
         if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
             openCardiacCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
@@ -708,6 +719,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View v) {
+        if (isTutorialMode) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.btn_call_alerter:
                 Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();

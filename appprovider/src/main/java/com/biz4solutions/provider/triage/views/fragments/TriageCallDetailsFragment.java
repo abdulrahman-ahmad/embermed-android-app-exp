@@ -21,8 +21,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.User;
@@ -37,6 +39,7 @@ import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.biz4solutions.utilities.TargetViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +66,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
     public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
     private EmsRequest request;
+    private TapTargetView tutorial;
 
     public TriageCallDetailsFragment() {
         // Required empty public constructor
@@ -101,18 +105,35 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
 
-        user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-        addFirebaseRequestEvent();
-        if (requestDetails != null) {
-            setRequestView();
-        }
         initView();
-        binding.btnRespond.setOnClickListener(this);
         setDistanceValue(distanceStr);
-        addClockBroadcastReceiver();
-        startLocationUpdates();
-        reSetTimer();
+
+        if (!mainActivity.isTutorialMode) {
+            user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            addFirebaseRequestEvent();
+            if (requestDetails != null) {
+                setRequestView();
+            }
+            binding.btnRespond.setOnClickListener(this);
+            addClockBroadcastReceiver();
+            startLocationUpdates();
+            reSetTimer();
+        } else {
+            showTutorial();
+        }
         return binding.getRoot();
+    }
+
+    private void showTutorial() {
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                binding.btnRespond, getString(R.string.tutorial_title_request_details),
+                getString(R.string.tutorial_description_triage_request_details),
+                new OnTargetClickListener() {
+                    @Override
+                    public void onTargetClick() {
+                        mainActivity.reOpenHowItWorksFragment();
+                    }
+                });
     }
 
     private void startLocationUpdates() {
@@ -217,6 +238,9 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             mainActivity.unregisterReceiver(clockBroadcastReceiver);
         }
         stopTimer();
+        if (tutorial != null) {
+            tutorial.dismiss(false);
+        }
     }
 
     @Override
