@@ -1,6 +1,7 @@
 package com.biz4solutions.provider.triage.views.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -195,6 +196,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void initView() {
         binding.cardiacPatientDiseaseItem.txtPatientDiseaseTitle.setText(R.string.patient_symptoms);
         if (requestDetails != null) {
@@ -207,7 +209,7 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             if (requestDetails.getPatientSymptoms() != null) {
                 binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientSymptoms());
             }
-            String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
+            String btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
             binding.btnRespond.setText(btnRespondText);
             if (mainActivity.isTutorialMode) {
                 binding.requestListTriageItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());

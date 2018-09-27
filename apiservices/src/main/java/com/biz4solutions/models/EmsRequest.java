@@ -13,7 +13,7 @@ public class EmsRequest implements Serializable {
     private String userId;
     private long requestTime;
     private User userDetails;
-    private int amount;
+    private double amount;
     private String patientDisease;
     private String triageCallStatus;
     private String providerFeedback;
@@ -124,11 +124,11 @@ public class EmsRequest implements Serializable {
         this.providerId = providerId;
     }
 
-    public int getAmount() {
+    public double getAmount() {
         return amount;
     }
 
-    public void setAmount(int amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 

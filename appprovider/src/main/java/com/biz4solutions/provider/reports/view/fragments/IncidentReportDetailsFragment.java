@@ -151,7 +151,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
 
             setIncidentReportView();
 
-            String amount = "$" + request.getAmount();
+            @SuppressLint("DefaultLocale") String amount = "$" + String.format("%.2f", request.getAmount());
             binding.layoutIncidentAmount.tvAmountValue.setText(amount);
             if (request.getCompletedAt() > 0) {
                 calendar.setTimeInMillis(request.getCompletedAt());

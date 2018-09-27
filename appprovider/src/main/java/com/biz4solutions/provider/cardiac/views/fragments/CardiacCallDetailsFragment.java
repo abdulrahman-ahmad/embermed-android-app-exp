@@ -282,6 +282,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         }
     }
 
+    @SuppressLint("DefaultLocale")
     private void initView() {
         if (requestDetails != null) {
             if (requestDetails.getUserDetails() != null) {
@@ -293,7 +294,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             if (requestDetails.getPatientDisease() != null) {
                 binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientDisease());
             }
-            String btnRespondText = getString(R.string.respond_for_) + "" + requestDetails.getAmount();
+            String btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
             binding.btnRespond.setText(btnRespondText);
             if (mainActivity.isTutorialMode) {
                 binding.requestListCardiacItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());
