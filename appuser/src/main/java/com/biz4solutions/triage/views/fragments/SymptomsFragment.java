@@ -63,7 +63,8 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.symptoms);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
-            mainActivity.btnCall911.setVisibility(View.VISIBLE);
+            // TODO: 27-09-2018 ---- Call 911 is not in current scope
+            mainActivity.btnCall911.setVisibility(View.GONE);
         }
 
         initListView();

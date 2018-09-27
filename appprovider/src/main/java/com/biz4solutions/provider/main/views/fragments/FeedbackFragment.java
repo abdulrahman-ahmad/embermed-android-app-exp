@@ -138,6 +138,7 @@ public class FeedbackFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         final FeedbackRequest feedbackRequest = new FeedbackRequest();
         feedbackRequest.setComment(binding.edtComment.getText().toString().trim());
