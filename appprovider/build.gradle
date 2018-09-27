@@ -1,12 +1,20 @@
 apply plugin: 'com.android.application'
 
+def projectName = "Ember"
+def type = "Medics_Provider"
+def verCode = 1
+def verName = "0.0.8"
+def outputPath = "E:\\AndroidDev\\Builds\\" + projectName + "\\"
+def outputName = projectName + "_v_" + verName + "_" + getDate() + ".apk"
+def proguard = false
+
 android {
     compileSdkVersion 27
     defaultConfig {
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 8
-        versionName "0.0.8"
+        versionCode verCode
+        versionName verName
         flavorDimensions "default"
         applicationId "com.ember.medics"
         multiDexEnabled true
@@ -34,9 +42,9 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
-            useProguard true
+            minifyEnabled proguard
+            shrinkResources proguard
+            useProguard proguard
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -69,6 +77,81 @@ android {
         prod {
         }
     }
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def ofile = output.outputFile
+            outputName = ofile.name.replace("-", "_")
+            outputName = outputName.replace("app", projectName)
+            outputName = outputName.replace(".apk", "_v_" + verName + "(" + variant.versionCode + ")_" + getDate() + ".apk")
+            outputFileName = outputName
+            output.assemble.doLast { assemble ->
+                //copy or move apk file to other directories
+                def outputName1 = projectName + "_" +
+                        type + "_" +
+                        variant.productFlavors[0].name + "_" +
+                        variant.buildType.name + "_" +
+                        defaultConfig.versionName + "(" +
+                        defaultConfig.versionCode + ")_" +
+                        getDate() + ".apk"
+                copy {
+                    from output.outputFile
+                    into outputPath
+                    rename { String fileName ->
+                        outputName1
+                    }
+                }
+            }
+        }
+        variant.assemble.doLast { assemble ->
+
+            // Copy the mapping file if Proguard is turned on for this build
+            if (proguard && variant.getBuildType().name.matches("release")) {
+                // set the base filename
+                def newName = projectName + "_" +
+                        type + "_" +
+                        variant.productFlavors[0].name + "_" +
+                        variant.buildType.name + "_" +
+                        defaultConfig.versionName + "(" +
+                        defaultConfig.versionCode + ")_" +
+                        getDate() + "_mapping.txt"
+                copy {
+                    from variant.mappingFile
+                    into outputPath + "mapping\\"
+                    rename { String fileName ->
+                        newName
+                    }
+                }
+            }
+        }
+    }
+    packagingOptions
+            {
+                exclude '.readme'
+                exclude 'LICENSE.txt'
+                exclude 'META-INF/DEPENDENCIES'
+                exclude 'META-INF/DEPENDENCIES.txt'
+                exclude 'META-INF/LGPL2.1'
+                exclude 'META-INF/LICENSE'
+                exclude 'META-INF/LICENSE.txt'
+                exclude 'META-INF/NOTICE'
+                exclude 'META-INF/NOTICE.txt'
+                exclude 'META-INF/README.txt'
+                exclude 'META-INF/MANIFEST.MF'
+                exclude 'META-INF/dependencies.txt'
+                exclude 'META-INF/license.txt'
+                exclude 'META-INF/notice.txt'
+                exclude 'META-INF/services/javax.annotation.processing.Processor'
+            }
+}
+task cleanExtra(type: Delete) {
+    delete outputPath + outputName
+}
+clean.dependsOn(cleanExtra)
+
+static def getDate() {
+    def date = new Date()
+    def formattedDate = date.format('ddMMMyyyy')
+    return formattedDate
 }
 
 dependencies {
@@ -82,6 +165,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.4'
     implementation 'com.google.android.gms:play-services-maps:15.0.1' // Google Map Integration
     implementation 'com.google.android.gms:play-services-location:15.0.1'// Google Map Integration
+    implementation 'com.google.firebase:firebase-core:16.0.3' //firebase core
     implementation 'com.google.firebase:firebase-messaging:17.3.2' // Firebase notification
     api project(':loginlib')
     api project(':opentok-sdk')
