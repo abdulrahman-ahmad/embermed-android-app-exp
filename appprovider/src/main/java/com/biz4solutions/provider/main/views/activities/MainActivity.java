@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     private boolean isOpenTokActivityOpen = false;
-    private static final int PERMISSION_REQUEST_CODE = 124;
+    private static final int PERMISSION_REQUEST_CODE = 121254;
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
     private boolean isAedApiInProgress = false;
@@ -244,6 +244,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             boolean userAllowedAllRequestPermissions = true;
+            if (grantResults.length == 0) {
+                userAllowedAllRequestPermissions = false;
+            }
             for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
                     userAllowedAllRequestPermissions = false;
@@ -751,7 +754,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-                this.requestPermissions(perms, 102);
+                requestPermissions(perms, 102);
             } else {
                 return true;
             }
