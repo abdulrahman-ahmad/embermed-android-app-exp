@@ -22,7 +22,7 @@
             android:paddingBottom="@dimen/_20dp">
 
             <ImageView
-                circularImageUrl="@{viewModel.imageUrl}"
+                circularImageUrl="@{viewModel.userData.imageUrl}"
                 android:layout_width="@dimen/_100dp"
                 android:layout_height="@dimen/_100dp"
                 android:layout_gravity="center"
@@ -89,7 +89,7 @@
                 <TextView
                     android:id="@+id/tv_dob"
                     style="@style/tv_value"
-                    android:text="@{viewModel.userData.dob}"
+                    android:text="@{viewModel.userData.displayDateOfBirth}"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
@@ -133,11 +133,13 @@
                     style="@style/divider"
                     android:layout_marginTop="@dimen/_8dp" />
 
-                <LinearLayout
+                <com.biz4solutions.customs.RippleView
+                    android:id="@+id/ll_profile_change_pwd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_5dp"
                     android:gravity="center_vertical"
+                    android:onClick="@{(v)->viewModel.onChangePwdClick(v)}"
                     android:orientation="horizontal"
                     android:paddingTop="@dimen/_7dp"
                     android:paddingBottom="@dimen/_7dp"
@@ -172,7 +174,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/ic_forward_arrow"
                         android:contentDescription="@null" />
-                </LinearLayout>
+                </com.biz4solutions.customs.RippleView>
 
                 <View
                     style="@style/divider"

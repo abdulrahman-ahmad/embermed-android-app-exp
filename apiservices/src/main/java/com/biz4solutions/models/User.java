@@ -16,27 +16,35 @@ public class User implements Serializable {
     private String patientCurrentRequestId = "";
     private String providerCurrentRequestId = "";
     private String currentRequestPriority = "";
-    private String dob;
-    private String profileUrl;
+    private String serverDateOfBirth;
+    private String displayDateOfBirth;
+    private String imageUrl;
     private String deviceId = "";
     private int age;
     private String gender;
 
-
-    public String getProfileUrl() {
-        return profileUrl;
+    public String getDisplayDateOfBirth() {
+        return displayDateOfBirth;
     }
 
-    public void setProfileUrl(String profileUrl) {
-        this.profileUrl = profileUrl;
+    public void setDisplayDateOfBirth(String displayDateOfBirth) {
+        this.displayDateOfBirth = displayDateOfBirth;
     }
 
-    public String getDob() {
-        return dob;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setDob(String dob) {
-        this.dob = dob;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getServerDateOfBirth() {
+        return serverDateOfBirth;
+    }
+
+    public void setServerDateOfBirth(String serverDateOfBirth) {
+        this.serverDateOfBirth = serverDateOfBirth;
     }
 
     public String getUserId() {

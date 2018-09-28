@@ -13,10 +13,9 @@ import com.google.firebase.storage.UploadTask;
 
 public class FirebaseUploadUtil {
 
-
     public static void uploadImageToFirebase(final Context context, String path, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference ref = storage.getReference().child("/profileImages/users/" + path + "profile.jpg");
+        final StorageReference ref = storage.getReference().child("/profileImages/users/" + path + "/profile.jpg");
         UploadTask uploadTask = ref.putFile(uri);
 
         CommonFunctions.getInstance().loadProgressDialog(context);
@@ -24,12 +23,11 @@ public class FirebaseUploadUtil {
             @Override
             public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
                 CommonFunctions.getInstance().dismissProgressDialog();
-                if (task != null && !task.isSuccessful()) {
+                if (!task.isSuccessful()) {
                     throw task.getException();
                 }
 
                 // Continue with the task to get the download URL
-
                 return ref.getDownloadUrl();
             }
         }).addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -38,7 +36,8 @@ public class FirebaseUploadUtil {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (task.isSuccessful()) {
                     Uri downloadUri = task.getResult();
-                    firebaseUploadInterface.uploadSuccess(downloadUri.getPath());
+//                    Log.d("upload", "toString:" + downloadUri.toString() + "::host:" + downloadUri.getHost() + ":path " + downloadUri.getPath());
+                    firebaseUploadInterface.uploadSuccess(downloadUri.toString());
                     //   Toast.makeText(context, "firebase image upload success:" + downloadUri, Toast.LENGTH_SHORT).show();
                 } else {
                     if (task.getException() != null)
@@ -56,5 +55,4 @@ public class FirebaseUploadUtil {
 
         void uploadError(String exceptionMsg);
     }
-
 }

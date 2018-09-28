@@ -44,6 +44,7 @@
 
                     <ImageView
                         android:id="@+id/profile_image"
+                        circularImageUrl="@{viewmodel.userData.imageUrl}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
@@ -58,8 +59,8 @@
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
                         android:layout_marginTop="10dp"
-                        android:onClick="@{fragment.showAddMediaBottomSheet}"
                         android:contentDescription="@null"
+                        android:onClick="@{fragment::showAddMediaBottomSheet}"
                         android:padding="3dp"
                         android:src="@drawable/ic_upload_profile_pic" />
 
@@ -167,6 +168,7 @@
 
                 <EditText
                     android:id="@+id/edt_dob"
+                    style="@style/profile_edt_style"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -179,7 +181,7 @@
                     android:inputType="none"
                     android:onClick="@{(v)->viewmodel.onDobEdtClick(v)}"
                     android:paddingTop="@dimen/_10dp"
-                    android:text="@{viewmodel.dateOfBirth}" />
+                    android:text="@{viewmodel.displayDateOfBirth}" />
             </android.support.design.widget.TextInputLayout>
 
 

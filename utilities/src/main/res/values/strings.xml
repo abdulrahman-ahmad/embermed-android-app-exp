@@ -24,6 +24,9 @@
     <string name="error_invalid_email">Please enter valid email.</string>
     <string name="error_empty_first_name">Please enter first name.</string>
     <string name="error_empty_last_name">Please enter last name.</string>
+    <string name="error_empty_dob">Please select date of birth.</string>
+    <string name="error_empty_gender">Please select gender.</string>
+    <string name="error_empty_image">Please select profile image.</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
