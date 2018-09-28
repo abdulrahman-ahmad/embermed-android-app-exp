@@ -26,4 +26,25 @@
     <dimen name="cardiac_call_very_big_text_size">30dp</dimen>
     <dimen name="triage_call_cancel_btn_margin_top">26dp</dimen>
     <dimen name="triage_call_waiting_text_size">18dp</dimen>
+
+    <dimen name="request_immediate_card_height">80dp</dimen>
+    <dimen name="request_card_left_right_margin">12dp</dimen>
+    <dimen name="request_card_top_bottom_margin">4dp</dimen>
+    <dimen name="request_card_left_top_diff">8dp</dimen>
+    <dimen name="requester_name_text_size">16dp</dimen>
+    <dimen name="requester_name_max_width">160dp</dimen>
+    <dimen name="request_small_text_size">12dp</dimen>
+    <dimen name="request_middle_space">8dp</dimen>
+    <dimen name="request_medium_text_size">14dp</dimen>
+    <dimen name="request_card_padding_start_end">16dp</dimen>
+    <dimen name="request_card_elevation">2dp</dimen>
+    <dimen name="is_victim_life_saved_margin_top">11.5dp</dimen>
+    <dimen name="radio_button_margin_left">17.25dp</dimen>
+
+    <dimen name="comment_et_height">161dp</dimen>
+    <dimen name="submit_button_margin_top">23dp</dimen>
+
+    <dimen name="incident_report_input_text_padding">11.5dp</dimen>
+    <dimen name="comment_margin_top">13.8dp</dimen>
+    <dimen name="empty_alert_height">225dp</dimen>
 </resources>

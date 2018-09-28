@@ -1,6 +1,7 @@
 package com.biz4solutions.interfaces;
 
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
@@ -11,6 +12,7 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.models.response.ServerTimeDiffResponse;
 import com.biz4solutions.models.response.SymptomResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
@@ -102,4 +104,25 @@ public interface RetrofitRestClient {
 
     @GET("v1/users/getUrgentCareList")
     Call<UrgentCaresResponse> getUrgentCareList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
+
+    @GET("/api/v1/provider/getAedList")
+    Call<UrgentCaresResponse> getAedList(@Query("page") int page, @Query("size") int size, @Query("latitude") double latitude, @Query("longitude") double longitude);
+
+    @GET("v1/users/getUserCompletedRequestList")
+    Call<EmsRequestResponse> getUserCompletedRequestList(@Query("page") int page, @Query("size") int size);
+
+    @GET("v1/provider/getProviderCompletedRequestList")
+    Call<EmsRequestResponse> getProviderCompletedRequestList(@Query("page") int page, @Query("size") int size);
+
+    @GET("v1/incidentReport/getIncidentReportDetail")
+    Call<EmsRequestDetailsResponse> getIncidentReportDetail(@Query("requestId") String requestId);
+
+    @GET("v1/user/getDateDiff")
+    Call<ServerTimeDiffResponse> getServerTimeDiff(@Query("date") long sysTime);
+
+    @POST("/api/v1/provider/updateProfileDetail")
+    Call<EmptyResponse> updateProviderProfile(@Body User body);
+
+    @POST("/api/v1/users/updateProfileDetail")
+    Call<EmptyResponse> updateUserProfile(@Body User body);
 }

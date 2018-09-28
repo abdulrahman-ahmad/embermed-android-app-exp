@@ -11,8 +11,10 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.databinding.FragmentEmsAlertUnconsciousBinding;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.request.CreateEmsRequest;
@@ -21,6 +23,7 @@ import com.biz4solutions.triage.views.fragments.SymptomsFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.utilities.TargetViewUtil;
 
 public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClickListener {
 
@@ -28,6 +31,7 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     private MainActivity mainActivity;
     private FragmentEmsAlertUnconsciousBinding binding;
     private boolean isRequestInProgress = false;
+    private TapTargetView tutorial;
 
     public EmsAlertUnconsciousFragment() {
         // Required empty public constructor
@@ -42,26 +46,24 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ems_alert_unconscious, container, false);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.ems_alert);
+            mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
-                    mainActivity.unconsciousOnBackClick();
+                    if (!mainActivity.isTutorialMode) {
+                        mainActivity.unconsciousOnBackClick();
+                    }
                 }
             });
         }
-        binding.btnYes.setOnClickListener(this);
-        binding.btnNo.setOnClickListener(this);
-        return binding.getRoot();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        if (mainActivity != null && mainActivity.isTutorialMode) {
+            showTutorial();
+        } else {
+            binding.btnYes.setOnClickListener(this);
+            binding.btnNo.setOnClickListener(this);
         }
+        return binding.getRoot();
     }
 
     @Override
@@ -78,6 +80,10 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     }
 
     private void openSymptomsFragment() {
+        Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof SymptomsFragment) {
+            return;
+        }
         mainActivity.getSupportFragmentManager().executePendingTransactions();
         mainActivity.getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
@@ -145,5 +151,38 @@ public class EmsAlertUnconsciousFragment extends Fragment implements View.OnClic
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
+    }
+
+    private void showTutorial() {
+        if (mainActivity.tutorialId == 1) {
+            tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                    binding.btnYes, getString(R.string.tutorial_title_ems_yes_btn),
+                    getString(R.string.tutorial_description_ems_yes_btn),
+                    new OnTargetClickListener() {
+                        @Override
+                        public void onTargetClick() {
+                            mainActivity.reOpenHowItWorksFragment();
+                        }
+                    });
+        } else if (mainActivity.tutorialId == 2) {
+            tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                    binding.btnNo, getString(R.string.tutorial_title_ems_no_btn),
+                    getString(R.string.tutorial_description_ems_no_btn),
+                    new OnTargetClickListener() {
+                        @Override
+                        public void onTargetClick() {
+                            openSymptomsFragment();
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        NavigationUtil.getInstance().hideBackArrow(mainActivity);
+        if (tutorial != null) {
+            tutorial.dismiss(false);
+        }
     }
 }

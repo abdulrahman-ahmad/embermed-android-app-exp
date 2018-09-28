@@ -1,10 +1,12 @@
 package com.biz4solutions.models;
 
-/**
+import java.io.Serializable;
+
+/*
  * Created by karan.bajaj on 9/7/2018.
  */
 
-public class UrgentCare {
+public class UrgentCare implements Serializable {
     private String id;
     private String name;
     private String address;

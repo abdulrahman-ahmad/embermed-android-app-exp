@@ -32,6 +32,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     private FragmentTriageIncidentReportBinding binding;
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private EmsRequest request;
+    private boolean isViewDraw = false;
 
     public TriageIncidentReportFragment() {
         // Required empty public constructor
@@ -71,13 +72,20 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     private void initView() {
         if (request != null) {
             if (request.getProviderFeedbackReason() != null) {
-                binding.tvReason.setText(request.getProviderFeedbackReason());
+                binding.layoutCallerVisit.tvReason.setText(request.getProviderFeedbackReason());
             }
-            binding.tvReason.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            binding.layoutCallerVisit.tvReason.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override
                 public boolean onPreDraw() {
-                    if (binding.tvReason.getLayout().getLineCount() <= 4) {
-                        binding.tvSeeMore.performClick();
+                    try {
+                        if (!isViewDraw) {
+                            if (binding.layoutCallerVisit.tvReason.getLayout() != null && binding.layoutCallerVisit.tvReason.getLayout().getLineCount() <= 4) {
+                                isViewDraw = true;
+                                binding.layoutCallerVisit.tvSeeMore.performClick();
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     return true;
                 }
@@ -85,13 +93,13 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
 
             switch ("" + request.getProviderFeedback()) {
                 case Constants.TRIAGE_FEEDBACK_ER:
-                    binding.tvProviderReason.setText(R.string.go_to_er);
+                    binding.layoutCallerVisit.tvProviderReason.setText(R.string.go_to_er);
                     break;
                 case Constants.TRIAGE_FEEDBACK_URGENT_CARE:
-                    binding.tvProviderReason.setText(R.string.go_to_urgent_care);
+                    binding.layoutCallerVisit.tvProviderReason.setText(R.string.go_to_urgent_care);
                     break;
                 case Constants.TRIAGE_FEEDBACK_PCP:
-                    binding.tvProviderReason.setText(R.string.go_to_pcp);
+                    binding.layoutCallerVisit.tvProviderReason.setText(R.string.go_to_pcp);
                     break;
             }
         }
@@ -99,18 +107,10 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
 
     @SuppressLint("ClickableViewAccessibility")
     private void initClickListeners() {
-        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
-        binding.btnSubmit.setOnClickListener(this);
-        binding.tvSeeMore.setOnClickListener(this);
-        binding.tvSeeLess.setOnClickListener(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideMenu(mainActivity);
-        }
+        binding.layoutTriageIncidentReport.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.layoutTriageIncidentReport.edtComment.getId()));
+        binding.layoutTriageIncidentReport.btnSubmit.setOnClickListener(this);
+        binding.layoutCallerVisit.tvSeeMore.setOnClickListener(this);
+        binding.layoutCallerVisit.tvSeeLess.setOnClickListener(this);
     }
 
     @Override
@@ -129,16 +129,16 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
                 }
                 break;
             case R.id.tv_see_more:
-                binding.tvSeeMore.setVisibility(View.GONE);
+                binding.layoutCallerVisit.tvSeeMore.setVisibility(View.GONE);
                 //binding.tvSeeLess.setVisibility(View.VISIBLE);
-                binding.ivThreeDots.setVisibility(View.GONE);
-                binding.tvReason.setMaxLines(100);
+                binding.layoutCallerVisit.ivThreeDots.setVisibility(View.GONE);
+                binding.layoutCallerVisit.tvReason.setMaxLines(100);
                 break;
             case R.id.tv_see_less:
                 //binding.tvSeeLess.setVisibility(View.GONE);
-                binding.tvSeeMore.setVisibility(View.VISIBLE);
-                binding.ivThreeDots.setVisibility(View.VISIBLE);
-                binding.tvReason.setMaxLines(4);
+                binding.layoutCallerVisit.tvSeeMore.setVisibility(View.VISIBLE);
+                binding.layoutCallerVisit.ivThreeDots.setVisibility(View.VISIBLE);
+                binding.layoutCallerVisit.tvReason.setMaxLines(4);
                 break;
         }
     }
@@ -149,10 +149,10 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
     }
 
     private boolean isFormValid() {
-        if (binding.edtTitle.getText().toString().trim().isEmpty()) {
+        if (binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), R.string.error_empty_incident_report_title, Toast.LENGTH_SHORT).show();
             return false;
-        } else if (binding.edtComment.getText().toString().trim().isEmpty()) {
+        } else if (binding.layoutTriageIncidentReport.edtComment.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), R.string.error_empty_incident_report_comment, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -164,10 +164,11 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         IncidentReport body = new IncidentReport();
-        body.setTitle(binding.edtTitle.getText().toString().trim());
-        body.setComment(binding.edtComment.getText().toString().trim());
+        body.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());
+        body.setComment(binding.layoutTriageIncidentReport.edtComment.getText().toString().trim());
         body.setRequestId(request.getId());
 
         new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {

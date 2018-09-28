@@ -57,13 +57,15 @@ public class TriageCallWaitingFragment extends Fragment implements View.OnClickL
             mainActivity.toolbarTitle.setText(R.string.triage_call);
             NavigationUtil.getInstance().hideMenu(mainActivity);
         }
-        FirebaseEventUtil.getInstance().addFirebaseRequestEvent(request.getId(), new FirebaseCallbackListener<EmsRequest>() {
-            @Override
-            public void onSuccess(EmsRequest data) {
-                request = data;
-                setRequestView();
-            }
-        });
+        if (request != null) {
+            FirebaseEventUtil.getInstance().addFirebaseRequestEvent(request.getId(), new FirebaseCallbackListener<EmsRequest>() {
+                @Override
+                public void onSuccess(EmsRequest data) {
+                    request = data;
+                    setRequestView();
+                }
+            });
+        }
         binding.btnCancelRequest.setOnClickListener(this);
         setRequestView();
         return binding.getRoot();

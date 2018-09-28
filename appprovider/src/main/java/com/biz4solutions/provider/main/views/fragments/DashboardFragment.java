@@ -26,20 +26,23 @@ import android.widget.Toast;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 import com.biz4solutions.provider.R;
-import com.biz4solutions.provider.adapters.RequestListViewAdapter;
 import com.biz4solutions.provider.application.Application;
 import com.biz4solutions.provider.databinding.FragmentDashboardBinding;
+import com.biz4solutions.provider.main.adapters.RequestListViewAdapter;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -85,20 +88,23 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.dashboard);
+            NavigationUtil.getInstance().showMenu(mainActivity);
         }
 
-        initswipeContainer();
-        addFirebaseEvent();
         initListView();
-
-        if (mainActivity.isUpdateList) {
-            mainActivity.isUpdateList = false;
-            getNewRequestList(true);
+        if (mainActivity.isTutorialMode) {
+            getNewRequestListForTutorial();
+        } else {
+            initswipeContainer();
+            addFirebaseEvent();
+            if (mainActivity.isUpdateList) {
+                mainActivity.isUpdateList = false;
+                getNewRequestList(true);
+            }
+            checkLocationPermissionGranted();
+            reSetTimer();
+            addClockBroadcastReceiver();
         }
-        checkLocationPermissionGranted();
-        reSetTimer();
-        addClockBroadcastReceiver();
-
         return binding.getRoot();
     }
 
@@ -108,6 +114,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
         }
+        hideLoader();
     }
 
     private void addClockBroadcastReceiver() {
@@ -125,8 +132,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void setDurationHashMap() {
-        if (emsRequests != null
-                && !emsRequests.isEmpty()) {
+        if (emsRequests != null && !emsRequests.isEmpty()) {
             durationHashMap.clear();
             for (EmsRequest request : emsRequests) {
                 durationHashMap.put(request.getId(),
@@ -134,6 +140,24 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
             }
             if (adapter != null) {
                 adapter.addValue(durationHashMap);
+            }
+        }
+    }
+
+    private void setDurationHashMapForTutorial() {
+        if (emsRequests != null && !emsRequests.isEmpty()) {
+            durationHashMap.clear();
+            for (EmsRequest request : emsRequests) {
+                durationHashMap.put(request.getId(), request.getRequestTimeForTutorial());
+            }
+        }
+    }
+
+    private void setDistanceHashMapForTutorial() {
+        if (emsRequests != null && !emsRequests.isEmpty()) {
+            distanceHashMap.clear();
+            for (EmsRequest request : emsRequests) {
+                distanceHashMap.put(request.getId(), request.getDistanceForTutorial());
             }
         }
     }
@@ -266,6 +290,36 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
         }
     }
 
+    private void getNewRequestListForTutorial() {
+        try {
+            String json = CommonFunctions.getInstance().getAssetsJsonString(mainActivity, "RequestList.json");
+            if (json != null && !json.isEmpty()) {
+                EmsRequestResponse response = new Gson().fromJson(json, EmsRequestResponse.class);
+                if (response != null) {
+                    emsRequests = response.getData();
+                    setDistanceHashMapForTutorial();
+                    setDurationHashMapForTutorial();
+                    if (adapter == null) {
+                        adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap, durationHashMap, new OnTargetClickListener() {
+                            @Override
+                            public void onTargetClick() {
+                                if (mainActivity.tutorialId == 1) {
+                                    mainActivity.handledRequestDataForTutorial(emsRequests.get(1), emsRequests.get(1).getDistanceForTutorial(), false);
+                                } else {
+                                    mainActivity.handledRequestDataForTutorial(emsRequests.get(2), emsRequests.get(2).getDistanceForTutorial(), false);
+                                }
+                            }
+                        });
+                        binding.loadMoreListView.setAdapter(adapter);
+                    }
+                    setErrorView();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void getRequestList(boolean showLoader) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -318,7 +372,7 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
                 setDurationHashMap();
                 if (adapter == null) {
-                    adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap, durationHashMap);
+                    adapter = new RequestListViewAdapter(mainActivity, emsRequests, distanceHashMap, durationHashMap, null);
                     binding.loadMoreListView.setAdapter(adapter);
                 } else {
                     adapter.add(emsRequests, durationHashMap);
@@ -347,13 +401,15 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        try {
-            int index = position - 1;
-            if (emsRequests != null && emsRequests.size() > index && index >= 0) {
-                mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+        if (!mainActivity.isTutorialMode) {
+            try {
+                int index = position - 1;
+                if (emsRequests != null && emsRequests.size() > index && index >= 0) {
+                    mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

@@ -5,7 +5,7 @@ import com.biz4solutions.models.UrgentCare;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class UrgentCaresDataResponse implements Serializable{
+public class UrgentCaresDataResponse implements Serializable {
 
     private ArrayList<UrgentCare> list;
 
