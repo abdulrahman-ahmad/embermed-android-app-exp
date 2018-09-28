@@ -4,7 +4,6 @@
     <string name="ems_alert">EMS Alert</string>
     <string name="triage_call">Triage Call</string>
     <string name="symptoms">Symptoms</string>
-    <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
