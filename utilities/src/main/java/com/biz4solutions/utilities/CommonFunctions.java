@@ -12,7 +12,6 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
@@ -26,8 +25,6 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 import fr.castorflex.android.circularprogressbar.CircularProgressDrawable;
@@ -320,46 +317,6 @@ public class CommonFunctions implements Serializable {
                 return false;
             }
         };
-    }
-
-    public boolean checkPermission(Activity activity, int requestCode, String[] permissions) {
-        boolean flag = true;
-        for (String permission : permissions) {
-            if (ContextCompat.checkSelfPermission(activity,
-                    permission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                flag = false;
-                break;
-            }
-        }
-        try {
-            if (Build.VERSION.SDK_INT >= 23) { // if lollipop or marshmallow version.
-                if (flag) {
-                    return true;
-                } else {
-                    activity.requestPermissions(permissions, requestCode);
-                }
-            } else { // for version < 23 API
-                return true;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-
-    public static File getOutputMediaFile(String extension) {
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "GoodGame" + File.separator + "Temp");
-
-        if (!mediaStorageDir.exists()) {
-            if (!mediaStorageDir.mkdirs()) {
-                return null;
-            }
-        }
-
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        return new File(mediaStorageDir.getPath() + File.separator + timeStamp + extension);
     }
 
     public String getAssetsJsonString(Context context, String fileName) {
