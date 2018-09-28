@@ -401,13 +401,15 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        try {
-            int index = position - 1;
-            if (emsRequests != null && emsRequests.size() > index && index >= 0) {
-                mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+        if (!mainActivity.isTutorialMode) {
+            try {
+                int index = position - 1;
+                if (emsRequests != null && emsRequests.size() > index && index >= 0) {
+                    mainActivity.getRequestDetails(emsRequests.get(index).getId(), distanceHashMap.get(emsRequests.get(index).getId()), false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

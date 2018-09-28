@@ -366,6 +366,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
 
     private void openMapFragment() {
         try {
+            CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
             Fragment currentFragment = mainActivity.getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof CompleteLocationMapFragment) {
                 return;
@@ -433,7 +434,6 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
                 return false;
             }
         }
-
         return true;
     }
 
@@ -442,6 +442,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         new ApiServices().submitIncidentReport(mainActivity, getIncidentReport(), new RestClientResponse() {
             @Override
@@ -472,6 +473,7 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
 
     private void openFeedbackFragment() {
         if (mainActivity != null && request != null) {
+            CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
             mainActivity.feedbackRequest = null;
             mainActivity.openFeedbackFragment(request.getId(), true);
         }

@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public LinearLayout btnLogOut;
     public LinearLayout btnCall911;
     private boolean isOpenTokActivityOpen = false;
-    private static final int PERMISSION_REQUEST_CODE = 124;
+    private static final int PERMISSION_REQUEST_CODE = 121234;
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
     public boolean isTutorialMode = false;

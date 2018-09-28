@@ -164,6 +164,7 @@ public class TriageIncidentReportFragment extends Fragment implements View.OnCli
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         IncidentReport body = new IncidentReport();
         body.setTitle(binding.layoutTriageIncidentReport.edtTitle.getText().toString().trim());

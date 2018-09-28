@@ -63,7 +63,8 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.symptoms);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
-            mainActivity.btnCall911.setVisibility(View.VISIBLE);
+            // TODO: 27-09-2018 ---- Call 911 is not in current scope
+            mainActivity.btnCall911.setVisibility(View.GONE);
         }
 
         initListView();
@@ -191,8 +192,10 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
-            adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+        if (!mainActivity.isTutorialMode) {
+            if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
+                adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+            }
         }
     }
 
