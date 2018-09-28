@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.biz4solutions.provider.subscription.viewmodels.RegistrationViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/_20dp"
+        tools:background="@color/colorPrimary">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="Personal" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_profile_pic"
+                        android:layout_width="@dimen/_100dp"
+                        android:layout_height="@dimen/_100dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/profile_image"
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:contentDescription="@null"
+                            android:focusable="true"
+                            android:src="@drawable/ic_default_profile_pic" />
+
+                        <ImageView
+                            android:id="@+id/iv_upload_photo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_marginTop="10dp"
+                            android:contentDescription="@null"
+                            android:padding="3dp"
+                            android:src="@drawable/ic_upload_profile_pic" />
+
+                    </RelativeLayout>
+
+                    <ProgressBar
+                        android:id="@+id/img_progress_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_30dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_first_name"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/name_filter"
+                        android:hint="@string/first_name"
+                        android:inputType="textWebEmailAddress"
+                        android:maxLength="50"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <!--tools:ignore="SpUsage" />-->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_last_name"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/name_filter"
+                        android:hint="@string/last_name"
+                        android:inputType="textWebEmailAddress"
+                        android:maxLength="50"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_12dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_email"
+                        style="@style/profile_email_edt_style"
+                        android:hint="@string/email"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint"
+                        tools:ignore="TextFields"
+                        tools:text="abc@mailinator.com" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_12dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_phone_no"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/number_filter"
+                        android:hint="Phone No."
+                        android:inputType="number"
+                        android:maxLength="50"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_12dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edt_address"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:hint="Address(optional)"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_12dp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/style_header_registration"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="Profession" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="occupation" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-7dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="-7dp"
+                    android:entries="@{viewModel.occupationLiveList}"
+                    android:minHeight="@dimen/_30dp"
+                    android:onItemSelected="@{(parent,view,pos,id)->viewModel.onOccupationSelectItem(parent,view,pos,id)}" />
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_other_occupation"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/name_filter"
+                        android:hint="if other, mention your occupation."
+                        android:inputType="textWebEmailAddress"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_institute_name"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/name_filter"
+                        android:hint="Institute name"
+                        android:inputType="textWebEmailAddress"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_12dp" />
+            </LinearLayout>
+
+            <TextView
+                style="@style/style_header_registration"
+                android:layout_marginTop="@dimen/_8dp"
+                android:text="CPR" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="CPR Training Institution" />
+
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="-7dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginEnd="-7dp"
+                    android:entries="@{viewModel.occupationLiveList}"
+                    android:minHeight="@dimen/_30dp"
+                    android:onItemSelected="@{(parent,view,pos,id)->viewModel.onOccupationSelectItem(parent,view,pos,id)}" />
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:focusableInTouchMode="false"
+                    android:orientation="vertical"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_dob"
+                        style="@style/profile_edt_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="none"
+                        android:paddingTop="@dimen/_10dp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <include
+                    layout="@layout/layout_toast_registration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/style_header_registration"
+                android:layout_marginTop="@dimen/_10dp"
+                android:text="Medical License" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_license_cpe_no"
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:hint="License Number / NPE Number?"
+                        android:inputType="textWebEmailAddress"
+                        android:maxLength="50"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <include
+                    layout="@layout/layout_toast_registration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/style_header_registration"
+                android:layout_marginTop="@dimen/_10dp"
+                android:text="OTHER" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingTop="@dimen/_8dp"
+                android:paddingEnd="@dimen/_30dp"
+                android:paddingBottom="@dimen/_5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toStartOf="@+id/switch_telehealth_participation"
+                    android:text="Do you want to participate in the telehealth triage platform?" />
+
+                <Switch
+                    android:id="@+id/switch_telehealth_participation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+
+            <View
+                style="@style/divider"
+                android:layout_marginTop="@dimen/_8dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_80dp"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        android:id="@+id/edt_speciality"
+                        style="@style/profile_edt_style"
+                        android:layout_height="match_parent"
+                        android:layout_width="match_parent"
+                        android:background="@null"
+                        android:scrollbars="vertical"
+                        android:hint="License Number / NPE Number?"
+                        android:inputType="textWebEmailAddress"
+                        android:paddingTop="@dimen/_10dp"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

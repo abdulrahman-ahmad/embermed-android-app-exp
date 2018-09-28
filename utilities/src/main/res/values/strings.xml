@@ -68,4 +68,5 @@
 
     <!--filters-->
     <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="number_filter">0123456789</string>
 </resources>

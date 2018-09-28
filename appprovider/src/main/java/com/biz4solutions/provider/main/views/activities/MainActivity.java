@@ -54,6 +54,7 @@ import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
+import com.biz4solutions.provider.subscription.views.fragments.RegistrationFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
@@ -184,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_registration).setVisible(true);
             openDashBoardFragment();
             FirebaseMessagingService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
@@ -285,6 +287,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_aed_maps:
                         getAedList();
+                        break;
+                    case R.id.nav_registration:
+                        openRegistrationFragment();
                         break;
                     case R.id.nav_log_out:
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
@@ -457,6 +462,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, DashboardFragment.newInstance())
                 .addToBackStack(DashboardFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openRegistrationFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof RegistrationFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, RegistrationFragment.newInstance())
+                .addToBackStack(RegistrationFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

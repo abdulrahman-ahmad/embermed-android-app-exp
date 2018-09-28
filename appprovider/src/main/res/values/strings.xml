@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Ember Medics</string>
     <string name="news_feed">News Feed</string>
+    <string name="registration">Registration</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="triage_call">Triage Call</string>
@@ -77,4 +78,5 @@
     <string name="tutorial_title_request_details">Action 2</string>
     <string name="tutorial_description_cardiac_request_details">Tap here to accept a cardiac call alert.</string>
     <string name="tutorial_description_triage_request_details">Tap here to accept a triage call alert.</string>
+    <string name="file_limit_max_2mb"><i>(Max 2MB)</i></string>
 </resources>

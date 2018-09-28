@@ -69,7 +69,7 @@
     </style>
 
     <!--Calender View-->
-    <style name="MyCustomBetterPickersDialogs" >
+    <style name="MyCustomBetterPickersDialogs">
         <item name="bpPreHeaderBackgroundColor">@color/colorPrimary</item>
         <item name="bpHeaderBackgroundColor">@color/colorPrimary</item>
         <item name="bpHeaderSelectedTextColor">@color/white</item>
@@ -84,4 +84,10 @@
         <item name="bpButtonsTextColor">@color/colorPrimary</item>
     </style>
 
+    <!--<style name="spinner_style" parent="Theme.AppCompat.Light.NoActionBar">-->
+    <!---->
+        <!--<item name="android:spinnerMode">dropdown</item>-->
+        <!--<item name="android:background">@drawable/ic_arrow_down</item>-->
+
+    <!--</style>-->
 </resources>
