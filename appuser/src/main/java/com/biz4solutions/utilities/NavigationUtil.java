@@ -5,8 +5,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
-import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.interfaces.OnBackClickListener;
+import com.biz4solutions.main.views.activities.MainActivity;
 
 public class NavigationUtil {
     private static NavigationUtil instance = null;
@@ -34,10 +34,12 @@ public class NavigationUtil {
                     @Override
                     public void onClick(View v) {
                         CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
-                        if (onBackClickListener != null) {
-                            onBackClickListener.onBackPress();
-                        } else {
-                            mainActivity.getSupportFragmentManager().popBackStack();
+                        if (!mainActivity.isTutorialMode) {
+                            if (onBackClickListener != null) {
+                                onBackClickListener.onBackPress();
+                            } else {
+                                mainActivity.getSupportFragmentManager().popBackStack();
+                            }
                         }
                     }
                 });
@@ -81,7 +83,6 @@ public class NavigationUtil {
             if (mainActivity != null) {
                 ActionBarDrawerToggle actionBarDrawerToggle = mainActivity.toggle;
                 actionBarDrawerToggle.setDrawerIndicatorEnabled(false);
-                //activity.toolbarTitleSpace.setVisibility(View.VISIBLE);
                 android.support.v7.app.ActionBar actionBar = mainActivity.getSupportActionBar();
                 if (actionBar != null) {
                     actionBar.setDisplayHomeAsUpEnabled(false);
@@ -95,7 +96,6 @@ public class NavigationUtil {
     }
 
     public void showMenu(MainActivity activity) {
-        //activity.toolbarTitleSpace.setVisibility(View.GONE);
         hideBackArrow(activity);
     }
 }

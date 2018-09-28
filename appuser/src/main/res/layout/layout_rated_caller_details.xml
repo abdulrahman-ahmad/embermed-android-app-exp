@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:background="@color/divider_color" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_16dp"
+            tools:ignore="SpUsage">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/callee_rating"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/_18dp" />
+
+            <com.biz4solutions.utilities.ratingBar.RotationRatingBar
+                android:id="@+id/rb_rating_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="-3dp"
+                android:layout_marginTop="@dimen/_10dp"
+                app:srb_clearRatingEnabled="false"
+                app:srb_drawableEmpty="@drawable/star_empty"
+                app:srb_drawableFilled="@drawable/star_filled"
+                app:srb_isIndicator="true"
+                app:srb_numStars="5"
+                app:srb_scrollable="true"
+                app:srb_starHeight="@dimen/_25dp"
+                app:srb_starPadding="@dimen/_5dp"
+                app:srb_starWidth="@dimen/_25dp"
+                app:srb_stepSize="0.5" />
+
+            <TextView
+                android:id="@+id/tv_rated_caller_comment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/_16dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:background="@color/divider_color" />
+
+    </LinearLayout>
+
+</layout>

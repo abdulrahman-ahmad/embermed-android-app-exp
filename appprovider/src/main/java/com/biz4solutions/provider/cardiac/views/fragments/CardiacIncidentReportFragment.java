@@ -80,7 +80,7 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
     }
 
     private void initClickListeners() {
-        binding.btnSubmit.setOnClickListener(this);
+        binding.layoutCardiacIncidentReport.btnSubmit.setOnClickListener(this);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
 
     @SuppressLint("ClickableViewAccessibility")
     private void initView() {
-        binding.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.edtComment.getId()));
+        binding.layoutCardiacIncidentReport.edtComment.setOnTouchListener(CommonFunctions.getInstance().scrollOnTouchListener(binding.layoutCardiacIncidentReport.edtComment.getId()));
         binding.requestListCardiacItem.txtTime.setVisibility(View.GONE);
         binding.requestListCardiacItem.txtDistance.setVisibility(View.GONE);
         binding.requestListCardiacItem.distanceLoader.setVisibility(View.GONE);
@@ -130,10 +130,10 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
     }
 
     private boolean isFormValid() {
-        if (binding.edtTitle.getText().toString().trim().isEmpty()) {
+        if (binding.layoutCardiacIncidentReport.edtTitle.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), R.string.error_empty_incident_report_title, Toast.LENGTH_SHORT).show();
             return false;
-        } else if (binding.edtComment.getText().toString().trim().isEmpty()) {
+        } else if (binding.layoutCardiacIncidentReport.edtComment.getText().toString().trim().isEmpty()) {
             Toast.makeText(getActivity(), R.string.error_empty_incident_report_comment, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -141,9 +141,9 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
     }
 
     private boolean checkIsVictimsLifeSaved() {
-        if (binding.rdbVictimLifeSavedYes.isChecked()) {
+        if (binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.isChecked()) {
             return true;
-        } else if (binding.rdbVictimLifeSavedNo.isChecked()) {
+        } else if (binding.layoutCardiacIncidentReport.rdbVictimLifeSavedNo.isChecked()) {
             return true;
         }
         Toast.makeText(mainActivity, R.string.error_select_is_victims_life_saved, Toast.LENGTH_SHORT).show();
@@ -155,11 +155,12 @@ public class CardiacIncidentReportFragment extends Fragment implements View.OnCl
             Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
         CommonFunctions.getInstance().loadProgressDialog(mainActivity);
         IncidentReport body = new IncidentReport();
-        body.setTitle(binding.edtTitle.getText().toString().trim());
-        body.setComment(binding.edtComment.getText().toString().trim());
-        body.setVictimLifeSaved(binding.rdbVictimLifeSavedYes.isChecked());
+        body.setTitle(binding.layoutCardiacIncidentReport.edtTitle.getText().toString().trim());
+        body.setComment(binding.layoutCardiacIncidentReport.edtComment.getText().toString().trim());
+        body.setVictimLifeSaved(binding.layoutCardiacIncidentReport.rdbVictimLifeSavedYes.isChecked());
         body.setRequestId(requestDetails.getId());
 
         new ApiServices().submitIncidentReport(mainActivity, body, new RestClientResponse() {

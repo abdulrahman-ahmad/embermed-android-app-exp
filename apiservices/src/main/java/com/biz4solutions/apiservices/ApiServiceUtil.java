@@ -184,6 +184,8 @@ public class ApiServiceUtil {
                             restClientResponse.onSuccess(response.body(), response.code());
                         } else if (response.code() == Constants.UNAUTHORIZED_ERROR_CODE) {
                             CommonFunctions.getInstance().doLogOut(context, context.getString(R.string.error_session_expired));
+                        } else if (response.code() == Constants.BLOCK_ERROR_CODE) {
+                            CommonFunctions.getInstance().doLogOut(context, context.getString(R.string.error_block_user));
                         } else if (response.errorBody() != null) {
                             try {
                                 EmptyResponse emptyResponse = new Gson().getAdapter(EmptyResponse.class).fromJson(response.errorBody().string());

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.biz4solutions.viewmodels.ViewProfileViewModel" />
+    </data>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_20dp">
+
+            <ImageView
+                circularImageUrl="@{viewModel.userData.imageUrl}"
+                android:layout_width="@dimen/_100dp"
+                android:layout_height="@dimen/_100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginBottom="10dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_default_profile_pic" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/_25dp"
+                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginRight="@dimen/_25dp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/first_name"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_first_name"
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.firstName}"
+                    tools:ignore="SpUsage"
+                    tools:text="@string/first_name" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/last_name"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_last_name"
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.lastName}"
+                    tools:ignore="SpUsage"
+                    tools:text="@tools:sample/last_names" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/email"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_email"
+                    style="@style/tv_email_value"
+                    android:text="@{viewModel.userData.email}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/date_of_birth"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    android:id="@+id/tv_dob"
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.displayDateOfBirth}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_7dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_7dp"
+                    android:paddingBottom="@dimen/_7dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="@string/gender"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tv_gender"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:text="@{viewModel.userData.gender}"
+                        tools:ignore="SpUsage" />
+
+
+                    <ImageView
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_forward_arrow"
+                        android:visibility="invisible" />
+                </LinearLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_8dp" />
+
+                <com.biz4solutions.customs.RippleView
+                    android:id="@+id/ll_profile_change_pwd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:gravity="center_vertical"
+                    android:onClick="@{(v)->viewModel.onChangePwdClick(v)}"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_7dp"
+                    android:paddingBottom="@dimen/_7dp"
+                    android:weightSum="10">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="@string/label_change_password"
+                        tools:ignore="SpUsage" />
+
+                    <EditText
+                        android:id="@+id/tv_pwd"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="6"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:gravity="center_vertical"
+                        android:inputType="textPassword"
+                        android:text="12345678912345"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_25dp"
+                        tools:ignore="SpUsage" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp"
+                        android:layout_gravity="center_vertical|end"
+                        android:layout_weight="1"
+                        android:background="@drawable/ic_forward_arrow"
+                        android:contentDescription="@null" />
+                </com.biz4solutions.customs.RippleView>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginTop="@dimen/_5dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

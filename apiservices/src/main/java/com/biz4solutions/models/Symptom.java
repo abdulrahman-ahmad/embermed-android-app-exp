@@ -6,6 +6,11 @@ public class Symptom {
     private String name;
     private String description;
 
+    public Symptom(String id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public String getId() {
         return id;
     }

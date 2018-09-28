@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.biz4solutions.profile">
+
+    <application>
+        <activity
+            android:name="com.biz4solutions.activities.ProfileActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MainAppTheme"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
+    </application>
+</manifest>

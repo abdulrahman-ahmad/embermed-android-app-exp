@@ -5,6 +5,7 @@ import android.content.Context;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.Location;
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
@@ -153,9 +154,44 @@ public class ApiServices {
                 .submitProviderFeedBack(feedbackRequest));
     }
 
-    public void getUrgentCareList(final Context context,double latitude,double longitude, final RestClientResponse restClientResponse) {
+    public void getUrgentCareList(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
-                .getUrgentCareList(0, 2000,latitude,longitude));
+                .getUrgentCareList(0, 2000, latitude, longitude));
+    }
+
+    public void getAedList(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getAedList(0, 2000, latitude, longitude));
+    }
+
+    public void getUserCompletedRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getUserCompletedRequestList(page, 20));
+    }
+
+    public void getProviderCompletedRequestList(final Context context, int page, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getProviderCompletedRequestList(page, 20));
+    }
+
+    public void getIncidentReportDetail(final Context context, String requestId, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getIncidentReportDetail(requestId));
+    }
+
+    public void getServerTimeDiff(final Context context, long sysTime, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getServerTimeDiff(sysTime));
+    }
+
+    public void updateProviderProfile(final Context context, User user, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateProviderProfile(user));
+    }
+
+    public void updateUserProfile(final Context context, User user, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateUserProfile(user));
     }
 
 }

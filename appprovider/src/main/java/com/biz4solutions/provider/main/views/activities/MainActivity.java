@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -37,22 +38,29 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
+import com.biz4solutions.models.response.UrgentCaresDataResponse;
+import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.aedmaps.views.fragments.AedMapFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
+import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
-import com.biz4solutions.provider.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
+import com.biz4solutions.provider.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
+import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FacebookUtil;
@@ -71,11 +79,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BroadcastReceiver broadcastReceiver;
     public boolean isSuccessfullyInitFirebase = false;
     public boolean isUpdateList = false;
+    public boolean isUpdateIncidentReportList = false;
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     private boolean isOpenTokActivityOpen = false;
-    private static final int PERMISSION_REQUEST_CODE = 124;
+    private static final int PERMISSION_REQUEST_CODE = 121254;
     private EmsRequest tempRequest;
+    public FeedbackRequest feedbackRequest;
+    private boolean isAedApiInProgress = false;
+    public boolean isTutorialMode = false;
+    public int tutorialId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            unauthorizedLogOut();
+                            unauthorizedLogOut(intent.getStringExtra(Constants.LOGOUT_MESSAGE));
                             break;
                         case Constants.LOCAL_NOTIFICATION_ACTION_VIEW:
                             openNotificationDetailsView(intent);
@@ -125,8 +138,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         openNotificationDetailsView(getIntent());
     }
 
-    private void unauthorizedLogOut() {
-        Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+    private void unauthorizedLogOut(String message) {
+        if (message != null && !message.isEmpty()) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        }
         doLogOut();
     }
 
@@ -153,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
@@ -163,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
@@ -227,6 +244,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
             boolean userAllowedAllRequestPermissions = true;
+            if (grantResults.length == 0) {
+                userAllowedAllRequestPermissions = false;
+            }
             for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
                     userAllowedAllRequestPermissions = false;
@@ -237,6 +257,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch (requestCode) {
                     case PERMISSION_REQUEST_CODE:
                         startVideoCall(tempRequest);
+                        break;
+                    case 102:
+                        getAedList();
                         break;
                 }
             }
@@ -260,6 +283,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_news_feed:
                         openNewsFeedFragment();
                         break;
+                    case R.id.nav_aed_maps:
+                        getAedList();
+                        break;
                     case R.id.nav_log_out:
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
                             @Override
@@ -273,6 +299,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_log_in:
                         doLogOut();
                         break;
+                    case R.id.nav_incident_reports:
+                        openIncidentReportsListFragment();
+                        break;
+                    case R.id.nav_how_it_works:
+                        openHowItWorksFragment();
+                        break;
+
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
@@ -343,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (resultCode == RESULT_OK) {
                     openTriageCallerFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
                 } else if (resultCode == RESULT_CANCELED) {
-                    unauthorizedLogOut();
+                    unauthorizedLogOut(null);
                 }
                 break;
         }
@@ -427,6 +460,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    public void openDashBoardFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof DashboardFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, DashboardFragment.newInstance())
+                .addToBackStack(DashboardFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void openNewsFeedFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof NewsFeedFragment) {
@@ -436,6 +482,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
                 .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof FeedbackFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
+                .addToBackStack(FeedbackFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 
@@ -467,6 +526,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        if (isTutorialMode) {
+            return;
+        }
         CommonFunctions.getInstance().hideSoftKeyBoard(MainActivity.this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -506,6 +568,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     reOpenDashBoardFragment();
                     break;
                 case FeedbackFragment.fragmentName:
+                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+                    if (currentFragment instanceof FeedbackFragment) {
+                        if (((FeedbackFragment) currentFragment).isFromIncidentReport) {
+                            getSupportFragmentManager().popBackStack();
+                        } /*else {
+                            // do nothing
+                        }*/
+                    }
+                    break;
                 case TriageCallerFeedbackFragment.fragmentName:
                     // do nothing
                     break;
@@ -549,6 +620,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
                 }
             });
+        }
+    }
+
+    public void handledRequestDataForTutorial(final EmsRequest emsRequest, final String distanceStr, final boolean isOpenDuplicateFragment) {
+        if (Constants.STATUS_IMMEDIATE.equals("" + emsRequest.getPriority())) {
+            openCardiacCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
+        } else if (Constants.STATUS_HIGH.equals("" + emsRequest.getPriority())) {
+            openTriageCallDetailsFragment(emsRequest, distanceStr, isOpenDuplicateFragment);
         }
     }
 
@@ -643,6 +722,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View v) {
+        if (isTutorialMode) {
+            return;
+        }
         switch (v.getId()) {
             case R.id.btn_call_alerter:
                 Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -662,6 +744,133 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.main_container, TriageCallerFeedbackFragment.newInstance(requestId))
                     .addToBackStack(TriageCallerFeedbackFragment.fragmentName)
                     .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean isLocationPermissionGranted() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+                requestPermissions(perms, 102);
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private void getAedList() {
+        if (!isLocationPermissionGranted() || !CommonFunctions.getInstance().isGPSEnabled(this)) {
+            return;
+        }
+
+        if (CommonFunctions.getInstance().isOffline(this)) {
+            Toast.makeText(this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(this);
+        GpsServicesUtil.getInstance().onLocationCallbackListener(new GpsServicesUtil.LocationCallbackListener() {
+            @Override
+            public void onSuccess(double latitude, double longitude) {
+                if (isAedApiInProgress) {
+                    return;
+                }
+                if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                    return;
+                }
+                isAedApiInProgress = true;
+                new ApiServices().getAedList(MainActivity.this, latitude, longitude, new RestClientResponse() {
+                    @Override
+                    public void onSuccess(Object response, int statusCode) {
+                        isAedApiInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        try {
+                            UrgentCaresResponse urgentCaresResponse = (UrgentCaresResponse) response;
+                            Toast.makeText(MainActivity.this, urgentCaresResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                            openAedMapFragment(urgentCaresResponse.getData());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage, int statusCode) {
+                        isAedApiInProgress = false;
+                        CommonFunctions.getInstance().dismissProgressDialog();
+                        Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onError() {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(MainActivity.this, R.string.error_location_fetch, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void openAedMapFragment(UrgentCaresDataResponse response) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof AedMapFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, AedMapFragment.newInstance(response))
+                    .addToBackStack(AedMapFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openHowItWorksFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof HowItWorksFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, HowItWorksFragment.newInstance())
+                .addToBackStack(HowItWorksFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openIncidentReportsListFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof IncidentReportsListFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
+                    .addToBackStack(IncidentReportsListFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenHowItWorksFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof HowItWorksFragment) {
+                return;
+            }
+            Toast.makeText(MainActivity.this, R.string.tutorial_end_message, Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().popBackStack(HowItWorksFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
