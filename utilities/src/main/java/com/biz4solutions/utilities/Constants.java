@@ -16,6 +16,7 @@ public class Constants implements Serializable {
     public static final int SPLASH_TIMEOUT = 1200;
     public static final int SEND_LOG_EMAIL = 100;
     public static final int UNAUTHORIZED_ERROR_CODE = 401;
+    public static final int BLOCK_ERROR_CODE = 410;
     public static final int DISTANCE_API_DElAY = 30000; // 30 sec
 
     public static final String USER_PREFERENCE = "USER_PREFERENCE";
@@ -60,6 +61,8 @@ public class Constants implements Serializable {
     public static final String TRIAGE_FEEDBACK_URGENT_CARE = "URGENT_CARE";
     public static final String TRIAGE_FEEDBACK_PCP = "PCP";
 
+    public static final String DATE_FORMAT = "dd MMM, yyyy";
+    public static final String TIME_FORMAT = "hh:mm a";
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
     public static final int MINIMUM_CLUSTER_SIZE = 2;

@@ -37,20 +37,24 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
+import com.biz4solutions.main.views.fragments.AccountSettingFragment;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
+import com.biz4solutions.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
-import com.biz4solutions.triage.views.fragments.FeedbackFragment;
 import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallFeedbackWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallWaitingFragment;
+import com.biz4solutions.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.ExceptionHandler;
@@ -71,9 +75,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawerLayout;
     public static boolean isActivityOpen = false;
     public LinearLayout btnLogOut;
+    public LinearLayout btnCall911;
     private boolean isOpenTokActivityOpen = false;
-    private static final int PERMISSION_REQUEST_CODE = 124;
+    private static final int PERMISSION_REQUEST_CODE = 121234;
     private EmsRequest tempRequest;
+    public FeedbackRequest feedbackRequest;
+    public boolean isTutorialMode = false;
+    public int tutorialId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +103,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
             btnLogOut = binding.appBarMain.btnLogOut;
+            btnCall911 = binding.appBarMain.btnCall911;
             btnLogOut.setOnClickListener(this);
+            btnCall911.setOnClickListener(this);
         }
 
         logoutBroadcastReceiver = new BroadcastReceiver() {
@@ -106,8 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (action != null) {
                     switch (action) {
                         case Constants.LOGOUT_RECEIVER:
-                            Toast.makeText(context, intent.getStringExtra(Constants.LOGOUT_MESSAGE), Toast.LENGTH_SHORT).show();
-                            doLogOut();
+                            unauthorizedLogOut(intent.getStringExtra(Constants.LOGOUT_MESSAGE));
                             break;
                     }
                 }
@@ -116,6 +125,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constants.LOGOUT_RECEIVER);
         registerReceiver(logoutBroadcastReceiver, intentFilter);
+    }
+
+    private void unauthorizedLogOut(String message) {
+        if (message != null && !message.isEmpty()) {
+            Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, R.string.error_session_expired, Toast.LENGTH_SHORT).show();
+        }
+        doLogOut();
     }
 
     @Override
@@ -136,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             openNewsFeedFragment();
@@ -147,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incidents_reports).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
             FirebaseMessagingService.setFcmToken(MainActivity.this);
@@ -222,11 +240,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_news_feed:
                         openNewsFeedFragment();
                         break;
+                    case R.id.nav_account_settings:
+                        openAccountSettingFragment();
+                        break;
+                    case R.id.nav_how_it_works:
+                        openHowItWorksFragment();
+                        break;
                     case R.id.nav_log_out:
                         showLogOutAlertDialog();
                         break;
                     case R.id.nav_log_in:
                         doLogOut();
+                        break;
+                    case R.id.nav_incident_reports:
+                        openIncidentReportsListFragment();
                         break;
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
@@ -305,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 isOpenTokActivityOpen = false;
                 FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
                 if (resultCode == RESULT_OK) {
-                    openFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID));
+                    openFeedbackFragment(data.getStringExtra(OpenTokActivity.OPENTOK_REQUEST_ID), false);
                 }
                 break;
         }
@@ -337,6 +364,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    public void openDashBoardFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof DashboardFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, DashboardFragment.newInstance())
+                .addToBackStack(DashboardFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void openNewsFeedFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof NewsFeedFragment) {
@@ -347,6 +387,48 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
                 .addToBackStack(NewsFeedFragment.fragmentName)
                 .commitAllowingStateLoss();
+    }
+
+    private void openAccountSettingFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof AccountSettingFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, AccountSettingFragment.newInstance())
+                .addToBackStack(AccountSettingFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openHowItWorksFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof HowItWorksFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, HowItWorksFragment.newInstance())
+                .addToBackStack(HowItWorksFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openIncidentReportsListFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof IncidentReportsListFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
+                    .addToBackStack(IncidentReportsListFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void reOpenDashBoardFragment() {
@@ -363,6 +445,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        if (isTutorialMode) {
+            return;
+        }
         CommonFunctions.getInstance().hideSoftKeyBoard(MainActivity.this);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -371,6 +456,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
                 return;
             }
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
             switch (fragmentName) {
                 case NewsFeedFragment.fragmentName:
@@ -397,11 +483,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     unconsciousOnBackClick();
                     break;
                 case EmsAlertCardiacCallFragment.fragmentName:
-                    Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
                     showCancelRequestAlert(((EmsAlertCardiacCallFragment) currentFragment).requestId);
                     break;
-                case TriageCallWaitingFragment.fragmentName:
                 case FeedbackFragment.fragmentName:
+                    if (currentFragment instanceof FeedbackFragment) {
+                        if (((FeedbackFragment) currentFragment).isFromIncidentReport) {
+                            getSupportFragmentManager().popBackStack();
+                        } /*else {
+                            // do nothing
+                        }*/
+                    }
+                    break;
+                case TriageCallWaitingFragment.fragmentName:
                 case TriageCallFeedbackWaitingFragment.fragmentName:
                     // not do any think
                     break;
@@ -503,7 +596,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         startVideoCallWithPermissions(data);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && !data.getIsPatientFeedbackSubmitted()) {
-                        openFeedbackFragment(data.getId());
+                        openFeedbackFragment(data.getId(), false);
                     } else if (Constants.STATUS_ACCEPTED.equals("" + data.getTriageCallStatus())
                             && data.getProviderFeedback() != null && !data.getProviderFeedback().isEmpty()) {
                         openProviderReasonFragment(data);
@@ -566,8 +659,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void openEmsAlertUnconsciousFragment() {
-        startGpsService();
-
+        if (!isTutorialMode) {
+            startGpsService();
+        }
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
@@ -631,7 +725,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void openFeedbackFragment(String requestId) {
+    public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof FeedbackFragment) {
@@ -640,7 +734,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId))
+                    .replace(R.id.main_container, FeedbackFragment.newInstance(requestId, isFromIncidentReport))
                     .addToBackStack(FeedbackFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
@@ -684,10 +778,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onClick(View view) {
+        if (isTutorialMode) {
+            return;
+        }
         switch (view.getId()) {
             case R.id.btn_log_out:
                 showLogOutAlertDialog();
                 break;
+            case R.id.btn_call_911:
+                Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    public void reOpenHowItWorksFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof HowItWorksFragment) {
+                return;
+            }
+            Toast.makeText(MainActivity.this, R.string.tutorial_end_message, Toast.LENGTH_SHORT).show();
+            getSupportFragmentManager().popBackStack(HowItWorksFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

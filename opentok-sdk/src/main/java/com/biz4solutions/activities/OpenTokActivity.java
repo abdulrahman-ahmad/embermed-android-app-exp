@@ -22,6 +22,7 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.response.EmptyResponse;
+import com.biz4solutions.models.response.ServerTimeDiffResponse;
 import com.biz4solutions.opentok.sdk.BuildConfig;
 import com.biz4solutions.opentok.sdk.R;
 import com.biz4solutions.opentok.sdk.databinding.ActivityOpentokBinding;
@@ -72,6 +73,7 @@ public class OpenTokActivity extends AppCompatActivity implements
     private Timer timer = new Timer();
     private TimerTask timerTask;
     private ObservableField<String> callTime = new ObservableField<>();
+    private long timeDiff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,6 +164,7 @@ public class OpenTokActivity extends AppCompatActivity implements
         if (mSession != null) {
             mSession.onResume();
         }
+        getServerTimeDiff();
     }
 
     @Override
@@ -211,19 +214,19 @@ public class OpenTokActivity extends AppCompatActivity implements
     }
 
     private void startSession() {
-        if (mSessionId != null && !mSessionId.isEmpty()) {
-            if (mSubscriberToken != null && !mSubscriberToken.isEmpty()) {
-                initializeSession(BuildConfig.OPENTOK_API_KEY, mSessionId, mSubscriberToken);
-            } else if (mPublisherToken != null && !mPublisherToken.isEmpty()) {
-                initializeSession(BuildConfig.OPENTOK_API_KEY, mSessionId, mPublisherToken);
-            }
+        if (mSubscriberToken != null && !mSubscriberToken.isEmpty()) {
+            initializeSession(mSubscriberToken);
+        } else if (mPublisherToken != null && !mPublisherToken.isEmpty()) {
+            initializeSession(mPublisherToken);
         }
     }
 
-    private void initializeSession(String apiKey, String sessionId, String token) {
-        mSession = new Session.Builder(this, apiKey, sessionId).build();
-        mSession.setSessionListener(this);
-        mSession.connect(token);
+    private void initializeSession(String token) {
+        if (mSessionId != null && !mSessionId.isEmpty()) {
+            mSession = new Session.Builder(this, BuildConfig.OPENTOK_API_KEY, mSessionId).build();
+            mSession.setSessionListener(this);
+            mSession.connect(token);
+        }
     }
 
     /* Session Listener methods */
@@ -410,7 +413,10 @@ public class OpenTokActivity extends AppCompatActivity implements
         try {
             Calendar calendar = Calendar.getInstance();
             if (startTime > 0) {
-                long millis = calendar.getTimeInMillis() - startTime;
+                long millis = calendar.getTimeInMillis() + timeDiff - startTime;
+                if (millis < 0) {
+                    millis = 0;
+                }
                 String callTimeStr = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
                         TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
                         TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
@@ -423,5 +429,24 @@ public class OpenTokActivity extends AppCompatActivity implements
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getServerTimeDiff() {
+        if (CommonFunctions.getInstance().isOffline(this)) {
+            return;
+        }
+        new ApiServices().getServerTimeDiff(this, Calendar.getInstance().getTimeInMillis(), new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                ServerTimeDiffResponse timeDiffDataResponse = (ServerTimeDiffResponse) response;
+                if (timeDiffDataResponse != null) {
+                    timeDiff = timeDiffDataResponse.getData();
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+            }
+        });
     }
 }

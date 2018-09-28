@@ -15,5 +15,8 @@
     <color name="drawer_bg_color">#f2ffffff</color>
     <color name="blue_bg_color">#ebf5fa</color>
     <color name="blue_link_color">#0bacf4</color>
-
+    <color name="alert_bg_color">#efefef</color>
+    <color name="divider_color">#dedede</color>
+    <color name="tv_value_profile">#787878</color>
+    <color name="dark_blue_text_color">#185173</color>
 </resources>

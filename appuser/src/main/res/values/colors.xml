@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="alert_bg_color">#efefef</color>
     <color name="no_symptoms_text_color">#acacac</color>
     <color name="notification_bg_color">#fafafa</color>
     <color name="reason_txt_color">#545e69</color>
+
+    <color name="provider_secondary_text_color">#1e282c</color>
+    <color name="provider_gender_age_text_color">#696969</color>
+
+
+    <!--for how it works fragment-->
+    <color name="bg_card">#eef4f7</color>
+
+    <!--incident report screen-->
+    <!--for incident report screen-->
+    <color name="tv_incident_report">#64798A</color>
+
+    <color name="triage_text_color">#0b68f4</color>
+    <color name="triage_bg_color">#ecf9ff</color>
+    <color name="cardiac_bg_color">#ffefef</color>
+
+    <color name="no_alert_text_color">#acacac</color>
 </resources>

@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.widget.RemoteViews;
 
 import com.biz4solutions.apiservices.ApiServices;
@@ -86,8 +85,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         try {
             Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CHANNEL_ID)
                     .setSmallIcon(R.drawable.icon_notification_tranperant)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+//                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                     .setContentTitle(service.getString(R.string.app_name))
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(message))
                     .setContentText(message)
@@ -144,8 +143,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             // Apply the layouts to the notification
             Notification notification = new NotificationCompat.Builder(service, Constants.EMBER_MEDICS_CARDIAC_CHANNEL_ID)
                     .setSmallIcon(R.drawable.icon_notification_tranperant)
-                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.icon_notification))
-                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
+                    .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher))
+//                    .setColor(ContextCompat.getColor(service, R.color.notification_bg_color))
                     .setCustomContentView(notificationLayout)
                     .setCustomBigContentView(notificationLayoutExpanded)
                     .build();

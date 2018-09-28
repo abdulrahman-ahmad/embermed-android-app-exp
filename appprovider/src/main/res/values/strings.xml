@@ -4,12 +4,11 @@
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="triage_call">Triage Call</string>
-    <string name="triage_service">Triage Service</string>
     <string name="immediate">Immediate</string>
     <string name="high">High</string>
     <string name="pull_to_refresh">Pull to refresh</string>
     <string name="no_alerts_available">No alerts available</string>
-    <string name="reject_request_message">Are you sure, you want to reject this request?</string>
+    <string name="no_incident_reports_available">No incident reports available</string>
     <string name="accept_request_message">Are you sure, you want to accept this request?</string>
     <string name="complete_request_message">Are you sure, you want to complete this request?</string>
     <string name="submit_feedback_message">Are you sure, you want to submit the feedback?</string>
@@ -23,7 +22,7 @@
     <string name="away">&#160;away</string>
     <!--Side menus-->
     <string name="account_settings">Account Settings</string>
-    <string name="incidents_reports">Incident Reports</string>
+    <string name="incident_reports">Incident Reports</string>
     <string name="medical_profile">Medical Profile</string>
     <string name="how_it_works">How It Works</string>
     <string name="aed_maps">AED Maps</string>
@@ -31,9 +30,12 @@
     <string name="triage">Triage</string>
 
     <string name="submit">Submit</string>
-    <string name="incident_report">Incident Report</string>
+    <string name="incident_report_details">Incident Report Details</string>
     <string name="is_victim_life_saved">Is victim life saved?</string>
     <string name="title">Title</string>
+    <string name="incident_report">Incident Report</string>
+    <string name="comment_colon">Comment:</string>
+    <string name="title_colon">Title:</string>
     <string name="comment">Comment</string>
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
@@ -41,6 +43,7 @@
     <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
+    <string name="rate_caller_colon">Rate Caller:</string>
     <string name="skip"><u>Skip</u></string>
     <string name="where_should_caller_go">Where should caller go?</string>
     <string name="go_to_er">Go to ER</string>
@@ -53,4 +56,25 @@
     <string name="see_less"><u>SEE LESS</u></string>
     <string name="error_select_caller_feedback">Please select caller feedback.</string>
     <string name="error_empty_reason">Please enter reason.</string>
+    <string name="amount">Amount:</string>
+    <string name="call_duration">Call Duration:</string>
+    <string name="completed_on">Completed On:</string>
+    <string name="pending">Pending</string>
+
+    <!--for how it works screen-->
+    <string name="info_cardiac_call">How to attend cardiac call?</string>
+    <string name="info_triage_call">How to attend triage call?</string>
+    <string name="info_concierge_call">How to attend concierge call?</string>
+    <string name="info_add_subscription_plan">How to subscribe?</string>
+
+    <string name="caller_rating">Caller Rating:</string>
+
+    <string name="book_uber">Book Uber</string>
+
+    <string name="tutorial_title_request_list">Action 1</string>
+    <string name="tutorial_description_cardiac_request_list">Tap here to view cardiac alert details.</string>
+    <string name="tutorial_description_triage_request_list">Tap here to view triage alert details.</string>
+    <string name="tutorial_title_request_details">Action 2</string>
+    <string name="tutorial_description_cardiac_request_details">Tap here to accept a cardiac call alert.</string>
+    <string name="tutorial_description_triage_request_details">Tap here to accept a triage call alert.</string>
 </resources>

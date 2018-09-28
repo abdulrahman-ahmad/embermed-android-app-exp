@@ -1,6 +1,7 @@
 package com.biz4solutions.utilities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -8,24 +9,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageView;
 
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
@@ -35,8 +33,6 @@ public class CommonFunctions implements Serializable {
 
     private static CommonFunctions instance = null;
     private ProgressDialog mProgressBar;
-    private AppCompatDialog cProgressBar;
-    private AlertDialog.Builder alertDialog;
     private AlertDialog mDialog;
 
     private CommonFunctions() {
@@ -131,38 +127,15 @@ public class CommonFunctions implements Serializable {
     }
 
     /*
-     * method used to show loader.
-     */
-    public void loadCustomProgressDialog(Context context) {
-        if ((cProgressBar != null && cProgressBar.isShowing()) || (mProgressBar != null && mProgressBar.isShowing())) {
-            return;
-        }
-        cProgressBar = new AppCompatDialog(context);
-        cProgressBar.setCancelable(false);
-        if (cProgressBar.getWindow() != null) {
-            cProgressBar.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        }
-        cProgressBar.setContentView(R.layout.progress_loading);
-        cProgressBar.show();
-
-        final ImageView img_loading_frame = cProgressBar.findViewById(R.id.iv_frame_loading);
-        if (img_loading_frame != null) {
-            final AnimationDrawable frameAnimation = (AnimationDrawable) img_loading_frame.getBackground();
-            img_loading_frame.post(new Runnable() {
-                @Override
-                public void run() {
-                    frameAnimation.start();
-                }
-            });
-        }
-    }
-
-    /*
      * method used to dismiss loader.
      */
     public void dismissProgressDialog() {
-        if (mProgressBar != null) {
-            mProgressBar.dismiss();
+        try {
+            if (mProgressBar != null) {
+                mProgressBar.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -187,11 +160,11 @@ public class CommonFunctions implements Serializable {
     }
 
     private void showAlertDialog(Context context, int messageId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<Boolean> callBackListener) {
-        if (!isHighPriority && alertDialog != null) {
+        if (!isHighPriority && mDialog != null) {
             return;
         }
         dismissAlertDialog();
-        alertDialog = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
 
@@ -202,7 +175,7 @@ public class CommonFunctions implements Serializable {
                 if (callBackListener != null) {
                     callBackListener.onClose(true);
                 }
-                alertDialog = null;
+                //alertDialog = null;
                 mDialog = null;
             }
         });
@@ -213,7 +186,7 @@ public class CommonFunctions implements Serializable {
                     if (callBackListener != null) {
                         callBackListener.onClose(false);
                     }
-                    alertDialog = null;
+                    //alertDialog = null;
                     mDialog = null;
                 }
             });
@@ -224,8 +197,12 @@ public class CommonFunctions implements Serializable {
     }
 
     public void dismissAlertDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
+        try {
+            if (mDialog != null) {
+                mDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -326,6 +303,7 @@ public class CommonFunctions implements Serializable {
 
     public View.OnTouchListener scrollOnTouchListener(final int viewId) {
         return new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 if (view.getId() == viewId) {
@@ -339,5 +317,20 @@ public class CommonFunctions implements Serializable {
                 return false;
             }
         };
+    }
+
+    public String getAssetsJsonString(Context context, String fileName) {
+        String json = null;
+        try {
+            InputStream inputStream = context.getAssets().open(fileName);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            int read = inputStream.read(buffer);
+            inputStream.close();
+            json = new String(buffer, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return json;
     }
 }

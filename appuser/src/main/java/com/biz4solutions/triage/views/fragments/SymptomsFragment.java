@@ -15,19 +15,22 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.customs.LoadMoreListView;
+import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.databinding.FragmentSymptomsBinding;
+import com.biz4solutions.interfaces.OnTargetClickListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.Symptom;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.response.CreateEmsResponse;
 import com.biz4solutions.models.response.SymptomResponse;
+import com.biz4solutions.triage.adapters.SymptomsListViewAdapter;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.utilities.TargetViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
     private int page = 0;
     private boolean isLoadMore = true;
     private List<Symptom> symptomList;
+    private TapTargetView tutorial;
 
     public SymptomsFragment() {
         // Required empty public constructor
@@ -59,11 +63,19 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.symptoms);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
+            // TODO: 27-09-2018 ---- Call 911 is not in current scope
+            mainActivity.btnCall911.setVisibility(View.GONE);
         }
-        initswipeContainer();
+
         initListView();
-        binding.btnSubmit.setOnClickListener(this);
-        getNewSymptomList(true);
+        if (mainActivity != null && mainActivity.isTutorialMode) {
+            getSymptomListForTutorial();
+        } else {
+            initswipeContainer();
+            getNewSymptomList(true);
+            binding.btnSubmit.setOnClickListener(this);
+        }
+
         return binding.getRoot();
     }
 
@@ -92,14 +104,6 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         if (mInflater != null) {
             @SuppressLint("InflateParams") RelativeLayout header = (RelativeLayout) mInflater.inflate(R.layout.symptoms_list_header, null, false);
             binding.loadMoreListView.addHeaderView(header);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
         }
     }
 
@@ -188,14 +192,33 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
-            adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+        if (!mainActivity.isTutorialMode) {
+            if (adapter != null && (position - 1 >= 0) && symptomList != null && symptomList.size() > position - 1) {
+                adapter.setSelectedSymptomId(symptomList.get(position - 1).getId());
+            }
         }
     }
 
     private void getNewSymptomList(boolean showLoader) {
         page = 0;
         getSymptomList(showLoader);
+    }
+
+    private void getSymptomListForTutorial() {
+        symptomList = new ArrayList<>();
+        symptomList.add(new Symptom("1", "Symptom 1"));
+        symptomList.add(new Symptom("2", "Symptom 2"));
+        symptomList.add(new Symptom("3", "Symptom 3"));
+        symptomList.add(new Symptom("4", "Symptom 4"));
+        symptomList.add(new Symptom("5", "Symptom 5"));
+        adapter = new SymptomsListViewAdapter(mainActivity, symptomList, new OnTargetClickListener() {
+            @Override
+            public void onTargetClick() {
+                showTutorial();
+            }
+        });
+        binding.loadMoreListView.setAdapter(adapter);
+        setErrorView();
     }
 
     private void getSymptomList(boolean showLoader) {
@@ -249,7 +272,7 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
                 page++;
 
                 if (adapter == null) {
-                    adapter = new SymptomsListViewAdapter(symptomList);
+                    adapter = new SymptomsListViewAdapter(mainActivity, symptomList, null);
                     binding.loadMoreListView.setAdapter(adapter);
                 } else {
                     adapter.add(symptomList);
@@ -272,6 +295,34 @@ public class SymptomsFragment extends Fragment implements View.OnClickListener, 
         } else {
             binding.emptyAlertLayout.setVisibility(View.GONE);
             binding.viewSubmit.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void showTutorial() {
+        tutorial = TargetViewUtil.showTargetRoundedForBtn(mainActivity,
+                binding.btnSubmit, getString(R.string.tutorial_title_symptoms_submit_btn),
+                getString(R.string.tutorial_description_symptoms_submit_btn),
+                new OnTargetClickListener() {
+                    @Override
+                    public void onTargetClick() {
+                        mainActivity.reOpenHowItWorksFragment();
+                    }
+                });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mainActivity.btnCall911.setVisibility(View.GONE);
+        if (mainActivity != null) {
+            if (mainActivity.isTutorialMode) {
+                NavigationUtil.getInstance().showMenu(mainActivity);
+            } else {
+                NavigationUtil.getInstance().hideBackArrow(mainActivity);
+            }
+        }
+        if (tutorial != null) {
+            tutorial.dismiss(false);
         }
     }
 }
