@@ -13,38 +13,23 @@ public class User implements Serializable {
     private String authToken = "";
     private String email = "";
     private String roleName = "";
+
     private String patientCurrentRequestId = "";
     private String providerCurrentRequestId = "";
     private String currentRequestPriority = "";
-    private String serverDateOfBirth;
-    private String displayDateOfBirth;
-    private String imageUrl;
+
+    private long dob;
+    private String profileUrl;
     private String deviceId = "";
     private int age;
     private String gender;
 
-    public String getDisplayDateOfBirth() {
-        return displayDateOfBirth;
+    public String getProfileUrl() {
+        return profileUrl;
     }
 
-    public void setDisplayDateOfBirth(String displayDateOfBirth) {
-        this.displayDateOfBirth = displayDateOfBirth;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getServerDateOfBirth() {
-        return serverDateOfBirth;
-    }
-
-    public void setServerDateOfBirth(String serverDateOfBirth) {
-        this.serverDateOfBirth = serverDateOfBirth;
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     public String getUserId() {
@@ -143,6 +128,14 @@ public class User implements Serializable {
         this.currentRequestPriority = currentRequestPriority;
     }
 
+    public long getDob() {
+        return dob;
+    }
+
+    public void setDob(long dob) {
+        this.dob = dob;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -155,6 +148,8 @@ public class User implements Serializable {
                 ", patientCurrentRequestId='" + patientCurrentRequestId + '\'' +
                 ", providerCurrentRequestId='" + providerCurrentRequestId + '\'' +
                 ", currentRequestPriority='" + currentRequestPriority + '\'' +
+                ", dob=" + dob +
+                ", profileUrl='" + profileUrl + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +

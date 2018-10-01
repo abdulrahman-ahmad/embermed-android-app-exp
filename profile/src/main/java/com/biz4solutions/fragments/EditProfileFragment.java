@@ -27,7 +27,6 @@ import com.biz4solutions.activities.ProfileActivity;
 import com.biz4solutions.data.RequestCodes;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
-import com.biz4solutions.profile.BuildConfig;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.DialogPickMediaBinding;
 import com.biz4solutions.profile.databinding.FragmentEditProfileBinding;
@@ -49,8 +48,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false);
         binding.setLifecycleOwner(this);
         binding.setFragment(this);
@@ -162,8 +160,9 @@ public class EditProfileFragment extends Fragment {
                 case RequestCodes.RESULT_CAMERA:
                     try {
                         if (data != null && data.hasExtra("data")) {
-                            Bitmap photo = (Bitmap) data.getExtras().get("data");
-                            if (photo != null) {
+                            Object dataObj = data.getExtras().get("data");
+                            if (dataObj != null) {
+                                Bitmap photo = (Bitmap) dataObj;
                                 //binding.profileImage.setImageBitmap(photo);
                                 Uri tempUri = getImageUri(activity.getApplicationContext(), photo);
                                 setImage(tempUri);
@@ -174,9 +173,7 @@ public class EditProfileFragment extends Fragment {
                             }
                         }
                     } catch (Exception e) {
-                        if (BuildConfig.DEBUG) {
-                            e.printStackTrace();
-                        }
+                        e.printStackTrace();
                     }
                     break;
                 case RequestCodes.RESULT_GALLERY:
@@ -187,8 +184,7 @@ public class EditProfileFragment extends Fragment {
                             viewModel.setCapturedUri(uri);
                         }
                     } catch (Exception e) {
-                        if (BuildConfig.DEBUG)
-                            e.printStackTrace();
+                        e.printStackTrace();
                     }
                     break;
             }
@@ -208,8 +204,7 @@ public class EditProfileFragment extends Fragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults)
-    {
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         boolean userAllowedAllRequestPermissions = true;

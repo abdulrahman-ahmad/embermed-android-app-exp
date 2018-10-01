@@ -104,5 +104,8 @@
     <string name="tutorial_description_symptoms_list">Tap here to choose a symptom.</string>
     <string name="tutorial_title_symptoms_submit_btn">Action 4</string>
     <string name="tutorial_description_symptoms_submit_btn">Tap here to create a triage call alert.</string>
+    <string name="my_profile">My Profile</string>
+    <string name="saved_cards">Saved Cards</string>
+    <string name="subscription">Subscription</string>
 
 </resources>

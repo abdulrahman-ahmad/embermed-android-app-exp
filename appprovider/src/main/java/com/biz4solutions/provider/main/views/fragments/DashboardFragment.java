@@ -321,36 +321,40 @@ public class DashboardFragment extends Fragment implements AdapterView.OnItemCli
     }
 
     private void getRequestList(boolean showLoader) {
-        if (CommonFunctions.getInstance().isOffline(getContext())) {
-            Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
-            hideLoader();
-            return;
-        }
-        if (showLoader) {
-            CommonFunctions.getInstance().loadProgressDialog(mainActivity);
-        }
-        new ApiServices().getRequestList(getContext(), page, new RestClientResponse() {
-            @Override
-            public void onSuccess(Object response, int statusCode) {
-                try {
-                    setRequestListViewAdapter((EmsRequestResponse) response);
-                    hideLoader();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        try {
+            if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+                Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+                hideLoader();
+                return;
             }
+            if (showLoader) {
+                CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+            }
+            new ApiServices().getRequestList(getContext(), page, new RestClientResponse() {
+                @Override
+                public void onSuccess(Object response, int statusCode) {
+                    try {
+                        setRequestListViewAdapter((EmsRequestResponse) response);
+                        hideLoader();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
 
-            @Override
-            public void onFailure(String errorMessage, int statusCode) {
-                try {
-                    Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
-                    hideLoader();
-                    setErrorView();
-                } catch (Exception e) {
-                    e.printStackTrace();
+                @Override
+                public void onFailure(String errorMessage, int statusCode) {
+                    try {
+                        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                        hideLoader();
+                        setErrorView();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void hideLoader() {

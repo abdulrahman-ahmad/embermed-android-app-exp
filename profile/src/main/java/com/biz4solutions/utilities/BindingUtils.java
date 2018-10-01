@@ -1,6 +1,7 @@
 package com.biz4solutions.utilities;
 
 import android.databinding.BindingAdapter;
+import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
 import com.biz4solutions.profile.R;
@@ -22,7 +23,15 @@ public class BindingUtils {
 
     @BindingAdapter("circularImageUrl")
     public static void loadImage(final ImageView imageView, String url) {
-//        Glide.with(imageView.getContext()).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_default_profile_pic)).load(url).into(imageView);
-        Glide.with(imageView.getContext()).load(url).apply(new RequestOptions().placeholder(R.drawable.ic_default_profile_pic).circleCrop()).into(imageView);
+        if (url != null && !url.isEmpty()) {
+            Glide.with(imageView.getContext())
+                    .load(url)
+                    .apply(new RequestOptions()
+                            .placeholder(R.drawable.ic_default_profile_pic)
+                            .circleCrop())
+                    .into(imageView);
+        } else {
+            imageView.setBackground(ContextCompat.getDrawable(imageView.getContext(), R.drawable.ic_default_profile_pic));
+        }
     }
 }

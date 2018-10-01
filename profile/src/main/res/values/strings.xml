@@ -9,4 +9,5 @@
     <string name="label_change_password">Change Password</string>
     <string name="gallery">Gallery</string>
     <string name="capture">Capture</string>
+    <string name="dummy_number">12345678912345</string>
 </resources>

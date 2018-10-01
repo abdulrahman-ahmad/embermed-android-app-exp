@@ -22,7 +22,10 @@
     <dimen name="sub_btn_text_size">14dp</dimen>
 
     <dimen name="_n_16dp">-14.4dp</dimen>
+    <dimen name="_2dp">1.8dp</dimen>
+    <dimen name="_4dp">3.6dp</dimen>
     <dimen name="_5dp">4.5dp</dimen>
+    <dimen name="_6dp">5.4dp</dimen>
     <dimen name="_7dp">6.3dp</dimen>
     <dimen name="_8dp">7.2dp</dimen>
     <dimen name="_10dp">9dp</dimen>

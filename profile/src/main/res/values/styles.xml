@@ -1,17 +1,13 @@
 <resources>
 
     <style name="tv_label">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/_12dp</item>
         <item name="android:textColor">@color/text_hint_color</item>
         <item name="android:layout_marginTop">@dimen/_12dp</item>
     </style>
-
-    <!--<style name="edt_profile_label" parent="tv_label">-->
-    <!--<item name="android:layout_marginTop">@dimen/_5dp</item>-->
-    <!--</style>-->
 
     <style name="tv_center_label" parent="tv_label">
         <item name="android:layout_marginTop">0dp</item>
@@ -22,8 +18,8 @@
     </style>
 
     <style name="tv_value">
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:layout_marginTop">@dimen/_5dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_marginTop">@dimen/_2dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/_16dp</item>
@@ -38,9 +34,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/text_hint_color</item>
         <item name="android:layout_height">0.7dp</item>
-        <item name="android:layout_marginTop">@dimen/_10dp</item>
+        <item name="android:layout_marginTop">@dimen/_4dp</item>
     </style>
-
 
     <style name="profile_edt_style">
         <item name="android:layout_width">match_parent</item>
@@ -84,10 +79,4 @@
         <item name="bpButtonsTextColor">@color/colorPrimary</item>
     </style>
 
-    <!--<style name="spinner_style" parent="Theme.AppCompat.Light.NoActionBar">-->
-    <!---->
-        <!--<item name="android:spinnerMode">dropdown</item>-->
-        <!--<item name="android:background">@drawable/ic_arrow_down</item>-->
-
-    <!--</style>-->
 </resources>

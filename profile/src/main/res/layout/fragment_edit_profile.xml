@@ -16,22 +16,23 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        tools:ignore="SpUsage, UnusedAttribute">
 
         <LinearLayout
             android:id="@+id/login_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/_30dp"
-            android:layout_marginTop="@dimen/_20dp"
             android:layout_marginRight="@dimen/_30dp"
             android:background="@android:color/transparent"
             android:orientation="vertical"
-            tools:ignore="TextFields,Autofill">
+            tools:ignore="TextFields, Autofill">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_20dp"
+                android:layout_marginBottom="@dimen/_20dp"
                 android:focusable="true"
                 android:focusableInTouchMode="true">
 
@@ -44,13 +45,13 @@
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        circularImageUrl="@{viewmodel.userData.imageUrl}"
+                        circularImageUrl="@{viewmodel.userData.profileUrl}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
+                        android:background="@drawable/ic_default_profile_pic"
                         android:contentDescription="@null"
-                        android:focusable="true"
-                        android:src="@drawable/ic_default_profile_pic" />
+                        android:focusable="true" />
 
                     <ImageView
                         android:id="@+id/iv_upload_photo"
@@ -74,16 +75,9 @@
                     android:visibility="gone" />
             </RelativeLayout>
 
-
-            <!--<TextView-->
-            <!--style="@style/edt_profile_label"-->
-            <!--android:text="@string/first_name"-->
-            <!--tools:ignore="SpUsage" />-->
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_30dp"
                 android:theme="@style/txtInputLayout">
 
                 <EditText
@@ -95,20 +89,17 @@
                     android:inputType="textWebEmailAddress"
                     android:maxLength="50"
                     android:onTextChanged="@{viewmodel::firstNameWatcher}"
-                    android:paddingTop="@dimen/_10dp"
+                    android:paddingTop="@dimen/_8dp"
                     android:text="@{viewmodel.userData.firstName}"
                     android:theme="@style/EditTextHint" />
             </android.support.design.widget.TextInputLayout>
 
             <View style="@style/divider" />
-            <!--<TextView-->
-            <!--style="@style/edt_profile_label"-->
-            <!--android:text="@string/last_name"-->
-            <!--tools:ignore="SpUsage" />-->
+
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginTop="@dimen/_12dp"
                 android:theme="@style/txtInputLayout">
 
                 <EditText
@@ -120,48 +111,35 @@
                     android:inputType="textWebEmailAddress"
                     android:maxLength="50"
                     android:onTextChanged="@{viewmodel::lastNameWatcher}"
-                    android:paddingTop="@dimen/_10dp"
+                    android:paddingTop="@dimen/_8dp"
                     android:text="@{viewmodel.userData.lastName}"
                     android:theme="@style/EditTextHint" />
             </android.support.design.widget.TextInputLayout>
 
-            <View
-                style="@style/divider"
-                android:layout_marginTop="@dimen/_12dp" />
+            <View style="@style/divider" />
 
-            <!--<TextView-->
-            <!--style="@style/edt_profile_label"-->
-            <!--android:text="@string/email"-->
-            <!--tools:ignore="SpUsage" />-->
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginTop="@dimen/_12dp"
                 android:theme="@style/txtInputLayout">
 
                 <EditText
                     android:id="@+id/edt_email"
                     style="@style/profile_email_edt_style"
                     android:hint="@string/email"
-                    android:paddingTop="@dimen/_10dp"
+                    android:paddingTop="@dimen/_8dp"
                     android:text="@{viewmodel.userData.email}"
                     android:theme="@style/EditTextHint"
                     tools:text="abc@mailinator.com" />
             </android.support.design.widget.TextInputLayout>
 
-            <View
-                style="@style/divider"
-                android:layout_marginTop="@dimen/_12dp" />
-            <!--<TextView-->
-            <!--style="@style/edt_profile_label"-->
-            <!--android:text="@string/date_of_birth"-->
-            <!--tools:ignore="SpUsage" />-->
-
+            <View style="@style/divider" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginTop="@dimen/_12dp"
                 android:focusableInTouchMode="false"
                 android:orientation="vertical"
                 android:theme="@style/txtInputLayout">
@@ -180,19 +158,16 @@
                     android:hint="@string/date_of_birth"
                     android:inputType="none"
                     android:onClick="@{(v)->viewmodel.onDobEdtClick(v)}"
-                    android:paddingTop="@dimen/_10dp"
-                    android:text="@{viewmodel.displayDateOfBirth}" />
+                    android:paddingTop="@dimen/_8dp"
+                    android:text="@{viewmodel.displayDateOfBirth}"
+                    tools:ignore="KeyboardInaccessibleWidget" />
             </android.support.design.widget.TextInputLayout>
 
-
-            <View
-                style="@style/divider"
-                android:layout_marginTop="@dimen/_12dp" />
+            <View style="@style/divider" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_40dp"
-                android:layout_marginTop="@dimen/_7dp"
+                android:layout_height="@dimen/_55dp"
                 android:gravity="center">
 
                 <TextView
@@ -249,28 +224,21 @@
 
             <View
                 style="@style/divider"
-                android:layout_height="1dp"
-                android:layout_marginTop="@dimen/_12dp"
-                android:background="@color/text_hint_color" />
+                android:layout_margin="0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_30dp"
-                android:layout_marginBottom="@dimen/_40dp"
-                android:layout_weight="325"
-                android:gravity="center"
-                android:weightSum="1080">
+                android:layout_marginBottom="@dimen/_10dp"
+                android:gravity="center">
 
                 <Button
                     android:id="@+id/btn_submit"
                     style="@style/BtnStyle"
-                    android:layout_width="match_parent"
                     android:layout_margin="0dp"
-                    android:background="@drawable/ripple_default_button"
                     android:onClick="@{(v)->viewmodel.onSaveBtnClick(v)}"
-                    android:text="@string/save"
-                    tools:ignore="NestedWeights" />
+                    android:text="@string/save" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

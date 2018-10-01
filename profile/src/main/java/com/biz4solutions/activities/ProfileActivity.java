@@ -33,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void initUi() {
-        final Drawable drawable = getResources().getDrawable(com.biz4solutions.utilities.R.drawable.ic_arrow_back_btn);
+        final Drawable drawable = getResources().getDrawable(R.drawable.ic_arrow_back_btn);
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(drawable);
@@ -60,6 +60,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     .replace(R.id.frame_profile, ViewProfileFragment.newInstance())
                     .addToBackStack(ViewProfileFragment.fragmentName)
                     .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenViewProfileFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_profile);
+            if (currentFragment instanceof ViewProfileFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -96,7 +108,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         switch (fragmentName) {
             case EditProfileFragment.fragmentName:
-                getSupportFragmentManager().popBackStack();
+                reOpenViewProfileFragment();
                 break;
         }
     }
@@ -123,7 +135,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-//                Toast.makeText(this, "back arrow clicked.", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 break;
         }

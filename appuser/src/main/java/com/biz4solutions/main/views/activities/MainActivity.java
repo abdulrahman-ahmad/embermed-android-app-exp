@@ -37,7 +37,7 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
-import com.biz4solutions.main.views.fragments.AccountSettingFragment;
+import com.biz4solutions.account.fragments.AccountSettingFragment;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.FeedbackFragment;
