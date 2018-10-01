@@ -79,4 +79,10 @@
     <string name="tutorial_description_cardiac_request_details">Tap here to accept a cardiac call alert.</string>
     <string name="tutorial_description_triage_request_details">Tap here to accept a triage call alert.</string>
     <string name="file_limit_max_2mb"><i>(Max 2MB)</i></string>
+
+
+
+    <!--registration strings-->
+    <string name="txt_upload_cpr_certificate">Upload CPR Certificate</string>
+    <string name="txt_upload_medical_certificate">Upload Medical Certificate</string>
 </resources>

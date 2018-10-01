@@ -54,7 +54,7 @@ import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
-import com.biz4solutions.provider.subscription.views.fragments.RegistrationFragment;
+import com.biz4solutions.provider.registration.views.fragments.RegistrationFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+//        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         if (binding.appBarMain != null) {
             setSupportActionBar(binding.appBarMain.toolbar);
             toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.appBarMain.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -310,7 +310,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_how_it_works:
                         openHowItWorksFragment();
                         break;
-
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
