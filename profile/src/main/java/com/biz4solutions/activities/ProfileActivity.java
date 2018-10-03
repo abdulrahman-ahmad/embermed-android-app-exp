@@ -1,6 +1,9 @@
 package com.biz4solutions.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,9 +17,11 @@ import com.biz4solutions.fragments.EditProfileFragment;
 import com.biz4solutions.fragments.ViewProfileFragment;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.ActivityProfileBinding;
+import com.biz4solutions.utilities.Constants;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityProfileBinding binding;
+    private BroadcastReceiver logoutBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +30,33 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         initUi();
         initListeners();
         openViewProfileFragment();
+
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //method call here
+                String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case Constants.LOGOUT_RECEIVER:
+                            finish();
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.LOGOUT_RECEIVER);
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (logoutBroadcastReceiver != null) {
+            unregisterReceiver(logoutBroadcastReceiver);
+        }
+    }
 
     private void initListeners() {
         binding.toolbarBtnEdit.setOnClickListener(this);

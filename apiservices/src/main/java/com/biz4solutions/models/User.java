@@ -23,6 +23,7 @@ public class User implements Serializable {
     private String deviceId = "";
     private int age;
     private String gender;
+    private String signupType;
 
     public String getProfileUrl() {
         return profileUrl;
@@ -136,6 +137,14 @@ public class User implements Serializable {
         this.dob = dob;
     }
 
+    public String getSignupType() {
+        return signupType;
+    }
+
+    public void setSignupType(String signupType) {
+        this.signupType = signupType;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -153,6 +162,7 @@ public class User implements Serializable {
                 ", deviceId='" + deviceId + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
+                ", signupType='" + signupType + '\'' +
                 '}';
     }
 }

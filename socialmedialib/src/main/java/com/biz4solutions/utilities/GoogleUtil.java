@@ -90,7 +90,7 @@ public class GoogleUtil implements GoogleApiClient.OnConnectionFailedListener {
             GoogleSignInAccount acct = result.getSignInAccount();
             if (acct != null) {
                 SocialMediaUserData userData = new SocialMediaUserData();
-                userData.setSignupType("GP");
+                userData.setSignupType(Constants.SIGN_UP_TYPE_GP);
                 if (acct.getEmail() != null) {
                     userData.setEmail(acct.getEmail());
                 }

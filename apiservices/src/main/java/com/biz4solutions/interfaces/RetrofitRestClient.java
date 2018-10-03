@@ -120,9 +120,12 @@ public interface RetrofitRestClient {
     @GET("v1/user/getDateDiff")
     Call<ServerTimeDiffResponse> getServerTimeDiff(@Query("date") long sysTime);
 
-    @POST("/api/v1/provider/updateProfileDetail")
+    @POST("v1/provider/updateProfileDetail")
     Call<EmptyResponse> updateProviderProfile(@Body User body);
 
-    @POST("/api/v1/users/updateProfileDetail")
+    @POST("v1/users/updateProfileDetail")
     Call<EmptyResponse> updateUserProfile(@Body User body);
+
+    @GET("v1/users/getProfileDetail")
+    Call<LoginResponse> getUserProfile();
 }

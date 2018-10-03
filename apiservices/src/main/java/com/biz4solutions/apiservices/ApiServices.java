@@ -194,4 +194,9 @@ public class ApiServices {
                 .updateUserProfile(user));
     }
 
+    public void getUserProfile(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getUserProfile());
+    }
+
 }
