@@ -35,10 +35,21 @@ public class ViewProfileFragment extends Fragment {
         binding.setLifecycleOwner(this);
         viewModel = new ViewModelProvider(this, new ViewProfileViewModel.ViewProfileViewModelFactory(getContext())).get(ViewProfileViewModel.class);
         binding.setViewModel(viewModel);
-        initActivity();
+        binding.setFragment(this);
+        activity = (ProfileActivity) getActivity();
+        if (activity != null) {
+            activity.toolbarTitle.setText(R.string.my_profile);
+            activity.toolbarBtnEdit.setVisibility(View.VISIBLE);
+        }
         initListeners();
         setUserData();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        activity.toolbarBtnEdit.setVisibility(View.GONE);
     }
 
     private void initListeners() {
@@ -58,15 +69,20 @@ public class ViewProfileFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (activity != null) {
-            activity.hideEditOption(false);
+    public void openChangePasswordFragment(View view) {
+        try {
+            Fragment currentFragment = activity.getSupportFragmentManager().findFragmentById(R.id.frame_profile);
+            if (currentFragment instanceof ChangePasswordFragment) {
+                return;
+            }
+            activity.getSupportFragmentManager().executePendingTransactions();
+            activity.getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.frame_profile, ChangePasswordFragment.newInstance())
+                    .addToBackStack(ChangePasswordFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
-
-    private void initActivity() {
-        activity = (ProfileActivity) getActivity();
     }
 }

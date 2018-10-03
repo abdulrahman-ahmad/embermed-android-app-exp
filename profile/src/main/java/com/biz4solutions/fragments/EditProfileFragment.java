@@ -35,7 +35,6 @@ import com.biz4solutions.viewmodels.EditProfileViewModel;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-
 import java.io.ByteArrayOutputStream;
 
 public class EditProfileFragment extends Fragment {
@@ -53,9 +52,12 @@ public class EditProfileFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_edit_profile, container, false);
         binding.setLifecycleOwner(this);
         binding.setFragment(this);
-        initActivity();
+        activity = (ProfileActivity) getActivity();
+        if (activity != null) {
+            activity.toolbarTitle.setText(R.string.edit_profile);
+        }
         viewModel = ViewModelProviders.of(this, new EditProfileViewModel.EditProfileViewModelFactory(getContext())).get(EditProfileViewModel.class);
-        binding.setViewmodel(viewModel);
+        binding.setViewModel(viewModel);
         setUserData();
         initListeners();
         return binding.getRoot();
@@ -68,17 +70,6 @@ public class EditProfileFragment extends Fragment {
                 Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (activity != null)
-            activity.hideEditOption(true);
-    }
-
-    private void initActivity() {
-        activity = (ProfileActivity) getActivity();
     }
 
     public void setUserData() {

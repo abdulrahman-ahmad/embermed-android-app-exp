@@ -10,4 +10,10 @@
     <string name="gallery">Gallery</string>
     <string name="capture">Capture</string>
     <string name="dummy_number">12345678912345</string>
+    <string name="my_profile">My Profile</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="edit">Edit</string>
 </resources>

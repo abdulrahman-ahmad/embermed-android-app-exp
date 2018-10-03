@@ -12,11 +12,13 @@
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="error_empty_password">Please enter password.</string>
+    <string name="error_empty_old_password">Please enter old password.</string>
     <string name="error_empty_new_password">Please enter new password.</string>
     <string name="error_empty_confirm_password">Please enter confirm password.</string>
     <string name="error_invalid_confirm_password">Password and confirm password must be same.</string>
     <string name="error_incorrect_password">Please enter correct password.</string>
     <string name="error_invalid_password">Please enter password between 8 to 20 characters.</string>
+    <string name="error_invalid_old_password">Please enter old password between 8 to 20 characters.</string>
     <string name="error_invalid_new_password">Please enter new password between 8 to 20 characters.</string>
     <string name="error_empty_email">Please enter email.</string>
     <string name="error_empty_otp">Please enter verification code.</string>

@@ -128,4 +128,7 @@ public interface RetrofitRestClient {
 
     @GET("v1/users/getProfileDetail")
     Call<LoginResponse> getUserProfile();
+
+    @POST("v1/user/changePassword")
+    Call<EmptyResponse> changePassword(@Body HashMap<String, Object> body);
 }

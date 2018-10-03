@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.biz4solutions.fragments.EditProfileFragment;
 import com.biz4solutions.fragments.ViewProfileFragment;
@@ -22,6 +23,8 @@ import com.biz4solutions.utilities.Constants;
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityProfileBinding binding;
     private BroadcastReceiver logoutBroadcastReceiver;
+    public TextView toolbarTitle;
+    public TextView toolbarBtnEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +71,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(drawable);
         }
-    }
-
-    public void hideEditOption(boolean hide) {
-        if (hide) {
-            binding.toolbarBtnEdit.setVisibility(View.GONE);
-        } else {
-            binding.toolbarBtnEdit.setVisibility(View.VISIBLE);
-        }
+        toolbarTitle = binding.toolbarTitle;
+        toolbarBtnEdit = binding.toolbarBtnEdit;
     }
 
     public void openViewProfileFragment() {
@@ -124,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -140,6 +136,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case EditProfileFragment.fragmentName:
                 reOpenViewProfileFragment();
                 break;
+            default:
+                getSupportFragmentManager().popBackStack();
+                break;
+
         }
     }
 

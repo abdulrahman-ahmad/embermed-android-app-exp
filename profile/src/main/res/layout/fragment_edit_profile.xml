@@ -5,7 +5,7 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="viewModel"
             type="com.biz4solutions.viewmodels.EditProfileViewModel" />
 
         <variable
@@ -45,7 +45,7 @@
 
                     <ImageView
                         android:id="@+id/profile_image"
-                        circularImageUrl="@{viewmodel.userData.profileUrl}"
+                        circularImageUrl="@{viewModel.userData.profileUrl}"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
@@ -86,11 +86,11 @@
                     android:background="@null"
                     android:digits="@string/name_filter"
                     android:hint="@string/first_name"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="textCapWords"
                     android:maxLength="50"
-                    android:onTextChanged="@{viewmodel::firstNameWatcher}"
+                    android:onTextChanged="@{viewModel::firstNameWatcher}"
                     android:paddingTop="@dimen/_8dp"
-                    android:text="@{viewmodel.userData.firstName}"
+                    android:text="@{viewModel.userData.firstName}"
                     android:theme="@style/EditTextHint" />
             </android.support.design.widget.TextInputLayout>
 
@@ -108,11 +108,11 @@
                     android:background="@null"
                     android:digits="@string/name_filter"
                     android:hint="@string/last_name"
-                    android:inputType="textWebEmailAddress"
+                    android:inputType="textCapWords"
                     android:maxLength="50"
-                    android:onTextChanged="@{viewmodel::lastNameWatcher}"
+                    android:onTextChanged="@{viewModel::lastNameWatcher}"
                     android:paddingTop="@dimen/_8dp"
-                    android:text="@{viewmodel.userData.lastName}"
+                    android:text="@{viewModel.userData.lastName}"
                     android:theme="@style/EditTextHint" />
             </android.support.design.widget.TextInputLayout>
 
@@ -129,9 +129,8 @@
                     style="@style/profile_email_edt_style"
                     android:hint="@string/email"
                     android:paddingTop="@dimen/_8dp"
-                    android:text="@{viewmodel.userData.email}"
-                    android:theme="@style/EditTextHint"
-                    tools:text="abc@mailinator.com" />
+                    android:text="@{viewModel.userData.email}"
+                    android:theme="@style/EditTextHint" />
             </android.support.design.widget.TextInputLayout>
 
             <View style="@style/divider" />
@@ -157,9 +156,9 @@
                     android:gravity="center_vertical"
                     android:hint="@string/date_of_birth"
                     android:inputType="none"
-                    android:onClick="@{(v)->viewmodel.onDobEdtClick(v)}"
+                    android:onClick="@{(v)->viewModel.onDobEdtClick(v)}"
                     android:paddingTop="@dimen/_8dp"
-                    android:text="@{viewmodel.displayDateOfBirth}"
+                    android:text="@{viewModel.displayDateOfBirth}"
                     tools:ignore="KeyboardInaccessibleWidget" />
             </android.support.design.widget.TextInputLayout>
 
@@ -187,9 +186,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
-                    android:checkedButton="@{viewmodel.radioBtnId}"
+                    android:checkedButton="@{viewModel.radioBtnId}"
                     android:gravity="center"
-                    android:onCheckedChanged="@{viewmodel::onRadioBtnChanged}"
+                    android:onCheckedChanged="@{viewModel::onRadioBtnChanged}"
                     android:orientation="horizontal"
                     tools:ignore="RtlHardcoded">
 
@@ -237,7 +236,7 @@
                     android:id="@+id/btn_submit"
                     style="@style/BtnStyle"
                     android:layout_margin="0dp"
-                    android:onClick="@{(v)->viewmodel.onSaveBtnClick(v)}"
+                    android:onClick="@{(v)->viewModel.onSaveBtnClick(v)}"
                     android:text="@string/save" />
             </LinearLayout>
         </LinearLayout>

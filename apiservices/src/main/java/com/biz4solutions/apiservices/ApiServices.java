@@ -199,4 +199,9 @@ public class ApiServices {
                 .getUserProfile());
     }
 
+    public void changePassword(final Context context, HashMap<String, Object> body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .changePassword(body));
+    }
+
 }

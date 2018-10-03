@@ -7,8 +7,6 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
-import android.view.View;
-import android.widget.Toast;
 
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
@@ -48,18 +46,14 @@ public class ViewProfileViewModel extends ViewModel {
         }
     }
 
-    private String formatDate(long millis) {
-        if (millis <= 0) {
+    private String formatDate(Long millis) {
+        if (millis == null) {
             return "";
         }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millis);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         return sdf.format(calendar.getTime());
-    }
-
-    public void onChangePwdClick(View v) {
-        Toast.makeText(v.getContext(), v.getContext().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
     }
 
     @Override

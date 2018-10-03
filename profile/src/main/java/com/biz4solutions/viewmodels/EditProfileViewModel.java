@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.biz4solutions.activities.ProfileActivity;
 import com.biz4solutions.apiservices.ApiServices;
@@ -75,16 +74,17 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     private void setRadioBtnSelection(String gender) {
-        if (gender == null)
+        if (gender == null || gender.isEmpty()) {
             return;
-        switch (gender.toLowerCase()) {
-            case "male":
+        }
+        switch (gender.toUpperCase()) {
+            case "MALE":
                 radioBtnId.set(R.id.rdb_male);
                 break;
-            case "female":
+            case "FEMALE":
                 radioBtnId.set(R.id.rdb_female);
                 break;
-            case "other":
+            case "OTHER":
                 radioBtnId.set(R.id.rdb_other);
                 break;
         }
@@ -97,7 +97,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         } else if (tempUser.getLastName() == null || tempUser.getLastName().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_last_name));
             return false;
-        } else if (tempUser.getDob() <= 0) {
+        } else if (tempUser.getDob() == null) {
             toastMsg.setValue(context.getString(R.string.error_empty_dob));
             return false;
         } else if (tempUser.getDob() > Calendar.getInstance().getTimeInMillis()) {
@@ -129,13 +129,14 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     public void onSaveBtnClick(View v) {
         //api call
         if (CommonFunctions.getInstance().isOffline(context)) {
-            Toast.makeText(context, context.getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            toastMsg.setValue(context.getString(R.string.error_network_unavailable));
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard((ProfileActivity) context);
         if (validateInfo(v.getContext())) {
             CommonFunctions.getInstance().loadProgressDialog(v.getContext());
             if (capturedUri != null) {
-                FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), capturedUri, this);
+                FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), tempUser.getRoleName(), capturedUri, this);
             } else {
                 saveUserData();
             }
@@ -152,7 +153,9 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
 
     //listener for radio btn
     public void onRadioBtnChanged(RadioGroup radioGroup, int id) {
-        tempUser.setGender(((RadioButton) radioGroup.findViewById(id)).getText().toString());
+        if (radioGroup.findViewById(id) != null) {
+            tempUser.setGender(((RadioButton) radioGroup.findViewById(id)).getText().toString());
+        }
     }
 
     //Date of  birth textview click.
@@ -196,8 +199,8 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         }
     }
 
-    private String formatDate(long millis) {
-        if (millis <= 0) {
+    private String formatDate(Long millis) {
+        if (millis == null) {
             return "";
         }
         Calendar calendar = Calendar.getInstance();

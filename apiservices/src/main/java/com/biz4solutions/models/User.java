@@ -18,7 +18,7 @@ public class User implements Serializable {
     private String providerCurrentRequestId = "";
     private String currentRequestPriority = "";
 
-    private long dob;
+    private Long dob;
     private String profileUrl;
     private String deviceId = "";
     private int age;
@@ -129,11 +129,11 @@ public class User implements Serializable {
         this.currentRequestPriority = currentRequestPriority;
     }
 
-    public long getDob() {
+    public Long getDob() {
         return dob;
     }
 
-    public void setDob(long dob) {
+    public void setDob(Long dob) {
         this.dob = dob;
     }
 

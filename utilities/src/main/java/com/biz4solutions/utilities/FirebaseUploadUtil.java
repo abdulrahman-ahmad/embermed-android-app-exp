@@ -14,9 +14,15 @@ import java.util.Objects;
 
 public class FirebaseUploadUtil {
 
-    public static void uploadImageToFirebase(String path, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
+    public static void uploadImageToFirebase(String userId, String role, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference ref = storage.getReference().child("/profileImages/users/" + path + "/profile.jpg");
+        final StorageReference ref = storage.getReference()
+                .child(BuildConfig.FIREBACE_DB_ENVIROMENT)
+                .child("users")
+                .child(userId)
+                .child("profileImages")
+                .child(role)
+                .child("profile.jpg");
         ref.putFile(uri)
                 .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override

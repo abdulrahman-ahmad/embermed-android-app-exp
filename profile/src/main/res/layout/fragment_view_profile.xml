@@ -9,6 +9,10 @@
         <variable
             name="viewModel"
             type="com.biz4solutions.viewmodels.ViewProfileViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.biz4solutions.fragments.ViewProfileFragment" />
     </data>
 
     <ScrollView
@@ -137,7 +141,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_50dp"
                         android:gravity="center_vertical"
-                        android:onClick="@{(v)->viewModel.onChangePwdClick(v)}"
+                        android:onClick="@{fragment::openChangePasswordFragment}"
                         android:orientation="horizontal"
                         android:paddingTop="@dimen/_6dp"
                         android:paddingBottom="@dimen/_6dp">
