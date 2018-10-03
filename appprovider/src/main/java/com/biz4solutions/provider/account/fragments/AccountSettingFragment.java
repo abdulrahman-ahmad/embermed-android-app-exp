@@ -1,4 +1,4 @@
-package com.biz4solutions.account.fragments;
+package com.biz4solutions.provider.account.fragments;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -11,11 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.biz4solutions.R;
+import com.biz4solutions.provider.R;
 import com.biz4solutions.activities.ProfileActivity;
-import com.biz4solutions.databinding.FragmentAccountSettingBinding;
-import com.biz4solutions.main.views.activities.MainActivity;
-import com.biz4solutions.utilities.NavigationUtil;
+import com.biz4solutions.provider.databinding.FragmentAccountSettingBinding;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 
 public class AccountSettingFragment extends Fragment implements View.OnClickListener {
 
@@ -73,7 +73,6 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
 
     private void initListeners() {
         binding.cvMyProfile.setOnClickListener(this);
-        binding.cvSavedCards.setOnClickListener(this);
         binding.cvSubscriptions.setOnClickListener(this);
     }
 

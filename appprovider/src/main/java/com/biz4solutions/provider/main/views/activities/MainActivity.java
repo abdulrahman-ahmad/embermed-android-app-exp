@@ -44,6 +44,7 @@ import com.biz4solutions.models.response.UrgentCaresDataResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.account.fragments.AccountSettingFragment;
 import com.biz4solutions.provider.aedmaps.views.fragments.AedMapFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
@@ -175,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_registration).setVisible(false);
             openNewsFeedFragment();
         } else {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
@@ -284,6 +286,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
                     case R.id.nav_news_feed:
                         openNewsFeedFragment();
+                        break;
+                    case R.id.nav_account_settings:
+                        openAccountSettingFragment();
                         break;
                     case R.id.nav_aed_maps:
                         getAedList();
@@ -498,6 +503,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main_container, NewsFeedFragment.newInstance())
                 .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openAccountSettingFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof AccountSettingFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, AccountSettingFragment.newInstance())
+                .addToBackStack(AccountSettingFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

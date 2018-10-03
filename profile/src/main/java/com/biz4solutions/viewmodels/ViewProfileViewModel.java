@@ -49,6 +49,9 @@ public class ViewProfileViewModel extends ViewModel {
     }
 
     private String formatDate(long millis) {
+        if (millis <= 0) {
+            return "";
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(millis);
         @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
