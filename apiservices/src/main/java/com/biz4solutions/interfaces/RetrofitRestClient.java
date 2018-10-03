@@ -1,5 +1,6 @@
 package com.biz4solutions.interfaces;
 
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
@@ -7,11 +8,13 @@ import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.response.CprTrainingInstitutesResponse;
 import com.biz4solutions.models.response.CreateEmsResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
 import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.models.response.OccupationResponse;
 import com.biz4solutions.models.response.ServerTimeDiffResponse;
 import com.biz4solutions.models.response.SymptomResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
@@ -131,4 +134,13 @@ public interface RetrofitRestClient {
 
     @POST("v1/user/changePassword")
     Call<EmptyResponse> changePassword(@Body HashMap<String, Object> body);
+
+    @POST("v1/provider/updateProviderRegistration")
+    Call<EmptyResponse> registerProvider(@Body ProviderRegistration registration);
+
+    @GET("v1/provider/getProfessionList")
+    Call<OccupationResponse> getOccupationList();
+
+    @GET("v1/provider/getCprTrainingInstituteList ")
+    Call<CprTrainingInstitutesResponse> getCprInstituteList();
 }

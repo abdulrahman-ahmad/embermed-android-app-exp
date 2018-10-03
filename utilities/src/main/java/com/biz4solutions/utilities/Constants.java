@@ -67,6 +67,10 @@ public class Constants implements Serializable {
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
     public static final int MINIMUM_CLUSTER_SIZE = 2;
 
+
+   public static String BOUNDS_COUNTRY = "US";
+    public static int AUTO_COMPLETE_THRESHOLD = 1;
+
     public static final String SIGN_UP_TYPE_EMAIL = "EMAIL";
     static final String SIGN_UP_TYPE_FB = "FB";
     static final String SIGN_UP_TYPE_GP = "GP";

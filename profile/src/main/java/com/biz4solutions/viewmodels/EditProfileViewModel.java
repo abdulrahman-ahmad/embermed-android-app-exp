@@ -259,7 +259,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     @Override
-    public void uploadSuccess(String imageUrl) {
+    public void uploadSuccess(String imageUrl,int fileCode) {
         if (imageUrl != null) {
             tempUser.setProfileUrl(imageUrl);
         }
@@ -267,7 +267,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     @Override
-    public void uploadError(String exceptionMsg) {
+    public void uploadError(String exceptionMsg,int fileCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(exceptionMsg);
     }
