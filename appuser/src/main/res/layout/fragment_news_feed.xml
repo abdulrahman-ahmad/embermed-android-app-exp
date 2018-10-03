@@ -22,6 +22,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_weight="860"
             android:orientation="vertical">
 
@@ -50,6 +51,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_weight="225"
             android:orientation="vertical">
 
@@ -59,6 +61,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_weight="225"
             android:background="@color/blue_bg_color"
             android:orientation="vertical">
@@ -88,12 +91,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:visibility="gone"
             android:layout_weight="225"
             android:orientation="vertical">
 
 
         </LinearLayout>
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="@string/news_feed_coming_soon"
+            android:textSize="30dp" />
 
     </LinearLayout>
 </layout>

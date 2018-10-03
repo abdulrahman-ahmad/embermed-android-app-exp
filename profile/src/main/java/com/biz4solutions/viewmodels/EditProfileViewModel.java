@@ -91,10 +91,10 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     private boolean validateInfo(Context context) {
-        if (tempUser.getFirstName() == null || tempUser.getFirstName().isEmpty()) {
+        if (tempUser.getFirstName() == null || tempUser.getFirstName().trim().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_first_name));
             return false;
-        } else if (tempUser.getLastName() == null || tempUser.getLastName().isEmpty()) {
+        } else if (tempUser.getLastName() == null || tempUser.getLastName().trim().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_last_name));
             return false;
         } else if (tempUser.getDob() == null) {
@@ -134,6 +134,8 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         }
         CommonFunctions.getInstance().hideSoftKeyBoard((ProfileActivity) context);
         if (validateInfo(v.getContext())) {
+            tempUser.setFirstName(tempUser.getFirstName().trim());
+            tempUser.setLastName(tempUser.getLastName().trim());
             CommonFunctions.getInstance().loadProgressDialog(v.getContext());
             if (capturedUri != null) {
                 FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), tempUser.getRoleName(), capturedUri, this);

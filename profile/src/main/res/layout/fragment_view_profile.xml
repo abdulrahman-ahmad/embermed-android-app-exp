@@ -78,7 +78,7 @@
 
                 <TextView
                     android:id="@+id/tv_email"
-                    style="@style/tv_email_value"
+                    style="@style/tv_value"
                     android:text="@{viewModel.userData.email}"
                     tools:ignore="SpUsage" />
 

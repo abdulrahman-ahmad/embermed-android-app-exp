@@ -68,8 +68,8 @@
     <string name="tutorial_end_message">Congratulation! You\'re educated now.</string>
     <string name="request_completed_marker_message">Request Completed\nLocation</string>
 
-
     <!--filters-->
+    <!-- android:digits="@string/name_filter" add into EditText View -->
     <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="number_filter">0123456789</string>
 </resources>
