@@ -12,6 +12,7 @@ import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.LoginResponse;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -77,6 +78,7 @@ public class ViewProfileViewModel extends ViewModel {
                 LoginResponse loginResponse = (LoginResponse) response;
                 if (loginResponse != null && loginResponse.getData() != null) {
                     setUserData(loginResponse.getData());
+                    SharedPrefsManager.getInstance().storeUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, loginResponse.getData());
                 }
             }
 
