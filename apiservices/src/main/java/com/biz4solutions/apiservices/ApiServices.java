@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.Location;
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
@@ -192,6 +193,21 @@ public class ApiServices {
     public void updateUserProfile(final Context context, User user, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .updateUserProfile(user));
+    }
+
+    public void registerProvider(final Context context, ProviderRegistration registration, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .registerProvider(registration));
+    }
+
+    public void getOccupationList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getOccupationList());
+    }
+
+    public void getCprInstituteList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getCprInstituteList());
     }
 
     public void getUserProfile(final Context context, final RestClientResponse restClientResponse) {

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -16,14 +15,15 @@
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,7 +101,6 @@
                             android:id="@+id/edt_first_name"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:digits="@string/name_filter"
                             android:hint="@string/first_name"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="20"
@@ -123,7 +122,6 @@
                             android:id="@+id/edt_last_name"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:digits="@string/name_filter"
                             android:hint="@string/last_name"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="20"
@@ -147,6 +145,7 @@
                             style="@style/profile_email_edt_style"
                             android:hint="@string/email"
                             android:paddingTop="@dimen/_10dp"
+                            android:text="@{viewModel.email}"
                             android:theme="@style/EditTextHint"
                             tools:ignore="TextFields"
                             tools:text="abc@mailinator.com" />
@@ -169,7 +168,7 @@
                             android:digits="@string/number_filter"
                             android:hint="Phone No."
                             android:inputType="number"
-                            android:maxLength="50"
+                            android:maxLength="13"
                             android:onTextChanged="@{viewModel::phoneNumberWatcher}"
                             android:paddingTop="@dimen/_10dp"
                             android:theme="@style/EditTextHint" />
@@ -189,8 +188,7 @@
                             android:id="@+id/edt_address"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:hint="Address(optional)"
-                            android:onTextChanged="@{viewModel::addressWatcher}"
+                            android:hint="Address (optional)"
                             android:paddingTop="@dimen/_10dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
@@ -206,7 +204,6 @@
 
                 <TextView
                     style="@style/style_header_registration"
-
                     android:text="PROFESSION" />
 
                 <View style="@style/style_divider_registration" />
@@ -220,14 +217,14 @@
 
                     <TextView
                         style="@style/tv_label"
-                        android:text="occupation" />
+                        android:text="Occupation" />
 
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="-7dp"
                         android:layout_marginTop="3dp"
-                        android:layout_marginEnd="-7dp"
+                        android:layout_marginEnd="-15dp"
                         android:dropDownVerticalOffset="@dimen/_10dp"
                         android:entries="@{viewModel.occupationLiveList}"
                         android:minHeight="@dimen/_30dp"
@@ -311,11 +308,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="-7dp"
                         android:layout_marginTop="3dp"
-                        android:layout_marginEnd="-7dp"
+                        android:layout_marginEnd="-15dp"
                         android:dropDownVerticalOffset="@dimen/_10dp"
-                        android:entries="@{viewModel.occupationLiveList}"
+                        android:entries="@{viewModel.cprInstituteLiveList}"
                         android:minHeight="@dimen/_30dp"
-                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onOccupationSelectItem(parent,view,pos,id)}"
+                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onCprInstituteSelectItem(parent,view,pos,id)}"
                         android:overlapAnchor="false"
                         android:scrollbars="vertical" />
 
@@ -342,22 +339,71 @@
                             android:drawableEnd="@drawable/ic_calendar"
                             android:focusable="false"
                             android:gravity="center_vertical"
-                            android:hint="@string/date_of_birth"
+                            android:hint="CPR Certificate Expiry Date"
                             android:inputType="none"
-                            android:paddingTop="@dimen/_10dp" />
+                            android:onClick="@{()->viewModel.selectDate()}"
+                            android:paddingTop="@dimen/_10dp"
+                            android:text="@{viewModel.expiry}" />
                     </android.support.design.widget.TextInputLayout>
 
                     <View
                         style="@style/divider"
                         android:layout_marginTop="@dimen/_8dp" />
 
-                    <include
-                        layout="@layout/layout_toast_registration"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_15dp"
-                        bind:fragment="@{fragment}"
-                        bind:labelName="@{@string/txt_upload_cpr_certificate}"  />
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_circle_button"
+                            android:onClick="@{(v)->fragment.captureFile(v)}"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5dp"
+                            android:tag="@string/txt_upload_cpr_certificate">
+
+                            <TextView
+                                android:id="@+id/file_name_cpr"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:ellipsize="end"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:padding="@dimen/_5dp"
+                                android:text="@string/txt_upload_cpr_certificate"
+                                android:textSize="@dimen/_12dp" />
+
+                            <ImageView
+                                android:id="@+id/iv_cpr_remove"
+                                android:layout_width="@dimen/_15dp"
+                                android:layout_height="@dimen/_15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_5dp"
+                                android:layout_marginRight="@dimen/_5dp"
+                                android:layout_weight="2"
+                                android:background="@drawable/ic_remove"
+                                android:onClick="@{fragment::removeCprFile}"
+                                android:padding="@dimen/_5dp"
+                                android:paddingStart="@dimen/_8dp"
+                                android:paddingTop="@dimen/_8dp"
+                                android:paddingEnd="@dimen/_8dp"
+                                android:paddingBottom="@dimen/_8dp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10dp"
+                            android:gravity="center"
+                            android:text="@string/file_limit_max_2mb"
+                            android:textSize="@dimen/_10dp" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -391,10 +437,8 @@
                             android:digits="@string/number_filter"
                             android:hint="License Number / NPE Number?"
                             android:inputType="number"
-                            android:maxLength="10"
                             android:onTextChanged="@{viewModel::licenseNpeNumberWatcher}"
                             android:paddingTop="@dimen/_10dp"
-                            android:textAllCaps="true"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -402,15 +446,63 @@
                         style="@style/divider"
                         android:layout_marginTop="@dimen/_8dp" />
 
-                    <include
-                        layout="@layout/layout_toast_registration"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_15dp"
-                        bind:fragment="@{fragment}"
-                        bind:labelName="@{@string/txt_upload_medical_certificate}" />
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bg_circle_button"
+                            android:onClick="@{(v)->fragment.captureFile(v)}"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/_5dp"
+                            android:tag="@string/txt_upload_medical_certificate">
+
+                            <TextView
+                                android:id="@+id/file_name_medical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="8"
+                                android:ellipsize="end"
+                                android:gravity="center"
+                                android:maxLines="1"
+                                android:padding="@dimen/_5dp"
+                                android:text="@string/txt_upload_medical_certificate"
+                                android:textSize="@dimen/_12dp" />
+
+                            <ImageView
+                                android:id="@+id/iv_medical_remove"
+                                android:layout_width="@dimen/_15dp"
+                                android:layout_height="@dimen/_15dp"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="@dimen/_5dp"
+                                android:layout_marginRight="@dimen/_5dp"
+                                android:layout_weight="2"
+                                android:background="@drawable/ic_remove"
+                                android:onClick="@{fragment::removeMedicalFile}"
+                                android:padding="@dimen/_5dp"
+                                android:paddingStart="@dimen/_8dp"
+                                android:paddingTop="@dimen/_8dp"
+                                android:paddingEnd="@dimen/_8dp"
+                                android:paddingBottom="@dimen/_8dp"
+                                android:visibility="gone" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/_10dp"
+                            android:gravity="center"
+                            android:text="@string/file_limit_max_2mb"
+                            android:textSize="@dimen/_10dp" />
+                    </LinearLayout>
 
                 </LinearLayout>
+
 
                 <View
                     style="@style/style_divider_registration"
@@ -446,6 +538,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
+                        android:layout_marginRight="-5dp"
                         android:layout_centerVertical="true"
                         android:onCheckedChanged="@{(button, bool)-> viewModel.onSwitchChanged(bool)}"
                         android:theme="@style/switch_style" />

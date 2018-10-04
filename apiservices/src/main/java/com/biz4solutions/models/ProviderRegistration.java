@@ -14,7 +14,7 @@ public class ProviderRegistration extends EmptyResponse {
     private String cprCertificateLink;
     @SerializedName("cprExpiryDate")
     @Expose
-    private String cprExpiryDate;
+    private long cprExpiryDate;
     @SerializedName("cprTrainingInstitution")
     @Expose
     private String cprTrainingInstitution;
@@ -51,7 +51,17 @@ public class ProviderRegistration extends EmptyResponse {
     @SerializedName("speciality")
     @Expose
     private String speciality;
+    @SerializedName("profileUrl")
+    @Expose
+    private String profileUrl;
 
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
 
     public String getAddress() {
         return address;
@@ -69,11 +79,11 @@ public class ProviderRegistration extends EmptyResponse {
         this.cprCertificateLink = cprCertificateLink;
     }
 
-    public String getCprExpiryDate() {
+    public long getCprExpiryDate() {
         return cprExpiryDate;
     }
 
-    public void setCprExpiryDate(String cprExpiryDate) {
+    public void setCprExpiryDate(long cprExpiryDate) {
         this.cprExpiryDate = cprExpiryDate;
     }
 
