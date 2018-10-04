@@ -54,6 +54,18 @@ public class ProviderRegistration extends EmptyResponse {
     @SerializedName("profileUrl")
     @Expose
     private String profileUrl;
+    @SerializedName("dob")
+    @Expose
+    private Long dob;
+
+
+    public Long getDob() {
+        return dob;
+    }
+
+    public void setDob(Long dob) {
+        this.dob = dob;
+    }
 
     public String getProfileUrl() {
         return profileUrl;

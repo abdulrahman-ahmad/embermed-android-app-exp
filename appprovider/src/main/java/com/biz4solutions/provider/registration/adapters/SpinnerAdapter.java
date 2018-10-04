@@ -6,21 +6,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-import java.util.List;
+import com.biz4solutions.models.CprInstitute;
+import com.biz4solutions.models.Occupation;
+import com.biz4solutions.provider.R;
+
+import java.util.ArrayList;
 
 public class SpinnerAdapter<T> extends ArrayAdapter<T> {
-    private final List<T> data;
+    private final ArrayList<T> data;
     private final int resourceId;
     private final int dropDownViewId;
     private final LayoutInflater inflater;
 
-    public SpinnerAdapter(Context context, int resourceId, List<T> data, int dropDownViewId) {
+    public SpinnerAdapter(Context context, int resourceId, ArrayList<T> data, int dropDownViewId) {
         super(context, resourceId, data);
         this.data = data;
         this.resourceId = resourceId;
         this.dropDownViewId = dropDownViewId;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public void updateData(ArrayList<T> newData) {
+        data.clear();
+        data.addAll(newData);
+        if (newData != null && newData.size() > 0) {
+            if ((data.get(0)) instanceof Occupation) {
+                Occupation occupation = new Occupation();
+                occupation.setName("Select Occupation");
+                data.add(0, (T) occupation);
+            } else {
+                CprInstitute cprInstitute = new CprInstitute();
+                cprInstitute.setName("Select Institute");
+                data.add(0, (T) cprInstitute);
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override
@@ -29,15 +51,18 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
         if (convertView == null)
             view = inflater.inflate(dropDownViewId, parent, false);
 
-//        TextView textView = (TextView) view.findViewById(R.id.textView);
-//        if (data.get(position) instanceof String) {
-//        }
-//        if (position == 0) {
-//            textView.setEnabled(false);
-//        } else {
-//            textView.setEnabled(true);
-//        }
-
+        TextView textView = view.findViewById(R.id.textView);
+        if (data.get(position) instanceof Occupation) {
+            textView.setText(((Occupation) data.get(position)).getName());
+        }
+        if (data.get(position) instanceof CprInstitute) {
+            textView.setText(((CprInstitute) data.get(position)).getName());
+        }
+        if (position == 0) {
+            textView.setEnabled(false);
+        } else {
+            textView.setEnabled(true);
+        }
         return view;
     }
 
@@ -48,17 +73,18 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
         if (convertView == null)
             view = inflater.inflate(resourceId, parent, false);
 
-//        TextView textView = (TextView) view.findViewById(R.id.textView);
-//        if (data.get(position) instanceof CustomerDTO) {
-//            textView.setText(((CustomerDTO) data.get(position)).getName());
-//        }
-//            textView.setText(displayname);
-//        if (position == 0) {
-//            textView.setEnabled(false);
-//        } else {
-//            textView.setEnabled(true);
-//        }
-
+        TextView textView = view.findViewById(R.id.textView);
+        if (data.get(position) instanceof Occupation) {
+            textView.setText(((Occupation) data.get(position)).getName());
+        }
+        if (data.get(position) instanceof CprInstitute) {
+            textView.setText(((CprInstitute) data.get(position)).getName());
+        }
+        if (position == 0) {
+            textView.setEnabled(false);
+        } else {
+            textView.setEnabled(true);
+        }
         return view;
     }
 }

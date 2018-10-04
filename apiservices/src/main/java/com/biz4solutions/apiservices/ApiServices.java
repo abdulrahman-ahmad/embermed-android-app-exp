@@ -220,6 +220,11 @@ public class ApiServices {
                 .changePassword(body));
     }
 
+    public void getProviderRegistrationDetails(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getProviderRegistrationDetails());
+    }
+
     public void getNewsFeedDetail(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getNewsFeedDetail(latitude, longitude));

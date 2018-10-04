@@ -54,7 +54,7 @@
 
         <!-- subscription card-->
         <android.support.v7.widget.CardView
-            android:id="@+id/cv_subscriptions"
+            android:id="@+id/cv_registration"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10dp"

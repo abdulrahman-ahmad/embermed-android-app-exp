@@ -13,6 +13,7 @@ import com.biz4solutions.models.response.CreateEmsResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
 import com.biz4solutions.models.response.EmsRequestResponse;
+import com.biz4solutions.models.response.GenericResponse;
 import com.biz4solutions.models.response.LoginResponse;
 import com.biz4solutions.models.response.NewsFeedResponse;
 import com.biz4solutions.models.response.OccupationResponse;
@@ -146,6 +147,9 @@ public interface RetrofitRestClient {
 
     @GET("/api/v1/provider/getCprTrainingInstituteList")
     Call<CprTrainingInstitutesResponse> getCprInstituteList();
+
+    @GET("/api/v1/provider/getProviderRegistration")
+    Call<GenericResponse<ProviderRegistration>> getProviderRegistrationDetails();
 
     @GET("/api/v1/newsfeed/getNewsFeedDetail")
     Call<NewsFeedResponse> getNewsFeedDetail(@Query("latitude") double latitude, @Query("longitude") double longitude);

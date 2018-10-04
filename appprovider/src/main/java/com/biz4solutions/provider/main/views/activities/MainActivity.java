@@ -52,10 +52,11 @@ import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.provider.newsfeed.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.registration.views.fragments.RegistrationFragment;
+import com.biz4solutions.provider.registration.views.fragments.ViewRegistrationDetailsFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
-import com.biz4solutions.provider.registration.views.fragments.RegistrationFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallDetailsFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFragment;
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
@@ -585,6 +586,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, CardiacIncidentReportFragment.newInstance(requestDetails))
                 .addToBackStack(CardiacIncidentReportFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openViewRegistrationFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof ViewRegistrationDetailsFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, ViewRegistrationDetailsFragment.newInstance())
+                .addToBackStack(ViewRegistrationDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 

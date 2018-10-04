@@ -85,4 +85,20 @@
     <string name="txt_upload_medical_certificate">Upload Medical Certificate</string>
 
     <string name="my_profile">My Profile</string>
+    <string name="txt_personal_cap">PERSONAL</string>
+    <string name="txt_phone_no">Phone No.</string>
+    <string name="txt_address_optional">Address (optional)</string>
+    <string name="txt_profession">PROFESSION</string>
+    <string name="txt_occupation">Occupation</string>
+    <string name="txt_other_occupation">if other, mention your occupation.</string>
+    <string name="txt_institute_name">Institute name</string>
+    <string name="txt_cpr">CPR</string>
+    <string name="txt_cpr_institution">CPR Training Institution</string>
+    <string name="txt_cpr_certificate_expiry_date">CPR Certificate Expiry Date</string>
+    <string name="txt_medical_license_cap">MEDICAL LICENSE</string>
+    <string name="txt_license_number_npe_number">License Number / NPE Number?</string>
+    <string name="txt_other_cap">OTHER</string>
+    <string name="txt_question_telehealth_triage_platform">Do you want to participate in the telehealth triage platform?</string>
+    <string name="txt_question_speciality_or_subspeciality">what is your speciality or subspeciality?</string>
+    <string name="txt_practise_state">Which state are you licensed to practise in?</string>
 </resources>

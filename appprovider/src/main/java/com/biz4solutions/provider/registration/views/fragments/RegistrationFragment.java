@@ -26,6 +26,8 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.biz4solutions.data.RequestCodes;
+import com.biz4solutions.models.CprInstitute;
+import com.biz4solutions.models.Occupation;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.profile.BuildConfig;
@@ -34,7 +36,9 @@ import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentRegistrationBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.registration.adapters.PlaceAutoCompleteAdapter;
+import com.biz4solutions.provider.registration.adapters.SpinnerAdapter;
 import com.biz4solutions.provider.registration.viewmodels.RegistrationViewModel;
+import com.biz4solutions.provider.utilities.FileUtils;
 import com.biz4solutions.utilities.Constants;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -50,6 +54,7 @@ import com.google.android.gms.location.places.Places;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.util.ArrayList;
 
 public class RegistrationFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -59,6 +64,8 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     private FragmentRegistrationBinding binding;
     private GoogleApiClient mGoogleApiClient;
     private PlaceAutoCompleteAdapter mAdapter;
+    private SpinnerAdapter<Occupation> occupationAdapter;
+    private SpinnerAdapter<CprInstitute> cprInstituteAdapter;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -80,10 +87,40 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         viewModel = ViewModelProviders.of(this, new RegistrationViewModel.RegistrationFactory(mainActivity)).get(RegistrationViewModel.class);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
+        initSpinner();
         initActivity();
         initListeners();
         setUserData();
         return binding.getRoot();
+    }
+
+    private void initSpinner() {
+        occupationAdapter = new SpinnerAdapter<>(mainActivity, R.layout.spinner_item_selected, new ArrayList<Occupation>(), R.layout.spinner_item_drop_down);
+        cprInstituteAdapter = new SpinnerAdapter<>(mainActivity, R.layout.spinner_item_selected, new ArrayList<CprInstitute>(), R.layout.spinner_item_drop_down);
+        binding.spinnerOccupation.setAdapter(occupationAdapter);
+        binding.spinnerCprInstitute.setAdapter(cprInstituteAdapter);
+        binding.spinnerOccupation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.setOccupation(occupationAdapter.getItem(position).getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        binding.spinnerCprInstitute.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.setCprInstitute(cprInstituteAdapter.getItem(position).getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void initListeners() {
@@ -91,6 +128,19 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             @Override
             public void onChanged(@Nullable String s) {
                 Toast.makeText(mainActivity, s, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        viewModel.getOccupationLiveList().observe(this, new Observer<ArrayList<Occupation>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<Occupation> occupations) {
+                occupationAdapter.updateData(occupations);
+            }
+        });
+        viewModel.getCprInstituteLiveList().observe(this, new Observer<ArrayList<CprInstitute>>() {
+            @Override
+            public void onChanged(@Nullable ArrayList<CprInstitute> cprInstitutes) {
+                cprInstituteAdapter.updateData(cprInstitutes);
             }
         });
     }
@@ -110,9 +160,8 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         initPlaces();
     }
 
-
     private void initPlaces() {
-        if(mGoogleApiClient==null) {
+        if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(mainActivity)
                     .enableAutoManage(mainActivity, 2 /* clientId */, this)
                     .addApi(Places.GEO_DATA_API)
@@ -136,35 +185,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         mGoogleApiClient.disconnect();
     }
 
-    private AdapterView.OnItemClickListener mAutocompleteClickListener
-            = new AdapterView.OnItemClickListener() {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            final AutocompletePrediction item = mAdapter.getItem(position);
-            final String placeId = item.getPlaceId();
-            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
-                    .getPlaceById(mGoogleApiClient, placeId);
-            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
-        }
-    };
-
-    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
-            = new ResultCallback<PlaceBuffer>() {
-        @Override
-        public void onResult(PlaceBuffer places) {
-            if (!places.getStatus().isSuccess()) {
-                // Request did not complete successfully
-                places.release();
-                return;
-            }
-            // Get the Place object from the buffer.
-            final Place place = places.get(0);
-            onPlaceSelected(place);
-            places.release();
-        }
-    };
-
     private void onPlaceSelected(Place place) {
 //        Log.d("address",""+place.getAddress());
         viewModel.setAddress(place.getAddress().toString());
@@ -178,13 +198,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-    }
-
-    public void removeCprFile(View v) {
-        viewModel.setCprFileExt("");
-        viewModel.setCprCertificateUri(null);
-        binding.fileNameCpr.setText(getString(R.string.txt_upload_cpr_certificate));
-        binding.ivCprRemove.setVisibility(View.GONE);
     }
 
     public void removeMedicalFile(View v) {
@@ -213,15 +226,29 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         });
     }
 
+    public void removeCprFile(View v) {
+        viewModel.setCprFileExt("");
+        viewModel.setCprCertificateUri(null);
+        binding.fileNameCpr.setText(getString(R.string.txt_upload_cpr_certificate));
+        binding.ivCprRemove.setVisibility(View.GONE);
+    }
+
     public void captureFile(View v) {
         if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*|application/pdf");
+//            intent.setType("*/*");
+            String[] mimetypes = {"image/*", "application/pdf"};
+            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
             if (v.getTag().equals(getString(R.string.txt_upload_cpr_certificate))) {
-                startActivityForResult(intent, RequestCodes.RESULT_FILE_CPR);
+                if (viewModel.getCprCertificateUri() == null) {
+                    startActivityForResult(intent, RequestCodes.RESULT_FILE_CPR);
+                }
             } else {
-                startActivityForResult(intent, RequestCodes.RESULT_FILE_MEDICAL);
+                if (viewModel.getMedicalCertificateUri() == null) {
+                    startActivityForResult(intent, RequestCodes.RESULT_FILE_MEDICAL);
+                }
             }
         }
     }
@@ -307,9 +334,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                                 Uri tempUri = getImageUri(mainActivity.getApplicationContext(), photo);
                                 setImage(tempUri);
                                 viewModel.setProfileImageUri(tempUri);
-                                //CALL THIS METHOD TO GET THE ACTUAL PATH
-                                //File finalFile = new File(getRealPathFromURI(tempUri));
-                                //System.out.println(mImageCaptureUri);
+
                             }
                         }
                     } catch (Exception e) {
@@ -332,15 +357,15 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                     break;
 
                 case RequestCodes.RESULT_FILE_CPR:
-
-                    //todo:need to code for removing selected file.
                     Uri fileUri = data.getData();
+//                    viewModel.setCprCertificateUri(fileUri);
                     if (processFile(fileUri, RequestCodes.RESULT_FILE_CPR)) {
                         viewModel.setCprCertificateUri(fileUri);
                     }
                     break;
                 case RequestCodes.RESULT_FILE_MEDICAL:
                     Uri fileUri2 = data.getData();
+//                    viewModel.setMedicalCertificateUri(fileUri2);
                     if (processFile(fileUri2, RequestCodes.RESULT_FILE_MEDICAL)) {
                         viewModel.setMedicalCertificateUri(fileUri2);
                     }
@@ -350,15 +375,14 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     }
 
     private boolean processFile(Uri fileUri, int resultFileCpr) {
-        //todo:need to check when image is selected from photos app
         if (fileUri != null) {
             if (fileUri.getPath() != null) {
-                File file = new File(fileUri.getPath());
-                if (Integer.parseInt(String.valueOf(file.length() / 1024)) < 2048) {
-                    //Log.d("fileOpe", file.getAbsolutePath() + "\n" + file.getPath());
-                    if (file.getAbsolutePath().contains(".")) {
-                        String ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
-                        if (ext.equalsIgnoreCase(".pdf") || ext.equalsIgnoreCase(".jpeg") || ext.equalsIgnoreCase(".jpg") || ext.equalsIgnoreCase(".png")) {
+                String filePath = FileUtils.getPath(mainActivity, fileUri);
+                if (filePath != null && !filePath.isEmpty()) {
+                    File file = new File(filePath);
+                    if (FileUtils.isLargeSize(file)) {
+                        String ext = FileUtils.getFileExtension(mainActivity, file);
+                        if (ext != null && FileUtils.isValidFile(mainActivity, ext)) {
                             if (resultFileCpr == RequestCodes.RESULT_FILE_CPR) {
                                 binding.fileNameCpr.setText(file.getName());
                                 viewModel.setCprFileExt(ext);
@@ -370,17 +394,19 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                             }
                             return true;
                         } else {
-                            Toast.makeText(mainActivity, "Illegal file.", Toast.LENGTH_SHORT).show();
-                            return false;
+                            Toast.makeText(mainActivity, "Illegal file. Please select an image or a pdf file.", Toast.LENGTH_SHORT).show();
                         }
+                    } else {
+                        Toast.makeText(mainActivity, "Please select file under 2MB.", Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(mainActivity, "Please select file under 2MB.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, "Unable to process file, Please try again.", Toast.LENGTH_SHORT).show();
                 }
             }
         }
         return false;
     }
+
 
     private void setImage(Uri uri) {
         Glide.with(mainActivity).asBitmap().apply(new RequestOptions().circleCrop()).load(uri).into(binding.profileImage);
@@ -421,6 +447,37 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        Toast.makeText(mainActivity, "" + connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
+
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                // Request did not complete successfully
+                places.release();
+                return;
+            }
+            // Get the Place object from the buffer.
+            final Place place = places.get(0);
+            onPlaceSelected(place);
+            places.release();
+        }
+    };
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+
+        }
+    };
+
+
 }

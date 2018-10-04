@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -35,7 +36,7 @@
 
                 <TextView
                     style="@style/style_header_registration"
-                    android:text="PERSONAL" />
+                    android:text="@string/txt_personal_cap" />
 
                 <View style="@style/style_divider_registration" />
 
@@ -49,7 +50,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_12dp"
+                        android:layout_marginTop="@dimen/_18dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true">
 
@@ -105,7 +106,7 @@
                             android:inputType="textWebEmailAddress"
                             android:maxLength="20"
                             android:onTextChanged="@{viewModel::firstNameWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
@@ -115,7 +116,7 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -126,39 +127,65 @@
                             android:inputType="textWebEmailAddress"
                             android:maxLength="20"
                             android:onTextChanged="@{viewModel::lastNameWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_12dp" />
+                    <View style="@style/divider" />
+
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
                             android:id="@+id/edt_email"
                             style="@style/profile_email_edt_style"
                             android:hint="@string/email"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:text="@{viewModel.email}"
                             android:theme="@style/EditTextHint"
                             tools:ignore="TextFields"
                             tools:text="abc@mailinator.com" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_12dp" />
+                    <View style="@style/divider" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
+                        android:focusableInTouchMode="false"
+                        android:orientation="vertical"
+                        android:theme="@style/txtInputLayout">
+
+                        <EditText
+                            android:id="@+id/edt_expiry"
+                            style="@style/profile_edt_style"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:clickable="true"
+                            android:cursorVisible="false"
+                            android:drawableEnd="@drawable/ic_calendar"
+                            android:focusable="false"
+                            android:gravity="center_vertical"
+                            android:hint="@string/date_of_birth"
+                            android:inputType="none"
+                            android:onClick="@{()->viewModel.selectBirthDate()}"
+                            android:paddingTop="@dimen/_8dp"
+                            android:text="@{viewModel.displayDateOfBirth}"
+                            tools:ignore="KeyboardInaccessibleWidget" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <View style="@style/divider" />
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -166,36 +193,33 @@
                             style="@style/profile_edt_style"
                             android:background="@null"
                             android:digits="@string/number_filter"
-                            android:hint="Phone No."
-                            android:inputType="number"
+                            android:hint="@string/txt_phone_no"
+                            android:inputType="phone"
                             android:maxLength="13"
                             android:onTextChanged="@{viewModel::phoneNumberWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_12dp" />
+                    <View style="@style/divider" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <AutoCompleteTextView
                             android:id="@+id/edt_address"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:hint="Address (optional)"
-                            android:paddingTop="@dimen/_10dp"
+                            android:hint="@string/txt_address_optional"
+                            android:maxLines="1"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_12dp" />
+                    <View style="@style/divider" />
                 </LinearLayout>
 
                 <View
@@ -204,7 +228,7 @@
 
                 <TextView
                     style="@style/style_header_registration"
-                    android:text="PROFESSION" />
+                    android:text="@string/txt_profession" />
 
                 <View style="@style/style_divider_registration" />
 
@@ -217,28 +241,25 @@
 
                     <TextView
                         style="@style/tv_label"
-                        android:text="Occupation" />
+                        android:text="@string/txt_occupation" />
 
                     <Spinner
+                        android:id="@+id/spinner_occupation"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-7dp"
                         android:layout_marginTop="3dp"
-                        android:layout_marginEnd="-15dp"
-                        android:dropDownVerticalOffset="@dimen/_10dp"
-                        android:entries="@{viewModel.occupationLiveList}"
+                        android:background="@null"
+                        android:dropDownVerticalOffset="@dimen/_7dp"
                         android:minHeight="@dimen/_30dp"
-                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onOccupationSelectItem(parent,view,pos,id)}"
-                        android:overlapAnchor="false" />
+                        android:overlapAnchor="false"
+                        android:scrollbars="vertical" />
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_8dp" />
+                    <View style="@style/divider" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -246,22 +267,20 @@
                             style="@style/profile_edt_style"
                             android:background="@null"
                             android:digits="@string/name_filter"
-                            android:hint="if other, mention your occupation."
+                            android:hint="@string/txt_other_occupation"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="50"
                             android:onTextChanged="@{viewModel::occupationWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_8dp" />
+                    <View style="@style/divider" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -269,17 +288,15 @@
                             style="@style/profile_edt_style"
                             android:background="@null"
                             android:digits="@string/name_filter"
-                            android:hint="Institute name"
+                            android:hint="@string/txt_institute_name"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="50"
                             android:onTextChanged="@{viewModel::instituteNameWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_12dp" />
+                    <View style="@style/divider" />
                 </LinearLayout>
 
                 <View
@@ -288,7 +305,7 @@
 
                 <TextView
                     style="@style/style_header_registration"
-                    android:text="CPR" />
+                    android:text="@string/txt_cpr" />
 
                 <View style="@style/style_divider_registration" />
 
@@ -301,29 +318,25 @@
 
                     <TextView
                         style="@style/tv_label"
-                        android:text="CPR Training Institution" />
+                        android:text="@string/txt_cpr_institution" />
 
                     <Spinner
+                        android:id="@+id/spinner_cpr_institute"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="-7dp"
                         android:layout_marginTop="3dp"
-                        android:layout_marginEnd="-15dp"
-                        android:dropDownVerticalOffset="@dimen/_10dp"
-                        android:entries="@{viewModel.cprInstituteLiveList}"
+                        android:background="@null"
+                        android:dropDownVerticalOffset="@dimen/_7dp"
                         android:minHeight="@dimen/_30dp"
-                        android:onItemSelected="@{(parent,view,pos,id)->viewModel.onCprInstituteSelectItem(parent,view,pos,id)}"
                         android:overlapAnchor="false"
                         android:scrollbars="vertical" />
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_8dp" />
+                    <View style="@style/divider" />
 
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:focusableInTouchMode="false"
                         android:orientation="vertical"
                         android:theme="@style/txtInputLayout">
@@ -339,16 +352,14 @@
                             android:drawableEnd="@drawable/ic_calendar"
                             android:focusable="false"
                             android:gravity="center_vertical"
-                            android:hint="CPR Certificate Expiry Date"
+                            android:hint="@string/txt_cpr_certificate_expiry_date"
                             android:inputType="none"
                             android:onClick="@{()->viewModel.selectDate()}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:text="@{viewModel.expiry}" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_8dp" />
+                    <View style="@style/divider" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -413,7 +424,7 @@
 
                 <TextView
                     style="@style/style_header_registration"
-                    android:text="MEDICAL LICENSE" />
+                    android:text="@string/txt_medical_license_cap" />
 
                 <View style="@style/style_divider_registration" />
 
@@ -427,7 +438,7 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -435,16 +446,14 @@
                             style="@style/profile_edt_style"
                             android:background="@null"
                             android:digits="@string/number_filter"
-                            android:hint="License Number / NPE Number?"
+                            android:hint="@string/txt_license_number_npe_number"
                             android:inputType="number"
                             android:onTextChanged="@{viewModel::licenseNpeNumberWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginTop="@dimen/_8dp" />
+                    <View style="@style/divider" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -510,7 +519,7 @@
 
                 <TextView
                     style="@style/style_header_registration"
-                    android:text="OTHER" />
+                    android:text="@string/txt_other_cap" />
 
                 <View style="@style/style_divider_registration" />
 
@@ -529,7 +538,7 @@
                         android:layout_alignParentStart="true"
                         android:layout_centerVertical="true"
                         android:layout_toStartOf="@+id/switch_telehealth_participation"
-                        android:text="Do you want to participate in the telehealth triage platform?"
+                        android:text="@string/txt_question_telehealth_triage_platform"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/_16dp" />
 
@@ -538,8 +547,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginRight="-5dp"
                         android:layout_centerVertical="true"
+                        android:layout_marginRight="-4dp"
                         android:onCheckedChanged="@{(button, bool)-> viewModel.onSwitchChanged(bool)}"
                         android:theme="@style/switch_style" />
                 </RelativeLayout>
@@ -555,25 +564,33 @@
                     android:paddingStart="@dimen/_30dp"
                     android:paddingEnd="@dimen/_30dp">
 
+                    <TextView
+                        style="@style/tv_label"
+                        android:layout_marginTop="@dimen/_15dp"
+                        android:text="@string/txt_question_speciality_or_subspeciality"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/_16dp" />
+
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_80dp"
-                        android:layout_marginTop="@dimen/_15dp"
-                        android:theme="@style/txtInputLayout">
+                        android:layout_height="wrap_content"
+                        android:theme="@style/txtInputLayout"
+                        app:hintEnabled="false">
 
                         <EditText
                             android:id="@+id/edt_speciality"
-                            style="@style/profile_edt_style"
+                            style="@style/registration_other_section_edt_style"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:background="@null"
-                            android:hint="what is your speciality or subspeciality?"
+                            android:gravity="top"
+                            android:hint="Type Here..."
                             android:inputType="textMultiLine"
-                            android:maxLength="250"
+                            android:lines="4"
+                            android:maxLength="255"
                             android:maxLines="5"
-                            android:minHeight="@dimen/_60dp"
                             android:onTextChanged="@{viewModel::specialityWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:scrollbars="vertical"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
@@ -581,28 +598,34 @@
                     <View style="@style/divider" />
 
 
+                    <TextView
+                        style="@style/tv_label"
+                        android:layout_marginTop="@dimen/_12dp"
+                        android:text="@string/txt_practise_state"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/_16dp" />
+
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_15dp"
-                        android:theme="@style/txtInputLayout">
+                        android:theme="@style/txtInputLayout"
+                        app:hintEnabled="false">
 
                         <EditText
                             android:id="@+id/edt_practise_state"
-                            style="@style/profile_edt_style"
+                            style="@style/registration_other_section_edt_style"
                             android:background="@null"
                             android:digits="@string/name_filter"
-                            android:hint="Which state are you licensed to practise in?"
+                            android:hint="@string/txt_practise_state"
                             android:inputType="textWebEmailAddress"
+                            android:maxLength="100"
                             android:onTextChanged="@{viewModel::stateWatcher}"
-                            android:paddingTop="@dimen/_10dp"
+                            android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
 
                     </android.support.design.widget.TextInputLayout>
 
-                    <View
-                        style="@style/divider"
-                        android:layout_marginBottom="@dimen/_10dp" />
+                    <View style="@style/divider" />
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>

@@ -33,8 +33,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class RegistrationViewModel extends ViewModel implements FirebaseUploadUtil.FirebaseUploadInterface, RestClientResponse {
-    public ObservableField<ArrayList<String>> occupationLiveList;
-    public ObservableField<ArrayList<String>> cprInstituteLiveList;
+    private MutableLiveData<ArrayList<Occupation>> occupationLiveList;
+    private MutableLiveData<ArrayList<CprInstitute>> cprInstituteLiveList;
     private final ProviderRegistration registration;
     private User user;
     private Uri profileImageUri;
@@ -49,18 +49,21 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     private Long selectedDateValue = null;
     private Calendar todayDate = Calendar.getInstance();
     public ObservableField<String> expiry;
+    public ObservableField<String> displayDateOfBirth;
+    private Long selectedBirthDateValue = null;
 
 
     private RegistrationViewModel(Context context) {
         super();
         this.context = context;
-        occupationLiveList = new ObservableField<>();
-        cprInstituteLiveList = new ObservableField<>();
+        occupationLiveList = new MutableLiveData<>();
+        cprInstituteLiveList = new MutableLiveData<>();
         registration = new ProviderRegistration();
         apiServices = new ApiServices();
         toastMsg = new MutableLiveData<>();
         email = new MutableLiveData<>();
         expiry = new ObservableField<>();
+        displayDateOfBirth = new ObservableField<>();
         getCprListData();
         getOccupationListData();
     }
@@ -72,16 +75,12 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(context);
-        final ArrayList<String> occupationList = new ArrayList<>();
         apiServices.getOccupationList(context, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 OccupationResponse response1 = (OccupationResponse) response;
-                for (Occupation occ : response1.getData()) {
-                    occupationList.add(occ.getName());
-                }
-                occupationLiveList.set(occupationList);
+                occupationLiveList.setValue(response1.getData());
             }
 
             @Override
@@ -90,6 +89,22 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
                 toastMsg.setValue(errorMessage);
             }
         });
+    }
+
+    public void setOccupation(String occupation) {
+        registration.setProfessionName(occupation);
+    }
+
+    public void setCprInstitute(String cprInstitute) {
+        registration.setCprTrainingInstitution(cprInstitute);
+    }
+
+    public MutableLiveData<ArrayList<Occupation>> getOccupationLiveList() {
+        return occupationLiveList;
+    }
+
+    public MutableLiveData<ArrayList<CprInstitute>> getCprInstituteLiveList() {
+        return cprInstituteLiveList;
     }
 
     private void getCprListData() {
@@ -98,16 +113,12 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             return;
         }
         CommonFunctions.getInstance().loadProgressDialog(context);
-        final ArrayList<String> cprInstituteList = new ArrayList<>();
         apiServices.getCprInstituteList(context, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 CprTrainingInstitutesResponse response1 = (CprTrainingInstitutesResponse) response;
-                for (CprInstitute cpr : response1.getData()) {
-                    cprInstituteList.add(cpr.getName());
-                }
-                cprInstituteLiveList.set(cprInstituteList);
+                cprInstituteLiveList.setValue(response1.getData());
             }
 
             @Override
@@ -118,6 +129,13 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         });
     }
 
+    public Uri getCprCertificateUri() {
+        return cprCertificateUri;
+    }
+
+    public Uri getMedicalCertificateUri() {
+        return medicalCertificateUri;
+    }
 
     public void setCprFileExt(String cprFileExt) {
         this.cprFileExt = cprFileExt;
@@ -154,29 +172,29 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     //spinner item select listener
     public void onOccupationSelectItem(@SuppressWarnings("unused") AdapterView<?> parent, @SuppressWarnings("unused") View view, int pos, @SuppressWarnings("unused") long id) {
         //Toast.makeText(view.getContext(), "" + occupationLiveList.getValue().get(pos), Toast.LENGTH_SHORT).show();
-        registration.setProfessionName(occupationLiveList.get().get(pos));
+//        registration.setProfessionName(occupationLiveList.get().get(pos));
     }
 
     //spinner item select listener
     public void onCprInstituteSelectItem(@SuppressWarnings("unused") AdapterView<?> parent, @SuppressWarnings("unused") View view, int pos, @SuppressWarnings("unused") long id) {
         //Toast.makeText(view.getContext(), "" + occupationLiveList.getValue().get(pos), Toast.LENGTH_SHORT).show();
-        registration.setCprTrainingInstitution(cprInstituteLiveList.get().get(pos));
+//        registration.setCprTrainingInstitution(cprInstituteLiveList.get().get(pos));
     }
 
 
     //watcher for firstName
     public void firstNameWatcher(CharSequence s, int start, int before, int count) {
-        registration.setFirstName(s.toString());
+        registration.setFirstName(s.toString().trim());
     }
 
     //watcher for lastName
     public void lastNameWatcher(CharSequence s, int start, int before, int count) {
-        registration.setLastName(s.toString());
+        registration.setLastName(s.toString().trim());
     }
 
     //watcher for phone number
     public void phoneNumberWatcher(CharSequence s, int start, int before, int count) {
-        registration.setPhoneNumber(s.toString());
+        registration.setPhoneNumber(s.toString().trim());
     }
 
     public void setAddress(String address) {
@@ -187,29 +205,29 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
 
     //watcher for occupation
     public void occupationWatcher(CharSequence s, int start, int before, int count) {
-        registration.setProfessionName(s.toString());
+        registration.setProfessionName(s.toString().trim());
     }
 
     //watcher for institute name
     public void instituteNameWatcher(CharSequence s, int start, int before, int count) {
-        registration.setInstituteName(s.toString());
+        registration.setInstituteName(s.toString().trim());
     }
 
     //medical license section
 
     //watcher for institute name
     public void licenseNpeNumberWatcher(CharSequence s, int start, int before, int count) {
-        registration.setMedicalLicenseNumber(s.toString().toUpperCase());
+        registration.setMedicalLicenseNumber(s.toString().toUpperCase().trim());
     }
 
     //watcher for speciality
     public void specialityWatcher(CharSequence s, int start, int before, int count) {
-        registration.setSpeciality(s.toString());
+        registration.setSpeciality(s.toString().trim());
     }
 
     //watcher for state
     public void stateWatcher(CharSequence s, int start, int before, int count) {
-        registration.setPracticeState(s.toString());
+        registration.setPracticeState(s.toString().trim());
     }
 
     //for switch button
@@ -217,6 +235,42 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         registration.setOptForTriage(checked);
     }
 
+
+    public void selectBirthDate() {
+
+        Calendar previousSelectedDate = Calendar.getInstance();
+        int previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay;
+        if (selectedBirthDateValue != null) {
+            previousSelectedDate.setTimeInMillis(selectedBirthDateValue);
+        } else {
+            previousSelectedDate.setTimeInMillis(todayDate.getTimeInMillis());
+        }
+        previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR);
+        previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
+        previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
+        int MIN_YEAR_INTERVAL = 18;
+
+
+        CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                        displayDateOfBirth.set(formatDate(year, monthOfYear, dayOfMonth, true));
+                        registration.setDob(selectedBirthDateValue);
+                    }
+                })
+                .setDoneText("OK")
+                .setCancelText("CANCEL")
+                .setThemeCustom(com.biz4solutions.profile.R.style.MyCustomBetterPickersDialogs)
+                .setPreselectedDate(previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay)
+                .setDateRange(new MonthAdapter.CalendarDay(todayDate.get(Calendar.YEAR) - 99, todayDate.get(Calendar.MONTH), todayDate.get(Calendar.DAY_OF_MONTH)),
+                        new MonthAdapter.CalendarDay(todayDate.get(Calendar.YEAR) - MIN_YEAR_INTERVAL, todayDate.get(Calendar.MONTH), todayDate.get(Calendar.DAY_OF_MONTH)));
+
+        cdp.show(((MainActivity) context).getSupportFragmentManager(), "fragment");
+
+    }
+
+    //expiry date
     public void selectDate() {
 
         Calendar previousSelectedDate = Calendar.getInstance();
@@ -235,7 +289,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
                 .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                     @Override
                     public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
-                        expiry.set(formatDate(year, monthOfYear, dayOfMonth));
+                        expiry.set(formatDate(year, monthOfYear, dayOfMonth, false));
                         registration.setCprExpiryDate(selectedDateValue);
                     }
                 })
@@ -250,16 +304,44 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
 
     }
 
-    private String formatDate(int year, int month, int day) {
+    //submit click
+    public void onSubmitClick(View v) {
+        if (CommonFunctions.getInstance().isOffline(context)) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_network_unavailable));
+            return;
+        }
+        //validate data
+        if (validatePersonalData()) {
+            if (validateProfessionData()) {
+                if (validateCprData()) {
+                    if (validateMedicalData()) {
+                        if (validateOtherData()) {
+                            CommonFunctions.getInstance().loadProgressDialog(context);
+                            FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), user.getRoleName(), profileImageUri, this);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void registerProvider() {
+        CommonFunctions.getInstance().loadProgressDialog(context);
+        apiServices.registerProvider(context, registration, this);
+    }
+
+    private String formatDate(int year, int month, int day, boolean isBirthDate) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(year, month, day);
-        selectedDateValue = calendar.getTimeInMillis();
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
+        if (!isBirthDate)
+            selectedDateValue = calendar.getTimeInMillis();
+        else
+            selectedBirthDateValue = calendar.getTimeInMillis();
+        @SuppressLint("simpledateformat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         return sdf.format(calendar.getTime());
     }
 
-    private boolean validateData() {
-
+    private boolean validatePersonalData() {
         if (profileImageUri == null) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_profile));
             return false;
@@ -269,6 +351,12 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         } else if (registration.getLastName() == null || registration.getLastName().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_last_name));
             return false;
+        } else if (registration.getDob() == null) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_dob));
+            return false;
+        } else if (registration.getDob() > Calendar.getInstance().getTimeInMillis()) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_dob));
+            return false;
         } else if (registration.getPhoneNumber() == null || registration.getPhoneNumber().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
             return false;
@@ -276,11 +364,11 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
             return false;
         }
-//        else if (registration.getAddress() == null || registration.getAddress().isEmpty()) {
-//            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_address));
-//            return false;
-//        }
-        else if (registration.getProfessionName() == null || registration.getProfessionName().isEmpty()) {
+        return true;
+    }
+
+    private boolean validateProfessionData() {
+        if (registration.getProfessionName() == null || registration.getProfessionName().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_occupation));
             return false;
         } else if (registration.getProfessionName() != null && registration.getProfessionName().equalsIgnoreCase("others") && registration.getProfessionName().isEmpty()) {
@@ -289,7 +377,12 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         } else if (registration.getInstituteName() == null || registration.getInstituteName().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_institute_name));
             return false;
-        } else if (registration.getCprTrainingInstitution() == null || registration.getCprTrainingInstitution().isEmpty()) {
+        }
+        return true;
+    }
+
+    private boolean validateCprData() {
+        if (registration.getCprTrainingInstitution() == null || registration.getCprTrainingInstitution().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_cpr_institute));
             return false;
         } else if (registration.getCprExpiryDate() == 0) {
@@ -298,13 +391,23 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         } else if (cprCertificateUri == null) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_cpr_certificate));
             return false;
-        } else if (registration.getMedicalLicenseNumber() == null || registration.getMedicalLicenseNumber().isEmpty()) {
+        }
+        return true;
+    }
+
+    private boolean validateMedicalData() {
+        if (registration.getMedicalLicenseNumber() == null || registration.getMedicalLicenseNumber().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_license_npi_number));
             return false;
         } else if (medicalCertificateUri == null) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_medical_certificate));
             return false;
-        } else if (registration.getSpeciality() == null || registration.getSpeciality().isEmpty()) {
+        }
+        return true;
+    }
+
+    private boolean validateOtherData() {
+        if (registration.getSpeciality() == null || registration.getSpeciality().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_speciality));
             return false;
         } else if (registration.getPracticeState() == null || registration.getPracticeState().isEmpty()) {
@@ -312,33 +415,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             return false;
         }
         return true;
-    }
-
-    //submit click
-    public void onSubmitClick(View v) {
-
-        if (CommonFunctions.getInstance().isOffline(context)) {
-            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_network_unavailable));
-            return;
-        }
-        //validate data
-        if (validateData()) {
-            CommonFunctions.getInstance().loadProgressDialog(context);
-            FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), user.getRoleName(), profileImageUri, this);
-        }
-    }
-
-    private void registerProvider() {
-        CommonFunctions.getInstance().loadProgressDialog(context);
-        apiServices.registerProvider(context, registration, this);
-    }
-
-    @Override
-    protected void onCleared() {
-        super.onCleared();
-        context = null;
-        cprInstituteLiveList = null;
-        occupationLiveList = null;
     }
 
     @Override
@@ -351,11 +427,11 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         if (fileCode == profileImageFileCode) {
             registration.setProfileUrl(imageUrl);
             CommonFunctions.getInstance().loadProgressDialog(context);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase( user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
         } else if (fileCode == cprFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
             registration.setCprCertificateLink(imageUrl);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase( user.getUserId(),  "medicalCertificate" + medicalFileExt, medicalCertificateUri, medicalFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "medicalCertificate" + medicalFileExt, medicalCertificateUri, medicalFileCode, this);
         } else if (fileCode == medicalFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
             registration.setMedicalLiceneceLink(imageUrl);
@@ -363,7 +439,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             registerProvider();
         }
     }
-
 
     @Override
     public void uploadError(String exceptionMsg, int fileCode) {
@@ -375,12 +450,21 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public void onSuccess(Object response, int statusCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(((EmptyResponse) response).getMessage());
+        ((MainActivity) context).reOpenDashBoardFragment();
     }
 
     @Override
     public void onFailure(String errorMessage, int statusCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(errorMessage);
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        context = null;
+        cprInstituteLiveList = null;
+        occupationLiveList = null;
     }
 
 

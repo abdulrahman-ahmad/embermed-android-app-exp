@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.biz4solutions.provider.R;
 import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
@@ -73,7 +73,7 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
 
     private void initListeners() {
         binding.cvMyProfile.setOnClickListener(this);
-        binding.cvSubscriptions.setOnClickListener(this);
+        binding.cvRegistration.setOnClickListener(this);
     }
 
     @Override
@@ -81,6 +81,9 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
         switch (v.getId()) {
             case R.id.cv_my_profile:
                 startActivity(new Intent(mainActivity, ProfileActivity.class));
+                break;
+            case R.id.cv_registration:
+                mainActivity.openViewRegistrationFragment();
                 break;
             default:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
