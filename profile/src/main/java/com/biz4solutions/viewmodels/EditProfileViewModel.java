@@ -106,12 +106,12 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         } else if (tempUser.getGender() == null || tempUser.getGender().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_gender));
             return false;
-        } else if (isProvider()
+        } /*else if (isProvider()
                 && (tempUser.getProfileUrl() == null || tempUser.getProfileUrl().isEmpty())
                 && (capturedUri == null || capturedUri.getPath() == null || capturedUri.getPath().isEmpty())) {
             toastMsg.setValue(context.getString(R.string.error_empty_image));
             return false;
-        }
+        }*/
         return true;
     }
 
