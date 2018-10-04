@@ -18,6 +18,7 @@ package com.biz4solutions.provider.registration.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.text.style.CharacterStyle;
 import android.text.style.StyleSpan;
 import android.view.View;
@@ -54,7 +55,7 @@ import java.util.concurrent.TimeUnit;
 public class PlaceAutoCompleteAdapter
         extends ArrayAdapter<AutocompletePrediction> implements Filterable {
 
-    private static final String TAG = "PlaceAutocompleteAdapter";
+    //private static final String TAG = "PlaceAutocompleteAdapter";
     private static final CharacterStyle STYLE_BOLD = new StyleSpan(Typeface.BOLD);
     /**
      * Current results returned by this adapter.
@@ -92,6 +93,7 @@ public class PlaceAutoCompleteAdapter
     /**
      * Sets the bounds for all subsequent queries.
      */
+    @SuppressWarnings("unused")
     public void setBounds(LatLngBounds bounds) {
         mBounds = bounds;
     }
@@ -116,8 +118,9 @@ public class PlaceAutoCompleteAdapter
         return mResultList.get(position);
     }
 
+    @NonNull
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View row = super.getView(position, convertView, parent);
 
         // Sets the primary and secondary text for a row.
@@ -126,10 +129,12 @@ public class PlaceAutoCompleteAdapter
 
         AutocompletePrediction item = getItem(position);
 
-        TextView textView1 = (TextView) row.findViewById(android.R.id.text1);
-        TextView textView2 = (TextView) row.findViewById(android.R.id.text2);
-        textView1.setText(item.getPrimaryText(STYLE_BOLD));
-        textView2.setText(item.getSecondaryText(STYLE_BOLD));
+        TextView textView1 = row.findViewById(android.R.id.text1);
+        TextView textView2 = row.findViewById(android.R.id.text2);
+        if (item != null) {
+            textView1.setText(item.getPrimaryText(STYLE_BOLD));
+            textView2.setText(item.getSecondaryText(STYLE_BOLD));
+        }
 
         return row;
     }
@@ -137,6 +142,7 @@ public class PlaceAutoCompleteAdapter
     /**
      * Returns the filter for the current set of autocomplete results.
      */
+    @NonNull
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -164,6 +170,7 @@ public class PlaceAutoCompleteAdapter
                 return results;
             }
 
+            @SuppressWarnings("unchecked")
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
@@ -207,7 +214,7 @@ public class PlaceAutoCompleteAdapter
      */
     private ArrayList<AutocompletePrediction> getAutocomplete(CharSequence constraint) {
         if (mGoogleApiClient.isConnected()) {
-            System.out.println("Starting autocomplete query for: " + constraint);
+            //System.out.println("Starting autocomplete query for: " + constraint);
 
             // Submit the query to the autocomplete API and retrieve a PendingResult that will
             // contain the results when the query completes.
@@ -224,24 +231,23 @@ public class PlaceAutoCompleteAdapter
             // Confirm that the query completed successfully, otherwise return null
             final Status status = autocompletePredictions.getStatus();
             if (!status.isSuccess()) {
-                if (status.getStatusCode() == 7)//Network Error
-                {
+                //Network Error
+                if (status.getStatusCode() == 7) {
                     Toast.makeText(getContext(), R.string.error_network_unavailable, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Error contacting Google Places API. Please try again later. (" + status.getStatusCode() + ", " + status.getStatusMessage() + ")", Toast.LENGTH_SHORT).show();
                 }
-                System.out.println("Error getting autocomplete prediction API call: " + status.toString());
+                //System.out.println("Error getting autocomplete prediction API call: " + status.toString());
                 autocompletePredictions.release();
                 return null;
             }
-            System.out.println("Query completed. Received " + autocompletePredictions.getCount() + " predictions.");
+            //System.out.println("Query completed. Received " + autocompletePredictions.getCount() + " predictions.");
 
             // Freeze the results immutable representation that can be stored safely.
             return DataBufferUtils.freezeAndClose(autocompletePredictions);
         }
-        System.out.println("Google API client is not connected for autocomplete query.");
+        //System.out.println("Google API client is not connected for autocomplete query.");
         return null;
     }
-
 
 }
