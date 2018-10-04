@@ -27,20 +27,19 @@ android {
     productFlavors {
         dev {
             //dev/local
-            //buildConfigField 'String', 'HOST', '"http://192.168.1.91:8181/api/"'
-            buildConfigField 'String', 'HOST', '"http://192.168.1.44:8085/api/"'   //Keerti
+            buildConfigField 'String', 'HOST', '"http://192.168.1.44:8085"'   //Keerti
         }
         qaTest {
             //Internal testing
-            buildConfigField 'String', 'HOST', '"http://osiris-qa-test-env.us-west-2.elasticbeanstalk.com/api/"'
+            buildConfigField 'String', 'HOST', '"http://osiris-qa-test-env.us-west-2.elasticbeanstalk.com"'
         }
         staging {
             //uat
-            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-2.elasticbeanstalk.com/api/"'
+            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-2.elasticbeanstalk.com"'
         }
         prod {
             //production url
-            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com/api/"'
+            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com"'
         }
     }
 }
