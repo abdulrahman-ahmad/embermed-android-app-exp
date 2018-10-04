@@ -26,7 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -89,12 +88,11 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     private User user;
     private boolean isAcceptedOpen = false;
     private boolean isPageOpen = false;
-    private View mapView;
     private GoogleMap googleMap;
     private Marker userMarker;
     private Marker victimMarker;
     private boolean isMapZoom = false;
-    public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
+    public int ANIMATE_SPEED_TURN = 1500; // 1.5 sec;
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
     public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
     public int ZOOM_LEVEL = 17;
@@ -243,7 +241,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
     private void initMapView() {
         SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
-        mapView = mMapFragment.getView();
         mMapFragment.getMapAsync(this);
     }
 
@@ -557,18 +554,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         googleMap.getUiSettings().setCompassEnabled(false);
         addVictimMarker(requestDetails.getLatitude(), requestDetails.getLongitude());
         try {
-            if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
-                // Get the button view
-                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-                if (locationButton != null) {
-                    // and next place it, on bottom right (as Google Maps app)
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-                    // position on right bottom
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                    layoutParams.setMargins(0, 0, 30, 30);
-                }
-            }
             startLocationUpdates();
         } catch (Exception e) {
             e.printStackTrace();

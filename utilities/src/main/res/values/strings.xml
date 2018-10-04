@@ -86,6 +86,11 @@
     <string name="tutorial_end_message">Congratulation! You\'re educated now.</string>
     <string name="request_completed_marker_message">Request Completed\nLocation</string>
 
+    <string name="active_ember_medics_in_your_city">active ember medics in your city</string>
+    <string name="life_save">life save</string>
+    <string name="triage_call_has_been_made">triage call has been made</string>
+    <string name="_0">0</string>
+
     <!--filters-->
     <!-- android:digits="@string/name_filter" add into EditText View -->
     <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>

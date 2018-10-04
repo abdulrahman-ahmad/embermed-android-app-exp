@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.biz4solutions.R;
+import com.biz4solutions.account.fragments.AccountSettingFragment;
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.activities.OpenTokActivity;
 import com.biz4solutions.apiservices.ApiServiceUtil;
@@ -37,15 +38,14 @@ import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
-import com.biz4solutions.account.fragments.AccountSettingFragment;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.FeedbackFragment;
-import com.biz4solutions.main.views.fragments.NewsFeedFragment;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
+import com.biz4solutions.newsfeed.views.fragments.NewsFeedFragment;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
@@ -238,7 +238,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         reOpenDashBoardFragment();
                         break;
                     case R.id.nav_news_feed:
-                        openNewsFeedFragment();
+                        String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+                        if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                            openNewsFeedFragmentWithAnimation();
+                        } else {
+                            reOpenNewsFeedFragment();
+                        }
                         break;
                     case R.id.nav_account_settings:
                         openAccountSettingFragment();
@@ -389,6 +394,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    private void openNewsFeedFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof NewsFeedFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, NewsFeedFragment.newInstance())
+                .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void openAccountSettingFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof AccountSettingFragment) {
@@ -439,6 +457,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
             getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenNewsFeedFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof NewsFeedFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack(NewsFeedFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }

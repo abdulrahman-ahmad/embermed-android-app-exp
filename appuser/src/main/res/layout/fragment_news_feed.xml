@@ -9,20 +9,18 @@
 
         <variable
             name="viewModel"
-            type="com.biz4solutions.main.viewmodels.NewsFeedViewModel" />
+            type="com.biz4solutions.newsfeed.viewmodels.NewsFeedViewModel" />
     </data>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:weightSum="1535"
-        tools:ignore="NestedWeights">
+        tools:ignore="NestedWeights, UseCompoundDrawables, SpUsage">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
             android:layout_weight="860"
             android:orientation="vertical">
 
@@ -49,62 +47,135 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/bottom_layout"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:visibility="gone"
-            android:layout_weight="225"
-            android:orientation="vertical">
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            android:layout_weight="225"
-            android:background="@color/blue_bg_color"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="@color/news_feed_divider_color" />
+            android:layout_weight="675"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="225"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="@dimen/_40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_16dp"
+                    android:layout_marginEnd="@dimen/_16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_news_feed_active_provider" />
+
+                <TextView
+                    android:id="@+id/tv_provider_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/_0"
+                    android:textColor="@color/colorPrimaryRed"
+                    android:textSize="@dimen/_18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/active_ember_medics_in_your_city"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_15dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="225"
+                android:background="@color/blue_bg_color"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:background="@color/news_feed_divider_color" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/_40dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_16dp"
+                        android:layout_marginEnd="@dimen/_16dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_news_feed_save_life" />
+
+                    <TextView
+                        android:id="@+id/tv_life_save_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/_0"
+                        android:textColor="@color/colorPrimaryRed"
+                        android:textSize="@dimen/_18dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5dp"
+                        android:fontFamily="sans-serif-light"
+                        android:text="@string/life_save"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="@dimen/_15dp" />
+
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1.5dp"
+                    android:background="@color/news_feed_divider_color" />
 
 
             </LinearLayout>
 
-
-            <View
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1.5dp"
-                android:background="@color/news_feed_divider_color" />
+                android:layout_height="0dp"
+                android:layout_weight="225"
+                android:gravity="center_vertical">
 
+                <ImageView
+                    android:layout_width="@dimen/_40dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/_16dp"
+                    android:layout_marginEnd="@dimen/_16dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_news_feed_triage_call" />
 
+                <TextView
+                    android:id="@+id/tv_triage_call_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="@string/_0"
+                    android:textColor="@color/colorPrimaryRed"
+                    android:textSize="@dimen/_18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_5dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="@string/triage_call_has_been_made"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_15dp" />
+
+            </LinearLayout>
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            android:layout_weight="225"
-            android:orientation="vertical">
-
-
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/news_feed_coming_soon"
-            android:textSize="30dp" />
-
     </LinearLayout>
 </layout>

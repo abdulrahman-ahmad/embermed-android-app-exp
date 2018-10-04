@@ -51,7 +51,7 @@ import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportF
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
-import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.newsfeed.views.fragments.NewsFeedFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
@@ -285,7 +285,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         reOpenDashBoardFragment();
                         break;
                     case R.id.nav_news_feed:
-                        openNewsFeedFragment();
+                        String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+                        if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                            openNewsFeedFragmentWithAnimation();
+                        } else {
+                            reOpenNewsFeedFragment();
+                        }
                         break;
                     case R.id.nav_account_settings:
                         openAccountSettingFragment();
@@ -506,6 +511,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    private void openNewsFeedFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof NewsFeedFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, NewsFeedFragment.newInstance())
+                .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     private void openAccountSettingFragment() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof AccountSettingFragment) {
@@ -540,6 +558,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             isUpdateList = true;
             getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenNewsFeedFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof NewsFeedFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack(NewsFeedFragment.fragmentName, 0);
         } catch (Exception e) {
             e.printStackTrace();
         }
