@@ -1,10 +1,10 @@
 package com.biz4solutions.provider.newsfeed.views.fragments;
 
+import android.animation.ValueAnimator;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
+import com.biz4solutions.models.response.NewsFeedDataResponse;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentNewsFeedBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.models.response.NewsFeedDataResponse;
 import com.biz4solutions.provider.newsfeed.viewmodels.NewsFeedViewModel;
 import com.biz4solutions.provider.newsfeed.viewpresenters.NewsFeedPresenter;
 import com.biz4solutions.provider.utilities.NavigationUtil;
@@ -142,22 +142,26 @@ public class NewsFeedFragment extends Fragment implements NewsFeedPresenter {
                 mCountDownTimerDuration = 1000;
                 binding.bottomLayout.startAnimation(AnimationUtils.loadAnimation(mainActivity, R.anim.enter_from_bottom));
             }
-            final long[] providerCount = {0};
-            final long[] lifeSaveCount = {0};
-            final long[] triageCallCount = {0};
+            final int[] providerCount = {0};
+            final int[] lifeSaveCount = {0};
+            final int[] triageCallCount = {0};
 
-            long totalCount = 0;
+            int count = 0;
             if (newsFeedData != null) {
                 if (newsFeedData.getProviderLocationList() != null) {
-                    totalCount = totalCount + newsFeedData.getProviderLocationList().size();
+                    count = newsFeedData.getProviderLocationList().size();
                 }
-                totalCount = totalCount + newsFeedData.getTotalLifeSave() + newsFeedData.getTotalTriageCall();
+                if (count < newsFeedData.getTotalLifeSave()) {
+                    count = (int) newsFeedData.getTotalLifeSave();
+                }
+                if (count < newsFeedData.getTotalTriageCall()) {
+                    count = (int) newsFeedData.getTotalTriageCall();
+                }
             }
-
-            final CountDownTimer mCountDownTimer = new CountDownTimer(totalCount * 1000, 100) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    //this will be called every second.
+            final ValueAnimator animator = new ValueAnimator();
+            animator.setObjectValues(0, count);// here you set the range, from 0 to "count" value
+            animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                public void onAnimationUpdate(ValueAnimator animation) {
                     providerCount[0]++;
                     lifeSaveCount[0]++;
                     triageCallCount[0]++;
@@ -174,16 +178,12 @@ public class NewsFeedFragment extends Fragment implements NewsFeedPresenter {
                         }
                     }
                 }
-
-                @Override
-                public void onFinish() {
-                    //you are good to go.
-                }
-            };
+            });
+            animator.setDuration(30000); //30 sec // here you set the duration of the anim
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    mCountDownTimer.start();
+                    animator.start();
                 }
             }, mCountDownTimerDuration);
         } catch (Exception e) {
