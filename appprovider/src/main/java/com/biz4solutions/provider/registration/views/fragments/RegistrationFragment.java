@@ -103,6 +103,11 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setOccupation(occupationAdapter.getItem(position).getName());
+                if (occupationAdapter.getItem(position).getName().equalsIgnoreCase("others")) {
+                    binding.edtOtherOccupation.setEnabled(true);
+                } else {
+                    binding.edtOtherOccupation.setEnabled(false);
+                }
             }
 
             @Override
@@ -475,7 +480,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
                     .getPlaceById(mGoogleApiClient, placeId);
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
-
         }
     };
 

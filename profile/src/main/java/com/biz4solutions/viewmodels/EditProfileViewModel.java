@@ -166,21 +166,22 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     private void selectDate(Context context) {
-
-        Calendar previousSelectedDate = Calendar.getInstance();
-        int previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay;
-        if (selectedDateValue != null) {
-            previousSelectedDate.setTimeInMillis(selectedDateValue);
-        } else {
-            previousSelectedDate.setTimeInMillis(todayDate.getTimeInMillis());
-        }
-        previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR);
-        previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
-        previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
         int MIN_YEAR_INTERVAL = 0;
         if (isProvider()) {
             MIN_YEAR_INTERVAL = 18;
         }
+        Calendar previousSelectedDate = Calendar.getInstance();
+        int previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay;
+        if (selectedDateValue != null) {
+            previousSelectedDate.setTimeInMillis(selectedDateValue);
+            previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR);
+        } else {
+            previousSelectedDate.setTimeInMillis(todayDate.getTimeInMillis());
+            previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR) - MIN_YEAR_INTERVAL;
+        }
+        previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
+        previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
+
 
         CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
                 .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -259,7 +260,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     @Override
-    public void uploadSuccess(String imageUrl,int fileCode) {
+    public void uploadSuccess(String imageUrl, int fileCode) {
         if (imageUrl != null) {
             tempUser.setProfileUrl(imageUrl);
         }
@@ -267,7 +268,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     @Override
-    public void uploadError(String exceptionMsg,int fileCode) {
+    public void uploadError(String exceptionMsg, int fileCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(exceptionMsg);
     }

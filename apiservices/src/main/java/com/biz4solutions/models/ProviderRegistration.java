@@ -57,7 +57,17 @@ public class ProviderRegistration extends EmptyResponse {
     @SerializedName("dob")
     @Expose
     private Long dob;
+    @SerializedName("gender")
+    @Expose
+    private String gender;
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public Long getDob() {
         return dob;

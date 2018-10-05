@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.biz4solutions.models.CprInstitute;
 import com.biz4solutions.models.Occupation;
 import com.biz4solutions.provider.R;
+import com.biz4solutions.utilities.Constants;
 
 import java.util.ArrayList;
 
@@ -34,11 +35,11 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
         if (newData != null && newData.size() > 0) {
             if ((data.get(0)) instanceof Occupation) {
                 Occupation occupation = new Occupation();
-                occupation.setName("Select Occupation");
+                occupation.setName(Constants.SELECT_OCCUPATION);
                 data.add(0, (T) occupation);
             } else {
                 CprInstitute cprInstitute = new CprInstitute();
-                cprInstitute.setName("Select Institute");
+                cprInstitute.setName(Constants.SELECT_INSTITUTE);
                 data.add(0, (T) cprInstitute);
             }
         }

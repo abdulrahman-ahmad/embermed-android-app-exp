@@ -95,13 +95,13 @@ public class FileUtils {
         }
         if (file.getAbsolutePath().contains(".")) {
             ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
-            ext = ext.replace(".", "");
+          //  ext = ext.replace(".", "");
         }
         return ext;
     }
 
     public static boolean isValidFile(Context context, String ext) {
-        return ext.equalsIgnoreCase("pdf") || ext.equalsIgnoreCase("jpeg") || ext.equalsIgnoreCase("jpg") || ext.equalsIgnoreCase("png");
+        return ext.equalsIgnoreCase(".pdf") || ext.equalsIgnoreCase(".jpeg") || ext.equalsIgnoreCase(".jpg") || ext.equalsIgnoreCase(".png");
     }
 
     public static String fileType(Context context, Uri uri) {
