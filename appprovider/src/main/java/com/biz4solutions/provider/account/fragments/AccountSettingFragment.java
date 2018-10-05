@@ -12,10 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.models.User;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
+import com.biz4solutions.utilities.Constants;
 
 public class AccountSettingFragment extends Fragment implements View.OnClickListener {
 
@@ -35,23 +38,26 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
-
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account_setting, container, false);
-        initActivity();
-        return binding.getRoot();
-    }
-
-    private void initActivity() {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_account_settings);
             mainActivity.toolbarTitle.setText(R.string.account_settings);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        boolean isProviderSubscribed = false;
+        if (user != null) {
+            isProviderSubscribed = user.getIsProviderSubscribed() != null && user.getIsProviderSubscribed();
+        }
+        if (!isProviderSubscribed) {
+            binding.cvRegistration.setVisibility(View.GONE);
+        }
+        return binding.getRoot();
     }
 
     @Override

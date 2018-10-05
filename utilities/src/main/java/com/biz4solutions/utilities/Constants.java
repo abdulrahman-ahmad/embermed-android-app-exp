@@ -31,6 +31,7 @@ public class Constants implements Serializable {
 
     public static final String FIREBASE_PROVIDER_LOCATION_TABLE = "ProviderLocation";
     public static final String FIREBASE_USER_TABLE = "User";
+    public static final String FIREBASE_SUBSCRIPTION_TABLE = "Subscription";
     public static final String FIREBASE_REQUEST_TABLE = "Request";
     public static final String FIREBASE_ALERT_TABLE = "Alert";
     public static final String FIREBASE_OPEN_TOK_TABLE = "OpenTok";

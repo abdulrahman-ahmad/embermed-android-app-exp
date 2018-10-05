@@ -37,6 +37,7 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
+import com.biz4solutions.models.Subscription;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
@@ -108,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
-        initView();
+        initView(false);
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
@@ -166,8 +167,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
     }
 
-    private void initView() {
+    private void initView(boolean isOnlyUpdateMenu) {
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        boolean isProviderSubscribed = false;
+        boolean isApproved = false;
+        if (user != null) {
+            isProviderSubscribed = user.getIsProviderSubscribed() != null && user.getIsProviderSubscribed();
+            isApproved = user.getIsApproved() != null && user.getIsApproved();
+        }
         if (userAuthKey == null || userAuthKey.isEmpty()) {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
@@ -178,34 +186,64 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_registration).setVisible(false);
-            openNewsFeedFragment();
+            if (!isOnlyUpdateMenu) {
+                openNewsFeedFragment();
+            }
         } else {
-            navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_registration).setVisible(true);
-            openDashBoardFragment();
-            FirebaseMessagingService.setFcmToken(MainActivity.this);
-            FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
-                @Override
-                public void onSuccess(Boolean data) {
-                    isSuccessfullyInitFirebase = true;
-                    if (data != null && data) {
-                        addFirebaseUserEvent();
+            if (isProviderSubscribed) {
+                navigationView.getMenu().findItem(R.id.nav_registration).setVisible(false);
+                if (isApproved) {
+                    navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+                    if (!isOnlyUpdateMenu) {
+                        openDashBoardFragment();
+                    }
+                } else {
+                    navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+                    if (!isOnlyUpdateMenu) {
+                        openNewsFeedFragment();
                     }
                 }
-            };
-            if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
-                FirebaseAuthUtil.getInstance().initDB(callbackListener);
             } else {
-                User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-                if (user != null) {
-                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_registration).setVisible(true);
+                if (!isOnlyUpdateMenu) {
+                    openNewsFeedFragment();
+                }
+            }
+
+            if (!isOnlyUpdateMenu) {
+                FirebaseMessagingService.setFcmToken(MainActivity.this);
+                FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        isSuccessfullyInitFirebase = true;
+                        if (data != null && data) {
+                            addFirebaseUserEvent();
+                            addFirebaseSubscriptionEvent();
+                        }
+                    }
+                };
+                if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
+                    FirebaseAuthUtil.getInstance().initDB(callbackListener);
+                } else {
+                    if (user != null) {
+                        FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                    }
                 }
             }
         }
@@ -225,6 +263,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             getRequestDetails(data.getProviderCurrentRequestId(), "", true);
                         }
                     }
+                }
+            }
+        });
+    }
+
+    public void addFirebaseSubscriptionEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseSubscriptionEvent(MainActivity.this, new FirebaseCallbackListener<Subscription>() {
+            @Override
+            public void onSuccess(Subscription data) {
+                if (data != null) {
+                    User user = SharedPrefsManager.getInstance().retrieveUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                    if (user != null) {
+                        user.setIsProviderSubscribed(data.getIsProviderSubscribed());
+                        user.setIsApproved(data.getIsApproved());
+                        SharedPrefsManager.getInstance().storeUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, user);
+                    }
+                    initView(true);
                 }
             }
         });
@@ -374,6 +429,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void firebaseSignOut() {
         FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
+        FirebaseEventUtil.getInstance().removeFirebaseSubscriptionEvent();
         FirebaseEventUtil.getInstance().removeFirebaseAlertEvent();
         //FirebaseAuthUtil.getInstance().signOut();
     }
@@ -383,7 +439,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 149:
-                initView();
+                initView(false);
                 break;
             case OpenTokActivity.RC_OPENTOK_ACTIVITY:
                 FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();

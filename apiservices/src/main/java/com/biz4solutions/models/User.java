@@ -24,6 +24,8 @@ public class User implements Serializable {
     private int age;
     private String gender;
     private String signupType;
+    private Boolean isApproved;
+    private Boolean isProviderSubscribed;
 
     public String getProfileUrl() {
         return profileUrl;
@@ -145,6 +147,22 @@ public class User implements Serializable {
         this.signupType = signupType;
     }
 
+    public Boolean getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(Boolean approved) {
+        isApproved = approved;
+    }
+
+    public Boolean getIsProviderSubscribed() {
+        return isProviderSubscribed;
+    }
+
+    public void setIsProviderSubscribed(Boolean providerSubscribed) {
+        isProviderSubscribed = providerSubscribed;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -163,6 +181,8 @@ public class User implements Serializable {
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
                 ", signupType='" + signupType + '\'' +
+                ", isApproved=" + isApproved +
+                ", isProviderSubscribed=" + isProviderSubscribed +
                 '}';
     }
 }
