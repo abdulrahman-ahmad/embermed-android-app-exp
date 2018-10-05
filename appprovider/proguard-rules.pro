@@ -219,6 +219,11 @@
   public *;
 }
 
+#Android-Image-Cropper
+-keep class android.support.v7.widget.** { *; }
+-dontwarn com.theartofdev.edmodo.cropper.**
+-keep class com.theartofdev.edmodo.cropper.** { *; }
+-keep interface com.theartofdev.edmodo.cropper.** { *; }
 
 ########################### Project Rules #####################################
 -keep class com.biz4solutions.models.** { *; }

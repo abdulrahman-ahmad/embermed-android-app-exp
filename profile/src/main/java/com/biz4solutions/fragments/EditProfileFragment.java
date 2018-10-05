@@ -30,12 +30,14 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.DialogPickMediaBinding;
 import com.biz4solutions.profile.databinding.FragmentEditProfileBinding;
+import com.biz4solutions.utilities.BindingUtils;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.viewmodels.EditProfileViewModel;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 public class EditProfileFragment extends Fragment {
     public static final String fragmentName = "EditProfileFragment";
@@ -146,45 +148,59 @@ public class EditProfileFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        Toast.makeText(activity, "" + requestCode, Toast.LENGTH_SHORT).show();
-        if (resultCode == Activity.RESULT_OK) {
-            switch (requestCode) {
-                case RequestCodes.RESULT_CAMERA:
+        switch (requestCode) {
+            case RequestCodes.RESULT_CAMERA:
+                if (resultCode == RESULT_OK) {
                     try {
                         if (data != null && data.hasExtra("data")) {
                             Object dataObj = data.getExtras().get("data");
                             if (dataObj != null) {
                                 Bitmap photo = (Bitmap) dataObj;
-                                //binding.profileImage.setImageBitmap(photo);
                                 Uri tempUri = getImageUri(activity.getApplicationContext(), photo);
-                                setImage(tempUri);
-                                viewModel.setCapturedUri(tempUri);
-                                //CALL THIS METHOD TO GET THE ACTUAL PATH
-                                //File finalFile = new File(getRealPathFromURI(tempUri));
-                                //System.out.println(mImageCaptureUri);
+                                startCropActivity(tempUri);
                             }
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    break;
-                case RequestCodes.RESULT_GALLERY:
+                }
+                break;
+            case RequestCodes.RESULT_GALLERY:
+                if (resultCode == RESULT_OK) {
                     Uri uri = data.getData();
                     try {
                         if (uri != null) {
-                            setImage(uri);
-                            viewModel.setCapturedUri(uri);
+                            startCropActivity(uri);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    break;
-            }
+                }
+                break;
+            case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                if (resultCode == RESULT_OK) {
+                    Uri resultUri = result.getUri();
+                    setImage(resultUri);
+                } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                    Exception error = result.getError();
+                    error.printStackTrace();
+                }
+                break;
         }
     }
 
+    private void startCropActivity(Uri tempUri) {
+        CropImage.activity(tempUri)
+                .setAspectRatio(1,1)
+                .start(activity, this);
+    }
+
     private void setImage(Uri uri) {
-        Glide.with(activity).asBitmap().apply(new RequestOptions().circleCrop()).load(uri).into(binding.profileImage);
+        if (uri != null) {
+            viewModel.setCapturedUri(uri);
+            BindingUtils.loadImage(binding.profileImage, uri.toString());
+        }
     }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {

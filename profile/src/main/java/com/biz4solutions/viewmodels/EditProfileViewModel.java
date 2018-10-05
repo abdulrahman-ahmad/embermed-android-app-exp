@@ -68,7 +68,6 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         this.userData.setValue(tempUser);
     }
 
-
     public void setCapturedUri(Uri capturedUri) {
         this.capturedUri = capturedUri;
     }
