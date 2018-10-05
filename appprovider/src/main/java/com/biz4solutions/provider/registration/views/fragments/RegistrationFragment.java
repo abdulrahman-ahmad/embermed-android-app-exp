@@ -18,6 +18,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -90,8 +91,14 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         initSpinner();
         initActivity();
         initListeners();
+        initViews();
         setUserData();
         return binding.getRoot();
+    }
+
+    private void initViews() {
+        binding.tvPrivacyPolicy.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.tvTermsOfService.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     private void initSpinner() {
@@ -103,7 +110,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 viewModel.setOccupation(occupationAdapter.getItem(position).getName());
-                if (occupationAdapter.getItem(position).getName().equalsIgnoreCase("others")) {
+                if (occupationAdapter.getItem(position).getName().equalsIgnoreCase("others") || occupationAdapter.getItem(position).getName().equalsIgnoreCase("other")) {
                     binding.edtOtherOccupation.setEnabled(true);
                 } else {
                     binding.edtOtherOccupation.setEnabled(false);
@@ -188,6 +195,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         super.onDestroyView();
         mGoogleApiClient.stopAutoManage(mainActivity);
         mGoogleApiClient.disconnect();
+        viewModel.getToastMsg().removeObservers(this);
     }
 
     private void onPlaceSelected(Place place) {
@@ -238,22 +246,33 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         binding.ivCprRemove.setVisibility(View.GONE);
     }
 
-    public void captureFile(View v) {
-        if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE,
+    public void captureCprFile(View v) {
+        if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_CPR,
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
-            Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-            intent.setType("image/*|application/pdf");
-//            intent.setType("*/*");
-            String[] mimetypes = {"image/*", "application/pdf"};
-            intent.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-            if (v.getTag().equals(getString(R.string.txt_upload_cpr_certificate))) {
-                if (viewModel.getCprCertificateUri() == null) {
-                    startActivityForResult(intent, RequestCodes.RESULT_FILE_CPR);
-                }
-            } else {
-                if (viewModel.getMedicalCertificateUri() == null) {
-                    startActivityForResult(intent, RequestCodes.RESULT_FILE_MEDICAL);
-                }
+            captureFile(101);
+        }
+
+    }
+
+    public void captureMedicalFile(View v) {
+        if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_MEDICAL,
+                new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
+            captureFile(102);
+        }
+    }
+
+    private void captureFile(int requestCode) {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*|application/pdf");
+        String[] mimeTypes = {"image/*", "application/pdf"};
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+        if (requestCode == 101) {
+            if (viewModel.getCprCertificateUri() == null) {
+                startActivityForResult(intent, RequestCodes.RESULT_FILE_CPR);
+            }
+        } else {
+            if (viewModel.getMedicalCertificateUri() == null) {
+                startActivityForResult(intent, RequestCodes.RESULT_FILE_MEDICAL);
             }
         }
     }
@@ -443,8 +462,11 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                 case RequestCodes.PERMISSION_CAMERA:
                     captureImage();
                     break;
-                case RequestCodes.PERMISSION_FILE:
-                    captureFile(getView());
+                case RequestCodes.PERMISSION_FILE_CPR:
+                    captureCprFile(getView());
+                    break;
+                case RequestCodes.PERMISSION_FILE_MEDICAL:
+                    captureMedicalFile(getView());
                     break;
             }
         }
@@ -482,6 +504,4 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
         }
     };
-
-
 }

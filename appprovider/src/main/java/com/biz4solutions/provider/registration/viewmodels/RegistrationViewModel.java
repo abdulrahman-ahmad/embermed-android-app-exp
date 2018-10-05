@@ -55,6 +55,9 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public ObservableField<String> firstName;
     public ObservableField<String> lastName;
     private Long selectedBirthDateValue = null;
+    private String tempOccupation;
+    private String tempEdtOccupation;
+
 
 
     private RegistrationViewModel(Context context) {
@@ -100,6 +103,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
 
     public void setOccupation(String occupation) {
         registration.setProfessionName(occupation);
+        tempOccupation=occupation;
     }
 
     public void setCprInstitute(String cprInstitute) {
@@ -204,6 +208,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     //watcher for occupation
     public void occupationWatcher(CharSequence s, int start, int before, int count) {
         registration.setProfessionName(s.toString().trim());
+        tempEdtOccupation=s.toString().trim();
     }
 
     //watcher for institute name
@@ -379,10 +384,10 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     }
 
     private boolean validateProfessionData() {
-        if (registration.getProfessionName() == null || registration.getProfessionName().isEmpty() || registration.getProfessionName().equalsIgnoreCase(Constants.SELECT_OCCUPATION)) {
+        if (tempOccupation == null || tempOccupation.isEmpty() || tempOccupation.equalsIgnoreCase(Constants.SELECT_OCCUPATION)) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_occupation));
             return false;
-        } else if (registration.getProfessionName() != null && registration.getProfessionName().equalsIgnoreCase("others") && registration.getProfessionName().isEmpty()) {
+        } else if ((tempEdtOccupation == null  || tempEdtOccupation.isEmpty()) && (tempOccupation.equalsIgnoreCase("other") ||tempOccupation .equalsIgnoreCase("others"))) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_occupation));
             return false;
         } else if (registration.getInstituteName() == null || registration.getInstituteName().isEmpty()) {

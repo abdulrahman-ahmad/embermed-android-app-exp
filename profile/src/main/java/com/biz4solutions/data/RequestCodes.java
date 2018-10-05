@@ -15,7 +15,8 @@ import java.lang.annotation.RetentionPolicy;
         RequestCodes.PERMISSION_WRITE_EXTERNAL_STORAGE,
         RequestCodes.RESULT_FILE_CPR,
         RequestCodes.RESULT_FILE_MEDICAL,
-        RequestCodes.PERMISSION_FILE
+        RequestCodes.PERMISSION_FILE_CPR,
+        RequestCodes.PERMISSION_FILE_MEDICAL
 })
 @Retention(RetentionPolicy.SOURCE)
 public @interface RequestCodes {
@@ -28,6 +29,7 @@ public @interface RequestCodes {
     int PERMISSION_GALLERY = 501;
     int PERMISSION_READ_EXTERNAL_STORAGE = 601;
     int PERMISSION_WRITE_EXTERNAL_STORAGE = 701;
-    int PERMISSION_FILE = 102;
+    int PERMISSION_FILE_CPR = 102;
+    int PERMISSION_FILE_MEDICAL = 103;
 }
 
