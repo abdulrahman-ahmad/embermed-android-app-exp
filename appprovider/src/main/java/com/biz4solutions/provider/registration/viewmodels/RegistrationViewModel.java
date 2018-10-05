@@ -42,6 +42,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     private Uri profileImageUri;
     private Uri cprCertificateUri;
     private Uri medicalCertificateUri;
+    @SuppressLint("StaticFieldLeak")
     private Context context;
     private ApiServices apiServices;
     private MutableLiveData<String> toastMsg;
@@ -57,8 +58,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     private Long selectedBirthDateValue = null;
     private String tempOccupation;
     private String tempEdtOccupation;
-
-
 
     private RegistrationViewModel(Context context) {
         super();
@@ -88,9 +87,15 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         apiServices.getOccupationList(context, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                CommonFunctions.getInstance().dismissProgressDialog();
-                OccupationResponse response1 = (OccupationResponse) response;
-                occupationLiveList.setValue(response1.getData());
+                try {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    OccupationResponse response1 = (OccupationResponse) response;
+                    if (occupationLiveList != null) {
+                        occupationLiveList.setValue(response1.getData());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -103,7 +108,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
 
     public void setOccupation(String occupation) {
         registration.setProfessionName(occupation);
-        tempOccupation=occupation;
+        tempOccupation = occupation;
     }
 
     public void setCprInstitute(String cprInstitute) {
@@ -127,9 +132,15 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         apiServices.getCprInstituteList(context, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
-                CommonFunctions.getInstance().dismissProgressDialog();
-                CprTrainingInstitutesResponse response1 = (CprTrainingInstitutesResponse) response;
-                cprInstituteLiveList.setValue(response1.getData());
+                try {
+                    CommonFunctions.getInstance().dismissProgressDialog();
+                    CprTrainingInstitutesResponse response1 = (CprTrainingInstitutesResponse) response;
+                    if (cprInstituteLiveList != null) {
+                        cprInstituteLiveList.setValue(response1.getData());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -208,7 +219,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     //watcher for occupation
     public void occupationWatcher(CharSequence s, int start, int before, int count) {
         registration.setProfessionName(s.toString().trim());
-        tempEdtOccupation=s.toString().trim();
+        tempEdtOccupation = s.toString().trim();
     }
 
     //watcher for institute name
@@ -387,7 +398,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         if (tempOccupation == null || tempOccupation.isEmpty() || tempOccupation.equalsIgnoreCase(Constants.SELECT_OCCUPATION)) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_unselected_occupation));
             return false;
-        } else if ((tempEdtOccupation == null  || tempEdtOccupation.isEmpty()) && (tempOccupation.equalsIgnoreCase("other") ||tempOccupation .equalsIgnoreCase("others"))) {
+        } else if ((tempEdtOccupation == null || tempEdtOccupation.isEmpty()) && (tempOccupation.equalsIgnoreCase("other") || tempOccupation.equalsIgnoreCase("others"))) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_occupation));
             return false;
         } else if (registration.getInstituteName() == null || registration.getInstituteName().isEmpty()) {
@@ -466,7 +477,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public void onSuccess(Object response, int statusCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(((EmptyResponse) response).getMessage());
-        ((MainActivity) context).reOpenDashBoardFragment();
+        ((MainActivity) context).reOpenNewsFeedFragment();
     }
 
     @Override

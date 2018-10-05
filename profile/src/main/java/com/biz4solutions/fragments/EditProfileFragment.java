@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -31,11 +30,10 @@ import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.DialogPickMediaBinding;
 import com.biz4solutions.profile.databinding.FragmentEditProfileBinding;
 import com.biz4solutions.utilities.BindingUtils;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.viewmodels.EditProfileViewModel;
 import com.theartofdev.edmodo.cropper.CropImage;
-
-import java.io.ByteArrayOutputStream;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -44,6 +42,7 @@ public class EditProfileFragment extends Fragment {
     private ProfileActivity activity;
     private EditProfileViewModel viewModel;
     private FragmentEditProfileBinding binding;
+    private Uri photoURI;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -62,6 +61,7 @@ public class EditProfileFragment extends Fragment {
         binding.setViewModel(viewModel);
         setUserData();
         initListeners();
+        photoURI = CommonFunctions.getInstance().getProfileImageUri(activity);
         return binding.getRoot();
     }
 
@@ -142,6 +142,9 @@ public class EditProfileFragment extends Fragment {
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.CAMERA})) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (photoURI != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            }
             startActivityForResult(intent, RequestCodes.RESULT_CAMERA);
         }
     }
@@ -152,13 +155,12 @@ public class EditProfileFragment extends Fragment {
             case RequestCodes.RESULT_CAMERA:
                 if (resultCode == RESULT_OK) {
                     try {
-                        if (data != null && data.hasExtra("data")) {
-                            Object dataObj = data.getExtras().get("data");
-                            if (dataObj != null) {
-                                Bitmap photo = (Bitmap) dataObj;
-                                Uri tempUri = getImageUri(activity.getApplicationContext(), photo);
-                                startCropActivity(tempUri);
-                            }
+                        if (photoURI != null) {
+                            startCropActivity(photoURI);
+                        } else if (data != null && data.hasExtra("data")) {
+                            Bitmap photo = (Bitmap) data.getExtras().get("data");
+                            Uri tempUri = getImageUri(photo);
+                            startCropActivity(tempUri);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -192,7 +194,8 @@ public class EditProfileFragment extends Fragment {
 
     private void startCropActivity(Uri tempUri) {
         CropImage.activity(tempUri)
-                .setAspectRatio(1,1)
+                .setAspectRatio(1, 1)
+                .setOutputCompressQuality(100)
                 .start(activity, this);
     }
 
@@ -203,10 +206,8 @@ public class EditProfileFragment extends Fragment {
         }
     }
 
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+    private Uri getImageUri(Bitmap inImage) {
+        String path = MediaStore.Images.Media.insertImage(activity.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 

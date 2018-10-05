@@ -1,10 +1,10 @@
 package com.biz4solutions.provider.registration.views.fragments;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
@@ -40,9 +40,9 @@ import com.biz4solutions.provider.registration.adapters.PlaceAutoCompleteAdapter
 import com.biz4solutions.provider.registration.adapters.SpinnerAdapter;
 import com.biz4solutions.provider.registration.viewmodels.RegistrationViewModel;
 import com.biz4solutions.provider.utilities.FileUtils;
+import com.biz4solutions.utilities.BindingUtils;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
@@ -52,6 +52,7 @@ import com.google.android.gms.location.places.AutocompletePrediction;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,6 +68,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     private PlaceAutoCompleteAdapter mAdapter;
     private SpinnerAdapter<Occupation> occupationAdapter;
     private SpinnerAdapter<CprInstitute> cprInstituteAdapter;
+    private Uri photoURI;
 
     public RegistrationFragment() {
         // Required empty public constructor
@@ -85,14 +87,19 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_registration, container, false);
+        mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.navigationView.setCheckedItem(R.id.nav_registration);
+            mainActivity.toolbarTitle.setText(R.string.registration);
+        }
         viewModel = ViewModelProviders.of(this, new RegistrationViewModel.RegistrationFactory(mainActivity)).get(RegistrationViewModel.class);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
         initSpinner();
-        initActivity();
         initListeners();
         initViews();
         setUserData();
+        photoURI = CommonFunctions.getInstance().getProfileImageUri(mainActivity);
         return binding.getRoot();
     }
 
@@ -157,14 +164,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         });
     }
 
-    private void initActivity() {
-        mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_registration);
-            mainActivity.toolbarTitle.setText(R.string.registration);
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -199,8 +198,11 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     }
 
     private void onPlaceSelected(Place place) {
-//        Log.d("address",""+place.getAddress());
-        viewModel.setAddress(place.getAddress().toString());
+        try {
+            viewModel.setAddress(place.getAddress().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void setUserData() {
@@ -221,9 +223,8 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     }
 
     private void enableEditScrolling() {
-
-
         binding.edtSpeciality.setOnTouchListener(new View.OnTouchListener() {
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View view, MotionEvent event) {
                 if (view.getId() == R.id.edt_speciality) {
@@ -340,6 +341,9 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                 new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Manifest.permission.CAMERA})) {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            if (photoURI != null) {
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+            }
             startActivityForResult(intent, RequestCodes.RESULT_CAMERA);
         }
     }
@@ -351,15 +355,12 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             switch (requestCode) {
                 case RequestCodes.RESULT_CAMERA:
                     try {
-                        if (data != null && data.hasExtra("data")) {
+                        if (photoURI != null) {
+                            startCropActivity(photoURI);
+                        } else if (data != null && data.hasExtra("data")) {
                             Bitmap photo = (Bitmap) data.getExtras().get("data");
-                            if (photo != null) {
-                                //binding.profileImage.setImageBitmap(photo);
-                                Uri tempUri = getImageUri(mainActivity.getApplicationContext(), photo);
-                                setImage(tempUri);
-                                viewModel.setProfileImageUri(tempUri);
-
-                            }
+                            Uri tempUri = getImageUri(photo);
+                            startCropActivity(tempUri);
                         }
                     } catch (Exception e) {
                         if (BuildConfig.DEBUG) {
@@ -371,15 +372,18 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                     Uri uri = data.getData();
                     try {
                         if (uri != null) {
-                            setImage(uri);
-                            viewModel.setProfileImageUri(uri);
+                            startCropActivity(uri);
                         }
                     } catch (Exception e) {
                         if (BuildConfig.DEBUG)
                             e.printStackTrace();
                     }
                     break;
-
+                case CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE:
+                    CropImage.ActivityResult result = CropImage.getActivityResult(data);
+                    Uri resultUri = result.getUri();
+                    setImage(resultUri);
+                    break;
                 case RequestCodes.RESULT_FILE_CPR:
                     Uri fileUri = data.getData();
 //                    viewModel.setCprCertificateUri(fileUri);
@@ -395,6 +399,20 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                     }
                     break;
             }
+        }
+    }
+
+    private void startCropActivity(Uri tempUri) {
+        CropImage.activity(tempUri)
+                .setAspectRatio(1, 1)
+                .setOutputCompressQuality(100)
+                .start(mainActivity, this);
+    }
+
+    private void setImage(Uri uri) {
+        if (uri != null) {
+            viewModel.setProfileImageUri(uri);
+            BindingUtils.loadImage(binding.profileImage, uri.toString());
         }
     }
 
@@ -418,28 +436,21 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                             }
                             return true;
                         } else {
-                            Toast.makeText(mainActivity, "Illegal file. Please select an image or a pdf file.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(mainActivity, R.string.error_illegal_file, Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(mainActivity, "Please select file under 2MB.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mainActivity, R.string.error_large_file, Toast.LENGTH_SHORT).show();
                     }
                 } else {
-                    Toast.makeText(mainActivity, "Unable to process file, Please try again.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mainActivity, R.string.error_upload_file, Toast.LENGTH_SHORT).show();
                 }
             }
         }
         return false;
     }
 
-
-    private void setImage(Uri uri) {
-        Glide.with(mainActivity).asBitmap().apply(new RequestOptions().circleCrop()).load(uri).into(binding.profileImage);
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+    public Uri getImageUri(Bitmap inImage) {
+        String path = MediaStore.Images.Media.insertImage(mainActivity.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
     }
 
@@ -476,7 +487,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(mainActivity, "" + connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
     }
-
 
     private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
             = new ResultCallback<PlaceBuffer>() {
