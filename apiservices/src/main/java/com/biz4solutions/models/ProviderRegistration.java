@@ -60,6 +60,42 @@ public class ProviderRegistration extends EmptyResponse {
     @SerializedName("gender")
     @Expose
     private String gender;
+    @SerializedName("isApproved")
+    @Expose
+    private Boolean isApproved;
+
+    @SerializedName("isProviderSubscribed")
+    @Expose
+    private Boolean isProviderSubscribed;
+
+    @SerializedName("adminComment")
+    @Expose
+    private String adminComment;
+
+
+    public Boolean getApproved() {
+        return isApproved;
+    }
+
+    public void setApproved(Boolean approved) {
+        isApproved = approved;
+    }
+
+    public Boolean getProviderSubscribed() {
+        return isProviderSubscribed;
+    }
+
+    public void setProviderSubscribed(Boolean providerSubscribed) {
+        isProviderSubscribed = providerSubscribed;
+    }
+
+    public String getAdminComment() {
+        return adminComment;
+    }
+
+    public void setAdminComment(String adminComment) {
+        this.adminComment = adminComment;
+    }
 
     public String getGender() {
         return gender;

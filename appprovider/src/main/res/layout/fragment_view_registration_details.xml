@@ -25,6 +25,42 @@
 
             <TextView
                 style="@style/style_header_registration"
+                android:text="@string/txt_status_cap" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:id="@+id/ll_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingEnd="@dimen/_30dp"
+                android:paddingBottom="@dimen/_10dp">
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="@dimen/_16dp" />
+
+                <TextView
+                    android:id="@+id/tv_statusDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:text="@{viewModel.registration.adminComment}"
+                    android:textSize="@dimen/_16dp" />
+            </LinearLayout>
+
+
+            <View style="@style/style_divider_registration" />
+
+            <TextView
+                style="@style/style_header_registration"
                 android:text="@string/txt_personal_cap" />
 
             <View style="@style/style_divider_registration" />
@@ -107,9 +143,7 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                     />
+                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -121,15 +155,72 @@
                         style="@style/profile_email_edt_style"
                         android:hint="@string/email"
                         android:paddingTop="@dimen/_10dp"
-                        android:text="@{viewModel.user.email}"
+                        android:text="@{viewModel.registration.email}"
                         android:theme="@style/EditTextHint"
                         tools:ignore="TextFields"
                         tools:text="abc@mailinator.com" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                      />
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:focusableInTouchMode="false"
+                    android:orientation="vertical"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5dp"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="none"
+                        android:paddingTop="@dimen/_8dp"
+                        android:text="@{viewModel.getFormattedDate(viewModel.registration.dob)}"
+                        tools:ignore="KeyboardInaccessibleWidget" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/_6dp"
+                    android:paddingBottom="@dimen/_6dp">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="@string/gender"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tv_gender"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:text="@{viewModel.registration.gender}"
+                        tools:ignore="SpUsage" />
+
+                    <Space
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp" />
+                </LinearLayout>
+
+                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -150,9 +241,8 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                  />
+                <View style="@style/divider" />
+
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -170,9 +260,7 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                     />
+                <View style="@style/divider" />
             </LinearLayout>
 
             <View
@@ -202,9 +290,7 @@
                     android:layout_marginTop="3dp"
                     android:text="@{viewModel.registration.professionName}" />
 
-                <View
-                    style="@style/divider"
-                      />
+                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -213,7 +299,6 @@
                     android:theme="@style/txtInputLayout">
 
                     <EditText
-
                         style="@style/profile_edt_style"
                         android:background="@null"
                         android:digits="@string/name_filter"
@@ -226,9 +311,7 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                     />
+                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -239,18 +322,17 @@
                     <EditText
                         style="@style/profile_edt_style"
                         android:background="@null"
-                        android:digits="@string/name_filter"
                         android:enabled="false"
                         android:hint="@string/txt_institute_name"
                         android:inputType="textWebEmailAddress"
                         android:maxLength="50"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.instituteName}"
+                        android:textColor="@color/colorPrimary"
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View style="@style/divider"
-                      />
+                <View style="@style/divider" />
             </LinearLayout>
 
             <View
@@ -280,11 +362,10 @@
                     android:layout_marginTop="3dp"
                     android:overlapAnchor="false"
                     android:scrollbars="vertical"
-                    android:text="@{viewModel.registration.cprTrainingInstitution}" />
+                    android:text="@{viewModel.registration.cprTrainingInstitution}"
+                    android:textColor="@color/colorPrimary" />
 
-                <View
-                    style="@style/divider"
-                      />
+                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -308,63 +389,48 @@
                         android:hint="@string/txt_cpr_certificate_expiry_date"
                         android:inputType="none"
                         android:paddingTop="@dimen/_10dp"
-                        android:text="@{String.valueOf(viewModel.registration.cprExpiryDate)}" />
+                        android:text="@{ viewModel.getFormattedDate(viewModel.registration.cprExpiryDate)}" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                     />
+                <View style="@style/divider" />
+
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/ll_toast_cpr"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_circle_button"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5dp"
-                        android:tag="@string/txt_upload_cpr_certificate">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:padding="@dimen/_5dp"
-                            android:text="@string/txt_upload_cpr_certificate"
-                            android:textSize="@dimen/_12dp" />
-
-                        <ImageView
-                            android:layout_width="@dimen/_15dp"
-                            android:layout_height="@dimen/_15dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="@dimen/_5dp"
-                            android:layout_marginRight="@dimen/_5dp"
-                            android:layout_weight="2"
-                            android:background="@drawable/ic_remove"
-                            android:padding="@dimen/_5dp"
-                            android:paddingStart="@dimen/_8dp"
-                            android:paddingTop="@dimen/_8dp"
-                            android:paddingEnd="@dimen/_8dp"
-                            android:paddingBottom="@dimen/_8dp"
-                            android:visibility="gone" />
-                    </LinearLayout>
+                    android:background="@drawable/bg_circle_button"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_weight="8"
+                        android:ellipsize="end"
                         android:gravity="center"
-                        android:text="@string/file_limit_max_2mb"
-                        android:textSize="@dimen/_10dp" />
+                        android:maxLines="1"
+                        android:padding="@dimen/_5dp"
+                        android:text="View CPR certificate"
+                        android:textSize="@dimen/_12dp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_15dp"
+                        android:layout_height="@dimen/_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:layout_marginRight="@dimen/_5dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/ic_remove"
+                        android:padding="@dimen/_5dp"
+                        android:paddingStart="@dimen/_8dp"
+                        android:paddingTop="@dimen/_8dp"
+                        android:paddingEnd="@dimen/_8dp"
+                        android:paddingBottom="@dimen/_8dp"
+                        android:visibility="gone" />
                 </LinearLayout>
+
 
             </LinearLayout>
 
@@ -403,60 +469,44 @@
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
-                <View
-                    style="@style/divider"
-                     />
+                <View style="@style/divider" />
 
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/ll_toast_medical"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_circle_button"
-                        android:orientation="horizontal"
-                        android:padding="@dimen/_5dp"
-                        android:tag="@string/txt_upload_medical_certificate">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="8"
-                            android:ellipsize="end"
-                            android:gravity="center"
-                            android:maxLines="1"
-                            android:padding="@dimen/_5dp"
-                            android:text="@string/txt_upload_medical_certificate"
-                            android:textSize="@dimen/_12dp" />
-
-                        <ImageView
-                            android:layout_width="@dimen/_15dp"
-                            android:layout_height="@dimen/_15dp"
-                            android:layout_gravity="center"
-                            android:layout_marginLeft="@dimen/_5dp"
-                            android:layout_marginRight="@dimen/_5dp"
-                            android:layout_weight="2"
-                            android:background="@drawable/ic_remove"
-                            android:padding="@dimen/_5dp"
-                            android:paddingStart="@dimen/_8dp"
-                            android:paddingTop="@dimen/_8dp"
-                            android:paddingEnd="@dimen/_8dp"
-                            android:paddingBottom="@dimen/_8dp"
-                            android:visibility="gone" />
-                    </LinearLayout>
+                    android:background="@drawable/bg_circle_button"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5dp">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_10dp"
+                        android:layout_weight="8"
+                        android:ellipsize="end"
                         android:gravity="center"
-                        android:text="@string/file_limit_max_2mb"
-                        android:textSize="@dimen/_10dp" />
+                        android:maxLines="1"
+                        android:padding="@dimen/_5dp"
+                        android:text="View Medical Certificate"
+                        android:textSize="@dimen/_12dp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_15dp"
+                        android:layout_height="@dimen/_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:layout_marginRight="@dimen/_5dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/ic_remove"
+                        android:padding="@dimen/_5dp"
+                        android:paddingStart="@dimen/_8dp"
+                        android:paddingTop="@dimen/_8dp"
+                        android:paddingEnd="@dimen/_8dp"
+                        android:paddingBottom="@dimen/_8dp"
+                        android:visibility="gone" />
                 </LinearLayout>
+
 
             </LinearLayout>
 
@@ -486,7 +536,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/switch_telehealth_participation"
-                    android:text="@string/txt_question_telehealth_triage_platform"
+                    android:text="Did participated in telehealth triage platform?"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_16dp" />
 
@@ -496,8 +546,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="-5dp"
                     android:checked="@{safeUnbox(viewModel.registration.optForTriage)}"
+                    android:enabled="false"
                     android:theme="@style/switch_style" />
             </RelativeLayout>
 
@@ -514,12 +564,11 @@
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_80dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15dp"
                     android:theme="@style/txtInputLayout">
 
                     <EditText
-
                         style="@style/profile_edt_style"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -529,7 +578,6 @@
                         android:inputType="textMultiLine"
                         android:maxLength="250"
                         android:maxLines="5"
-                        android:minHeight="@dimen/_60dp"
                         android:paddingTop="@dimen/_10dp"
                         android:scrollbars="vertical"
                         android:text="@{viewModel.registration.speciality}"

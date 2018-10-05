@@ -1,5 +1,6 @@
 package com.biz4solutions.provider.utilities;
 
+import android.app.DownloadManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
@@ -10,9 +11,13 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.webkit.MimeTypeMap;
+import android.webkit.URLUtil;
 import android.widget.Toast;
 
+import com.biz4solutions.utilities.Constants;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 
 public class FileUtils {
 
@@ -95,7 +100,7 @@ public class FileUtils {
         }
         if (file.getAbsolutePath().contains(".")) {
             ext = file.getAbsolutePath().substring(file.getAbsolutePath().lastIndexOf("."));
-          //  ext = ext.replace(".", "");
+            //  ext = ext.replace(".", "");
         }
         return ext;
     }
@@ -146,5 +151,46 @@ public class FileUtils {
     private static boolean isGooglePhotosUri(Uri uri) {
         return "com.google.android.apps.photos.content".equals(uri
                 .getAuthority());
+    }
+
+    public static long downloadFile(Context context, String url, boolean isCprFile, String ext) {
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs");
+
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+
+        long downloadId = 0;
+        if (URLUtil.isValidUrl(url) && (URLUtil.isHttpsUrl(url) || URLUtil.isHttpUrl(url))) {
+            Uri uri = Uri.parse(url);
+            DownloadManager.Request request = new DownloadManager.Request(uri);//(Uri.parse("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTfytEjvVR-J7vZFAc5cA0qUsKuc_RcyKuLBLS8fRicDTHHY8jbqw"));
+//            request.setDescription("Some description");
+            if (isCprFile) {
+                request.setTitle(Constants.CPR_FILE_NAME);
+            } else {
+                request.setTitle(Constants.MEDICAL_FILE_NAME);
+            }
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            if (isCprFile)
+                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.CPR_FILE_NAME + "." + ext);
+            else {
+                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.MEDICAL_FILE_NAME + "." + ext);
+            }
+            // get download service and enqueue file
+            DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+            downloadId = manager.enqueue(request);
+            manager.getUriForDownloadedFile(downloadId);
+            try {
+                manager.openDownloadedFile(downloadId);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            Toast.makeText(context, "Broken file link.", Toast.LENGTH_SHORT).show();
+        }
+        return downloadId;
     }
 }

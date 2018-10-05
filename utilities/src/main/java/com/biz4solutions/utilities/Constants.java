@@ -78,5 +78,8 @@ public class Constants implements Serializable {
     public static final String SELECT_OCCUPATION = "Select Occupation";
     public static final String SELECT_INSTITUTE = "Select Institute";
 
+    public static String CPR_FILE_NAME = "CprCertificate";
+    public static String MEDICAL_FILE_NAME = "MedicalCertificate";
+
 
 }

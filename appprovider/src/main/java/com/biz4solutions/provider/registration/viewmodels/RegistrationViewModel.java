@@ -361,7 +361,8 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             selectedDateValue = calendar.getTimeInMillis();
         else
             selectedBirthDateValue = calendar.getTimeInMillis();
-        @SuppressLint("simpledateformat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
+        @SuppressLint("simpledateformat")
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
         return sdf.format(calendar.getTime());
     }
 
