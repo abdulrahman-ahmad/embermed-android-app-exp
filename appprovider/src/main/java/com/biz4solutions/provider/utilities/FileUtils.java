@@ -14,6 +14,7 @@ import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
+import com.biz4solutions.data.FileTypes;
 import com.biz4solutions.utilities.Constants;
 
 import java.io.File;
@@ -155,7 +156,7 @@ public class FileUtils {
 
     public static long downloadFile(Context context, String url, boolean isCprFile, String ext) {
         File direct = new File(Environment.getExternalStorageDirectory()
-                + "/" + Constants.DOCS_DIRECTORY);
+                + "/Ember_Docs");
 
         if (!direct.exists()) {
             direct.mkdirs();
@@ -174,9 +175,9 @@ public class FileUtils {
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             if (isCprFile)
-                request.setDestinationInExternalPublicDir("/" + Constants.DOCS_DIRECTORY, Constants.CPR_FILE_NAME + "." + ext);
+                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.CPR_FILE_NAME + "." + ext);
             else {
-                request.setDestinationInExternalPublicDir("/" + Constants.DOCS_DIRECTORY, Constants.MEDICAL_FILE_NAME + "." + ext);
+                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.MEDICAL_FILE_NAME + "." + ext);
             }
             // get download service and enqueue file
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -192,5 +193,26 @@ public class FileUtils {
             Toast.makeText(context, "Broken file link.", Toast.LENGTH_SHORT).show();
         }
         return downloadId;
+    }
+
+    public static void deleteStoredFiles() {
+        File file = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.pdf);
+        File file2 = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.jpg);
+
+        File file3 = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.pdf);
+        File file4 = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.jpg);
+        if (file.exists()) {
+            file.delete();
+        } else if (file2.exists()) {
+            file2.delete();
+        } else if (file3.exists()) {
+            file3.delete();
+        } else if (file4.exists()) {
+            file4.delete();
+        }
     }
 }

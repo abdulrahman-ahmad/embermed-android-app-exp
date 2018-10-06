@@ -118,9 +118,9 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                 }
                 String ext;
                 File file = new File(Environment.getExternalStorageDirectory()
-                        + "/" + Constants.DOCS_DIRECTORY + "/" + Constants.CPR_FILE_NAME + FileTypes.pdf);
+                        + "/Ember_Docs/" + Constants.CPR_FILE_NAME + ".pdf");
                 File file2 = new File(Environment.getExternalStorageDirectory()
-                        + "/" + Constants.DOCS_DIRECTORY + "/" + Constants.CPR_FILE_NAME + FileTypes.jpg);
+                        + "/Ember_Docs/" + Constants.CPR_FILE_NAME + ".jpg");
 
                 if (file.exists()) {
                     openFiles(Uri.fromFile(file).toString(), FileTypes.mimePdf);
@@ -146,11 +146,12 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                     Toast.makeText(mainActivity, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 File file = new File(Environment.getExternalStorageDirectory()
-                        + "/" + Constants.DOCS_DIRECTORY + "/" + Constants.MEDICAL_FILE_NAME + FileTypes.pdf);
+                        + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + ".pdf");
                 File file2 = new File(Environment.getExternalStorageDirectory()
-                        + "/" + Constants.DOCS_DIRECTORY + "/" + Constants.MEDICAL_FILE_NAME + FileTypes.jpg);
+                        + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + ".jpg");
+
+
                 if (file.exists()) {
                     openFiles(Uri.fromFile(file).toString(), FileTypes.mimePdf);
                 } else if (file2.exists()) {
@@ -164,6 +165,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                     }
                     FileUtils.downloadFile(mainActivity, viewModel.registration.get().getMedicalLiceneceLink(), false, ext);
                 }
+
             }
         }
     }

@@ -63,6 +63,7 @@ import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFra
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
 import com.biz4solutions.provider.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
+import com.biz4solutions.provider.utilities.FileUtils;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -414,6 +415,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseSignOut();
         stopGpsService();
         openLoginActivity();
+        FileUtils.deleteStoredFiles();
     }
 
     private void clearVariables() {

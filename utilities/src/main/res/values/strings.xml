@@ -40,7 +40,7 @@
     <string name="error_unselected_cpr_institute">Please select CPR institute.</string>
     <string name="error_unselected_cpr_expiry">Please select CPR certificate expiry date.</string>
     <string name="error_empty_institute_name">Please enter institution name.</string>
-    <string name="error_empty_speciality">Please enter specialty or subspecialty.</string>
+    <string name="error_empty_speciality">Please enter speciality or subspeciality.</string>
     <string name="error_invalid_license_npi_number">Please enter valid licence number / NPE number.</string>
     <string name="error_empty_license_npi_number">Please enter licence number / NPE number.</string>
     <string name="error_unselected_cpr_certificate">Please upload the CPR certificate.</string>

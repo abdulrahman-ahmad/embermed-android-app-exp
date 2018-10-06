@@ -288,30 +288,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:text="@{viewModel.registration.professionName}" />
+                    android:text="@{viewModel.registration.professionName}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_16dp" />
 
                 <View style="@style/divider" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12dp"
-                    android:theme="@style/txtInputLayout">
-
-                    <EditText
-                        style="@style/profile_edt_style"
-                        android:background="@null"
-                        android:digits="@string/name_filter"
-                        android:enabled="false"
-                        android:hint="@string/txt_other_occupation"
-                        android:inputType="textWebEmailAddress"
-                        android:maxLength="50"
-                        android:paddingTop="@dimen/_10dp"
-                        android:text="@{viewModel.registration.professionName}"
-                        android:theme="@style/EditTextHint" />
-                </android.support.design.widget.TextInputLayout>
-
-                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
