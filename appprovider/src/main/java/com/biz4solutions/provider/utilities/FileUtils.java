@@ -219,9 +219,10 @@ public class FileUtils {
         File direct = new File(Environment.getExternalStorageDirectory()
                 + "/Ember_Docs");
 
-        if (!direct.exists()) {
-            direct.delete();
+        if (direct.exists()) {
+            for (File tempFile : direct.listFiles()) {
+                tempFile.delete();
+            }
         }
-
     }
 }
