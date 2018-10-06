@@ -30,9 +30,9 @@ public class ProviderRegistration extends EmptyResponse {
     @SerializedName("lastName")
     @Expose
     private String lastName;
-    @SerializedName("medicalLiceneceLink")
+    @SerializedName("medicalLicenseLink")
     @Expose
-    private String medicalLiceneceLink;
+    private String medicalLicenseLink;
     @SerializedName("medicalLicenseNumber")
     @Expose
     private String medicalLicenseNumber;
@@ -185,12 +185,12 @@ public class ProviderRegistration extends EmptyResponse {
         this.lastName = lastName;
     }
 
-    public String getMedicalLiceneceLink() {
-        return medicalLiceneceLink;
+    public String getMedicalLicenseLink() {
+        return medicalLicenseLink;
     }
 
-    public void setMedicalLiceneceLink(String medicalLiceneceLink) {
-        this.medicalLiceneceLink = medicalLiceneceLink;
+    public void setMedicalLicenseLink(String medicalLicenseLink) {
+        this.medicalLicenseLink = medicalLicenseLink;
     }
 
     public String getMedicalLicenseNumber() {
@@ -252,7 +252,7 @@ public class ProviderRegistration extends EmptyResponse {
                 ", firstName='" + firstName + '\'' +
                 ", instituteName='" + instituteName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", medicalLiceneceLink='" + medicalLiceneceLink + '\'' +
+                ", medicalLicenseLink='" + medicalLicenseLink + '\'' +
                 ", medicalLicenseNumber='" + medicalLicenseNumber + '\'' +
                 ", optForTriage=" + optForTriage +
                 ", phoneNumber='" + phoneNumber + '\'' +

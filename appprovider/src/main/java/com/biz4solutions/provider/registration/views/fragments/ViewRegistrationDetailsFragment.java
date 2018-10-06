@@ -139,7 +139,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
     }
 
     private void processMedicalFile() {
-        if (viewModel.registration.get() != null && viewModel.registration.get().getMedicalLiceneceLink() != null) {
+        if (viewModel.registration.get() != null && viewModel.registration.get().getMedicalLicenseLink() != null) {
             if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_MEDICAL, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
 
                 if (CommonFunctions.getInstance().isOffline(mainActivity)) {
@@ -158,15 +158,17 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                     openFiles(Uri.fromFile(file).toString(), FileTypes.mimeImage);
                 } else {
                     String ext;
-                    if (viewModel.registration.get().getMedicalLiceneceLink().contains(FileTypes.pdf)) {
+                    if (viewModel.registration.get().getMedicalLicenseLink().contains(FileTypes.pdf)) {
                         ext = "pdf";
                     } else {
                         ext = "jpg";
                     }
-                    FileUtils.downloadFile(mainActivity, viewModel.registration.get().getMedicalLiceneceLink(), false, ext);
+                    FileUtils.downloadFile(mainActivity, viewModel.registration.get().getMedicalLicenseLink(), false, ext);
                 }
 
             }
+        } else {
+            Toast.makeText(mainActivity, "Something went wrong.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -223,6 +225,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
     private void openFiles(String uriString, String s) {
         Intent target = new Intent(Intent.ACTION_VIEW);
         target.setDataAndType(Uri.parse(uriString), s);
+        target.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         target.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
         Intent intent2 = Intent.createChooser(target, "Open File");
         startActivity(intent2);

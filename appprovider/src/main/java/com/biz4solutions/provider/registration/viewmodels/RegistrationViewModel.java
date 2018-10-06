@@ -14,6 +14,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.CprInstitute;
 import com.biz4solutions.models.Occupation;
@@ -23,6 +24,7 @@ import com.biz4solutions.models.response.CprTrainingInstitutesResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.OccupationResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
+import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -337,12 +339,19 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
                 if (validateCprData()) {
                     if (validateMedicalData()) {
                         if (validateOtherData()) {
-                            CommonFunctions.getInstance().loadProgressDialog(context);
-                            if (profileImageUri != null) {
-                                FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), profileImageUri, this);
-                            } else {
-                                FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
-                            }
+                            CommonFunctions.getInstance().showAlertDialog(v.getContext(), R.string.submit_registration, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
+                                @Override
+                                public void onClose(Boolean result) {
+                                    if (result) {
+                                        CommonFunctions.getInstance().loadProgressDialog(context);
+                                        if (profileImageUri != null) {
+                                            FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), profileImageUri, RegistrationViewModel.this);
+                                        } else {
+                                            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.CPR_FILE_NAME + cprFileExt, cprCertificateUri, cprFileCode, RegistrationViewModel.this);
+                                        }
+                                    }
+                                }
+                            });
                         }
                     }
                 }
@@ -453,14 +462,14 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         if (fileCode == profileImageFileCode) {
             registration.setProfileUrl(imageUrl);
             CommonFunctions.getInstance().loadProgressDialog(context);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.CPR_FILE_NAME+ cprFileExt, cprCertificateUri, cprFileCode, this);
         } else if (fileCode == cprFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
             registration.setCprCertificateLink(imageUrl);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "medicalCertificate" + medicalFileExt, medicalCertificateUri, medicalFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.MEDICAL_FILE_NAME + medicalFileExt, medicalCertificateUri, medicalFileCode, this);
         } else if (fileCode == medicalFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
-            registration.setMedicalLiceneceLink(imageUrl);
+            registration.setMedicalLicenseLink(imageUrl);
             //upload data to server
             registerProvider();
         }
@@ -472,7 +481,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         CommonFunctions.getInstance().dismissProgressDialog();
         if (fileCode == profileImageFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.CPR_FILE_NAME + cprFileExt, cprCertificateUri, cprFileCode, this);
         }
     }
 

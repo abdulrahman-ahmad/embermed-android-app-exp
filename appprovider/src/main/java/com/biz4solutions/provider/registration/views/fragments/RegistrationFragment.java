@@ -121,6 +121,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
                     binding.edtOtherOccupation.setEnabled(true);
                 } else {
                     binding.edtOtherOccupation.setEnabled(false);
+                    binding.edtOtherOccupation.setText("");
                 }
             }
 

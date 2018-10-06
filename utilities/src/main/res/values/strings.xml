@@ -43,8 +43,8 @@
     <string name="error_empty_speciality">Please enter speciality or subspeciality.</string>
     <string name="error_invalid_license_npi_number">Please enter valid licence number / NPE number.</string>
     <string name="error_empty_license_npi_number">Please enter licence number / NPE number.</string>
-    <string name="error_unselected_cpr_certificate">Please upload the CPR certificate.</string>
-    <string name="error_unselected_medical_certificate">Please upload the medical certificate.</string>
+    <string name="error_unselected_cpr_certificate">Please select the CPR certificate.</string>
+    <string name="error_unselected_medical_certificate">Please select the medical certificate.</string>
     <string name="error_empty_state">Please enter practise license state.</string>
     <string name="error_empty_profile">Please upload profile image.</string>
 

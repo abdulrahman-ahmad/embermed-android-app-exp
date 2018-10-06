@@ -118,16 +118,19 @@ public class FileUtils {
 
     private static String getDataColumn(Context context, Uri uri,
                                         String selection, String[] selectionArgs) {
-
-        final String column = "_data";
-        final String[] projection = {column};
-
-        try (Cursor cursor = context.getContentResolver().query(uri, projection,
-                selection, selectionArgs, null)) {
-            if (cursor != null && cursor.moveToFirst()) {
-                final int index = cursor.getColumnIndexOrThrow(column);
-                return cursor.getString(index);
+        try {
+            final String column = "_data";
+            final String[] projection = {column};
+            try (Cursor cursor = context.getContentResolver().query(uri, projection,
+                    selection, selectionArgs, null)) {
+                if (cursor != null && cursor.moveToFirst()) {
+                    final int index = cursor.getColumnIndexOrThrow(column);
+                    return cursor.getString(index);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Please select from another source.", Toast.LENGTH_SHORT).show();
         }
         return nopath;
     }
@@ -136,7 +139,6 @@ public class FileUtils {
         return "com.android.externalstorage.documents".equals(uri
                 .getAuthority());
     }
-
 
     private static boolean isDownloadsDocument(Uri uri) {
         return "com.android.providers.downloads.documents".equals(uri

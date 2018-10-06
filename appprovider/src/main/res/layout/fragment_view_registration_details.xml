@@ -518,7 +518,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
                     android:layout_toStartOf="@+id/switch_telehealth_participation"
-                    android:text="Did participated in telehealth triage platform?"
+                    android:text="@string/txt_did_participated_in_telehealth"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/_16dp" />
 
