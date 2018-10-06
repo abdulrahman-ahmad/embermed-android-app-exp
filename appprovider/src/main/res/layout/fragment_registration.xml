@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:ignore="SpUsage, UnusedAttribute, Autofill, KeyboardInaccessibleWidget" >
+        tools:ignore="SpUsage, UnusedAttribute, Autofill, KeyboardInaccessibleWidget">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -278,8 +278,9 @@
                             style="@style/profile_edt_style"
                             android:background="@null"
                             android:hint="@string/txt_address_optional"
-                            android:maxLines="1"
+                            android:inputType="textWebEmailAddress"
                             android:maxLength="255"
+                            android:maxLines="1"
                             android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
@@ -463,14 +464,14 @@
                                 android:layout_marginRight="@dimen/_5dp"
                                 android:layout_weight="2"
                                 android:background="@drawable/ic_remove"
+                                android:contentDescription="@null"
                                 android:onClick="@{fragment::removeCprFile}"
                                 android:padding="@dimen/_5dp"
                                 android:paddingStart="@dimen/_8dp"
                                 android:paddingTop="@dimen/_8dp"
                                 android:paddingEnd="@dimen/_8dp"
                                 android:paddingBottom="@dimen/_8dp"
-                                android:visibility="gone"
-                                android:contentDescription="@null" />
+                                android:visibility="gone" />
                         </LinearLayout>
 
                         <TextView
@@ -553,12 +554,12 @@
                                 android:id="@+id/iv_medical_remove"
                                 android:layout_width="@dimen/_15dp"
                                 android:layout_height="@dimen/_15dp"
-                                android:contentDescription="@null"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="@dimen/_5dp"
                                 android:layout_marginRight="@dimen/_5dp"
                                 android:layout_weight="2"
                                 android:background="@drawable/ic_remove"
+                                android:contentDescription="@null"
                                 android:onClick="@{fragment::removeMedicalFile}"
                                 android:padding="@dimen/_5dp"
                                 android:paddingStart="@dimen/_8dp"
@@ -704,13 +705,15 @@
                     android:background="@color/blue_bg_color"
                     android:orientation="vertical">
 
-                    <View style="@style/divider" android:layout_marginTop="0dp" />
+                    <View
+                        style="@style/divider"
+                        android:layout_marginTop="0dp" />
 
                     <TextView
-                        android:layout_marginTop="@dimen/_10dp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10dp"
                         android:gravity="center"
                         android:text="@string/txt_registration_form_poilicy_description"
                         android:textSize="@dimen/_12dp" />
@@ -750,7 +753,7 @@
                             android:text="@string/txt_privacy_policy"
                             android:textColor="@color/colorPrimary"
                             android:textColorLink="@color/colorPrimary"
-                            android:textSize="@dimen/_12dp"/>
+                            android:textSize="@dimen/_12dp" />
                     </LinearLayout>
 
                     <View
