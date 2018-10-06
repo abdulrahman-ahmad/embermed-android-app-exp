@@ -38,6 +38,7 @@
     <string name="comment_colon">Comment:</string>
     <string name="title_colon">Title:</string>
     <string name="comment">Comment</string>
+
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>

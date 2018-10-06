@@ -14,7 +14,6 @@ import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
 import android.widget.Toast;
 
-import com.biz4solutions.data.FileTypes;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.utilities.Constants;
 
@@ -198,23 +197,31 @@ public class FileUtils {
     }
 
     public static void deleteStoredFiles() {
-        File file = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.pdf);
-        File file2 = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.jpg);
+//        File file = new File(Environment.getExternalStorageDirectory()
+//                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.pdf);
+//        File file2 = new File(Environment.getExternalStorageDirectory()
+//                + "/Ember_Docs/" + Constants.CPR_FILE_NAME + FileTypes.jpg);
+//
+//        File file3 = new File(Environment.getExternalStorageDirectory()
+//                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.pdf);
+//        File file4 = new File(Environment.getExternalStorageDirectory()
+//                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.jpg);
+//        if (file.exists()) {
+//            file.delete();
+//        } else if (file2.exists()) {
+//            file2.delete();
+//        } else if (file3.exists()) {
+//            file3.delete();
+//        } else if (file4.exists()) {
+//            file4.delete();
+//        }
 
-        File file3 = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.pdf);
-        File file4 = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs/" + Constants.MEDICAL_FILE_NAME + FileTypes.jpg);
-        if (file.exists()) {
-            file.delete();
-        } else if (file2.exists()) {
-            file2.delete();
-        } else if (file3.exists()) {
-            file3.delete();
-        } else if (file4.exists()) {
-            file4.delete();
+        File direct = new File(Environment.getExternalStorageDirectory()
+                + "/Ember_Docs");
+
+        if (!direct.exists()) {
+            direct.delete();
         }
+
     }
 }
