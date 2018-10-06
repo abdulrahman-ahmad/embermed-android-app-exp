@@ -15,6 +15,7 @@ import android.webkit.URLUtil;
 import android.widget.Toast;
 
 import com.biz4solutions.data.FileTypes;
+import com.biz4solutions.provider.R;
 import com.biz4solutions.utilities.Constants;
 
 import java.io.File;
@@ -92,7 +93,6 @@ public class FileUtils {
         return Integer.parseInt(String.valueOf(file.length() / 1024)) < 2048;
     }
 
-
     public static String getFileExtension(Context context, File file) {
         String ext = null;
         if (file == null) {
@@ -130,7 +130,7 @@ public class FileUtils {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Please select from another source.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.error_invalid_selected_file, Toast.LENGTH_SHORT).show();
         }
         return nopath;
     }
@@ -192,7 +192,7 @@ public class FileUtils {
             }
 
         } else {
-            Toast.makeText(context, "Broken file link.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, R.string.error_invalid_file_link, Toast.LENGTH_SHORT).show();
         }
         return downloadId;
     }

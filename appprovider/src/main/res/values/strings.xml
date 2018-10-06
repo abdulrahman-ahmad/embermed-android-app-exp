@@ -97,13 +97,13 @@
     <string name="txt_cpr_institution">CPR Training Institution</string>
     <string name="txt_cpr_certificate_expiry_date">CPR Certificate Expiry Date</string>
     <string name="txt_medical_license_cap">MEDICAL LICENSE</string>
-    <string name="txt_license_number_npe_number">License Number / NPE Number?</string>
+    <string name="txt_license_number_npi_number">License Number / NPI Number?</string>
     <string name="txt_other_cap">OTHER</string>
     <string name="txt_question_telehealth_triage_platform">Do you want to participate in the telehealth triage platform?</string>
     <string name="txt_question_speciality_or_subspeciality">what is your speciality or subspeciality?</string>
     <string name="txt_practise_state">Which state are you licensed to practise in?</string>
-    <string name="txt_privacy_policy"><a href="http://www.google.com">Privacy Policy</a></string>
-    <string name="txt_terms_of_service"><a href="http://www.google.com">Terms of Service</a></string>
+    <string name="txt_privacy_policy"><a href="https://www.embermed.com">Privacy Policy</a></string>
+    <string name="txt_terms_of_service"><a href="https://www.embermed.com">Terms of Service</a></string>
     <string name="txt_registration_form_poilicy_description">By submitting this registration form, you agree to our</string>
     <string name="txt_status_cap">STATUS</string>
 
@@ -114,4 +114,9 @@
     <string name="error_upload_file">Unable to process file, Please try again.</string>
     <string name="type_here">Type Here…</string>
     <string name="txt_did_participated_in_telehealth">Did participated in telehealth triage platform?</string>
+    <string name="view_cpr_certificate">View CPR certificate</string>
+    <string name="view_medical_certificate">View Medical Certificate</string>
+    <string name="error_file_not_found">Something went wrong. Please try again later.</string>
+    <string name="error_invalid_file_link">Broken file link.</string>
+    <string name="error_invalid_selected_file">Please select file from another source.</string>
 </resources>

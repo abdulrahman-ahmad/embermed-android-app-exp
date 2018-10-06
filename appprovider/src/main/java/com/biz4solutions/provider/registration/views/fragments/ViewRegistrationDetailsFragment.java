@@ -168,7 +168,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
 
             }
         } else {
-            Toast.makeText(mainActivity, "Something went wrong.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mainActivity, R.string.error_file_not_found, Toast.LENGTH_SHORT).show();
         }
     }
 

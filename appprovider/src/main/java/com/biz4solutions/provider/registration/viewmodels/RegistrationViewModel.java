@@ -233,7 +233,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
 
     //medical license section
     //watcher for institute name
-    public void licenseNpeNumberWatcher(CharSequence s, int start, int before, int count) {
+    public void licenseNpiNumberWatcher(CharSequence s, int start, int before, int count) {
         registration.setMedicalLicenseNumber(s.toString().toUpperCase().trim());
     }
 

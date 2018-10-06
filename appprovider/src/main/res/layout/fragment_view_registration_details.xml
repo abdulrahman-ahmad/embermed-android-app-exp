@@ -113,8 +113,7 @@
                         android:background="@null"
                         android:enabled="false"
                         android:hint="@string/first_name"
-                        android:inputType="textWebEmailAddress"
-                        android:maxLength="20"
+                        android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.firstName}"
                         android:theme="@style/EditTextHint" />
@@ -136,8 +135,7 @@
                         android:background="@null"
                         android:enabled="false"
                         android:hint="@string/last_name"
-                        android:inputType="textWebEmailAddress"
-                        android:maxLength="20"
+                        android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.lastName}"
                         android:theme="@style/EditTextHint" />
@@ -155,6 +153,7 @@
                         style="@style/profile_email_edt_style"
                         android:hint="@string/email"
                         android:paddingTop="@dimen/_10dp"
+                        android:inputType="textMultiLine"
                         android:text="@{viewModel.registration.email}"
                         android:theme="@style/EditTextHint"
                         tools:ignore="TextFields"
@@ -235,14 +234,12 @@
                         android:enabled="false"
                         android:hint="@string/txt_phone_no"
                         android:inputType="number"
-                        android:maxLength="13"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.phoneNumber}"
                         android:theme="@style/EditTextHint" />
                 </android.support.design.widget.TextInputLayout>
 
                 <View style="@style/divider" />
-
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -254,6 +251,7 @@
                         style="@style/profile_edt_style"
                         android:background="@null"
                         android:enabled="false"
+                        android:inputType="textMultiLine"
                         android:hint="@string/txt_address_optional"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.address}"
@@ -306,8 +304,7 @@
                         android:background="@null"
                         android:enabled="false"
                         android:hint="@string/txt_institute_name"
-                        android:inputType="textWebEmailAddress"
-                        android:maxLength="50"
+                        android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.instituteName}"
                         android:textColor="@color/colorPrimary"
@@ -342,8 +339,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="3dp"
-                    android:overlapAnchor="false"
-                    android:scrollbars="vertical"
                     android:text="@{viewModel.registration.cprTrainingInstitution}"
                     android:textColor="@color/colorPrimary" />
 
@@ -362,7 +357,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:clickable="true"
                         android:cursorVisible="false"
                         android:drawableEnd="@drawable/ic_calendar"
                         android:enabled="false"
@@ -392,9 +386,8 @@
                         android:layout_weight="8"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:maxLines="1"
                         android:padding="@dimen/_5dp"
-                        android:text="View CPR certificate"
+                        android:text="@string/view_cpr_certificate"
                         android:textSize="@dimen/_12dp" />
 
                     <ImageView
@@ -412,7 +405,6 @@
                         android:paddingBottom="@dimen/_8dp"
                         android:visibility="gone" />
                 </LinearLayout>
-
 
             </LinearLayout>
 
@@ -444,8 +436,8 @@
                         android:background="@null"
                         android:digits="@string/number_filter"
                         android:enabled="false"
-                        android:hint="@string/txt_license_number_npe_number"
-                        android:inputType="number"
+                        android:hint="@string/txt_license_number_npi_number"
+                        android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.medicalLicenseNumber}"
                         android:theme="@style/EditTextHint" />
@@ -468,9 +460,8 @@
                         android:layout_weight="8"
                         android:ellipsize="end"
                         android:gravity="center"
-                        android:maxLines="1"
                         android:padding="@dimen/_5dp"
-                        android:text="View Medical Certificate"
+                        android:text="@string/view_medical_certificate"
                         android:textSize="@dimen/_12dp" />
 
                     <ImageView
@@ -489,9 +480,7 @@
                         android:visibility="gone" />
                 </LinearLayout>
 
-
             </LinearLayout>
-
 
             <View
                 style="@style/style_divider_registration"
@@ -558,8 +547,6 @@
                         android:enabled="false"
                         android:hint="@string/txt_question_speciality_or_subspeciality"
                         android:inputType="textMultiLine"
-                        android:maxLength="250"
-                        android:maxLines="5"
                         android:paddingTop="@dimen/_10dp"
                         android:scrollbars="vertical"
                         android:text="@{viewModel.registration.speciality}"
@@ -581,7 +568,7 @@
                         android:digits="@string/name_filter"
                         android:enabled="false"
                         android:hint="@string/txt_practise_state"
-                        android:inputType="textWebEmailAddress"
+                        android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_10dp"
                         android:text="@{viewModel.registration.practiceState}"
                         android:theme="@style/EditTextHint" />

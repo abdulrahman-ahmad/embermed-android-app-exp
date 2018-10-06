@@ -54,10 +54,10 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
 
         TextView textView = view.findViewById(R.id.textView);
         if (data.get(position) instanceof Occupation) {
-            textView.setText(((Occupation) data.get(position)).getName());
+            textView.setText(((Occupation) data.get(position)).getName().trim());
         }
         if (data.get(position) instanceof CprInstitute) {
-            textView.setText(((CprInstitute) data.get(position)).getName());
+            textView.setText(((CprInstitute) data.get(position)).getName().trim());
         }
         if (position == 0) {
             textView.setEnabled(false);
@@ -76,10 +76,10 @@ public class SpinnerAdapter<T> extends ArrayAdapter<T> {
 
         TextView textView = view.findViewById(R.id.textView);
         if (data.get(position) instanceof Occupation) {
-            textView.setText(((Occupation) data.get(position)).getName());
+            textView.setText(((Occupation) data.get(position)).getName().trim());
         }
         if (data.get(position) instanceof CprInstitute) {
-            textView.setText(((CprInstitute) data.get(position)).getName());
+            textView.setText(((CprInstitute) data.get(position)).getName().trim());
         }
         if (position == 0) {
             textView.setEnabled(false);
