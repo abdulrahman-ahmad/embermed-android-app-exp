@@ -59,9 +59,13 @@ public class EditProfileFragment extends Fragment {
         }
         viewModel = ViewModelProviders.of(this, new EditProfileViewModel.EditProfileViewModelFactory(getContext())).get(EditProfileViewModel.class);
         binding.setViewModel(viewModel);
-        setUserData();
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(activity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        if (user != null) {
+            viewModel.setUserData(user);
+            photoURI = CommonFunctions.getInstance().getProfileImageUri(activity,
+                    viewModel.isProvider() ? Constants.ROLE_NAME_PROVIDER : Constants.ROLE_NAME_USER);
+        }
         initListeners();
-        photoURI = CommonFunctions.getInstance().getProfileImageUri(activity);
         return binding.getRoot();
     }
 
@@ -75,8 +79,7 @@ public class EditProfileFragment extends Fragment {
     }
 
     public void setUserData() {
-        User user = SharedPrefsManager.getInstance().retrieveUserPreference(activity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-        viewModel.setUserData(user);
+
     }
 
     public void showAddMediaBottomSheet(View view) {

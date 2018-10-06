@@ -18,7 +18,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="SpUsage, UnusedAttribute, Autofill, KeyboardInaccessibleWidget" >
 
         <ScrollView
             android:layout_width="match_parent"
@@ -468,7 +469,8 @@
                                 android:paddingTop="@dimen/_8dp"
                                 android:paddingEnd="@dimen/_8dp"
                                 android:paddingBottom="@dimen/_8dp"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                android:contentDescription="@null" />
                         </LinearLayout>
 
                         <TextView
@@ -550,6 +552,7 @@
                                 android:id="@+id/iv_medical_remove"
                                 android:layout_width="@dimen/_15dp"
                                 android:layout_height="@dimen/_15dp"
+                                android:contentDescription="@null"
                                 android:layout_gravity="center"
                                 android:layout_marginLeft="@dimen/_5dp"
                                 android:layout_marginRight="@dimen/_5dp"
@@ -561,7 +564,8 @@
                                 android:paddingTop="@dimen/_8dp"
                                 android:paddingEnd="@dimen/_8dp"
                                 android:paddingBottom="@dimen/_8dp"
-                                android:visibility="gone" />
+                                android:visibility="gone"
+                                tools:ignore="TooManyViews" />
                         </LinearLayout>
 
                         <TextView
@@ -612,7 +616,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="-4dp"
+                        android:layout_marginEnd="-4dp"
                         android:onCheckedChanged="@{(button, bool)-> viewModel.onSwitchChanged(bool)}"
                         android:theme="@style/switch_style" />
                 </RelativeLayout>
@@ -648,7 +652,7 @@
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:gravity="top"
-                            android:hint="Type Here..."
+                            android:hint="@string/type_here"
                             android:inputType="textMultiLine"
                             android:lines="4"
                             android:maxLength="255"
@@ -692,7 +696,6 @@
                     <View style="@style/divider" />
                 </LinearLayout>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -701,7 +704,6 @@
                     android:orientation="vertical">
 
                     <View style="@style/divider" android:layout_marginTop="0dp" />
-
 
                     <TextView
                         android:layout_marginTop="@dimen/_10dp"
@@ -747,15 +749,13 @@
                             android:text="@string/txt_privacy_policy"
                             android:textColor="@color/colorPrimary"
                             android:textColorLink="@color/colorPrimary"
-                            android:textSize="@dimen/_12dp" />
+                            android:textSize="@dimen/_12dp"/>
                     </LinearLayout>
 
                     <View
                         style="@style/divider"
                         android:layout_marginTop="@dimen/_10dp" />
                 </LinearLayout>
-
-
             </LinearLayout>
         </ScrollView>
 

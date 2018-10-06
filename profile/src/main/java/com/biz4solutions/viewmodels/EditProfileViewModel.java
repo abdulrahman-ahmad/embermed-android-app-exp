@@ -251,7 +251,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     }
 
     //check customer is user or provider
-    private boolean isProvider() {
+    public boolean isProvider() {
         if (tempUser.getRoleName() == null) {
             return false;
         }

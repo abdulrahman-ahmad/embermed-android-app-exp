@@ -111,4 +111,5 @@
     <string name="error_illegal_file">Illegal file. Please select an image or a pdf file.</string>
     <string name="error_large_file">Please select file under 2MB.</string>
     <string name="error_upload_file">Unable to process file, Please try again.</string>
+    <string name="type_here">Type Here…</string>
 </resources>

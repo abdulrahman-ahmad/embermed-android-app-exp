@@ -54,7 +54,6 @@ import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -99,7 +98,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         initListeners();
         initViews();
         setUserData();
-        photoURI = CommonFunctions.getInstance().getProfileImageUri(mainActivity);
+        photoURI = CommonFunctions.getInstance().getProfileImageUri(mainActivity, Constants.ROLE_NAME_PROVIDER);
         return binding.getRoot();
     }
 

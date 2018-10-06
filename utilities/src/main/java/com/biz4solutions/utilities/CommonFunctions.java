@@ -336,7 +336,7 @@ public class CommonFunctions implements Serializable {
         return json;
     }
 
-    public Uri getProfileImageUri(Context context) {
+    public Uri getProfileImageUri(Context context, String appName) {
         Uri photoURI = null;
         try {
             String imageFileName = "profile";
@@ -346,9 +346,16 @@ public class CommonFunctions implements Serializable {
                     ".jpg",         /* suffix */
                     storageDir      /* directory */
             );
-            photoURI = FileProvider.getUriForFile(context,
-                    "com.example.android.fileprovider",
-                    photoFile);
+            if (Constants.ROLE_NAME_PROVIDER.equals(appName)) {
+                photoURI = FileProvider.getUriForFile(context,
+                        "com.ember.medics.android.fileprovider",
+                        photoFile);
+            } else {
+                photoURI = FileProvider.getUriForFile(context,
+                        "com.ember.patient.android.fileprovider",
+                        photoFile);
+            }
+
         } catch (Exception e) {
             // Error occurred while creating the File
             e.printStackTrace();
