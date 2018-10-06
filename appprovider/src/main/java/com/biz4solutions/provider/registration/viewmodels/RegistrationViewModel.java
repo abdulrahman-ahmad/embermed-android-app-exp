@@ -222,8 +222,10 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     //profession-section
     //watcher for occupation
     public void occupationWatcher(CharSequence s, int start, int before, int count) {
-        registration.setProfessionName(s.toString().trim());
-        tempEdtOccupation = s.toString().trim();
+        if (tempOccupation != null && tempOccupation.equalsIgnoreCase("other")) {
+            registration.setProfessionName(s.toString().trim());
+            tempEdtOccupation = s.toString().trim();
+        }
     }
 
     //watcher for institute name
@@ -462,7 +464,7 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         if (fileCode == profileImageFileCode) {
             registration.setProfileUrl(imageUrl);
             CommonFunctions.getInstance().loadProgressDialog(context);
-            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.CPR_FILE_NAME+ cprFileExt, cprCertificateUri, cprFileCode, this);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), Constants.CPR_FILE_NAME + cprFileExt, cprCertificateUri, cprFileCode, this);
         } else if (fileCode == cprFileCode) {
             CommonFunctions.getInstance().loadProgressDialog(context);
             registration.setCprCertificateLink(imageUrl);
