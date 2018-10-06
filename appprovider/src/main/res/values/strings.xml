@@ -42,7 +42,7 @@
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
     <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
-    <string name="submit_registration"> Are you sure, you want to confirm this registration?</string>
+    <string name="submit_registration"> Are you sure, you want to submit the registration form?</string>
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
     <string name="rate_caller_colon">Rate Caller:</string>
