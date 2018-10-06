@@ -216,13 +216,17 @@ public class FileUtils {
 //            file4.delete();
 //        }
 
-        File direct = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs");
+        try {
+            File direct = new File(Environment.getExternalStorageDirectory()
+                    + "/Ember_Docs");
 
-        if (direct.exists()) {
-            for (File tempFile : direct.listFiles()) {
-                tempFile.delete();
+            if (direct.exists() && direct.listFiles() != null) {
+                for (File tempFile : direct.listFiles()) {
+                    tempFile.delete();
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
