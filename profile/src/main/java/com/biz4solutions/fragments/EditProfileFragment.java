@@ -78,10 +78,6 @@ public class EditProfileFragment extends Fragment {
         });
     }
 
-    public void setUserData() {
-
-    }
-
     public void showAddMediaBottomSheet(View view) {
         final BottomSheetDialog dialogMedia = new BottomSheetDialog(view.getContext());
         final DialogPickMediaBinding dialogBinding = DataBindingUtil.inflate(LayoutInflater.from(view.getContext()), R.layout.dialog_pick_media, null, false);
