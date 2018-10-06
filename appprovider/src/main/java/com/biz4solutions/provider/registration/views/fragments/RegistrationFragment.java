@@ -94,10 +94,11 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         viewModel = ViewModelProviders.of(this, new RegistrationViewModel.RegistrationFactory(mainActivity)).get(RegistrationViewModel.class);
         binding.setViewModel(viewModel);
         binding.setFragment(this);
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        viewModel.setUser(user);
         initSpinner();
         initListeners();
         initViews();
-        setUserData();
         photoURI = CommonFunctions.getInstance().getProfileImageUri(mainActivity, Constants.ROLE_NAME_PROVIDER);
         return binding.getRoot();
     }
@@ -202,11 +203,6 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void setUserData() {
-        User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-        viewModel.setUser(user);
     }
 
     @Override
@@ -502,6 +498,7 @@ public class RegistrationFragment extends Fragment implements GoogleApiClient.On
             places.release();
         }
     };
+
     private AdapterView.OnItemClickListener mAutocompleteClickListener
             = new AdapterView.OnItemClickListener() {
         @Override

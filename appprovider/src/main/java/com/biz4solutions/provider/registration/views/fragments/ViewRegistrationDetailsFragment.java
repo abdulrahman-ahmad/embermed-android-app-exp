@@ -32,6 +32,7 @@ import com.biz4solutions.provider.databinding.FragmentViewRegistrationDetailsBin
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.registration.viewmodels.ViewRegistrationDetailsViewModel;
 import com.biz4solutions.provider.utilities.FileUtils;
+import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
@@ -65,9 +66,13 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_registration_details, container, false);
         viewModel = ViewModelProviders.of(this, new ViewRegistrationDetailsViewModel.ViewRegistrationDetailsFactory(mainActivity.getApplication())).get(ViewRegistrationDetailsViewModel.class);
         binding.setViewModel(viewModel);
-        initActivity();
+        mainActivity = (MainActivity) getActivity();
+        if (mainActivity != null) {
+            mainActivity.navigationView.setCheckedItem(R.id.nav_registration);
+            mainActivity.toolbarTitle.setText(R.string.registration);
+            NavigationUtil.getInstance().showBackArrow(mainActivity);
+        }
         initListeners();
-//        setUserData();
         registerReceiver();
         return binding.getRoot();
     }
@@ -105,7 +110,6 @@ public class ViewRegistrationDetailsFragment extends Fragment {
     }
 
     private void processCprFile() {
-
         if (viewModel.registration.get() != null && viewModel.registration.get().getCprCertificateLink() != null) {
             if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_CPR, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
                 if (CommonFunctions.getInstance().isOffline(mainActivity)) {
@@ -164,7 +168,6 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         }
     }
 
-
     private void setUpUi() {
         binding.llStatus.setBackgroundColor(getResources().getColor(viewModel.getStatusBackgroundColor()));
         binding.tvStatus.setText(viewModel.getStatus());
@@ -172,23 +175,10 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         binding.tvStatus.setTextColor(getResources().getColor(viewModel.getStatusTextColor()));
     }
 
-    private void initActivity() {
-        mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null) {
-            mainActivity.navigationView.setCheckedItem(R.id.nav_registration);
-            mainActivity.toolbarTitle.setText(R.string.registration);
-        }
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
     }
-
-//    public void setUserData() {
-//        User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-//        viewModel.setUser(user);
-//    }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -200,6 +190,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         super.onDestroyView();
         viewModel.getToastMsg().removeObservers(this);
         mainActivity.unregisterReceiver(receiver);
+        NavigationUtil.getInstance().hideBackArrow(mainActivity);
     }
 
     BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -216,7 +207,6 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                     int columnIndex = c.getColumnIndex(DownloadManager.COLUMN_STATUS);
                     if (DownloadManager.STATUS_SUCCESSFUL == c.getInt(columnIndex)) {
                         String uriString = c.getString(c.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-
                         if (uriString.contains(FileTypes.pdf)) {
                             openFiles(uriString, FileTypes.mimePdf);
                         } else {
@@ -285,5 +275,3 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         return false;
     }
 }
-
-

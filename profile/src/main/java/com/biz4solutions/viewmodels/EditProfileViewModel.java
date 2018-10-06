@@ -137,7 +137,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
             tempUser.setLastName(tempUser.getLastName().trim());
             CommonFunctions.getInstance().loadProgressDialog(v.getContext());
             if (capturedUri != null) {
-                FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), tempUser.getRoleName(), capturedUri, this);
+                FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), capturedUri, this);
             } else {
                 saveUserData();
             }

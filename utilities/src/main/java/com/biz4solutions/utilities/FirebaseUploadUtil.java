@@ -14,14 +14,13 @@ import java.util.Objects;
 
 public class FirebaseUploadUtil {
 
-    public static void uploadImageToFirebase(String userId, String role, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
+    public static void uploadImageToFirebase(String userId, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference ref = storage.getReference()
                 .child(BuildConfig.FIREBACE_DB_ENVIROMENT)
                 .child("users")
                 .child(userId)
                 .child("profileImages")
-                .child(role)
                 .child("profile.jpg");
         ref.putFile(uri)
                 .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
@@ -52,7 +51,6 @@ public class FirebaseUploadUtil {
     }
 
     public static void uploadMultipleFileToFirebase(String uid, String fileName, Uri uri, final int fileCode, final FirebaseUploadInterface firebaseUploadInterface) {
-
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference ref = storage.getReference()
                 .child(BuildConfig.FIREBACE_DB_ENVIROMENT)
@@ -87,7 +85,6 @@ public class FirebaseUploadUtil {
                     }
                 });
     }
-
 
     public interface FirebaseUploadInterface {
         void uploadSuccess(String imageUrl, int fileCode);

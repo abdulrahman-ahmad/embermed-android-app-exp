@@ -22,6 +22,7 @@ import com.biz4solutions.models.User;
 import com.biz4solutions.models.response.CprTrainingInstitutesResponse;
 import com.biz4solutions.models.response.EmptyResponse;
 import com.biz4solutions.models.response.OccupationResponse;
+import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
@@ -58,6 +59,9 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     private Long selectedBirthDateValue = null;
     private String tempOccupation;
     private String tempEdtOccupation;
+    private static final int profileImageFileCode = 101;
+    private static final int cprFileCode = 102;
+    private static final int medicalFileCode = 103;
 
     private RegistrationViewModel(Context context) {
         super();
@@ -78,7 +82,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     }
 
     private void getOccupationListData() {
-
         if (CommonFunctions.getInstance().isOffline(context)) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_network_unavailable));
             return;
@@ -214,7 +217,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         registration.setAddress(address.trim());
     }
 
-
     //profession-section
     //watcher for occupation
     public void occupationWatcher(CharSequence s, int start, int before, int count) {
@@ -228,7 +230,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     }
 
     //medical license section
-
     //watcher for institute name
     public void licenseNpeNumberWatcher(CharSequence s, int start, int before, int count) {
         registration.setMedicalLicenseNumber(s.toString().toUpperCase().trim());
@@ -248,7 +249,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public void onSwitchChanged(boolean checked) {
         registration.setOptForTriage(checked);
     }
-
 
     //listener for radio btn
     public void onRadioBtnChanged(RadioGroup radioGroup, int id) {
@@ -273,7 +273,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
         previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
 
-
         CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
                 .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                     @Override
@@ -290,7 +289,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
                         new MonthAdapter.CalendarDay(todayDate.get(Calendar.YEAR) - MIN_YEAR_INTERVAL, todayDate.get(Calendar.MONTH), todayDate.get(Calendar.DAY_OF_MONTH)));
 
         cdp.show(((MainActivity) context).getSupportFragmentManager(), "fragment");
-
     }
 
     //expiry date
@@ -306,7 +304,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR);
         previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
         previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
-
 
         CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
                 .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
@@ -341,7 +338,11 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
                     if (validateMedicalData()) {
                         if (validateOtherData()) {
                             CommonFunctions.getInstance().loadProgressDialog(context);
-                            FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), user.getRoleName(), profileImageUri, this);
+                            if (profileImageUri != null) {
+                                FirebaseUploadUtil.uploadImageToFirebase(user.getUserId(), profileImageUri, this);
+                            } else {
+                                FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
+                            }
                         }
                     }
                 }
@@ -367,10 +368,11 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     }
 
     private boolean validatePersonalData() {
-        if (profileImageUri == null) {
+        /*if (profileImageUri == null) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_profile));
             return false;
-        } else if (registration.getFirstName() == null || registration.getFirstName().isEmpty()) {
+        } else */
+        if (registration.getFirstName() == null || registration.getFirstName().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_first_name));
             return false;
         } else if (registration.getLastName() == null || registration.getLastName().isEmpty()) {
@@ -448,10 +450,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     @Override
     public void uploadSuccess(String imageUrl, int fileCode) {
         CommonFunctions.getInstance().dismissProgressDialog();
-        int profileImageFileCode = 101;
-        int cprFileCode = 102;
-        int medicalFileCode = 103;
-
         if (fileCode == profileImageFileCode) {
             registration.setProfileUrl(imageUrl);
             CommonFunctions.getInstance().loadProgressDialog(context);
@@ -472,10 +470,20 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public void uploadError(String exceptionMsg, int fileCode) {
         toastMsg.setValue(exceptionMsg);
         CommonFunctions.getInstance().dismissProgressDialog();
+        if (fileCode == profileImageFileCode) {
+            CommonFunctions.getInstance().loadProgressDialog(context);
+            FirebaseUploadUtil.uploadMultipleFileToFirebase(user.getUserId(), "cprCertificate" + cprFileExt, cprCertificateUri, cprFileCode, this);
+        }
     }
 
     @Override
     public void onSuccess(Object response, int statusCode) {
+        user.setFirstName(registration.getFirstName());
+        user.setLastName(registration.getLastName());
+        user.setGender(registration.getGender());
+        user.setDob(registration.getDob());
+        user.setProfileUrl(registration.getProfileUrl());
+        SharedPrefsManager.getInstance().storeUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, user);
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(((EmptyResponse) response).getMessage());
         ((MainActivity) context).reOpenNewsFeedFragment();
@@ -498,7 +506,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         if (radioBtnId != null)
             radioBtnId = null;
     }
-
 
     @SuppressWarnings("unchecked")
     public static class RegistrationFactory extends ViewModelProvider.NewInstanceFactory {
