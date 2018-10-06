@@ -616,7 +616,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
             isUpdateList = true;
-            getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+
+            boolean isDashBoardFound = false;
+
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                    try {
+                        String fragmentName = getSupportFragmentManager().getBackStackEntryAt(i).getName();
+                        if (fragmentName.equals(DashboardFragment.fragmentName)) {
+                            isDashBoardFound = true;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (isDashBoardFound) {
+                getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+            } else {
+                openDashBoardFragment();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
