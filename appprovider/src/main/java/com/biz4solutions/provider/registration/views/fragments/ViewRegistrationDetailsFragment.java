@@ -155,7 +155,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                 if (file.exists()) {
                     openFiles(Uri.fromFile(file).toString(), FileTypes.mimePdf);
                 } else if (file2.exists()) {
-                    openFiles(Uri.fromFile(file).toString(), FileTypes.mimeImage);
+                    openFiles(Uri.fromFile(file2).toString(), FileTypes.mimeImage);
                 } else {
                     String ext;
                     if (viewModel.registration.get().getMedicalLicenseLink().contains(FileTypes.pdf)) {
