@@ -124,7 +124,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
 
         gifPosition = 0;
         gifList.add(R.drawable.cpr1);
-        gifList.add(R.drawable.cpr2);
+        //gifList.add(R.drawable.cpr2);
 
         if (request != null) {
             setCardiacCallView();

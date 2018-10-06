@@ -279,6 +279,7 @@
                             android:background="@null"
                             android:hint="@string/txt_address_optional"
                             android:maxLines="1"
+                            android:maxLength="255"
                             android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
                     </android.support.design.widget.TextInputLayout>
@@ -513,6 +514,7 @@
                             android:digits="@string/number_filter"
                             android:hint="@string/txt_license_number_npe_number"
                             android:inputType="number"
+                            android:maxLength="50"
                             android:onTextChanged="@{viewModel::licenseNpeNumberWatcher}"
                             android:paddingTop="@dimen/_8dp"
                             android:theme="@style/EditTextHint" />
