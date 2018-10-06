@@ -42,7 +42,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     private final static String IS_NEED_TO_SHOW_QUE = "IS_NEED_TO_SHOW_QUE";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private final static String REQUEST_ID = "REQUEST_ID";
-    List<Integer> gifList = new ArrayList<>();
+    private List<Integer> gifList = new ArrayList<>();
     private int gifPosition = 0;
     private boolean isGifPlaying = true;
     private boolean isNeedToShowQue = false;
