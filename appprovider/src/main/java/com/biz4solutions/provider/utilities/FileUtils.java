@@ -155,7 +155,7 @@ public class FileUtils {
 
     public static long downloadFile(Context context, String url, boolean isCprFile, String ext) {
         File direct = new File(Environment.getExternalStorageDirectory()
-                + "/Ember_Docs");
+                + "/" + Constants.DOCS_DIRECTORY);
 
         if (!direct.exists()) {
             direct.mkdirs();
@@ -174,9 +174,9 @@ public class FileUtils {
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
             if (isCprFile)
-                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.CPR_FILE_NAME + "." + ext);
+                request.setDestinationInExternalPublicDir("/" + Constants.DOCS_DIRECTORY, Constants.CPR_FILE_NAME + "." + ext);
             else {
-                request.setDestinationInExternalPublicDir("/Ember_Docs", Constants.MEDICAL_FILE_NAME + "." + ext);
+                request.setDestinationInExternalPublicDir("/" + Constants.DOCS_DIRECTORY, Constants.MEDICAL_FILE_NAME + "." + ext);
             }
             // get download service and enqueue file
             DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

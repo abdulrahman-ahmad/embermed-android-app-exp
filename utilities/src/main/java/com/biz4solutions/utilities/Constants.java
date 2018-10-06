@@ -8,6 +8,7 @@ public class Constants implements Serializable {
     public static final String GOOGLE_MAP_URL = "https://maps.googleapis.com/maps/";
 
     public static final String FILE_DIRECTORY = "Ember";
+    public static final String DOCS_DIRECTORY = "Ember_Documents";
     public static final String SUPPORT_DIRECTORY = "Support";
     public static final String SUPPORT_FILE_NAME = "SupportLog.txt";
     public static final String SUPPORT_LOG_EXTRA_SUBJECT = "Ember Support Log file";

@@ -37,15 +37,15 @@
     <string name="error_empty_occupation">Please enter occupation.</string>
     <string name="error_unselected_occupation">Please select occupation.</string>
     <string name="error_invalid_phone">Please enter valid phone number.</string>
-    <string name="error_unselected_cpr_institute">Please select cpr institute.</string>
-    <string name="error_unselected_cpr_expiry">Please select the expiry date.</string>
-    <string name="error_empty_institute_name">Please enter Institution name.</string>
-    <string name="error_empty_speciality">Please enter specialty or sub-specialty.</string>
-    <string name="error_invalid_license_npi_number">Please enter valid licence number / NPI number.</string>
-    <string name="error_empty_license_npi_number">Please enter licence number / NPI number.</string>
+    <string name="error_unselected_cpr_institute">Please select CPR institute.</string>
+    <string name="error_unselected_cpr_expiry">Please select CPR certificate expiry date.</string>
+    <string name="error_empty_institute_name">Please enter institution name.</string>
+    <string name="error_empty_speciality">Please enter specialty or subspecialty.</string>
+    <string name="error_invalid_license_npi_number">Please enter valid licence number / NPE number.</string>
+    <string name="error_empty_license_npi_number">Please enter licence number / NPE number.</string>
     <string name="error_unselected_cpr_certificate">Please upload the CPR certificate.</string>
-    <string name="error_unselected_medical_certificate">Please upload the Medical certificate.</string>
-    <string name="error_empty_state">Please enter state.</string>
+    <string name="error_unselected_medical_certificate">Please upload the medical certificate.</string>
+    <string name="error_empty_state">Please enter practise license state.</string>
     <string name="error_empty_profile">Please upload profile image.</string>
 
 
