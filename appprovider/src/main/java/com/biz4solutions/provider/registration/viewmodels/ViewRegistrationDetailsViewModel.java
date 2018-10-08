@@ -85,7 +85,6 @@ public class ViewRegistrationDetailsViewModel extends AndroidViewModel {
         //pending
         if (registration.get() != null) {
             if (registration.get().getApproved() == null) {
-                registration.get().setAdminComment(getApplication().getBaseContext().getString(R.string.txt_pending_info));
                 return "PENDING";
             } else if (registration.get().getApproved()) { //approved
                 return "APPROVED";

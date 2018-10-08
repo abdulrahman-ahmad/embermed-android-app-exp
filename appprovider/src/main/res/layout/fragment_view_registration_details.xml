@@ -53,9 +53,9 @@
                     android:id="@+id/tv_statusDesc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_marginTop="@dimen/_4dp"
                     android:text="@{viewModel.registration.adminComment}"
-                    android:textSize="@dimen/_16dp" />
+                    android:textSize="@dimen/_14dp" />
             </LinearLayout>
 
 
