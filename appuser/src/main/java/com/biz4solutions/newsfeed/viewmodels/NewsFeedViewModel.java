@@ -145,7 +145,7 @@ public class NewsFeedViewModel extends ViewModel implements OnMapReadyCallback, 
                 public void onFailure(String errorMessage, int statusCode) {
                     newsFeedPresenter.toastMsg(errorMessage);
                     isNewsFeedApiCall = false;
-                    getNewsFeeds(latitude, longitude);
+                    //getNewsFeeds(latitude, longitude);
                 }
             });
         }
