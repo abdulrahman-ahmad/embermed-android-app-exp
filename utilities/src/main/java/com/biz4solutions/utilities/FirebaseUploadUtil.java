@@ -14,6 +14,7 @@ import java.util.Objects;
 
 public class FirebaseUploadUtil {
 
+    @SuppressWarnings("ConstantConditions")
     public static void uploadImageToFirebase(String userId, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference ref = storage.getReference()
@@ -50,6 +51,7 @@ public class FirebaseUploadUtil {
                 });
     }
 
+    @SuppressWarnings("ConstantConditions")
     public static void uploadMultipleFileToFirebase(String uid, String fileName, Uri uri, final int fileCode, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
         final StorageReference ref = storage.getReference()
