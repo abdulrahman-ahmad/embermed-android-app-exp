@@ -135,7 +135,6 @@
 
                     <View style="@style/divider" />
 
-
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -332,7 +331,7 @@
                             android:id="@+id/edt_other_occupation"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:digits="@string/name_filter"
+                            android:digits="@string/alphabet_filter"
                             android:hint="@string/txt_other_occupation"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="50"
@@ -353,7 +352,7 @@
                             android:id="@+id/edt_institute_name"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:digits="@string/name_filter"
+                            android:digits="@string/alphabet_filter"
                             android:hint="@string/txt_institute_name"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="50"
@@ -454,6 +453,7 @@
                                 android:maxLines="1"
                                 android:padding="@dimen/_5dp"
                                 android:text="@string/txt_upload_cpr_certificate"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="@dimen/_12dp" />
 
                             <ImageView
@@ -513,9 +513,9 @@
                             android:id="@+id/edt_license_cpe_no"
                             style="@style/profile_edt_style"
                             android:background="@null"
-                            android:digits="@string/number_filter"
+                            android:digits="@string/alphanumeric_without_space_filter"
                             android:hint="@string/txt_license_number_npi_number"
-                            android:inputType="number"
+                            android:inputType="textCapCharacters"
                             android:maxLength="50"
                             android:onTextChanged="@{viewModel::licenseNpiNumberWatcher}"
                             android:paddingTop="@dimen/_8dp"
@@ -550,6 +550,7 @@
                                 android:maxLines="1"
                                 android:padding="@dimen/_5dp"
                                 android:text="@string/txt_upload_medical_certificate"
+                                android:textColor="@color/colorPrimary"
                                 android:textSize="@dimen/_12dp" />
 
                             <ImageView
@@ -598,7 +599,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_15dp"
+                    android:layout_marginTop="@dimen/_12dp"
                     android:layout_marginBottom="@dimen/_12dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
@@ -610,7 +611,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/txt_question_telehealth_triage_platform"
-                        android:textColor="@color/text_hint_color"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_16dp" />
 
                     <Switch
@@ -623,7 +624,7 @@
 
                 <View
                     style="@style/divider"
-                    android:layout_marginTop="@dimen/_8dp" />
+                    android:layout_margin="0dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -634,9 +635,9 @@
 
                     <TextView
                         style="@style/tv_label"
-                        android:layout_marginTop="@dimen/_15dp"
+                        android:layout_marginTop="@dimen/_12dp"
                         android:text="@string/txt_question_speciality_or_subspeciality"
-                        android:textColor="@color/text_hint_color"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_16dp" />
 
                     <android.support.design.widget.TextInputLayout
@@ -653,7 +654,6 @@
                             android:background="@null"
                             android:gravity="top"
                             android:inputType="textMultiLine"
-                            android:lines="4"
                             android:maxLength="255"
                             android:maxLines="5"
                             android:onTextChanged="@{viewModel::specialityWatcher}"
@@ -668,7 +668,7 @@
                         style="@style/tv_label"
                         android:layout_marginTop="@dimen/_12dp"
                         android:text="@string/txt_practise_state"
-                        android:textColor="@color/text_hint_color"
+                        android:textColor="@android:color/black"
                         android:textSize="@dimen/_16dp" />
 
                     <android.support.design.widget.TextInputLayout
@@ -681,7 +681,7 @@
                             android:id="@+id/edt_practise_state"
                             style="@style/registration_other_section_edt_style"
                             android:background="@null"
-                            android:digits="@string/name_filter"
+                            android:digits="@string/alphabet_filter"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="100"
                             android:onTextChanged="@{viewModel::stateWatcher}"

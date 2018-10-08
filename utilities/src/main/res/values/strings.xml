@@ -93,6 +93,8 @@
 
     <!--filters-->
     <!-- android:digits="@string/name_filter" add into EditText View -->
-    <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="alphabet_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
     <string name="number_filter">0123456789</string>
+    <string name="alphanumeric_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</string>
+    <string name="alphanumeric_without_space_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 </resources>

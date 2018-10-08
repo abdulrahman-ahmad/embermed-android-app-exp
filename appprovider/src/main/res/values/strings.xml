@@ -92,7 +92,7 @@
     <string name="txt_address_optional">Address (optional)</string>
     <string name="txt_profession">PROFESSION</string>
     <string name="txt_occupation">Occupation</string>
-    <string name="txt_other_occupation">if other, mention your occupation.</string>
+    <string name="txt_other_occupation">If other, mention your occupation</string>
     <string name="txt_institute_name">Institute name</string>
     <string name="txt_cpr">CPR</string>
     <string name="txt_cpr_institution">CPR Training Institution</string>
@@ -102,7 +102,7 @@
     <string name="txt_other_cap">OTHER</string>
     <string name="txt_question_telehealth_triage_platform">Do you want to participate in the telehealth triage platform?</string>
     <string name="txt_question_speciality_or_subspeciality">What is your speciality or subspeciality?</string>
-    <string name="txt_practise_state">Which state are you licensed to practise in?</string>
+    <string name="txt_practise_state">What state are you licensed to practise in?</string>
     <string name="txt_privacy_policy"><a href="https://www.embermed.com">Privacy Policy</a></string>
     <string name="txt_terms_of_service"><a href="https://www.embermed.com">Terms of Service</a></string>
     <string name="txt_registration_form_poilicy_description">By submitting this registration form, you agree to our</string>

@@ -20,5 +20,5 @@
     <color name="tv_value_profile">#787878</color>
     <color name="dark_blue_text_color">#185173</color>
     <color name="news_feed_divider_color">#cdd8dc</color>
-    <color name="bg_toast_upload">#ECECEC</color>
+    <color name="bg_toast_upload">#ececec</color>
 </resources>

@@ -398,6 +398,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:padding="@dimen/_5dp"
+                        android:textColor="@color/colorPrimary"
                         android:text="@string/view_cpr_certificate"
                         android:textSize="@dimen/_12dp" />
 
@@ -474,6 +475,7 @@
                         android:ellipsize="end"
                         android:gravity="center"
                         android:padding="@dimen/_5dp"
+                        android:textColor="@color/colorPrimary"
                         android:text="@string/view_medical_certificate"
                         android:textSize="@dimen/_12dp" />
 
@@ -509,7 +511,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_15dp"
+                android:layout_marginTop="@dimen/_12dp"
                 android:layout_marginBottom="@dimen/_12dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
@@ -521,7 +523,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/txt_question_telehealth_triage_platform"
-                    android:textColor="@color/text_hint_color"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/_16dp" />
 
                 <Switch
@@ -535,7 +537,7 @@
 
             <View
                 style="@style/divider"
-                android:layout_marginTop="@dimen/_8dp" />
+                android:layout_margin="0dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -546,9 +548,9 @@
 
                 <TextView
                     style="@style/tv_label"
-                    android:layout_marginTop="@dimen/_15dp"
+                    android:layout_marginTop="@dimen/_12dp"
                     android:text="@string/txt_question_speciality_or_subspeciality"
-                    android:textColor="@color/text_hint_color"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/_16dp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -580,7 +582,7 @@
                     style="@style/tv_label"
                     android:layout_marginTop="@dimen/_12dp"
                     android:text="@string/txt_practise_state"
-                    android:textColor="@color/text_hint_color"
+                    android:textColor="@android:color/black"
                     android:textSize="@dimen/_16dp" />
 
                 <android.support.design.widget.TextInputLayout
@@ -593,7 +595,6 @@
                         android:id="@+id/edt_practise_state"
                         style="@style/registration_other_section_edt_style"
                         android:background="@null"
-                        android:digits="@string/name_filter"
                         android:enabled="false"
                         android:inputType="textMultiLine"
                         android:paddingTop="@dimen/_8dp"
