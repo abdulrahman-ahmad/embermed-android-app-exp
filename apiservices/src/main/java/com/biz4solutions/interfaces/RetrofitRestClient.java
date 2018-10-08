@@ -1,5 +1,6 @@
 package com.biz4solutions.interfaces;
 
+import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.User;
@@ -8,6 +9,7 @@ import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.request.UserDiseaseListRequest;
 import com.biz4solutions.models.response.CprTrainingInstitutesResponse;
 import com.biz4solutions.models.response.CreateEmsResponse;
 import com.biz4solutions.models.response.EmptyResponse;
@@ -23,6 +25,7 @@ import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.models.response.google.GoogleDirectionResponse;
 import com.biz4solutions.models.response.google.GoogleDistanceDurationResponse;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import retrofit2.Call;
@@ -153,4 +156,13 @@ public interface RetrofitRestClient {
 
     @GET("/api/v1/newsfeed/getNewsFeedDetail")
     Call<NewsFeedResponse> getNewsFeedDetail(@Query("latitude") double latitude, @Query("longitude") double longitude);
+
+    @GET("/api/v1/users/searchDiseaseByText")
+    Call<GenericResponse<ArrayList<MedicalDisease>>> getMedicalSearchDiseases(@Query("searchText") String searchText);
+
+    @POST("/api/v1/users/addUserDisease")
+    Call<EmptyResponse> updateMedicalDiseases(@Body UserDiseaseListRequest request);
+
+    @GET("/api/v1/users/getUserDisease")
+    Call<EmptyResponse> getSelectedMedicalDiseasesList();
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.biz4solutions.models.MedicalDisease" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/_10dp"
+        android:paddingEnd="@dimen/_10dp">
+
+        <TextView
+            android:id="@+id/tv_item_medical_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_10dp"
+            android:layout_toStartOf="@+id/iv_item_medical_profile_cancel"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/_15dp"
+            android:paddingTop="@dimen/_16dp"
+            android:paddingBottom="@dimen/_16dp"
+            android:text="@{data.name.trim()}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_16dp"
+            tools:text="abc" />
+
+        <ImageView
+            android:id="@+id/iv_item_medical_profile_cancel"
+            android:layout_width="@dimen/_12dp"
+            android:layout_height="@dimen/_12dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/_15dp"
+            android:background="@drawable/ic_remove_disease"
+            android:padding="@dimen/_5dp" />
+
+        <View
+            android:id="@+id/iv_item_medical_profile_divider"
+            style="@style/divider"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</layout>

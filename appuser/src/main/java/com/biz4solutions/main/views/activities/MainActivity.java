@@ -41,6 +41,7 @@ import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.FeedbackFragment;
+import com.biz4solutions.medicalprofile.views.fragments.MedicalProfileFragment;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
@@ -67,21 +68,21 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
 
+    private static final int PERMISSION_REQUEST_CODE = 121234;
+    public static boolean isActivityOpen = false;
     public NavigationView navigationView;
     public TextView toolbarTitle;
-    private boolean doubleBackToExitPressedOnce;
     public ActionBarDrawerToggle toggle;
-    private BroadcastReceiver logoutBroadcastReceiver;
     public DrawerLayout drawerLayout;
-    public static boolean isActivityOpen = false;
     public LinearLayout btnLogOut;
     public LinearLayout btnCall911;
-    private boolean isOpenTokActivityOpen = false;
-    private static final int PERMISSION_REQUEST_CODE = 121234;
-    private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
     public boolean isTutorialMode = false;
     public int tutorialId = 0;
+    private boolean doubleBackToExitPressedOnce;
+    private BroadcastReceiver logoutBroadcastReceiver;
+    private boolean isOpenTokActivityOpen = false;
+    private EmsRequest tempRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -803,6 +804,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, ProviderReasonFragment.newInstance(request))
                     .addToBackStack(ProviderReasonFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void openMedicalProfileFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof MedicalProfileFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, MedicalProfileFragment.newInstance())
+                    .addToBackStack(MedicalProfileFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();

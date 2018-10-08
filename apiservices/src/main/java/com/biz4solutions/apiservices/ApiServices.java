@@ -12,6 +12,7 @@ import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.request.UserDiseaseListRequest;
 import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
@@ -228,6 +229,21 @@ public class ApiServices {
     public void getNewsFeedDetail(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getNewsFeedDetail(latitude, longitude));
+    }
+
+    public void getMedicalSearchDiseaseList(final Context context, String searchText, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getMedicalSearchDiseases(searchText));
+    }
+
+    public void updateMedicalDiseaseList(final Context context, UserDiseaseListRequest request, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateMedicalDiseases(request));
+    }
+
+    public void getSelectedMedicalDiseasesList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSelectedMedicalDiseasesList());
     }
 
 }

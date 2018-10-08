@@ -107,5 +107,7 @@
     <string name="tutorial_description_symptoms_submit_btn">Tap here to create a triage call alert.</string>
     <string name="my_profile">My Profile</string>
     <string name="saved_cards">Saved Cards</string>
+    <string name="subscription">Subscription</string>
+    <string name="txt_hint_search_diseases">Search Diseases</string>
 
 </resources>
