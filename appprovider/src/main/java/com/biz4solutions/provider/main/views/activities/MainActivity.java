@@ -618,7 +618,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             isUpdateList = true;
 
             boolean isDashBoardFound = false;
-
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
                     try {
@@ -648,7 +647,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             if (currentFragment instanceof NewsFeedFragment) {
                 return;
             }
-            getSupportFragmentManager().popBackStack(NewsFeedFragment.fragmentName, 0);
+            boolean isNewsFeedFound = false;
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                    try {
+                        String fragmentName = getSupportFragmentManager().getBackStackEntryAt(i).getName();
+                        if (fragmentName.equals(NewsFeedFragment.fragmentName)) {
+                            isNewsFeedFound = true;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (isNewsFeedFound) {
+                getSupportFragmentManager().popBackStack(NewsFeedFragment.fragmentName, 0);
+            } else {
+                openNewsFeedFragment();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -698,7 +715,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             switch (fragmentName) {
                 case NewsFeedFragment.fragmentName:
                     String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
-                    if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                    User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                    boolean isProviderSubscribed = false;
+                    boolean isApproved = false;
+                    if (user != null) {
+                        isProviderSubscribed = user.getIsProviderSubscribed() != null && user.getIsProviderSubscribed();
+                        isApproved = user.getIsApproved() != null && user.getIsApproved();
+                    }
+                    if (userAuthKey != null && !userAuthKey.isEmpty() && isProviderSubscribed && isApproved) {
                         getSupportFragmentManager().popBackStack();
                         break;
                     }
