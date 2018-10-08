@@ -157,6 +157,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
             openNewsFeedFragment();
         } else {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
@@ -168,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(true);
             FirebaseMessagingService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override
