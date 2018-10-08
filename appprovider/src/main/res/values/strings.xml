@@ -88,7 +88,7 @@
 
     <string name="my_profile">My Profile</string>
     <string name="txt_personal_cap">PERSONAL</string>
-    <string name="txt_phone_no">Phone No.</string>
+    <string name="txt_phone_no">Phone no</string>
     <string name="txt_address_optional">Address (optional)</string>
     <string name="txt_profession">PROFESSION</string>
     <string name="txt_occupation">Occupation</string>
@@ -101,7 +101,7 @@
     <string name="txt_license_number_npi_number">License Number / NPI Number?</string>
     <string name="txt_other_cap">OTHER</string>
     <string name="txt_question_telehealth_triage_platform">Do you want to participate in the telehealth triage platform?</string>
-    <string name="txt_question_speciality_or_subspeciality">what is your speciality or subspeciality?</string>
+    <string name="txt_question_speciality_or_subspeciality">What is your speciality or subspeciality?</string>
     <string name="txt_practise_state">Which state are you licensed to practise in?</string>
     <string name="txt_privacy_policy"><a href="https://www.embermed.com">Privacy Policy</a></string>
     <string name="txt_terms_of_service"><a href="https://www.embermed.com">Terms of Service</a></string>
@@ -113,8 +113,6 @@
     <string name="error_illegal_file">Illegal file. Please select an image or a pdf file.</string>
     <string name="error_large_file">Please select a file with maximum size 2MB.</string>
     <string name="error_upload_file">Unable to process file, Please try again.</string>
-    <string name="type_here">Type Here…</string>
-    <string name="txt_did_participated_in_telehealth">Did participated in telehealth triage platform?</string>
     <string name="view_cpr_certificate">View CPR certificate</string>
     <string name="view_medical_certificate">View Medical Certificate</string>
     <string name="error_file_not_found">Something went wrong. Please try again later.</string>

@@ -4,7 +4,9 @@ import com.biz4solutions.models.response.EmptyResponse;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ProviderRegistration extends EmptyResponse {
+import java.io.Serializable;
+
+public class ProviderRegistration extends EmptyResponse implements Serializable {
 
     @SerializedName("address")
     @Expose

@@ -12,12 +12,17 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.User;
+import com.biz4solutions.models.response.GenericResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.NavigationUtil;
+import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
 public class AccountSettingFragment extends Fragment implements View.OnClickListener {
@@ -89,11 +94,36 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
                 startActivity(new Intent(mainActivity, ProfileActivity.class));
                 break;
             case R.id.cv_registration:
-                mainActivity.openViewRegistrationFragment();
+                getProviderRegistrationDetails();
                 break;
             default:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    private void getProviderRegistrationDetails() {
+        if (CommonFunctions.getInstance().isOffline(mainActivity)) {
+            Toast.makeText(mainActivity, R.string.error_network_unavailable, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
+        new ApiServices().getProviderRegistrationDetails(mainActivity, new RestClientResponse() {
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                GenericResponse<ProviderRegistration> responseData = (GenericResponse<ProviderRegistration>) response;
+                CommonFunctions.getInstance().dismissProgressDialog();
+                if (responseData != null) {
+                    mainActivity.openViewRegistrationFragment(responseData.getData());
+                }
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(mainActivity, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

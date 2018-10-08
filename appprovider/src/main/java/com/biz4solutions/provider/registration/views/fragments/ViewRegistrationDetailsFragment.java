@@ -3,7 +3,6 @@ package com.biz4solutions.provider.registration.views.fragments;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DownloadManager;
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -27,6 +26,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.data.FileTypes;
 import com.biz4solutions.data.RequestCodes;
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentViewRegistrationDetailsBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
@@ -43,28 +43,37 @@ import static android.content.Context.DOWNLOAD_SERVICE;
 public class ViewRegistrationDetailsFragment extends Fragment {
 
     public static final String fragmentName = "ViewRegistrationDetailsFragment";
+    private final static String REGISTRATION_DETAILS = "REGISTRATION_DETAILS";
     private MainActivity mainActivity;
     private ViewRegistrationDetailsViewModel viewModel;
     private FragmentViewRegistrationDetailsBinding binding;
+    private ProviderRegistration registrationDetails;
 
     public ViewRegistrationDetailsFragment() {
         // Required empty public constructor
     }
 
-    public static ViewRegistrationDetailsFragment newInstance() {
-        return new ViewRegistrationDetailsFragment();
+    public static ViewRegistrationDetailsFragment newInstance(ProviderRegistration data) {
+        ViewRegistrationDetailsFragment fragment = new ViewRegistrationDetailsFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(REGISTRATION_DETAILS, data);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
+        if (getArguments() != null) {
+            registrationDetails = (ProviderRegistration) getArguments().getSerializable(REGISTRATION_DETAILS);
+        }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_registration_details, container, false);
-        viewModel = ViewModelProviders.of(this, new ViewRegistrationDetailsViewModel.ViewRegistrationDetailsFactory(mainActivity.getApplication())).get(ViewRegistrationDetailsViewModel.class);
+        viewModel = ViewModelProviders.of(this, new ViewRegistrationDetailsViewModel.ViewRegistrationDetailsFactory(mainActivity.getApplication(), registrationDetails)).get(ViewRegistrationDetailsViewModel.class);
         binding.setViewModel(viewModel);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
@@ -74,6 +83,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         }
         initListeners();
         registerReceiver();
+        setUpUi();
         return binding.getRoot();
     }
 
@@ -95,20 +105,9 @@ public class ViewRegistrationDetailsFragment extends Fragment {
                 processMedicalFile();
             }
         });
-        viewModel.getToastMsg().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                Toast.makeText(mainActivity, s, Toast.LENGTH_SHORT).show();
-            }
-        });
-        viewModel.getIsDataChanged().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean isDataChanged) {
-                setUpUi();
-            }
-        });
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void processCprFile() {
         if (viewModel.registration.get() != null && viewModel.registration.get().getCprCertificateLink() != null) {
             if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_CPR, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
@@ -138,6 +137,7 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         }
     }
 
+    @SuppressWarnings("ConstantConditions")
     private void processMedicalFile() {
         if (viewModel.registration.get() != null && viewModel.registration.get().getMedicalLicenseLink() != null) {
             if (checkPermission(mainActivity, RequestCodes.PERMISSION_FILE_MEDICAL, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE})) {
@@ -192,11 +192,11 @@ public class ViewRegistrationDetailsFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewModel.getToastMsg().removeObservers(this);
         mainActivity.unregisterReceiver(receiver);
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
     }
 
+    @SuppressWarnings("ConstantConditions")
     BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

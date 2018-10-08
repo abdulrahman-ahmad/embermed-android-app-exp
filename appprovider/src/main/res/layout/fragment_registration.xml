@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:ignore="SpUsage, UnusedAttribute, Autofill, KeyboardInaccessibleWidget">
+        tools:ignore="SpUsage, UnusedAttribute, Autofill, KeyboardInaccessibleWidget, LabelFor">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -50,7 +50,8 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_18dp"
+                        android:layout_marginTop="@dimen/_20dp"
+                        android:layout_marginBottom="@dimen/_20dp"
                         android:focusable="true"
                         android:focusableInTouchMode="true">
 
@@ -95,7 +96,6 @@
                     <android.support.design.widget.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_30dp"
                         android:theme="@style/txtInputLayout">
 
                         <EditText
@@ -595,34 +595,31 @@
 
                 <View style="@style/style_divider_registration" />
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_15dp"
                     android:layout_marginBottom="@dimen/_12dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:paddingStart="@dimen/_30dp"
                     android:paddingEnd="@dimen/_30dp">
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentStart="true"
-                        android:layout_centerVertical="true"
-                        android:layout_toStartOf="@+id/switch_telehealth_participation"
+                        android:layout_weight="1"
                         android:text="@string/txt_question_telehealth_triage_platform"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_hint_color"
                         android:textSize="@dimen/_16dp" />
 
                     <Switch
                         android:id="@+id/switch_telehealth_participation"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_centerVertical="true"
                         android:onCheckedChanged="@{(button, bool)-> viewModel.onSwitchChanged(bool)}"
                         android:theme="@style/switch_style" />
-                </RelativeLayout>
+                </LinearLayout>
 
                 <View
                     style="@style/divider"
@@ -639,7 +636,7 @@
                         style="@style/tv_label"
                         android:layout_marginTop="@dimen/_15dp"
                         android:text="@string/txt_question_speciality_or_subspeciality"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_hint_color"
                         android:textSize="@dimen/_16dp" />
 
                     <android.support.design.widget.TextInputLayout
@@ -655,7 +652,6 @@
                             android:layout_height="match_parent"
                             android:background="@null"
                             android:gravity="top"
-                            android:hint="@string/type_here"
                             android:inputType="textMultiLine"
                             android:lines="4"
                             android:maxLength="255"
@@ -668,12 +664,11 @@
 
                     <View style="@style/divider" />
 
-
                     <TextView
                         style="@style/tv_label"
                         android:layout_marginTop="@dimen/_12dp"
                         android:text="@string/txt_practise_state"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/text_hint_color"
                         android:textSize="@dimen/_16dp" />
 
                     <android.support.design.widget.TextInputLayout
@@ -687,7 +682,6 @@
                             style="@style/registration_other_section_edt_style"
                             android:background="@null"
                             android:digits="@string/name_filter"
-                            android:hint="@string/txt_practise_state"
                             android:inputType="textWebEmailAddress"
                             android:maxLength="100"
                             android:onTextChanged="@{viewModel::stateWatcher}"
@@ -743,7 +737,8 @@
                             android:layout_gravity="center"
                             android:gravity="center"
                             android:text=" &amp; "
-                            android:textSize="@dimen/_12dp" />
+                            android:textSize="@dimen/_12dp"
+                            tools:ignore="HardcodedText" />
 
                         <TextView
                             android:id="@+id/tv_privacy_policy"

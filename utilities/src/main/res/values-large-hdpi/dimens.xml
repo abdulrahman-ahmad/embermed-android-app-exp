@@ -21,6 +21,7 @@
     <dimen name="_7dp">10.5dp</dimen>
     <dimen name="_8dp">12dp</dimen>
     <dimen name="_10dp">15dp</dimen>
+    <dimen name="_11dp">16.5dp</dimen>
     <dimen name="_12dp">18dp</dimen>
     <dimen name="_14dp">21dp</dimen>
     <dimen name="_15dp">22.5dp</dimen>

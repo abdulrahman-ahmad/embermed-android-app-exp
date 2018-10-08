@@ -37,6 +37,7 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.Subscription;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
@@ -684,7 +685,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
-    public void openViewRegistrationFragment() {
+    public void openViewRegistrationFragment(ProviderRegistration data) {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof ViewRegistrationDetailsFragment) {
             return;
@@ -692,7 +693,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportFragmentManager().executePendingTransactions();
         getSupportFragmentManager().beginTransaction()
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                .replace(R.id.main_container, ViewRegistrationDetailsFragment.newInstance())
+                .replace(R.id.main_container, ViewRegistrationDetailsFragment.newInstance(data))
                 .addToBackStack(ViewRegistrationDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
