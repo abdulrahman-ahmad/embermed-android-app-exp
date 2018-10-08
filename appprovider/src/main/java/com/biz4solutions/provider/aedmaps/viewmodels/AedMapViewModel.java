@@ -186,17 +186,15 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         googleMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
             @Override
             public void onInfoWindowClose(Marker marker) {
-//                binding.llBookUber.setVisibility(View.GONE);
                 showUberLayout.set(false);
             }
         });
         clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
             @Override
             public boolean onClusterItemClick(MapClusterItem clusterItem) {
-                //Toast.makeText(((MainActivity)context), clusterItem.getUserId(), Toast.LENGTH_SHORT).show();
                 selectedClusterItem = clusterItem;
-//                binding.llBookUber.setVisibility(View.VISIBLE);
-                showUberLayout.set(true);
+                //showUberLayout.set(true);
+                showUberLayout.set(false); // Client Change - mail - 10 Oct 2018 11:24 AM
                 return false;
             }
         });
