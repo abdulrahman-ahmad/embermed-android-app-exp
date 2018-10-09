@@ -275,8 +275,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (data != null) {
                     User user = SharedPrefsManager.getInstance().retrieveUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
                     if (user != null) {
-                        user.setIsProviderSubscribed(data.getIsProviderSubscribed());
-                        user.setIsApproved(data.getIsApproved());
+                        if (user.getIsProviderSubscribed() == null) {
+                            user.setIsProviderSubscribed(data.getIsProviderSubscribed());
+                        }
+                        if (user.getIsApproved() == null) {
+                            user.setIsApproved(data.getIsApproved());
+                        }
                         SharedPrefsManager.getInstance().storeUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, user);
                     }
                     initView(true);

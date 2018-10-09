@@ -2,22 +2,22 @@ package com.biz4solutions.models;
 
 public class Subscription {
 
-    private boolean isApproved;
-    private boolean isProviderSubscribed;
+    private Boolean isApproved;
+    private Boolean isProviderSubscribed;
 
-    public boolean getIsApproved() {
+    public Boolean getIsApproved() {
         return isApproved;
     }
 
-    public void setIsApproved(boolean approved) {
+    public void setIsApproved(Boolean approved) {
         isApproved = approved;
     }
 
-    public boolean getIsProviderSubscribed() {
+    public Boolean getIsProviderSubscribed() {
         return isProviderSubscribed;
     }
 
-    public void setIsProviderSubscribed(boolean providerSubscribed) {
+    public void setIsProviderSubscribed(Boolean providerSubscribed) {
         isProviderSubscribed = providerSubscribed;
     }
 

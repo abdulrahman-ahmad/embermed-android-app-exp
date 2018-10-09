@@ -20,12 +20,12 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 
-import com.biz4solutions.provider.R;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
-import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.models.response.NewsFeedDataResponse;
 import com.biz4solutions.models.response.NewsFeedResponse;
+import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.newsfeed.viewpresenters.NewsFeedPresenter;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -155,6 +155,7 @@ public class NewsFeedViewModel extends ViewModel implements OnMapReadyCallback, 
         if (googleMap != null && newsFeedData != null) {
             newsFeedPresenter.startAnimation(newsFeedData);
             googleMap.clear();
+            userMarker = null;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
