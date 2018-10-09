@@ -177,6 +177,9 @@ public class ViewRegistrationDetailsFragment extends Fragment {
         binding.tvStatus.setText(viewModel.getStatus());
         binding.tvStatusDesc.setTextColor(getResources().getColor(viewModel.getStatusDescTextColor()));
         binding.tvStatus.setTextColor(getResources().getColor(viewModel.getStatusTextColor()));
+        if(registrationDetails.getOptForTriage()){
+            binding.switchTelehealthParticipation.setThumbDrawable(mainActivity.getResources().getDrawable(R.drawable.ic_circle));
+        }
     }
 
     @Override
