@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -21,6 +22,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,6 +84,7 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private final static String DISTANCE_STR = "DISTANCE_STR";
+    private final static int REQUEST_CODE_CALL_PERMISSION = 2015;
     private MainActivity mainActivity;
     private FragmentCardiacCallDetailsBinding binding;
     private EmsRequest requestDetails;
@@ -212,7 +215,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
-            mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
+            if (requestDetails.getUserDetails() != null && requestDetails.getUserDetails().getPhoneNumber() != null && !requestDetails.getUserDetails().getPhoneNumber().isEmpty()) {
+                mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
+                mainActivity.btnCallAlerter.setOnClickListener(this);
+            }
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
@@ -363,8 +369,56 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             case R.id.btn_get_direction:
                 openGoogleMapApp();
                 break;
+            case R.id.btn_call_alerter:
+                requestCallPermission();
+                break;
         }
     }
+
+    private void requestCallPermission() {
+        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] perms = {Manifest.permission.CALL_PHONE};
+                requestPermissions(perms, REQUEST_CODE_CALL_PERMISSION);
+            } else {
+                dialACall();
+            }
+        } else {
+            dialACall();
+        }
+    }
+
+    private void dialACall() {
+        if (requestDetails.getUserDetails() != null && requestDetails.getUserDetails().getPhoneNumber() != null && !requestDetails.getUserDetails().getPhoneNumber().isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + requestDetails.getUserDetails().getPhoneNumber()));
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            boolean userAllowedAllRequestPermissions = true;
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    userAllowedAllRequestPermissions = false;
+                }
+            }
+
+            if (userAllowedAllRequestPermissions) {
+                switch (requestCode) {
+                    case REQUEST_CODE_CALL_PERMISSION:
+                        dialACall();
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void openGoogleMapApp() {
         try {
