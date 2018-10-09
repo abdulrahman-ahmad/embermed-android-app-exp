@@ -3,6 +3,7 @@ package com.biz4solutions.interfaces;
 import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.SocialMediaUserData;
+import com.biz4solutions.models.SubscriptionCardDetails;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
 import com.biz4solutions.models.request.FeedbackRequest;
@@ -165,4 +166,11 @@ public interface RetrofitRestClient {
 
     @GET("/api/v1/users/getUserDisease")
     Call<GenericResponse<ArrayList<MedicalDisease>>> getSelectedMedicalDiseasesList();
+
+    @GET("/api/v1/users/getSubscriptionCardDetail")
+    Call<GenericResponse<ArrayList<SubscriptionCardDetails>>> getSubscriptionOffersList();
+
+    @POST("/api/v1/users/subscribeUser")
+    Call<EmptyResponse> subscribeUser(@Query("id") String id);
+
 }

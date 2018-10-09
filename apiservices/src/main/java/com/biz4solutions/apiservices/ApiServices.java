@@ -245,4 +245,14 @@ public class ApiServices {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getSelectedMedicalDiseasesList());
     }
+
+    public void getSubscriptionOffersList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSubscriptionOffersList());
+    }
+
+    public void subscribeUser(final Context context, String id, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .subscribeUser(id));
+    }
 }

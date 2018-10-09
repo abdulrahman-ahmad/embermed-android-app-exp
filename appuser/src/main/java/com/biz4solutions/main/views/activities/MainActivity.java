@@ -46,6 +46,7 @@ import com.biz4solutions.medicalprofile.views.fragments.ViewMedicalProfileFragme
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.models.OpenTok;
+import com.biz4solutions.models.SubscriptionCardDetails;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.GenericResponse;
@@ -54,6 +55,7 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
 import com.biz4solutions.services.FirebaseMessagingService;
 import com.biz4solutions.services.GpsServices;
+import com.biz4solutions.subscription.views.fragments.SubscriptionFragment;
 import com.biz4solutions.triage.views.fragments.ProviderReasonFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallFeedbackWaitingFragment;
 import com.biz4solutions.triage.views.fragments.TriageCallInProgressWaitingFragment;
@@ -263,6 +265,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_medical_profile:
                         callViewMedicalProfileApi();
                         break;
+                    case R.id.nav_subscription:
+                        callSubscriptionOffersApi();
+                        break;
                     case R.id.nav_log_out:
                         showLogOutAlertDialog();
                         break;
@@ -301,7 +306,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } else {
                     openMedicalProfileFragment(null);
                 }
+            }
 
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void callSubscriptionOffersApi() {
+        if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+        new ApiServices().getSubscriptionOffersList(this, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                if (response != null) {
+                    ArrayList<SubscriptionCardDetails> offersList = (ArrayList<SubscriptionCardDetails>) ((GenericResponse) response).getData();
+                    openSubscriptionFragment(offersList);
+                }
             }
 
             @Override
@@ -487,6 +516,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                     .replace(R.id.main_container, IncidentReportsListFragment.newInstance())
                     .addToBackStack(IncidentReportsListFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openSubscriptionFragment(ArrayList<SubscriptionCardDetails> offerList) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof SubscriptionFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, SubscriptionFragment.newInstance(offerList))
+                    .addToBackStack(SubscriptionFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();

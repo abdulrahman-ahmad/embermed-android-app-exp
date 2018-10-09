@@ -108,5 +108,8 @@
     <string name="my_profile">My Profile</string>
     <string name="saved_cards">Saved Cards</string>
     <string name="txt_hint_search_diseases">Search Diseases</string>
+    <string name="txt_buy_now">Buy Now</string>
+    <string name="dollar_symbol">$</string>
+    <string name="no_plans_available">No plans available.</string>
 
 </resources>
