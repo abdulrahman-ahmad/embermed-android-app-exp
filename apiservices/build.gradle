@@ -39,7 +39,7 @@ android {
         }
         prod {
             //production url
-            buildConfigField 'String', 'HOST', '"http://osiris-uat-ws-env.us-west-1.elasticbeanstalk.com"'
+            buildConfigField 'String', 'HOST', '"http://api.embermed.com"'
         }
     }
 }
