@@ -245,5 +245,4 @@ public class ApiServices {
         ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
                 .getSelectedMedicalDiseasesList());
     }
-
 }

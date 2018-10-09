@@ -19,12 +19,10 @@ import java.util.Collection;
 public class MedicalAutoCompleteAdapter extends ArrayAdapter {
     private final int itemLayout;
 
-    private Context context;
     private ArrayList<MedicalDisease> arrayList;
 
     public MedicalAutoCompleteAdapter(@NonNull Context context, int resource, ArrayList<MedicalDisease> arrayList) {
         super(context, resource, arrayList);
-        this.context = context;
         this.arrayList = arrayList;
         itemLayout = resource;
     }

@@ -41,7 +41,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/_15dp"
             android:background="@drawable/ic_remove_disease"
-            android:padding="@dimen/_5dp" />
+            android:padding="@dimen/_20dp" />
 
         <View
             android:id="@+id/iv_item_medical_profile_divider"

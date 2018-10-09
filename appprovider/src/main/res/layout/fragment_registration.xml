@@ -710,7 +710,7 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="@dimen/_10dp"
                         android:gravity="center"
-                        android:text="@string/txt_registration_form_poilicy_description"
+                        android:text="@string/txt_registration_form_policy_description"
                         android:textSize="@dimen/_12dp" />
 
                     <LinearLayout

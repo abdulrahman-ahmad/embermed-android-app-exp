@@ -42,10 +42,13 @@ import com.biz4solutions.main.views.fragments.DashboardFragment;
 import com.biz4solutions.main.views.fragments.EmsAlertUnconsciousFragment;
 import com.biz4solutions.main.views.fragments.FeedbackFragment;
 import com.biz4solutions.medicalprofile.views.fragments.MedicalProfileFragment;
+import com.biz4solutions.medicalprofile.views.fragments.ViewMedicalProfileFragment;
 import com.biz4solutions.models.EmsRequest;
+import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.models.OpenTok;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
+import com.biz4solutions.models.response.GenericResponse;
 import com.biz4solutions.newsfeed.views.fragments.NewsFeedFragment;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.reports.views.fragments.IncidentReportsListFragment;
@@ -64,6 +67,7 @@ import com.biz4solutions.utilities.FirebaseAuthUtil;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.GoogleUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public DrawerLayout drawerLayout;
     public LinearLayout btnLogOut;
     public LinearLayout btnCall911;
+    public LinearLayout btnEditMedicalProfile;
     public FeedbackRequest feedbackRequest;
     public boolean isTutorialMode = false;
     public int tutorialId = 0;
@@ -105,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             toolbarTitle = binding.appBarMain.toolbarTitle;
             btnLogOut = binding.appBarMain.btnLogOut;
             btnCall911 = binding.appBarMain.btnCall911;
+            btnEditMedicalProfile = binding.appBarMain.btnEditMedicalProfile;
             btnLogOut.setOnClickListener(this);
             btnCall911.setOnClickListener(this);
         }
@@ -254,6 +260,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_how_it_works:
                         openHowItWorksFragment();
                         break;
+                    case R.id.nav_medical_profile:
+                        callViewMedicalProfileApi();
+                        break;
                     case R.id.nav_log_out:
                         showLogOutAlertDialog();
                         break;
@@ -270,6 +279,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }, 250);
         return true;
+    }
+
+    private void callViewMedicalProfileApi() {
+        if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
+            Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            return;
+        }
+        CommonFunctions.getInstance().loadProgressDialog(MainActivity.this);
+        new ApiServices().getSelectedMedicalDiseasesList(MainActivity.this, new RestClientResponse() {
+            @Override
+            public void onSuccess(Object response, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                if (response != null) {
+                    ArrayList<MedicalDisease> diseaseArrayList = (ArrayList<MedicalDisease>) ((GenericResponse) response).getData();
+                    if (diseaseArrayList != null && diseaseArrayList.size() > 0) {
+                        openViewMedicalProfileFragment(diseaseArrayList);
+                    } else {
+                        openMedicalProfileFragment(diseaseArrayList);
+                    }
+                } else {
+                    openMedicalProfileFragment(null);
+                }
+
+            }
+
+            @Override
+            public void onFailure(String errorMessage, int statusCode) {
+                CommonFunctions.getInstance().dismissProgressDialog();
+                Toast.makeText(MainActivity.this, errorMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void showLogOutAlertDialog() {
@@ -810,7 +850,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void openMedicalProfileFragment() {
+    public void openMedicalProfileFragment(ArrayList<MedicalDisease> diseaseArrayList) {
         try {
             Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
             if (currentFragment instanceof MedicalProfileFragment) {
@@ -819,13 +859,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().executePendingTransactions();
             getSupportFragmentManager().beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.main_container, MedicalProfileFragment.newInstance())
+                    .replace(R.id.main_container, MedicalProfileFragment.newInstance(diseaseArrayList))
                     .addToBackStack(MedicalProfileFragment.fragmentName)
                     .commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+    public void openViewMedicalProfileFragment(ArrayList<MedicalDisease> diseaseArrayList) {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof ViewMedicalProfileFragment) {
+                return;
+            }
+            getSupportFragmentManager().executePendingTransactions();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.main_container, ViewMedicalProfileFragment.newInstance(diseaseArrayList))
+                    .addToBackStack(ViewMedicalProfileFragment.fragmentName)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void onClick(View view) {

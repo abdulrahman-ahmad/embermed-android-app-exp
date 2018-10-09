@@ -40,7 +40,7 @@ public class ProviderRegistration extends EmptyResponse implements Serializable 
     private String medicalLicenseNumber;
     @SerializedName("optForTriage")
     @Expose
-    private Boolean optForTriage;
+    private boolean optForTriage;
     @SerializedName("phoneNumber")
     @Expose
     private String phoneNumber;
@@ -203,11 +203,11 @@ public class ProviderRegistration extends EmptyResponse implements Serializable 
         this.medicalLicenseNumber = medicalLicenseNumber;
     }
 
-    public Boolean getOptForTriage() {
+    public boolean getOptForTriage() {
         return optForTriage;
     }
 
-    public void setOptForTriage(Boolean optForTriage) {
+    public void setOptForTriage(boolean optForTriage) {
         this.optForTriage = optForTriage;
     }
 

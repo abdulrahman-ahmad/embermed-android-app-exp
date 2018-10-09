@@ -164,5 +164,5 @@ public interface RetrofitRestClient {
     Call<EmptyResponse> updateMedicalDiseases(@Body UserDiseaseListRequest request);
 
     @GET("/api/v1/users/getUserDisease")
-    Call<EmptyResponse> getSelectedMedicalDiseasesList();
+    Call<GenericResponse<ArrayList<MedicalDisease>>> getSelectedMedicalDiseasesList();
 }

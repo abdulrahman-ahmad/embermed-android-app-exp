@@ -83,9 +83,6 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
             case R.id.cv_my_profile:
                 startActivity(new Intent(mainActivity, ProfileActivity.class));
                 break;
-            case R.id.cv_subscriptions:
-                mainActivity.openMedicalProfileFragment();
-                break;
             default:
                 Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                 break;

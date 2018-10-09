@@ -23,16 +23,23 @@ public class MedicalProfileViewModel extends AndroidViewModel implements RestCli
     private ApiServices apiServices;
     private MutableLiveData<ArrayList<MedicalDisease>> diseaseMutableLiveData;
     private MutableLiveData<String> toastMsg;
+    private MutableLiveData<Boolean> isListUpdated;
 
     private MedicalProfileViewModel(@NonNull Application application) {
         super(application);
         apiServices = new ApiServices();
         diseaseMutableLiveData = new MutableLiveData<>();
+        isListUpdated = new MutableLiveData<>();
         toastMsg = new MutableLiveData<>();
     }
 
     public LiveData<ArrayList<MedicalDisease>> getDiseaseMutableLiveData() {
         return diseaseMutableLiveData;
+    }
+
+
+    public MutableLiveData<Boolean> getIsListUpdated() {
+        return isListUpdated;
     }
 
     public MutableLiveData<String> getToastMsg() {
@@ -47,7 +54,7 @@ public class MedicalProfileViewModel extends AndroidViewModel implements RestCli
         apiServices.getMedicalSearchDiseaseList(getApplication().getBaseContext(), searchText, this);
     }
 
-    public void updateDataToServer(Context context, ArrayList<MedicalDisease> diseaseArrayList) {
+    public void updateDataToServer(final Context context, final ArrayList<MedicalDisease> diseaseArrayList) {
         if (CommonFunctions.getInstance().isOffline(getApplication().getBaseContext())) {
             toastMsg.setValue(getApplication().getBaseContext().getString(com.biz4solutions.profile.R.string.error_network_unavailable));
             return;
@@ -62,6 +69,8 @@ public class MedicalProfileViewModel extends AndroidViewModel implements RestCli
             public void onSuccess(Object response, int statusCode) {
                 toastMsg.setValue((((EmptyResponse) response).getMessage()));
                 CommonFunctions.getInstance().dismissProgressDialog();
+                isListUpdated.setValue(true);
+
             }
 
             @Override
@@ -100,4 +109,5 @@ public class MedicalProfileViewModel extends AndroidViewModel implements RestCli
             return (T) new MedicalProfileViewModel(application);
         }
     }
+
 }

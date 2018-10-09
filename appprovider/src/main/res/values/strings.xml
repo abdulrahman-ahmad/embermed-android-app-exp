@@ -105,7 +105,7 @@
     <string name="txt_practise_state">What state are you licensed to practise in?</string>
     <string name="txt_privacy_policy"><a href="https://www.embermed.com">Privacy Policy</a></string>
     <string name="txt_terms_of_service"><a href="https://www.embermed.com">Terms of Service</a></string>
-    <string name="txt_registration_form_poilicy_description">By submitting this registration form, you agree to our</string>
+    <string name="txt_registration_form_policy_description">By submitting this registration form, you agree to our</string>
     <string name="txt_status_cap">STATUS</string>
 
     <string name="txt_pending_info">Your request has been submitted and is pending for approval.</string>
