@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-package com.biz4solutions.provider.registration.adapters;
+package com.biz4solutions.adapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -29,7 +29,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.biz4solutions.provider.R;
+import com.biz4solutions.utilities.R;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.Status;

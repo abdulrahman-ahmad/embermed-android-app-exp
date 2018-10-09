@@ -88,8 +88,6 @@
 
     <string name="my_profile">My Profile</string>
     <string name="txt_personal_cap">PERSONAL</string>
-    <string name="txt_phone_no">Phone no</string>
-    <string name="txt_address_optional">Address (optional)</string>
     <string name="txt_profession">PROFESSION</string>
     <string name="txt_occupation">Occupation</string>
     <string name="txt_other_occupation">If other, mention your occupation</string>

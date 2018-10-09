@@ -169,6 +169,27 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/number_filter"
+                        android:enabled="false"
+                        android:hint="@string/txt_phone_no"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.phoneNumber}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
                     android:focusableInTouchMode="false"
                     android:orientation="vertical"
                     android:theme="@style/txtInputLayout">
@@ -226,27 +247,6 @@
                 <View
                     style="@style/divider"
                     android:layout_margin="0dp" />
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_12dp"
-                    android:theme="@style/txtInputLayout">
-
-                    <EditText
-                        style="@style/profile_edt_style"
-                        android:background="@null"
-                        android:digits="@string/number_filter"
-                        android:enabled="false"
-                        android:hint="@string/txt_phone_no"
-                        android:inputType="number"
-                        android:paddingTop="@dimen/_10dp"
-                        android:text="@{viewModel.registration.phoneNumber}"
-                        android:textColor="@color/tv_value_profile"
-                        android:theme="@style/EditTextHint" />
-                </android.support.design.widget.TextInputLayout>
-
-                <View style="@style/divider" />
 
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -531,7 +531,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:checked="@{safeUnbox(viewModel.registration.optForTriage)}"
-                    android:enabled="false"
                     android:theme="@style/switch_style" />
             </LinearLayout>
 

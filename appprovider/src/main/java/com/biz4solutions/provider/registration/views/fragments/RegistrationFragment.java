@@ -36,7 +36,7 @@ import com.biz4solutions.profile.databinding.DialogPickMediaBinding;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentRegistrationBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.provider.registration.adapters.PlaceAutoCompleteAdapter;
+import com.biz4solutions.adapters.PlaceAutoCompleteAdapter;
 import com.biz4solutions.provider.registration.adapters.SpinnerAdapter;
 import com.biz4solutions.provider.registration.viewmodels.RegistrationViewModel;
 import com.biz4solutions.provider.utilities.FileUtils;

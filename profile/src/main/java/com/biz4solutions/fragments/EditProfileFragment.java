@@ -20,9 +20,11 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.adapters.PlaceAutoCompleteAdapter;
 import com.biz4solutions.data.RequestCodes;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
@@ -33,16 +35,27 @@ import com.biz4solutions.utilities.BindingUtils;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.viewmodels.EditProfileViewModel;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.AutocompleteFilter;
+import com.google.android.gms.location.places.AutocompletePrediction;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import static android.app.Activity.RESULT_OK;
 
-public class EditProfileFragment extends Fragment {
+public class EditProfileFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
     public static final String fragmentName = "EditProfileFragment";
     private ProfileActivity activity;
     private EditProfileViewModel viewModel;
     private FragmentEditProfileBinding binding;
     private Uri photoURI;
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceAutoCompleteAdapter mAdapter;
 
     public static EditProfileFragment newInstance() {
         return new EditProfileFragment();
@@ -66,7 +79,16 @@ public class EditProfileFragment extends Fragment {
                     viewModel.isProvider() ? Constants.ROLE_NAME_PROVIDER : Constants.ROLE_NAME_USER);
         }
         initListeners();
+        initPlaces();
         return binding.getRoot();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mGoogleApiClient.stopAutoManage(activity);
+        mGoogleApiClient.disconnect();
+        viewModel.getToastMsg().removeObservers(this);
     }
 
     private void initListeners() {
@@ -76,6 +98,65 @@ public class EditProfileFragment extends Fragment {
                 Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void initPlaces() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(activity)
+                    .enableAutoManage(activity, 2 /* clientId */, this)
+                    .addApi(Places.GEO_DATA_API)
+                    .build();
+        }
+
+        binding.edtAddress.setOnItemClickListener(mAutocompleteClickListener);
+        AutocompleteFilter typeFilter = new AutocompleteFilter.Builder()
+                .setCountry(Constants.BOUNDS_COUNTRY)
+                .build();
+        mAdapter = new PlaceAutoCompleteAdapter(activity, mGoogleApiClient, null,
+                typeFilter);
+        binding.edtAddress.setAdapter(mAdapter);
+        binding.edtAddress.setThreshold(Constants.AUTO_COMPLETE_THRESHOLD);
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(activity, "" + connectionResult.getErrorMessage(), Toast.LENGTH_SHORT).show();
+    }
+
+    private ResultCallback<PlaceBuffer> mUpdatePlaceDetailsCallback
+            = new ResultCallback<PlaceBuffer>() {
+        @Override
+        public void onResult(PlaceBuffer places) {
+            if (!places.getStatus().isSuccess()) {
+                // Request did not complete successfully
+                places.release();
+                return;
+            }
+            // Get the Place object from the buffer.
+            final Place place = places.get(0);
+            onPlaceSelected(place);
+            places.release();
+        }
+    };
+
+    private AdapterView.OnItemClickListener mAutocompleteClickListener
+            = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            final AutocompletePrediction item = mAdapter.getItem(position);
+            final String placeId = item.getPlaceId();
+            PendingResult<PlaceBuffer> placeResult = Places.GeoDataApi
+                    .getPlaceById(mGoogleApiClient, placeId);
+            placeResult.setResultCallback(mUpdatePlaceDetailsCallback);
+        }
+    };
+
+    private void onPlaceSelected(Place place) {
+        try {
+            viewModel.setAddress(place.getAddress().toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void showAddMediaBottomSheet(View view) {

@@ -140,9 +140,14 @@ public class IncidentReportDetailsFragment extends Fragment implements View.OnCl
             }
 
             setIncidentReportView();
-
-            @SuppressLint("DefaultLocale") String amount = "$" + String.format("%.2f", request.getAmount());
-            binding.layoutIncidentAmount.tvAmountValue.setText(amount);
+            if (request.getAmount() > 0) {
+                @SuppressLint("DefaultLocale") String amount = "$" + String.format("%.2f", request.getAmount());
+                binding.layoutIncidentAmount.tvAmountValue.setText(amount);
+            } else {
+                binding.layoutIncidentAmount.tvAmountValue.setVisibility(View.GONE);
+                binding.layoutIncidentAmount.tvAmountTitle.setVisibility(View.GONE);
+                binding.layoutIncidentAmount.space1.setVisibility(View.GONE);
+            }
             if (request.getCompletedAt() > 0) {
                 calendar.setTimeInMillis(request.getCompletedAt());
                 requestDate = ("" + formatterDate.format(calendar.getTime()));

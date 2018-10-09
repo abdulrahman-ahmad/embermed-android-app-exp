@@ -58,6 +58,8 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
     public ObservableField<String> displayDateOfBirth;
     public ObservableField<String> firstName;
     public ObservableField<String> lastName;
+    public ObservableField<String> phoneNumber;
+    public ObservableField<String> address;
     private Long selectedBirthDateValue = null;
     private String tempOccupation;
     private String tempEdtOccupation;
@@ -78,6 +80,8 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         displayDateOfBirth = new ObservableField<>();
         firstName = new ObservableField<>();
         lastName = new ObservableField<>();
+        phoneNumber = new ObservableField<>();
+        address = new ObservableField<>();
         apiServices = new ApiServices();
         getCprListData();
         getOccupationListData();
@@ -182,9 +186,13 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             email.setValue(user.getEmail());
             firstName.set(user.getFirstName());
             lastName.set(user.getLastName());
+            phoneNumber.set(user.getPhoneNumber());
+            address.set(user.getAddress());
             registration.setFirstName(user.getFirstName());
             registration.setLastName(user.getLastName());
             registration.setEmail(user.getEmail());
+            registration.setPhoneNumber(user.getPhoneNumber());
+            registration.setAddress(user.getAddress());
         }
     }
 
@@ -494,6 +502,8 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         user.setGender(registration.getGender());
         user.setDob(registration.getDob());
         user.setProfileUrl(registration.getProfileUrl());
+        user.setPhoneNumber(registration.getPhoneNumber());
+        user.setAddress(registration.getAddress());
         SharedPrefsManager.getInstance().storeUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, user);
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(((EmptyResponse) response).getMessage());

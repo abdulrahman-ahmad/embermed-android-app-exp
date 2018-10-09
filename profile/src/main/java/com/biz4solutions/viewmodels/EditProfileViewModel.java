@@ -105,7 +105,13 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         } else if (tempUser.getGender() == null || tempUser.getGender().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_gender));
             return false;
-        } /*else if (isProvider()
+        } else if (tempUser.getPhoneNumber() == null || tempUser.getPhoneNumber().isEmpty()) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
+            return false;
+        } else if (tempUser.getPhoneNumber() != null && tempUser.getPhoneNumber().length() < 7) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
+            return false;
+        }/*else if (isProvider()
                 && (tempUser.getProfileUrl() == null || tempUser.getProfileUrl().isEmpty())
                 && (capturedUri == null || capturedUri.getPath() == null || capturedUri.getPath().isEmpty())) {
             toastMsg.setValue(context.getString(R.string.error_empty_image));
@@ -122,6 +128,15 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
     //watcher for lastName
     public void lastNameWatcher(CharSequence s, int start, int before, int count) {
         tempUser.setLastName(s.toString());
+    }
+
+    //watcher for phone number
+    public void phoneNumberWatcher(CharSequence s, int start, int before, int count) {
+        tempUser.setPhoneNumber(s.toString().trim());
+    }
+
+    public void setAddress(String address) {
+        tempUser.setAddress(address.trim());
     }
 
     //save btn click

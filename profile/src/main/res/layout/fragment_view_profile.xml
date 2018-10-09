@@ -86,6 +86,18 @@
 
                 <TextView
                     style="@style/tv_label"
+                    android:text="@string/txt_phone_no"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.phoneNumber}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
                     android:text="@string/date_of_birth"
                     tools:ignore="SpUsage" />
 
@@ -128,6 +140,18 @@
                 <View
                     style="@style/divider"
                     android:layout_margin="0dp" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/txt_address"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.address}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
 
                 <LinearLayout
                     android:id="@+id/ll_change_password"

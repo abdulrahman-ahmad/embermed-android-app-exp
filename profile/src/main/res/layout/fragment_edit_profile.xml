@@ -137,6 +137,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_12dp"
+                android:theme="@style/txtInputLayout">
+
+                <EditText
+                    android:id="@+id/edt_phone_no"
+                    style="@style/profile_edt_style"
+                    android:background="@null"
+                    android:digits="@string/number_filter"
+                    android:hint="@string/txt_phone_no"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:onTextChanged="@{viewModel::phoneNumberWatcher}"
+                    android:paddingTop="@dimen/_8dp"
+                    android:text="@{viewModel.userData.phoneNumber}"
+                    android:theme="@style/EditTextHint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <View style="@style/divider" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12dp"
                 android:focusableInTouchMode="false"
                 android:orientation="vertical"
                 android:theme="@style/txtInputLayout">
@@ -222,6 +244,27 @@
             <View
                 style="@style/divider"
                 android:layout_margin="0dp" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12dp"
+                android:theme="@style/txtInputLayout">
+
+                <AutoCompleteTextView
+                    android:id="@+id/edt_address"
+                    style="@style/profile_edt_style"
+                    android:background="@null"
+                    android:hint="@string/txt_address_optional"
+                    android:inputType="textWebEmailAddress"
+                    android:maxLength="255"
+                    android:maxLines="1"
+                    android:paddingTop="@dimen/_8dp"
+                    android:text="@{viewModel.userData.address}"
+                    android:theme="@style/EditTextHint" />
+            </android.support.design.widget.TextInputLayout>
+
+            <View style="@style/divider" />
 
             <LinearLayout
                 android:layout_width="match_parent"

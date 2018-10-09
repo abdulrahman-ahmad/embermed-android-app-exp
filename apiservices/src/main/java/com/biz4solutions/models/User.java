@@ -27,6 +27,7 @@ public class User implements Serializable {
     private Boolean isApproved;
     private Boolean isProviderSubscribed;
     private String phoneNumber;
+    private String address;
 
     public String getProfileUrl() {
         return profileUrl;
@@ -172,6 +173,14 @@ public class User implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -193,6 +202,7 @@ public class User implements Serializable {
                 ", isApproved=" + isApproved +
                 ", isProviderSubscribed=" + isProviderSubscribed +
                 ", phoneNumber=" + phoneNumber +
+                ", address=" + address +
                 '}';
     }
 }
