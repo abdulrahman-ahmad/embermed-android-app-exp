@@ -397,6 +397,12 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
         } else if (registration.getLastName() == null || registration.getLastName().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_last_name));
             return false;
+        } else if (registration.getPhoneNumber() == null || registration.getPhoneNumber().isEmpty()) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
+            return false;
+        } else if (registration.getPhoneNumber() != null && registration.getPhoneNumber().length() < 7) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
+            return false;
         } else if (registration.getDob() == null) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_dob));
             return false;
@@ -405,12 +411,6 @@ public class RegistrationViewModel extends ViewModel implements FirebaseUploadUt
             return false;
         } else if (registration.getGender() == null || registration.getGender().isEmpty()) {
             toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_gender));
-            return false;
-        } else if (registration.getPhoneNumber() == null || registration.getPhoneNumber().isEmpty()) {
-            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
-            return false;
-        } else if (registration.getPhoneNumber() != null && registration.getPhoneNumber().length() < 7) {
-            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
             return false;
         }
         return true;

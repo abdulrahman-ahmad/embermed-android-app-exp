@@ -96,6 +96,12 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         } else if (tempUser.getLastName() == null || tempUser.getLastName().trim().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_last_name));
             return false;
+        } else if (tempUser.getPhoneNumber() == null || tempUser.getPhoneNumber().isEmpty()) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
+            return false;
+        } else if (tempUser.getPhoneNumber() != null && tempUser.getPhoneNumber().length() < 7) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
+            return false;
         } else if (tempUser.getDob() == null) {
             toastMsg.setValue(context.getString(R.string.error_empty_dob));
             return false;
@@ -105,13 +111,7 @@ public class EditProfileViewModel extends ViewModel implements FirebaseUploadUti
         } else if (tempUser.getGender() == null || tempUser.getGender().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_gender));
             return false;
-        } else if (tempUser.getPhoneNumber() == null || tempUser.getPhoneNumber().isEmpty()) {
-            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
-            return false;
-        } else if (tempUser.getPhoneNumber() != null && tempUser.getPhoneNumber().length() < 7) {
-            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
-            return false;
-        }/*else if (isProvider()
+        } /*else if (isProvider()
                 && (tempUser.getProfileUrl() == null || tempUser.getProfileUrl().isEmpty())
                 && (capturedUri == null || capturedUri.getPath() == null || capturedUri.getPath().isEmpty())) {
             toastMsg.setValue(context.getString(R.string.error_empty_image));
