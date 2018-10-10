@@ -1,5 +1,6 @@
 package com.biz4solutions.viewmodels;
 
+import android.annotation.SuppressLint;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
@@ -11,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.biz4solutions.activities.ProfileActivity;
 import com.biz4solutions.apiservices.ApiServices;
@@ -22,10 +22,14 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
-import com.biz4solutions.utilities.DatePickerDialog;
 import com.biz4solutions.utilities.FirebaseUploadUtil;
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
+import com.codetroopers.betterpickers.calendardatepicker.MonthAdapter;
 
-public class EditProfileViewModel extends ViewModel implements DatePickerDialog.CustomDateInterface, FirebaseUploadUtil.FirebaseUploadInterface, RestClientResponse {
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+public class EditProfileViewModel extends ViewModel implements FirebaseUploadUtil.FirebaseUploadInterface, RestClientResponse {
 
     public ObservableField<Integer> radioBtnId;
     public final MutableLiveData<User> userData;
@@ -34,7 +38,10 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
     private User tempUser;
     private Uri capturedUri;
     private ApiServices apiServices;
+    @SuppressLint("StaticFieldLeak")
     private Context context;
+    private Long selectedDateValue = null;
+    private Calendar todayDate = Calendar.getInstance();
 
     private EditProfileViewModel(Context context) {
         super();
@@ -53,7 +60,7 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
     public void setUserData(User userData) {
         if (userData != null) {
             tempUser = userData;
-            displayDateOfBirth.set(tempUser.getDisplayDateOfBirth());
+            displayDateOfBirth.set(formatDate(tempUser.getDob()));
             setRadioBtnSelection(userData.getGender());
         } else {
             tempUser = new User();
@@ -61,52 +68,57 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
         this.userData.setValue(tempUser);
     }
 
-
     public void setCapturedUri(Uri capturedUri) {
         this.capturedUri = capturedUri;
     }
 
     private void setRadioBtnSelection(String gender) {
-        if (gender == null)
+        if (gender == null || gender.isEmpty()) {
             return;
-        switch (gender.toLowerCase()) {
-            case "male":
+        }
+        switch (gender.toUpperCase()) {
+            case "MALE":
                 radioBtnId.set(R.id.rdb_male);
                 break;
-            case "female":
+            case "FEMALE":
                 radioBtnId.set(R.id.rdb_female);
                 break;
-            case "other":
+            case "OTHER":
                 radioBtnId.set(R.id.rdb_other);
                 break;
         }
     }
 
     private boolean validateInfo(Context context) {
-
-        //todo:need to change msg's;
-        if (tempUser.getFirstName() == null || tempUser.getFirstName().isEmpty()) {
+        if (tempUser.getFirstName() == null || tempUser.getFirstName().trim().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_first_name));
             return false;
-        } else if (tempUser.getLastName() == null || tempUser.getLastName().isEmpty()) {
+        } else if (tempUser.getLastName() == null || tempUser.getLastName().trim().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_last_name));
             return false;
-        } else if (tempUser.getServerDateOfBirth() == null || tempUser.getServerDateOfBirth().isEmpty()) {
+        } else if (tempUser.getPhoneNumber() == null || tempUser.getPhoneNumber().isEmpty()) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_empty_phone));
+            return false;
+        } else if (tempUser.getPhoneNumber() != null && tempUser.getPhoneNumber().length() < 7) {
+            toastMsg.setValue(context.getString(com.biz4solutions.profile.R.string.error_invalid_phone));
+            return false;
+        } else if (tempUser.getDob() == null) {
             toastMsg.setValue(context.getString(R.string.error_empty_dob));
+            return false;
+        } else if (tempUser.getDob() > Calendar.getInstance().getTimeInMillis()) {
+            toastMsg.setValue(context.getString(R.string.error_invalid_dob));
             return false;
         } else if (tempUser.getGender() == null || tempUser.getGender().isEmpty()) {
             toastMsg.setValue(context.getString(R.string.error_empty_gender));
             return false;
-        }
-        if (isProvider()) {
-            if ((tempUser.getImageUrl() == null || tempUser.getImageUrl().isEmpty()) && (capturedUri == null || capturedUri.getPath().isEmpty())) {
-                toastMsg.setValue(context.getString(R.string.error_empty_image));
-                return false;
-            }
-        }
+        } /*else if (isProvider()
+                && (tempUser.getProfileUrl() == null || tempUser.getProfileUrl().isEmpty())
+                && (capturedUri == null || capturedUri.getPath() == null || capturedUri.getPath().isEmpty())) {
+            toastMsg.setValue(context.getString(R.string.error_empty_image));
+            return false;
+        }*/
         return true;
     }
-
 
     //watcher for firstName
     public void firstNameWatcher(CharSequence s, int start, int before, int count) {
@@ -118,58 +130,116 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
         tempUser.setLastName(s.toString());
     }
 
+    //watcher for phone number
+    public void phoneNumberWatcher(CharSequence s, int start, int before, int count) {
+        tempUser.setPhoneNumber(s.toString().trim());
+    }
+
+    public void setAddress(String address) {
+        tempUser.setAddress(address.trim());
+    }
+
     //save btn click
     public void onSaveBtnClick(View v) {
         //api call
-
         if (CommonFunctions.getInstance().isOffline(context)) {
-            Toast.makeText(context, context.getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
+            toastMsg.setValue(context.getString(R.string.error_network_unavailable));
             return;
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard((ProfileActivity) context);
         if (validateInfo(v.getContext())) {
+            tempUser.setFirstName(tempUser.getFirstName().trim());
+            tempUser.setLastName(tempUser.getLastName().trim());
+            CommonFunctions.getInstance().loadProgressDialog(v.getContext());
             if (capturedUri != null) {
-                FirebaseUploadUtil.uploadImageToFirebase(v.getContext(), tempUser.getUserId(), capturedUri, this);
+                FirebaseUploadUtil.uploadImageToFirebase(tempUser.getUserId(), capturedUri, this);
             } else {
-                if (isProvider()) {
-                    updateProviderProfile();
-                } else {
-                    updateUserProfile();
-                }
+                saveUserData();
             }
+        }
+    }
+
+    private void saveUserData() {
+        if (isProvider()) {
+            updateProviderProfile();
+        } else {
+            updateUserProfile();
         }
     }
 
     //listener for radio btn
     public void onRadioBtnChanged(RadioGroup radioGroup, int id) {
-        tempUser.setGender(((RadioButton) radioGroup.findViewById(id)).getText().toString());
+        if (radioGroup.findViewById(id) != null) {
+            tempUser.setGender(((RadioButton) radioGroup.findViewById(id)).getText().toString());
+        }
     }
-
 
     //Date of  birth textview click.
     public void onDobEdtClick(View v) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog();
-        datePickerDialog.registerListener(this, ((ContextWrapper) v.getContext()).getBaseContext());
-        datePickerDialog.showDatePickerDialog(isProvider() != null && isProvider());
+        selectDate(((ContextWrapper) v.getContext()).getBaseContext());
     }
 
-    @Override
-    public void onDateSetListener(String selectedDateToSendServer, String formattedDate) {
-        setDob(selectedDateToSendServer, formattedDate);
+    private void selectDate(Context context) {
+        int MIN_YEAR_INTERVAL = 0;
+        if (isProvider()) {
+            MIN_YEAR_INTERVAL = 18;
+        }
+        Calendar previousSelectedDate = Calendar.getInstance();
+        int previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay;
+        if (selectedDateValue != null) {
+            previousSelectedDate.setTimeInMillis(selectedDateValue);
+            previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR);
+        } else {
+            previousSelectedDate.setTimeInMillis(todayDate.getTimeInMillis());
+            previousSelectedDateYear = previousSelectedDate.get(Calendar.YEAR) - MIN_YEAR_INTERVAL;
+        }
+        previousSelectedDateMonth = previousSelectedDate.get(Calendar.MONTH);
+        previousSelectedDateDay = previousSelectedDate.get(Calendar.DAY_OF_MONTH);
+
+
+        CalendarDatePickerDialogFragment cdp = new CalendarDatePickerDialogFragment()
+                .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int monthOfYear, int dayOfMonth) {
+                        displayDateOfBirth.set(formatDate(year, monthOfYear, dayOfMonth));
+                        tempUser.setDob(selectedDateValue);
+                    }
+                })
+                .setDoneText("OK")
+                .setCancelText("CANCEL")
+                .setThemeCustom(R.style.MyCustomBetterPickersDialogs)
+                .setPreselectedDate(previousSelectedDateYear, previousSelectedDateMonth, previousSelectedDateDay)
+                .setDateRange(new MonthAdapter.CalendarDay(todayDate.get(Calendar.YEAR) - 99, todayDate.get(Calendar.MONTH), todayDate.get(Calendar.DAY_OF_MONTH)),
+                        new MonthAdapter.CalendarDay(todayDate.get(Calendar.YEAR) - MIN_YEAR_INTERVAL, todayDate.get(Calendar.MONTH), todayDate.get(Calendar.DAY_OF_MONTH)));
+        if (context instanceof ProfileActivity) {
+            cdp.show(((ProfileActivity) context).getSupportFragmentManager(), "fragment");
+        }
     }
 
-    private void setDob(@SuppressWarnings("unused") String dob, String formattedDate) {
-        displayDateOfBirth.set(formattedDate);
-        tempUser.setServerDateOfBirth(dob);
-        tempUser.setDisplayDateOfBirth(formattedDate);
+    private String formatDate(Long millis) {
+        if (millis == null) {
+            return "";
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(millis);
+        return formatDate(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    private String formatDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day);
+        selectedDateValue = calendar.getTimeInMillis();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_FORMAT);
+        return sdf.format(calendar.getTime());
     }
 
     private void updateProviderProfile() {
         //internet check
         if (CommonFunctions.getInstance().isOffline(context)) {
             toastMsg.setValue(context.getString(R.string.error_network_unavailable));
+            CommonFunctions.getInstance().dismissProgressDialog();
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(context);
         apiServices.updateProviderProfile(context, tempUser, this);
     }
 
@@ -177,9 +247,9 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
         //internet check
         if (CommonFunctions.getInstance().isOffline(context)) {
             toastMsg.setValue(context.getString(R.string.error_network_unavailable));
+            CommonFunctions.getInstance().dismissProgressDialog();
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(context);
         apiServices.updateUserProfile(context, tempUser, this);
     }
 
@@ -195,34 +265,25 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
             context = null;
     }
 
-    @Override
-    public void uploadSuccess(String imageUrl) {
-        if (imageUrl != null) {
-            //call api
-            tempUser.setImageUrl(imageUrl);
-            if (isProvider()) {
-                //call provider api
-                updateProviderProfile();
-            } else {
-                //call user api
-                updateUserProfile();
-            }
-        } else {
-            toastMsg.setValue("Something went wrong, please try after some time");
-        }
-    }
-
-
     //check customer is user or provider
-    private Boolean isProvider() {
-        if (tempUser.getRoleName() == null)
-            return null;
-
+    public boolean isProvider() {
+        if (tempUser.getRoleName() == null) {
+            return false;
+        }
         return tempUser.getRoleName() == null || !tempUser.getRoleName().toLowerCase().equals("user");
     }
 
     @Override
-    public void uploadError(String exceptionMsg) {
+    public void uploadSuccess(String imageUrl, int fileCode) {
+        if (imageUrl != null) {
+            tempUser.setProfileUrl(imageUrl);
+        }
+        saveUserData();
+    }
+
+    @Override
+    public void uploadError(String exceptionMsg, int fileCode) {
+        CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(exceptionMsg);
     }
 
@@ -235,7 +296,7 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
 
     private void updatePreferences() {
         SharedPrefsManager.getInstance().storeUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, tempUser);
-        (((ProfileActivity) context)).openViewProfileFragment();
+        (((ProfileActivity) context)).reOpenViewProfileFragment();
     }
 
     @Override
@@ -243,7 +304,6 @@ public class EditProfileViewModel extends ViewModel implements DatePickerDialog.
         CommonFunctions.getInstance().dismissProgressDialog();
         toastMsg.setValue(errorMessage);
     }
-
 
     @SuppressWarnings("unchecked")
     public static class EditProfileViewModelFactory extends ViewModelProvider.NewInstanceFactory {

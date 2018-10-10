@@ -14,4 +14,17 @@
 
     <!--for how it works fragment-->
     <color name="bg_card">#eef4f7</color>
+
+
+    <color name="txt_status_green">#197E14</color>
+    <color name="txt_status_desc_light_green">#448a44</color>
+    <color name="txt_status_bg_green">#effeeb</color>
+    <color name="txt_status_red">#ff0000</color>
+    <color name="txt_status_desc_light_red">#a94140</color>
+    <color name="txt_status_bg_red">#fce8e9</color>
+    <color name="txt_status_orange">#ff4200</color>
+    <color name="txt_status_desc_light_pending">@color/tv_value_profile</color>
+    <color name="txt_status_bg_orange">#ffefe8</color>
+
+
 </resources>

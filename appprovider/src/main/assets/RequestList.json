@@ -8,7 +8,7 @@
       "longitude": -112.0752221,
       "requestTime": 1537803647420,
       "priority": "IMMEDIATE",
-      "amount": 500,
+      "amount": 0,
       "patientDisease": "High Blood Pressure",
       "userDetails": {
         "userId": "123456",
@@ -33,7 +33,7 @@
       "longitude": -112.0752221,
       "requestTime": 1537803647420,
       "priority": "IMMEDIATE",
-      "amount": 500,
+      "amount": 0,
       "patientDisease": "High Blood Pressure",
       "userDetails": {
         "userId": "1234566514",
@@ -58,7 +58,7 @@
       "longitude": 73.7825719,
       "requestTime": 1537803647420,
       "priority": "HIGH",
-      "amount": 250,
+      "amount": 0,
       "patientDisease": "High Blood Pressure",
       "userDetails": {
         "userId": "123456789",

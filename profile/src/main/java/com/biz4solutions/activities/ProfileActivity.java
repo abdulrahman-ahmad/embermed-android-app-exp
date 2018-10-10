@@ -1,6 +1,9 @@
 package com.biz4solutions.activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,14 +12,19 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.biz4solutions.fragments.EditProfileFragment;
 import com.biz4solutions.fragments.ViewProfileFragment;
 import com.biz4solutions.profile.R;
 import com.biz4solutions.profile.databinding.ActivityProfileBinding;
+import com.biz4solutions.utilities.Constants;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityProfileBinding binding;
+    private BroadcastReceiver logoutBroadcastReceiver;
+    public TextView toolbarTitle;
+    public TextView toolbarBtnEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,27 +33,46 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         initUi();
         initListeners();
         openViewProfileFragment();
+
+        logoutBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                //method call here
+                String action = intent.getAction();
+                if (action != null) {
+                    switch (action) {
+                        case Constants.LOGOUT_RECEIVER:
+                            finish();
+                            break;
+                    }
+                }
+            }
+        };
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constants.LOGOUT_RECEIVER);
+        registerReceiver(logoutBroadcastReceiver, intentFilter);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (logoutBroadcastReceiver != null) {
+            unregisterReceiver(logoutBroadcastReceiver);
+        }
+    }
 
     private void initListeners() {
         binding.toolbarBtnEdit.setOnClickListener(this);
     }
 
     private void initUi() {
-        final Drawable drawable = getResources().getDrawable(com.biz4solutions.utilities.R.drawable.ic_arrow_back_btn);
+        final Drawable drawable = getResources().getDrawable(R.drawable.ic_arrow_back_btn);
         setSupportActionBar(binding.toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(drawable);
         }
-    }
-
-    public void hideEditOption(boolean hide) {
-        if (hide) {
-            binding.toolbarBtnEdit.setVisibility(View.GONE);
-        } else {
-            binding.toolbarBtnEdit.setVisibility(View.VISIBLE);
-        }
+        toolbarTitle = binding.toolbarTitle;
+        toolbarBtnEdit = binding.toolbarBtnEdit;
     }
 
     public void openViewProfileFragment() {
@@ -60,6 +87,18 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     .replace(R.id.frame_profile, ViewProfileFragment.newInstance())
                     .addToBackStack(ViewProfileFragment.fragmentName)
                     .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenViewProfileFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.frame_profile);
+            if (currentFragment instanceof ViewProfileFragment) {
+                return;
+            }
+            getSupportFragmentManager().popBackStack();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -82,7 +121,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 0) {
@@ -96,8 +134,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String fragmentName = getSupportFragmentManager().getBackStackEntryAt(getSupportFragmentManager().getBackStackEntryCount() - 1).getName();
         switch (fragmentName) {
             case EditProfileFragment.fragmentName:
+                reOpenViewProfileFragment();
+                break;
+            default:
                 getSupportFragmentManager().popBackStack();
                 break;
+
         }
     }
 
@@ -123,7 +165,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-//                Toast.makeText(this, "back arrow clicked.", Toast.LENGTH_SHORT).show();
                 onBackPressed();
                 break;
         }

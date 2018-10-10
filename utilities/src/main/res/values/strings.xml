@@ -12,11 +12,13 @@
     <string name="sign_up">Sign Up</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="error_empty_password">Please enter password.</string>
+    <string name="error_empty_old_password">Please enter old password.</string>
     <string name="error_empty_new_password">Please enter new password.</string>
     <string name="error_empty_confirm_password">Please enter confirm password.</string>
     <string name="error_invalid_confirm_password">Password and confirm password must be same.</string>
     <string name="error_incorrect_password">Please enter correct password.</string>
     <string name="error_invalid_password">Please enter password between 8 to 20 characters.</string>
+    <string name="error_invalid_old_password">Please enter old password between 8 to 20 characters.</string>
     <string name="error_invalid_new_password">Please enter new password between 8 to 20 characters.</string>
     <string name="error_empty_email">Please enter email.</string>
     <string name="error_empty_otp">Please enter verification code.</string>
@@ -25,8 +27,27 @@
     <string name="error_empty_first_name">Please enter first name.</string>
     <string name="error_empty_last_name">Please enter last name.</string>
     <string name="error_empty_dob">Please select date of birth.</string>
+    <string name="error_invalid_dob">Please select valid date of birth.</string>
     <string name="error_empty_gender">Please select gender.</string>
     <string name="error_empty_image">Please select profile image.</string>
+
+    <!--for provider registration-->
+    <string name="error_empty_address">Please enter address.</string>
+    <string name="error_empty_phone">Please enter phone number.</string>
+    <string name="error_empty_occupation">Please enter occupation.</string>
+    <string name="error_unselected_occupation">Please select occupation.</string>
+    <string name="error_invalid_phone">Please enter valid phone number.</string>
+    <string name="error_unselected_cpr_institute">Please select CPR institute.</string>
+    <string name="error_unselected_cpr_expiry">Please select CPR certificate expiry date.</string>
+    <string name="error_empty_institute_name">Please enter institution name.</string>
+    <string name="error_empty_speciality">Please enter speciality or subspeciality.</string>
+    <string name="error_invalid_license_npi_number">Please enter valid licence number / NPI number.</string>
+    <string name="error_empty_license_npi_number">Please enter licence number / NPI number.</string>
+    <string name="error_unselected_cpr_certificate">Please select the CPR certificate.</string>
+    <string name="error_unselected_medical_certificate">Please select the medical certificate.</string>
+    <string name="error_empty_state">Please enter practise license state.</string>
+    <string name="error_empty_profile">Please upload profile image.</string>
+
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -65,7 +86,15 @@
     <string name="tutorial_end_message">Congratulation! You\'re educated now.</string>
     <string name="request_completed_marker_message">Request Completed\nLocation</string>
 
+    <string name="active_ember_medics_in_your_city">active ember medics in your city</string>
+    <string name="life_save">life save</string>
+    <string name="triage_call_has_been_made">triage call has been made</string>
+    <string name="_0">0</string>
 
     <!--filters-->
-    <string name="name_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <!-- android:digits="@string/name_filter" add into EditText View -->
+    <string name="alphabet_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="number_filter">0123456789</string>
+    <string name="alphanumeric_filter">abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</string>
+    <string name="alphanumeric_without_space_filter">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</string>
 </resources>

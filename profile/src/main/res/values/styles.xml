@@ -1,17 +1,13 @@
 <resources>
 
     <style name="tv_label">
-        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">@dimen/_12dp</item>
+        <item name="android:textSize">@dimen/_11dp</item>
         <item name="android:textColor">@color/text_hint_color</item>
         <item name="android:layout_marginTop">@dimen/_12dp</item>
     </style>
-
-    <!--<style name="edt_profile_label" parent="tv_label">-->
-    <!--<item name="android:layout_marginTop">@dimen/_5dp</item>-->
-    <!--</style>-->
 
     <style name="tv_center_label" parent="tv_label">
         <item name="android:layout_marginTop">0dp</item>
@@ -22,25 +18,20 @@
     </style>
 
     <style name="tv_value">
-        <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:layout_marginTop">@dimen/_5dp</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_marginTop">@dimen/_2dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">@dimen/_16dp</item>
         <item name="android:textColor">@color/tv_value_profile</item>
     </style>
 
-    <style name="tv_email_value" parent="tv_value">
-        <item name="android:textColor">@color/text_color</item>
-    </style>
-
     <style name="divider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">@color/text_hint_color</item>
         <item name="android:layout_height">0.7dp</item>
-        <item name="android:layout_marginTop">@dimen/_10dp</item>
+        <item name="android:layout_marginTop">@dimen/_4dp</item>
     </style>
-
 
     <style name="profile_edt_style">
         <item name="android:layout_width">match_parent</item>
@@ -55,8 +46,12 @@
         <!--<item name="android:importantForAutofill">no</item>-->
     </style>
 
+    <style name="registration_other_section_edt_style" parent="profile_edt_style">
+        <item name="colorControlActivated">@android:color/black</item>
+    </style>
+
     <style name="profile_email_edt_style" parent="profile_edt_style">
-        <item name="android:textColor">@color/text_color</item>
+        <item name="android:textColor">@color/tv_value_profile</item>
         <item name="android:background">@null</item>
         <item name="android:enabled">false</item>
         <item name="android:inputType">none</item>
@@ -69,7 +64,7 @@
     </style>
 
     <!--Calender View-->
-    <style name="MyCustomBetterPickersDialogs" >
+    <style name="MyCustomBetterPickersDialogs">
         <item name="bpPreHeaderBackgroundColor">@color/colorPrimary</item>
         <item name="bpHeaderBackgroundColor">@color/colorPrimary</item>
         <item name="bpHeaderSelectedTextColor">@color/white</item>
@@ -84,4 +79,10 @@
         <item name="bpButtonsTextColor">@color/colorPrimary</item>
     </style>
 
+    <style name="switch_style" parent="@style/Widget.AppCompat.CompoundButton.Switch">
+        <item name="android:textColorPrimaryDisableOnly">@color/colorPrimary</item>
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="android:colorForeground">@color/colorPrimary</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
 </resources>

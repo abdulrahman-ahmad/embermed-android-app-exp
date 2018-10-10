@@ -21,7 +21,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +36,8 @@ import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
+import com.biz4solutions.models.ProviderRegistration;
+import com.biz4solutions.models.Subscription;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.response.EmsRequestDetailsResponse;
@@ -44,13 +45,16 @@ import com.biz4solutions.models.response.UrgentCaresDataResponse;
 import com.biz4solutions.models.response.UrgentCaresResponse;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
+import com.biz4solutions.provider.account.fragments.AccountSettingFragment;
 import com.biz4solutions.provider.aedmaps.views.fragments.AedMapFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacCallDetailsFragment;
 import com.biz4solutions.provider.cardiac.views.fragments.CardiacIncidentReportFragment;
 import com.biz4solutions.provider.databinding.ActivityMainBinding;
 import com.biz4solutions.provider.main.views.fragments.DashboardFragment;
 import com.biz4solutions.provider.main.views.fragments.FeedbackFragment;
-import com.biz4solutions.provider.main.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.newsfeed.views.fragments.NewsFeedFragment;
+import com.biz4solutions.provider.registration.views.fragments.RegistrationFragment;
+import com.biz4solutions.provider.registration.views.fragments.ViewRegistrationDetailsFragment;
 import com.biz4solutions.provider.reports.view.fragments.IncidentReportsListFragment;
 import com.biz4solutions.provider.services.FirebaseMessagingService;
 import com.biz4solutions.provider.services.GpsServices;
@@ -59,6 +63,7 @@ import com.biz4solutions.provider.triage.views.fragments.TriageCallerFeedbackFra
 import com.biz4solutions.provider.triage.views.fragments.TriageIncidentReportFragment;
 import com.biz4solutions.provider.tutorial.views.fragments.HowItWorksFragment;
 import com.biz4solutions.provider.utilities.ExceptionHandler;
+import com.biz4solutions.provider.utilities.FileUtils;
 import com.biz4solutions.provider.utilities.FirebaseEventUtil;
 import com.biz4solutions.provider.utilities.GpsServicesUtil;
 import com.biz4solutions.utilities.CommonFunctions;
@@ -69,7 +74,7 @@ import com.biz4solutions.utilities.GoogleUtil;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     public NavigationView navigationView;
     public TextView toolbarTitle;
@@ -105,12 +110,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = binding.navView;
         navigationView.setNavigationItemSelectedListener(this);
 
-        initView();
+        initView(false);
 
         if (binding.appBarMain != null) {
             toolbarTitle = binding.appBarMain.toolbarTitle;
             btnCallAlerter = binding.appBarMain.btnCallAlerter;
-            binding.appBarMain.btnCallAlerter.setOnClickListener(this);
         }
 
         broadcastReceiver = new BroadcastReceiver() {
@@ -163,8 +167,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
     }
 
-    private void initView() {
+    private void initView(boolean isOnlyUpdateMenu) {
         String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+        User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+        boolean isProviderSubscribed = false;
+        boolean isApproved = false;
+        if (user != null) {
+            isProviderSubscribed = user.getIsProviderSubscribed() != null && user.getIsProviderSubscribed();
+            isApproved = user.getIsApproved() != null && user.getIsApproved();
+        }
         if (userAuthKey == null || userAuthKey.isEmpty()) {
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(false);
@@ -174,33 +185,65 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
-            openNewsFeedFragment();
+            navigationView.getMenu().findItem(R.id.nav_registration).setVisible(false);
+            if (!isOnlyUpdateMenu) {
+                openNewsFeedFragment();
+            }
         } else {
-            navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
-            openDashBoardFragment();
-            FirebaseMessagingService.setFcmToken(MainActivity.this);
-            FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
-                @Override
-                public void onSuccess(Boolean data) {
-                    isSuccessfullyInitFirebase = true;
-                    if (data != null && data) {
-                        addFirebaseUserEvent();
+            if (isProviderSubscribed) {
+                navigationView.getMenu().findItem(R.id.nav_registration).setVisible(false);
+                if (isApproved) {
+                    navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+                    if (!isOnlyUpdateMenu) {
+                        openDashBoardFragment();
+                    }
+                } else {
+                    navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+                    if (!isOnlyUpdateMenu) {
+                        openNewsFeedFragment();
                     }
                 }
-            };
-            if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
-                FirebaseAuthUtil.getInstance().initDB(callbackListener);
             } else {
-                User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
-                if (user != null) {
-                    FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
+                navigationView.getMenu().findItem(R.id.nav_registration).setVisible(true);
+                if (!isOnlyUpdateMenu) {
+                    openNewsFeedFragment();
+                }
+            }
+
+            if (!isOnlyUpdateMenu) {
+                FirebaseMessagingService.setFcmToken(MainActivity.this);
+                FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
+                    @Override
+                    public void onSuccess(Boolean data) {
+                        isSuccessfullyInitFirebase = true;
+                        if (data != null && data) {
+                            addFirebaseUserEvent();
+                            addFirebaseSubscriptionEvent();
+                        }
+                    }
+                };
+                if (FirebaseAuthUtil.getInstance().isFirebaseAuthValid()) {
+                    FirebaseAuthUtil.getInstance().initDB(callbackListener);
+                } else {
+                    if (user != null) {
+                        FirebaseAuthUtil.getInstance().signInUser(user.getEmail(), BuildConfig.FIREBASE_PASSWORD, callbackListener);
+                    }
                 }
             }
         }
@@ -220,6 +263,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             getRequestDetails(data.getProviderCurrentRequestId(), "", true);
                         }
                     }
+                }
+            }
+        });
+    }
+
+    public void addFirebaseSubscriptionEvent() {
+        FirebaseEventUtil.getInstance().addFirebaseSubscriptionEvent(MainActivity.this, new FirebaseCallbackListener<Subscription>() {
+            @Override
+            public void onSuccess(Subscription data) {
+                if (data != null) {
+                    User user = SharedPrefsManager.getInstance().retrieveUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                    if (user != null) {
+                        if (user.getIsProviderSubscribed() == null) {
+                            user.setIsProviderSubscribed(data.getIsProviderSubscribed());
+                        }
+                        if (user.getIsApproved() == null) {
+                            user.setIsApproved(data.getIsApproved());
+                        }
+                        SharedPrefsManager.getInstance().storeUserPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY, user);
+                    }
+                    initView(true);
                 }
             }
         });
@@ -281,10 +345,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         reOpenDashBoardFragment();
                         break;
                     case R.id.nav_news_feed:
-                        openNewsFeedFragment();
+                        String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(MainActivity.this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
+                        if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                            openNewsFeedFragmentWithAnimation();
+                        } else {
+                            reOpenNewsFeedFragment();
+                        }
+                        break;
+                    case R.id.nav_account_settings:
+                        openAccountSettingFragment();
                         break;
                     case R.id.nav_aed_maps:
                         getAedList();
+                        break;
+                    case R.id.nav_registration:
+                        openRegistrationFragment();
                         break;
                     case R.id.nav_log_out:
                         CommonFunctions.getInstance().showAlertDialog(MainActivity.this, R.string.logout_text, R.string.yes, R.string.no, new DialogDismissCallBackListener<Boolean>() {
@@ -305,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_how_it_works:
                         openHowItWorksFragment();
                         break;
-
                     default:
                         Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
                         break;
@@ -344,6 +418,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         firebaseSignOut();
         stopGpsService();
         openLoginActivity();
+        FileUtils.deleteStoredFiles();
     }
 
     private void clearVariables() {
@@ -359,6 +434,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void firebaseSignOut() {
         FirebaseEventUtil.getInstance().removeFirebaseUserEvent();
+        FirebaseEventUtil.getInstance().removeFirebaseSubscriptionEvent();
         FirebaseEventUtil.getInstance().removeFirebaseAlertEvent();
         //FirebaseAuthUtil.getInstance().signOut();
     }
@@ -368,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case 149:
-                initView();
+                initView(false);
                 break;
             case OpenTokActivity.RC_OPENTOK_ACTIVITY:
                 FirebaseEventUtil.getInstance().removeFirebaseOpenTokEvent();
@@ -460,6 +536,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    private void openRegistrationFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof RegistrationFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main_container, RegistrationFragment.newInstance())
+                .addToBackStack(RegistrationFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     public void openDashBoardFragmentWithAnimation() {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof DashboardFragment) {
@@ -485,6 +573,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .commitAllowingStateLoss();
     }
 
+    private void openNewsFeedFragmentWithAnimation() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof NewsFeedFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, NewsFeedFragment.newInstance())
+                .addToBackStack(NewsFeedFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    private void openAccountSettingFragment() {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof AccountSettingFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, AccountSettingFragment.newInstance())
+                .addToBackStack(AccountSettingFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
     public void openFeedbackFragment(String requestId, boolean isFromIncidentReport) {
         Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
         if (currentFragment instanceof FeedbackFragment) {
@@ -505,7 +619,56 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 return;
             }
             isUpdateList = true;
-            getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+
+            boolean isDashBoardFound = false;
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                    try {
+                        String fragmentName = getSupportFragmentManager().getBackStackEntryAt(i).getName();
+                        if (fragmentName.equals(DashboardFragment.fragmentName)) {
+                            isDashBoardFound = true;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (isDashBoardFound) {
+                getSupportFragmentManager().popBackStack(DashboardFragment.fragmentName, 0);
+            } else {
+                openDashBoardFragment();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reOpenNewsFeedFragment() {
+        try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof NewsFeedFragment) {
+                return;
+            }
+            boolean isNewsFeedFound = false;
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                for (int i = 0; i < getSupportFragmentManager().getBackStackEntryCount(); i++) {
+                    try {
+                        String fragmentName = getSupportFragmentManager().getBackStackEntryAt(i).getName();
+                        if (fragmentName.equals(NewsFeedFragment.fragmentName)) {
+                            isNewsFeedFound = true;
+                            break;
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            if (isNewsFeedFound) {
+                getSupportFragmentManager().popBackStack(NewsFeedFragment.fragmentName, 0);
+            } else {
+                openNewsFeedFragment();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -521,6 +684,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
                 .replace(R.id.main_container, CardiacIncidentReportFragment.newInstance(requestDetails))
                 .addToBackStack(CardiacIncidentReportFragment.fragmentName)
+                .commitAllowingStateLoss();
+    }
+
+    public void openViewRegistrationFragment(ProviderRegistration data) {
+        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+        if (currentFragment instanceof ViewRegistrationDetailsFragment) {
+            return;
+        }
+        getSupportFragmentManager().executePendingTransactions();
+        getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left, R.anim.enter_from_left, R.anim.exit_to_right)
+                .replace(R.id.main_container, ViewRegistrationDetailsFragment.newInstance(data))
+                .addToBackStack(ViewRegistrationDetailsFragment.fragmentName)
                 .commitAllowingStateLoss();
     }
 
@@ -542,7 +718,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             switch (fragmentName) {
                 case NewsFeedFragment.fragmentName:
                     String userAuthKey = SharedPrefsManager.getInstance().retrieveStringPreference(this, Constants.USER_PREFERENCE, Constants.USER_AUTH_KEY);
-                    if (userAuthKey != null && !userAuthKey.isEmpty()) {
+                    User user = SharedPrefsManager.getInstance().retrieveUserPreference(this, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+                    boolean isProviderSubscribed = false;
+                    boolean isApproved = false;
+                    if (user != null) {
+                        isProviderSubscribed = user.getIsProviderSubscribed() != null && user.getIsProviderSubscribed();
+                        isApproved = user.getIsApproved() != null && user.getIsApproved();
+                    }
+                    if (userAuthKey != null && !userAuthKey.isEmpty() && isProviderSubscribed && isApproved) {
                         getSupportFragmentManager().popBackStack();
                         break;
                     }
@@ -717,18 +900,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             stopService(new Intent(MainActivity.this, GpsServices.class));
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (isTutorialMode) {
-            return;
-        }
-        switch (v.getId()) {
-            case R.id.btn_call_alerter:
-                Toast.makeText(MainActivity.this, R.string.coming_soon, Toast.LENGTH_SHORT).show();
-                break;
         }
     }
 

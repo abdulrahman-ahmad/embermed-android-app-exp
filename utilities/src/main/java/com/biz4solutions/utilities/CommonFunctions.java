@@ -12,9 +12,11 @@ import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -332,5 +334,32 @@ public class CommonFunctions implements Serializable {
             e.printStackTrace();
         }
         return json;
+    }
+
+    public Uri getProfileImageUri(Context context, String appName) {
+        Uri photoURI = null;
+        try {
+            String imageFileName = "profile";
+            File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File photoFile = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+            if (Constants.ROLE_NAME_PROVIDER.equals(appName)) {
+                photoURI = FileProvider.getUriForFile(context,
+                        "com.ember.medics.android.fileprovider",
+                        photoFile);
+            } else {
+                photoURI = FileProvider.getUriForFile(context,
+                        "com.ember.patient.android.fileprovider",
+                        photoFile);
+            }
+
+        } catch (Exception e) {
+            // Error occurred while creating the File
+            e.printStackTrace();
+        }
+        return photoURI;
     }
 }

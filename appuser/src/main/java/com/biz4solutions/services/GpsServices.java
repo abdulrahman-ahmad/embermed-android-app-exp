@@ -135,18 +135,20 @@ public class GpsServices extends Service implements LocationListener {
                     .setContentTitle(service.getString(com.biz4solutions.utilities.R.string.info_notification_title))
                     .setOngoing(true)
                     .setAutoCancel(false)
+                    .setDefaults(Notification.DEFAULT_LIGHTS)
+                    .setVibrate(new long[]{0L}) // Passing null here silently fails
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message)))
                     .setContentText(service.getString(com.biz4solutions.utilities.R.string.info_notification_message))
                     .setContentIntent(pendingIntent);
             //addActions(service, mNotifyBuilder);
             Notification notification = mNotifyBuilder.build();
-            if (isUpdate) {
+            if (!isUpdate) {
+                service.startForeground(NOTIFICATION_ID, notification);
+            } /*else {
                 if (notificationManager != null) {
                     notificationManager.notify(NOTIFICATION_ID, notification);
                 }
-            } else {
-                service.startForeground(NOTIFICATION_ID, notification);
-            }
+            }*/
         }
     }
 

@@ -209,7 +209,11 @@ public class TriageCallDetailsFragment extends Fragment implements View.OnClickL
             if (requestDetails.getPatientSymptoms() != null) {
                 binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientSymptoms());
             }
-            String btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
+            String btnRespondText = getString(R.string.respond);
+            if (requestDetails.getAmount() > 0) {
+                btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
+            }
+
             binding.btnRespond.setText(btnRespondText);
             if (mainActivity.isTutorialMode) {
                 binding.requestListTriageItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());

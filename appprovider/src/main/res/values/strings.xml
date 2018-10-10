@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Ember Medics</string>
     <string name="news_feed">News Feed</string>
+    <string name="registration">Registration</string>
     <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
     <string name="cardiac_call">Cardiac Call</string>
     <string name="triage_call">Triage Call</string>
@@ -37,10 +38,12 @@
     <string name="comment_colon">Comment:</string>
     <string name="title_colon">Title:</string>
     <string name="comment">Comment</string>
+
     <string name="error_empty_incident_report_title">Please enter the title of incident report.</string>
     <string name="error_empty_incident_report_comment">Please enter the details about incident in comment.</string>
     <string name="error_select_is_victims_life_saved">Please select victim\'s life saved or not.</string>
     <string name="submit_incident_report_message">Are you sure, you want to submit the incident report?</string>
+    <string name="submit_registration"> Are you sure, you want to submit the registration form?</string>
     <string name="view">View</string>
     <string name="rate_caller">Rate Caller</string>
     <string name="rate_caller_colon">Rate Caller:</string>
@@ -77,4 +80,40 @@
     <string name="tutorial_title_request_details">Action 2</string>
     <string name="tutorial_description_cardiac_request_details">Tap here to accept a cardiac call alert.</string>
     <string name="tutorial_description_triage_request_details">Tap here to accept a triage call alert.</string>
+    <string name="file_limit_max_2mb"><i>(Max 2MB)</i></string>
+
+    <!--registration strings-->
+    <string name="txt_upload_cpr_certificate">Upload CPR Certificate</string>
+    <string name="txt_upload_medical_certificate">Upload Medical Certificate</string>
+
+    <string name="my_profile">My Profile</string>
+    <string name="txt_personal_cap">PERSONAL</string>
+    <string name="txt_profession">PROFESSION</string>
+    <string name="txt_occupation">Occupation</string>
+    <string name="txt_other_occupation">If other, mention your occupation</string>
+    <string name="txt_institute_name">Institute name</string>
+    <string name="txt_cpr">CPR</string>
+    <string name="txt_cpr_institution">CPR Training Institution</string>
+    <string name="txt_cpr_certificate_expiry_date">CPR Certificate Expiry Date</string>
+    <string name="txt_medical_license_cap">MEDICAL LICENSE</string>
+    <string name="txt_license_number_npi_number">License Number / NPI Number?</string>
+    <string name="txt_other_cap">OTHER</string>
+    <string name="txt_question_telehealth_triage_platform">Do you want to participate in the telehealth triage platform?</string>
+    <string name="txt_question_speciality_or_subspeciality">What is your speciality or subspeciality?</string>
+    <string name="txt_practise_state">What state are you licensed to practise in?</string>
+    <string name="txt_privacy_policy"><a href="https://www.embermed.com">Privacy Policy</a></string>
+    <string name="txt_terms_of_service"><a href="https://www.embermed.com">Terms of Service</a></string>
+    <string name="txt_registration_form_policy_description">By submitting this registration form, you agree to our</string>
+    <string name="txt_status_cap">STATUS</string>
+
+    <string name="txt_pending_info">Your request has been submitted and is pending for approval.</string>
+
+    <string name="error_illegal_file">Illegal file. Please select an image or a pdf file.</string>
+    <string name="error_large_file">Please select a file with maximum size 2MB.</string>
+    <string name="error_upload_file">Unable to process file, Please try again.</string>
+    <string name="view_cpr_certificate">View CPR certificate</string>
+    <string name="view_medical_certificate">View Medical Certificate</string>
+    <string name="error_file_not_found">Something went wrong. Please try again later.</string>
+    <string name="error_invalid_file_link">Broken file link.</string>
+    <string name="error_invalid_selected_file">Please select file from another source.</string>
 </resources>

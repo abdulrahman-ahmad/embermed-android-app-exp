@@ -14,6 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -21,12 +22,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,18 +84,18 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
     public static final String fragmentName = "CardiacCallDetailsFragment";
     private final static String REQUEST_DETAILS = "REQUEST_DETAILS";
     private final static String DISTANCE_STR = "DISTANCE_STR";
+    private final static int REQUEST_CODE_CALL_PERMISSION = 2015;
     private MainActivity mainActivity;
     private FragmentCardiacCallDetailsBinding binding;
     private EmsRequest requestDetails;
     private User user;
     private boolean isAcceptedOpen = false;
     private boolean isPageOpen = false;
-    private View mapView;
     private GoogleMap googleMap;
     private Marker userMarker;
     private Marker victimMarker;
     private boolean isMapZoom = false;
-    public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
+    public int ANIMATE_SPEED_TURN = 1500; // 1.5 sec;
     public int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
     public int UPDATE_MIN_DISTANCE = 10;    // 5 sec;
     public int ZOOM_LEVEL = 17;
@@ -214,7 +215,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             currentRequestId = requestDetails.getId();
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.cardiac_call);
-            mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
+            if (requestDetails.getUserDetails() != null && requestDetails.getUserDetails().getPhoneNumber() != null && !requestDetails.getUserDetails().getPhoneNumber().isEmpty()) {
+                mainActivity.btnCallAlerter.setVisibility(View.VISIBLE);
+                mainActivity.btnCallAlerter.setOnClickListener(this);
+            }
             NavigationUtil.getInstance().showBackArrow(mainActivity, new OnBackClickListener() {
                 @Override
                 public void onBackPress() {
@@ -243,7 +247,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
 
     private void initMapView() {
         SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
-        mapView = mMapFragment.getView();
         mMapFragment.getMapAsync(this);
     }
 
@@ -294,7 +297,10 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             if (requestDetails.getPatientDisease() != null) {
                 binding.cardiacPatientDiseaseItem.txtPatientDisease.setText(requestDetails.getPatientDisease());
             }
-            String btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
+            String btnRespondText = getString(R.string.respond);
+            if (requestDetails.getAmount() > 0) {
+                btnRespondText = getString(R.string.respond_for_) + "" + String.format("%.2f", requestDetails.getAmount());
+            }
             binding.btnRespond.setText(btnRespondText);
             if (mainActivity.isTutorialMode) {
                 binding.requestListCardiacItem.txtTime.setText(requestDetails.getRequestTimeForTutorial());
@@ -366,8 +372,56 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
             case R.id.btn_get_direction:
                 openGoogleMapApp();
                 break;
+            case R.id.btn_call_alerter:
+                requestCallPermission();
+                break;
         }
     }
+
+    private void requestCallPermission() {
+        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                String[] perms = {Manifest.permission.CALL_PHONE};
+                requestPermissions(perms, REQUEST_CODE_CALL_PERMISSION);
+            } else {
+                dialACall();
+            }
+        } else {
+            dialACall();
+        }
+    }
+
+    private void dialACall() {
+        if (requestDetails.getUserDetails() != null && requestDetails.getUserDetails().getPhoneNumber() != null && !requestDetails.getUserDetails().getPhoneNumber().isEmpty()) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + requestDetails.getUserDetails().getPhoneNumber()));
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        try {
+            boolean userAllowedAllRequestPermissions = true;
+            for (int grantResult : grantResults) {
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    userAllowedAllRequestPermissions = false;
+                }
+            }
+
+            if (userAllowedAllRequestPermissions) {
+                switch (requestCode) {
+                    case REQUEST_CODE_CALL_PERMISSION:
+                        dialACall();
+                        break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void openGoogleMapApp() {
         try {
@@ -557,18 +611,6 @@ public class CardiacCallDetailsFragment extends Fragment implements View.OnClick
         googleMap.getUiSettings().setCompassEnabled(false);
         addVictimMarker(requestDetails.getLatitude(), requestDetails.getLongitude());
         try {
-            if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
-                // Get the button view
-                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-                if (locationButton != null) {
-                    // and next place it, on bottom right (as Google Maps app)
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-                    // position on right bottom
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                    layoutParams.setMargins(0, 0, 30, 30);
-                }
-            }
             startLocationUpdates();
         } catch (Exception e) {
             e.printStackTrace();

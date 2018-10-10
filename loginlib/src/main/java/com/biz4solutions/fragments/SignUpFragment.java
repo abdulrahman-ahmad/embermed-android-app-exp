@@ -109,7 +109,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         }
         CommonFunctions.getInstance().loadProgressDialog(getContext());
 
-        SignUpRequest signUpRequest = new SignUpRequest("EMAIL", loginActivity.roleName);
+        SignUpRequest signUpRequest = new SignUpRequest(Constants.SIGN_UP_TYPE_EMAIL, loginActivity.roleName);
         signUpRequest.setEmail(binding.edtEmail.getText().toString().trim());
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());

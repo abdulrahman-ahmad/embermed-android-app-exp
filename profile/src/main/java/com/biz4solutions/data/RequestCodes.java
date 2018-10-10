@@ -12,16 +12,24 @@ import java.lang.annotation.RetentionPolicy;
         RequestCodes.PERMISSION_CAMERA,
         RequestCodes.PERMISSION_GALLERY,
         RequestCodes.PERMISSION_READ_EXTERNAL_STORAGE,
-        RequestCodes.PERMISSION_WRITE_EXTERNAL_STORAGE
+        RequestCodes.PERMISSION_WRITE_EXTERNAL_STORAGE,
+        RequestCodes.RESULT_FILE_CPR,
+        RequestCodes.RESULT_FILE_MEDICAL,
+        RequestCodes.PERMISSION_FILE_CPR,
+        RequestCodes.PERMISSION_FILE_MEDICAL
 })
 @Retention(RetentionPolicy.SOURCE)
 public @interface RequestCodes {
     int RESULT_GALLERY = 101;
     int RESULT_CAMERA = 201;
+    int RESULT_FILE_CPR = 801;
+    int RESULT_FILE_MEDICAL = 901;
     int RESULT_RECORD = 301;
     int PERMISSION_CAMERA = 401;
     int PERMISSION_GALLERY = 501;
     int PERMISSION_READ_EXTERNAL_STORAGE = 601;
     int PERMISSION_WRITE_EXTERNAL_STORAGE = 701;
+    int PERMISSION_FILE_CPR = 102;
+    int PERMISSION_FILE_MEDICAL = 103;
 }
 

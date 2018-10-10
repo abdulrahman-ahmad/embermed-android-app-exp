@@ -87,6 +87,26 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/toolbar_title_text_size" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/btn_edit_medical_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ripple_default_bg"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center_vertical"
+                            android:text="@string/edit"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/toolbar_title_text_size" />
+                    </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.Toolbar>
 

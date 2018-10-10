@@ -4,7 +4,7 @@
     <string name="ems_alert">EMS Alert</string>
     <string name="triage_call">Triage Call</string>
     <string name="symptoms">Symptoms</string>
-    <string name="news_feed_coming_soon">News Feed \n coming soon…</string>
+    <string name="subscription">Subscription</string>
     <string name="is_victim_unconscious">Is victim unconscious?</string>
     <string name="ems_notified_screen_coming_soon">EMS Notified Screen \n coming soon…</string>
     <string name="cancel_request_message">Are you sure, you want to cancel Alert request?</string>
@@ -105,5 +105,11 @@
     <string name="tutorial_description_symptoms_list">Tap here to choose a symptom.</string>
     <string name="tutorial_title_symptoms_submit_btn">Action 4</string>
     <string name="tutorial_description_symptoms_submit_btn">Tap here to create a triage call alert.</string>
+    <string name="my_profile">My Profile</string>
+    <string name="saved_cards">Saved Cards</string>
+    <string name="txt_hint_search_diseases">Search Diseases</string>
+    <string name="txt_buy_now">Buy Now</string>
+    <string name="dollar_symbol">$</string>
+    <string name="no_plans_available">No plans available.</string>
 
 </resources>

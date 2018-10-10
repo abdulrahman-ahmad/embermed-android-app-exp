@@ -14,10 +14,14 @@
     <dimen name="sub_btn_text_size">14dp</dimen>
 
     <dimen name="_n_16dp">-13.6dp</dimen>
+    <dimen name="_2dp">1.7dp</dimen>
+    <dimen name="_4dp">3.4dp</dimen>
     <dimen name="_5dp">4.25dp</dimen>
+    <dimen name="_6dp">5.2dp</dimen>
     <dimen name="_7dp">5.95dp</dimen>
     <dimen name="_8dp">6.8dp</dimen>
     <dimen name="_10dp">8.5dp</dimen>
+    <dimen name="_11dp">9.35dp</dimen>
     <dimen name="_12dp">10.2dp</dimen>
     <dimen name="_14dp">11.9dp</dimen>
     <dimen name="_15dp">12.75dp</dimen>
