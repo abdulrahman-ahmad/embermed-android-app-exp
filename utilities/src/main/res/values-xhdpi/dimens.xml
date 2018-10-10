@@ -40,5 +40,7 @@ Device
     <dimen name="_80dp">80dp</dimen>
     <dimen name="_85dp">85dp</dimen>
     <dimen name="_100dp">100dp</dimen>
+    <dimen name="_105dp">105dp</dimen>
     <dimen name="_140dp">140dp</dimen>
+    <dimen name="_222dp">222dp</dimen>
 </resources>
