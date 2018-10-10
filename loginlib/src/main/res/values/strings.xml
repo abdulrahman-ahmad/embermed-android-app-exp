@@ -1,6 +1,11 @@
 <resources>
-
     <string name="new_here">New here?</string>
     <string name="title_verification_code">Verification Code</string>
     <string name="title_reset_password">Reset Password</string>
+    <string name="title_dialog">Enter invitation code</string>
+    <string name="title_dialog_hint">Invitation code</string>
+    <string name="error_empty_invitation_code">Please enter invitation code.</string>
+    <string name="txt_btn_submit">Submit</string>
+    <string name="txt_btn_cancel">Cancel</string>
+    <string name="error_invalid_invitation_code">Please enter valid invitation code.</string>
 </resources>

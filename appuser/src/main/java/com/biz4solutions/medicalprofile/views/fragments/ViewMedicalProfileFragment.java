@@ -18,21 +18,21 @@ import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.utilities.NavigationUtil;
 
 import java.util.ArrayList;
-
 public class ViewMedicalProfileFragment extends Fragment implements View.OnClickListener {
 
     public static final String fragmentName = "ViewMedicalProfileFragment";
     private MainActivity mainActivity;
     private FragmentViewMedicalProfileBinding binding;
-    //    private ViewMedicalProfileViewModel viewModel;
     private final static String REQUESTED_DATA = "REQUESTED_DATA";
     private ArrayList<MedicalDisease> diseaseArrayList;
 
     public ViewMedicalProfileFragment() {
         // Required empty public constructor
+
     }
 
-    public static ViewMedicalProfileFragment newInstance(ArrayList<MedicalDisease> diseaseArrayList) {
+    public static ViewMedicalProfileFragment newInstance(
+            ArrayList<MedicalDisease> diseaseArrayList) {
         ViewMedicalProfileFragment fragment = new ViewMedicalProfileFragment();
         Bundle args = new Bundle();
         args.putSerializable(REQUESTED_DATA, diseaseArrayList);
@@ -40,17 +40,20 @@ public class ViewMedicalProfileFragment extends Fragment implements View.OnClick
         return fragment;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments().getSerializable(REQUESTED_DATA);
+            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments()
+                    .getSerializable(REQUESTED_DATA);
         }
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_medical_profile);
@@ -64,7 +67,8 @@ public class ViewMedicalProfileFragment extends Fragment implements View.OnClick
     }
 
     private void initBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_view_medical_profile, container, false);
+        binding = DataBindingUtil
+                .inflate(inflater, R.layout.fragment_view_medical_profile, container, false);
 //        viewModel = ViewModelProviders.of(this, new ViewMedicalProfileViewModel.ViewMedicalProfileViewModelFactory(mainActivity.getApplication())).get(ViewMedicalProfileViewModel.class);
     }
 
@@ -87,7 +91,8 @@ public class ViewMedicalProfileFragment extends Fragment implements View.OnClick
     private void initViews() {
         //init recycler
         binding.rvViewMedicalProfile.setLayoutManager(new LinearLayoutManager(mainActivity));
-        MedicalProfileRecyclerAdapter rvAdapter = new MedicalProfileRecyclerAdapter(diseaseArrayList, null, true);
+        MedicalProfileRecyclerAdapter rvAdapter = new MedicalProfileRecyclerAdapter(
+                diseaseArrayList, null, true);
         binding.rvViewMedicalProfile.setHasFixedSize(true);
         binding.rvViewMedicalProfile.setAdapter(rvAdapter);
     }

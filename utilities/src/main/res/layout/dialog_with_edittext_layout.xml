@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/_10dp"
+    tools:ignore="SpUsage,Autofill">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:textColor="@color/bpblack"
+        android:textSize="@dimen/_16dp"
+        tools:text="Confirmation." />
+
+    <EditText
+        android:id="@+id/dialog_et_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_title"
+        android:digits="@string/alphanumeric_without_space_filter"
+        android:lines="2"
+        android:maxLength="255"
+        android:maxLines="4"
+        android:inputType="textMultiLine|textCapCharacters"
+        android:textColor="@color/bpblack"
+        android:textSize="@dimen/_16dp" />
+
+    <TextView
+        android:id="@+id/dialog_positive_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dialog_et_code"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/_10dp"
+        android:padding="@dimen/_10dp"
+        android:textColor="@color/bpblack"
+        tools:text="Submit" />
+
+    <TextView
+        android:id="@+id/dialog_negative_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/dialog_positive_btn"
+        android:layout_marginTop="@dimen/_10dp"
+        android:layout_marginEnd="@dimen/_5dp"
+        android:layout_toStartOf="@id/dialog_positive_btn"
+        android:padding="@dimen/_10dp"
+        android:textColor="@color/bpblack"
+        tools:text="Cancel" />
+</RelativeLayout>

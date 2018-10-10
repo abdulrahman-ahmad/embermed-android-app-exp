@@ -18,7 +18,7 @@ import com.biz4solutions.models.response.GenericResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.ArrayList;
-
+@SuppressWarnings("unchecked")
 public class MedicalProfileViewModel extends AndroidViewModel implements RestClientResponse {
     private ApiServices apiServices;
     private MutableLiveData<ArrayList<MedicalDisease>> diseaseMutableLiveData;

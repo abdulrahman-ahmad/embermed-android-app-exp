@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -17,10 +18,15 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
@@ -196,6 +202,56 @@ public class CommonFunctions implements Serializable {
         alertDialog.setCancelable(false);
         // Showing Alert Message
         mDialog = alertDialog.show();
+    }
+
+    public void showEdittextAlertDialog(final Context context, final boolean isOnlyAlphaNumeric, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<String> callBackListener) {
+        if (!isHighPriority && mDialog != null) {
+            return;
+        }
+        dismissAlertDialog();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        // Setting Dialog Message
+        View v = LayoutInflater.from(context).inflate(R.layout.dialog_with_edittext_layout, null, false);
+        builder.setView(v);
+        final EditText input = v.findViewById(R.id.dialog_et_code);
+        input.setHint(context.getString(hintTxtId));
+        TextView tvTitle = v.findViewById(R.id.dialog_title);
+        TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
+        btn_positive.setText(context.getString(ptBtnTextId));
+        TextView btn_negative = v.findViewById(R.id.dialog_negative_btn);
+        btn_negative.setText(context.getString(ntBtnTextId));
+        tvTitle.setText(context.getString(messageId));
+        final AlertDialog alertDialog1 = builder.create();
+        btn_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog = null;
+                alertDialog1.dismiss();
+
+            }
+        });
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (input.getText().length() == 0) {
+                    Toast.makeText(context, context.getString(errorMsgId), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (input.getText().length() < minLength) {
+                    Toast.makeText(context, context.getString(validationTxtId), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (callBackListener != null) {
+                    callBackListener.onClose(input.getText().toString());
+                }
+                alertDialog1.dismiss();
+                //alertDialog = null;
+                mDialog = null;
+            }
+        });
+
+        builder.setCancelable(false);
+        alertDialog1.show();
     }
 
     public void dismissAlertDialog() {

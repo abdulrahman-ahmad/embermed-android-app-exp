@@ -11,10 +11,19 @@ public class SignUpRequest {
     private String confirmPassword;
     private String signupType;
     private String roleName;
+    private String invitationCode;
 
     public SignUpRequest(String signupType, String roleName) {
         this.signupType = signupType;
         this.roleName = roleName;
+    }
+
+    public String getInvitationCode() {
+        return invitationCode;
+    }
+
+    public void setInvitationCode(String invitationCode) {
+        this.invitationCode = invitationCode;
     }
 
     public String getEmail() {

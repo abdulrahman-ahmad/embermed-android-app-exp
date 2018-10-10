@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
-
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentMedicalProfileBinding;
 import com.biz4solutions.interfaces.CustomOnItemClickListener;
@@ -26,12 +25,12 @@ import com.biz4solutions.medicalprofile.viewmodels.MedicalProfileViewModel;
 import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.NavigationUtil;
-
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MedicalProfileFragment extends Fragment implements AdapterView.OnItemClickListener, CustomOnItemClickListener {
+public class MedicalProfileFragment extends Fragment implements AdapterView.OnItemClickListener,
+        CustomOnItemClickListener {
 
     public static final String fragmentName = "MedicalProfileFragment";
     private MainActivity mainActivity;
@@ -61,12 +60,14 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments().getSerializable(REQUESTED_DATA);
+            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments()
+                    .getSerializable(REQUESTED_DATA);
         }
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_medical_profile);
@@ -78,8 +79,11 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     }
 
     private void initBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_medical_profile, container, false);
-        viewModel = ViewModelProviders.of(this, new MedicalProfileViewModel.MedicalProfileViewModelFactory(mainActivity.getApplication())).get(MedicalProfileViewModel.class);
+        binding = DataBindingUtil
+                .inflate(inflater, R.layout.fragment_medical_profile, container, false);
+        viewModel = ViewModelProviders.of(this,
+                new MedicalProfileViewModel.MedicalProfileViewModelFactory(
+                        mainActivity.getApplication())).get(MedicalProfileViewModel.class);
     }
 
     @Override
@@ -103,7 +107,8 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         //init recycler
         binding.rvMedicalProfile.setLayoutManager(new LinearLayoutManager(mainActivity));
         if (diseaseArrayList == null || diseaseArrayList.size() == 0) {
-            rvAdapter = new MedicalProfileRecyclerAdapter(new ArrayList<MedicalDisease>(), this, false);
+            rvAdapter = new MedicalProfileRecyclerAdapter(new ArrayList<MedicalDisease>(), this,
+                    false);
         } else {
             rvAdapter = new MedicalProfileRecyclerAdapter(diseaseArrayList, this, false);
             binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
@@ -113,7 +118,8 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
 
         //init AutoCompleteEdittext
         binding.actvMedicalProfile.setThreshold(1);
-        autoCompleteTvAdapter = new MedicalAutoCompleteAdapter(mainActivity, R.layout.item_medical_profile, new ArrayList<MedicalDisease>());
+        autoCompleteTvAdapter = new MedicalAutoCompleteAdapter(mainActivity,
+                R.layout.item_medical_profile, new ArrayList<MedicalDisease>());
         binding.actvMedicalProfile.setAdapter(autoCompleteTvAdapter);
         binding.actvMedicalProfile.setOnItemClickListener(this);
         binding.actvMedicalProfile.addTextChangedListener(new TextWatcher() {
@@ -133,7 +139,7 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
             }
         });
     }
-    
+
     private void startApiTimer(final String s) {
         if (timer == null) {
             timer = new Timer(true); // use daemon thread.
@@ -160,23 +166,24 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
             }
         });
 
-        viewModel.getDiseaseMutableLiveData().observe(this, new Observer<ArrayList<MedicalDisease>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<MedicalDisease> medicalDiseases) {
-                autoCompleteTvAdapter.clear();
-                if (medicalDiseases != null) {
-                    autoCompleteTvAdapter.addAll(medicalDiseases);
-                }
-                autoCompleteTvAdapter.notifyDataSetChanged();
-            }
-        });
-
+        viewModel.getDiseaseMutableLiveData()
+                .observe(this, new Observer<ArrayList<MedicalDisease>>() {
+                    @Override
+                    public void onChanged(@Nullable ArrayList<MedicalDisease> medicalDiseases) {
+                        autoCompleteTvAdapter.clear();
+                        if (medicalDiseases != null) {
+                            autoCompleteTvAdapter.addAll(medicalDiseases);
+                        }
+                        autoCompleteTvAdapter.notifyDataSetChanged();
+                    }
+                });
 
         viewModel.getIsListUpdated().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean != null && aBoolean)
+                if (aBoolean != null && aBoolean) {
                     mainActivity.openViewMedicalProfileFragment(diseaseArrayList);
+                }
             }
         });
         viewModel.getToastMsg().observe(this, new Observer<String>() {
@@ -186,6 +193,7 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
             }
         });
     }
+
 
     private void setDataToViewModel() {
         if (rvAdapter.getMedicalList() != null && rvAdapter.getMedicalList().size() > 0) {
@@ -200,7 +208,7 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         MedicalDisease disease = (MedicalDisease) autoCompleteTvAdapter.getItem(position);
-        if (disease!=null&& disease.getId() != null && !disease.getId().equalsIgnoreCase("0")) {
+        if (disease != null && disease.getId() != null && !disease.getId().equalsIgnoreCase("0")) {
             rvAdapter.addItems(disease);
             binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
         }
@@ -222,4 +230,6 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
             binding.btnSubmitMedicalProfile.setVisibility(View.GONE);
         }
     }
+
+
 }

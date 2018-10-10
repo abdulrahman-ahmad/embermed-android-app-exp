@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.CallbackListener;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.loginlib.R;
@@ -198,15 +199,28 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
     }
 
     @Override
-    public void onSuccess(SocialMediaUserData data) {
+    public void onSuccess(final SocialMediaUserData data) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(getContext());
-        data.setRoleName(loginActivity.roleName);
-        //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
-        new ApiServices().socialAppLogin(getActivity(), data, this);
+
+        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(), true, R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, true, true, new DialogDismissCallBackListener<String>() {
+            @Override
+            public void onClose(String result) {
+                if (result != null && result.length() > 0) {
+
+                    CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
+                    //call sign web service
+                    CommonFunctions.getInstance().loadProgressDialog(getContext());
+                    data.setRoleName(loginActivity.roleName);
+                    data.setInvitationCode(result);
+                    //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
+                    new ApiServices().socialAppLogin(getActivity(), data, LoginFragment.this);
+
+                }
+            }
+        });
     }
 
     @Override

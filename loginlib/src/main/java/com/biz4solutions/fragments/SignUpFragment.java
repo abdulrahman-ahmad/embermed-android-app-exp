@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.activities.LoginActivity;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.loginlib.BuildConfig;
 import com.biz4solutions.loginlib.R;
@@ -81,8 +82,16 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
                 if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
                     if (isPasswordValid(binding.edtPassword.getText().toString().trim()/*, binding.edtConfirmPassword.getText().toString().trim()*/, binding.edtPassword.getText().toString().trim())) {
-                        //call sign web service
-                        signUpWebServiceCall();
+                        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(),true, R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, true, true, new DialogDismissCallBackListener<String>() {
+                            @Override
+                            public void onClose(String result) {
+                                if (result != null && result.length() > 0) {
+                                    //call sign web service
+                                    CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
+                                    signUpWebServiceCall(result);
+                                }
+                            }
+                        });
                     }
                 }
             }
@@ -102,7 +111,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         CommonFunctions.getInstance().hideSoftKeyBoard(getActivity());
     }
 
-    private void signUpWebServiceCall() {
+    private void signUpWebServiceCall(String result) {
         if (CommonFunctions.getInstance().isOffline(getContext())) {
             Toast.makeText(getContext(), getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
             return;
@@ -114,6 +123,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
         signUpRequest.setFirstName(binding.edtFirstName.getText().toString().trim());
         signUpRequest.setLastName(binding.edtLastName.getText().toString().trim());
         signUpRequest.setPassword(binding.edtPassword.getText().toString().trim());
+        signUpRequest.setInvitationCode(result.trim());
         //signUpRequest.setConfirmPassword(binding.edtConfirmPassword.getText().toString().trim());
         signUpRequest.setConfirmPassword(binding.edtPassword.getText().toString().trim());
 
