@@ -156,6 +156,7 @@ public class NewsFeedViewModel extends ViewModel implements OnMapReadyCallback, 
             newsFeedPresenter.startAnimation(newsFeedData);
             googleMap.clear();
             userMarker = null;
+            isMapZoom = false;
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
