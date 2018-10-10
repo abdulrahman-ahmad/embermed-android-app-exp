@@ -1,6 +1,5 @@
 package com.biz4solutions.utilities;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 
@@ -11,48 +10,87 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.Objects;
+
 public class FirebaseUploadUtil {
 
-    public static void uploadImageToFirebase(final Context context, String path, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
+    @SuppressWarnings("ConstantConditions")
+    public static void uploadImageToFirebase(String userId, Uri uri, final FirebaseUploadInterface firebaseUploadInterface) {
         FirebaseStorage storage = FirebaseStorage.getInstance();
-        final StorageReference ref = storage.getReference().child("/profileImages/users/" + path + "/profile.jpg");
-        UploadTask uploadTask = ref.putFile(uri);
+        final StorageReference ref = storage.getReference()
+                .child(BuildConfig.FIREBACE_DB_ENVIROMENT)
+                .child("users")
+                .child(userId)
+                .child("profileImages")
+                .child("profile.jpg");
+        ref.putFile(uri)
+                .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw Objects.requireNonNull(task.getException());
+                        }
 
-        CommonFunctions.getInstance().loadProgressDialog(context);
-        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-            @Override
-            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                CommonFunctions.getInstance().dismissProgressDialog();
-                if (!task.isSuccessful()) {
-                    throw task.getException();
-                }
-
-                // Continue with the task to get the download URL
-                return ref.getDownloadUrl();
-            }
-        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-            @Override
-            public void onComplete(@NonNull Task<Uri> task) {
-                CommonFunctions.getInstance().dismissProgressDialog();
-                if (task.isSuccessful()) {
-                    Uri downloadUri = task.getResult();
-//                    Log.d("upload", "toString:" + downloadUri.toString() + "::host:" + downloadUri.getHost() + ":path " + downloadUri.getPath());
-                    firebaseUploadInterface.uploadSuccess(downloadUri.toString());
-                    //   Toast.makeText(context, "firebase image upload success:" + downloadUri, Toast.LENGTH_SHORT).show();
-                } else {
-                    if (task.getException() != null)
-                        firebaseUploadInterface.uploadError(task.getException().getMessage());
-                    // Handle failures
-                    // ...
-                }
-            }
-        });
+                        // Continue with the task to get the download URL
+                        return ref.getDownloadUrl();
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            firebaseUploadInterface.uploadSuccess(downloadUri.toString(), 101);
+                        } else {
+                            if (task.getException() != null) {
+                                firebaseUploadInterface.uploadError(task.getException().getMessage(), 101);
+                            }
+                            // Handle failures
+                        }
+                    }
+                });
     }
 
+    @SuppressWarnings("ConstantConditions")
+    public static void uploadMultipleFileToFirebase(String uid, String fileName, Uri uri, final int fileCode, final FirebaseUploadInterface firebaseUploadInterface) {
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        final StorageReference ref = storage.getReference()
+                .child(BuildConfig.FIREBACE_DB_ENVIROMENT)
+                .child("users")
+                .child(uid)
+                .child("documents")
+                .child(fileName);
+        ref.putFile(uri)
+                .continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                    @Override
+                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                        if (!task.isSuccessful()) {
+                            throw Objects.requireNonNull(task.getException());
+                        }
+
+                        // Continue with the task to get the download URL
+                        return ref.getDownloadUrl();
+                    }
+                })
+                .addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        if (task.isSuccessful()) {
+                            Uri downloadUri = task.getResult();
+                            firebaseUploadInterface.uploadSuccess(downloadUri.toString(), fileCode);
+                        } else {
+                            if (task.getException() != null) {
+                                firebaseUploadInterface.uploadError(task.getException().getMessage(), fileCode);
+                            }
+                            // Handle failures
+                        }
+                    }
+                });
+    }
 
     public interface FirebaseUploadInterface {
-        void uploadSuccess(String imageUrl);
+        void uploadSuccess(String imageUrl, int fileCode);
 
-        void uploadError(String exceptionMsg);
+        void uploadError(String exceptionMsg, int fileCode);
     }
 }

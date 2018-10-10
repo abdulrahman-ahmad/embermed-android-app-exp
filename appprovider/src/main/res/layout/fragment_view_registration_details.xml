@@ -1,0 +1,613 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.biz4solutions.provider.registration.viewmodels.ViewRegistrationDetailsViewModel" />
+    </data>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        tools:ignore="SpUsage, Autofill, TooManyViews">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/_10dp">
+
+            <View style="@style/style_divider_registration" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_status_cap" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:id="@+id/ll_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingEnd="@dimen/_30dp"
+                android:paddingBottom="@dimen/_10dp">
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:textSize="@dimen/_16dp" />
+
+                <TextView
+                    android:id="@+id/tv_statusDesc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_4dp"
+                    android:text="@{viewModel.registration.adminComment}"
+                    android:textSize="@dimen/_14dp" />
+            </LinearLayout>
+
+
+            <View style="@style/style_divider_registration" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_personal_cap" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_20dp"
+                    android:layout_marginBottom="@dimen/_20dp"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true">
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/_100dp"
+                        android:layout_height="@dimen/_100dp"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            circularImageUrl="@{viewModel.registration.profileUrl}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_centerInParent="true"
+                            android:contentDescription="@null"
+                            android:focusable="true"
+                            android:src="@drawable/ic_default_profile_pic" />
+                    </RelativeLayout>
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:visibility="gone" />
+                </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:hint="@string/first_name"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.firstName}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <!--tools:ignore="SpUsage" />-->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:enabled="false"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:hint="@string/last_name"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.lastName}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_email_edt_style"
+                        android:hint="@string/email"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.email}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint"
+                        tools:ignore="TextFields" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/number_filter"
+                        android:enabled="false"
+                        android:hint="@string/txt_phone_no"
+                        android:inputType="number"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.phoneNumber}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:focusableInTouchMode="false"
+                    android:orientation="vertical"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_5dp"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:cursorVisible="false"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:drawableTint="@color/tv_value_profile"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/date_of_birth"
+                        android:inputType="none"
+                        android:paddingTop="@dimen/_8dp"
+                        android:text="@{viewModel.getFormattedDate(viewModel.registration.dob)}"
+                        android:textColor="@color/tv_value_profile"
+                        tools:ignore="KeyboardInaccessibleWidget,UnusedAttribute" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        style="@style/tv_center_label"
+                        android:layout_width="0dp"
+                        android:layout_weight="4"
+                        android:text="@string/gender"
+                        tools:ignore="SpUsage" />
+
+                    <TextView
+                        android:id="@+id/tv_gender"
+                        style="@style/tv_center_value"
+                        android:layout_width="0dp"
+                        android:layout_weight="6"
+                        android:text="@{viewModel.registration.gender}"
+                        android:textColor="@color/tv_value_profile"
+                        tools:ignore="SpUsage" />
+
+                    <Space
+                        android:layout_width="@dimen/_18dp"
+                        android:layout_height="@dimen/_18dp" />
+                </LinearLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_margin="0dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <AutoCompleteTextView
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:hint="@string/txt_address_optional"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.address}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+            </LinearLayout>
+
+            <View
+                style="@style/style_divider_registration"
+                android:layout_marginTop="@dimen/_15dp" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_profession" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/txt_occupation" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@{viewModel.registration.professionName}"
+                    android:textColor="@color/tv_value_profile"
+                    android:textSize="@dimen/_16dp" />
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:hint="@string/txt_institute_name"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.instituteName}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+            </LinearLayout>
+
+            <View
+                style="@style/style_divider_registration"
+                android:layout_marginTop="@dimen/_15dp" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_cpr" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/txt_cpr_institution" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:text="@{viewModel.registration.cprTrainingInstitution}"
+                    android:textColor="@color/tv_value_profile"
+                    android:textSize="@dimen/_16dp" />
+
+                <View style="@style/divider" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:focusableInTouchMode="false"
+                    android:orientation="vertical"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:cursorVisible="false"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:drawableTint="@color/tv_value_profile"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:gravity="center_vertical"
+                        android:hint="@string/txt_cpr_certificate_expiry_date"
+                        android:inputType="none"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{ viewModel.getFormattedDate(viewModel.registration.cprExpiryDate)}"
+                        android:textColor="@color/tv_value_profile"
+                        tools:ignore="UnusedAttribute" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+
+                <LinearLayout
+                    android:id="@+id/ll_toast_cpr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@drawable/bg_circle_button"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:padding="@dimen/_5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/view_cpr_certificate"
+                        android:textSize="@dimen/_12dp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_15dp"
+                        android:layout_height="@dimen/_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:layout_marginRight="@dimen/_5dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/ic_remove"
+                        android:contentDescription="@null"
+                        android:padding="@dimen/_5dp"
+                        android:paddingStart="@dimen/_8dp"
+                        android:paddingTop="@dimen/_8dp"
+                        android:paddingEnd="@dimen/_8dp"
+                        android:paddingBottom="@dimen/_8dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                style="@style/style_divider_registration"
+                android:layout_marginTop="@dimen/_15dp" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_medical_license_cap" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:theme="@style/txtInputLayout">
+
+                    <EditText
+                        style="@style/profile_edt_style"
+                        android:background="@null"
+                        android:digits="@string/number_filter"
+                        android:enabled="false"
+                        android:hint="@string/txt_license_number_npi_number"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_10dp"
+                        android:text="@{viewModel.registration.medicalLicenseNumber}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:id="@+id/ll_toast_medical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_15dp"
+                    android:background="@drawable/bg_circle_button"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/_5dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="8"
+                        android:ellipsize="end"
+                        android:gravity="center"
+                        android:padding="@dimen/_5dp"
+                        android:textColor="@color/colorPrimary"
+                        android:text="@string/view_medical_certificate"
+                        android:textSize="@dimen/_12dp" />
+
+                    <ImageView
+                        android:layout_width="@dimen/_15dp"
+                        android:layout_height="@dimen/_15dp"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="@dimen/_5dp"
+                        android:layout_marginRight="@dimen/_5dp"
+                        android:layout_weight="2"
+                        android:background="@drawable/ic_remove"
+                        android:contentDescription="@null"
+                        android:padding="@dimen/_5dp"
+                        android:paddingStart="@dimen/_8dp"
+                        android:paddingTop="@dimen/_8dp"
+                        android:paddingEnd="@dimen/_8dp"
+                        android:paddingBottom="@dimen/_8dp"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                style="@style/style_divider_registration"
+                android:layout_marginTop="@dimen/_15dp" />
+
+            <TextView
+                style="@style/style_header_registration"
+                android:text="@string/txt_other_cap" />
+
+            <View style="@style/style_divider_registration" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_12dp"
+                android:layout_marginBottom="@dimen/_12dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/txt_question_telehealth_triage_platform"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_16dp" />
+
+                <Switch
+                    android:id="@+id/switch_telehealth_participation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{safeUnbox(viewModel.registration.optForTriage)}"
+                    android:theme="@style/switch_style" />
+            </LinearLayout>
+
+            <View
+                style="@style/divider"
+                android:layout_margin="0dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/_30dp"
+                android:paddingEnd="@dimen/_30dp">
+
+                <TextView
+                    style="@style/tv_label"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:text="@string/txt_question_speciality_or_subspeciality"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_16dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/txtInputLayout"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/profile_edt_style"
+                        style="@style/registration_other_section_edt_style"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:gravity="top"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_8dp"
+                        android:scrollbars="vertical"
+                        android:text="@{viewModel.registration.speciality}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint"
+                        tools:ignore="LabelFor" />
+                </android.support.design.widget.TextInputLayout>
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:layout_marginTop="@dimen/_12dp"
+                    android:text="@string/txt_practise_state"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_16dp" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/txtInputLayout"
+                    app:hintEnabled="false">
+
+                    <EditText
+                        android:id="@+id/edt_practise_state"
+                        style="@style/registration_other_section_edt_style"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:inputType="textMultiLine"
+                        android:paddingTop="@dimen/_8dp"
+                        android:text="@{viewModel.registration.practiceState}"
+                        android:textColor="@color/tv_value_profile"
+                        android:theme="@style/EditTextHint"
+                        tools:ignore="LabelFor" />
+
+                </android.support.design.widget.TextInputLayout>
+
+                <View
+                    style="@style/divider"
+                    android:layout_marginBottom="@dimen/_10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</layout>

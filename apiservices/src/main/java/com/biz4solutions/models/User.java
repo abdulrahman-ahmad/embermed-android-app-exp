@@ -13,38 +13,28 @@ public class User implements Serializable {
     private String authToken = "";
     private String email = "";
     private String roleName = "";
+
     private String patientCurrentRequestId = "";
     private String providerCurrentRequestId = "";
     private String currentRequestPriority = "";
-    private String serverDateOfBirth;
-    private String displayDateOfBirth;
-    private String imageUrl;
+
+    private Long dob;
+    private String profileUrl;
     private String deviceId = "";
     private int age;
     private String gender;
+    private String signupType;
+    private Boolean isApproved;
+    private Boolean isProviderSubscribed;
+    private String phoneNumber;
+    private String address;
 
-    public String getDisplayDateOfBirth() {
-        return displayDateOfBirth;
+    public String getProfileUrl() {
+        return profileUrl;
     }
 
-    public void setDisplayDateOfBirth(String displayDateOfBirth) {
-        this.displayDateOfBirth = displayDateOfBirth;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public String getServerDateOfBirth() {
-        return serverDateOfBirth;
-    }
-
-    public void setServerDateOfBirth(String serverDateOfBirth) {
-        this.serverDateOfBirth = serverDateOfBirth;
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
     }
 
     public String getUserId() {
@@ -143,6 +133,54 @@ public class User implements Serializable {
         this.currentRequestPriority = currentRequestPriority;
     }
 
+    public Long getDob() {
+        return dob;
+    }
+
+    public void setDob(Long dob) {
+        this.dob = dob;
+    }
+
+    public String getSignupType() {
+        return signupType;
+    }
+
+    public void setSignupType(String signupType) {
+        this.signupType = signupType;
+    }
+
+    public Boolean getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(Boolean approved) {
+        isApproved = approved;
+    }
+
+    public Boolean getIsProviderSubscribed() {
+        return isProviderSubscribed;
+    }
+
+    public void setIsProviderSubscribed(Boolean providerSubscribed) {
+        isProviderSubscribed = providerSubscribed;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -155,9 +193,16 @@ public class User implements Serializable {
                 ", patientCurrentRequestId='" + patientCurrentRequestId + '\'' +
                 ", providerCurrentRequestId='" + providerCurrentRequestId + '\'' +
                 ", currentRequestPriority='" + currentRequestPriority + '\'' +
+                ", dob=" + dob +
+                ", profileUrl='" + profileUrl + '\'' +
                 ", deviceId='" + deviceId + '\'' +
                 ", age=" + age +
                 ", gender='" + gender + '\'' +
+                ", signupType='" + signupType + '\'' +
+                ", isApproved=" + isApproved +
+                ", isProviderSubscribed=" + isProviderSubscribed +
+                ", phoneNumber=" + phoneNumber +
+                ", address=" + address +
                 '}';
     }
 }

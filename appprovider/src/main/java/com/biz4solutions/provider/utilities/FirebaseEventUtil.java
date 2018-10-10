@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.models.EmsRequest;
 import com.biz4solutions.models.OpenTok;
+import com.biz4solutions.models.Subscription;
 import com.biz4solutions.models.User;
 import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.utilities.Constants;
@@ -17,9 +18,11 @@ import com.google.firebase.database.ValueEventListener;
 public class FirebaseEventUtil {
     private static FirebaseEventUtil instance = null;
     private ValueEventListener userEventListener;
+    private ValueEventListener subscriptionEventListener;
     private ValueEventListener alertEventListener;
     private ValueEventListener requestEventListener;
     private String userId;
+    private String sUserId;
     private String rUserId;
     private String requestId;
     private String otRequestId;
@@ -32,6 +35,16 @@ public class FirebaseEventUtil {
             instance = new FirebaseEventUtil();
         }
         return instance;
+    }
+
+    public void removeFirebaseUserEvent() {
+        try {
+            if (userEventListener != null && userId != null && !userId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void addFirebaseUserEvent(Context context, final FirebaseCallbackListener<User> callbackListener) {
@@ -60,10 +73,36 @@ public class FirebaseEventUtil {
         }
     }
 
-    public void removeFirebaseUserEvent() {
+    public void removeFirebaseSubscriptionEvent() {
         try {
-            if (userEventListener != null && userId != null && !userId.isEmpty()) {
-                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_USER_TABLE, userId, userEventListener);
+            if (subscriptionEventListener != null && sUserId != null && !sUserId.isEmpty()) {
+                FirebaseAuthUtil.getInstance().removeEventListener(Constants.FIREBASE_SUBSCRIPTION_TABLE, sUserId, subscriptionEventListener);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addFirebaseSubscriptionEvent(Context context, final FirebaseCallbackListener<Subscription> callbackListener) {
+        try {
+            User user = SharedPrefsManager.getInstance().retrieveUserPreference(context, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
+            if (user != null) {
+                removeFirebaseSubscriptionEvent();
+                subscriptionEventListener = new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Subscription subscription = dataSnapshot.getValue(Subscription.class);
+                        System.out.println("aa ---------- Firebase subscription details= " + subscription);
+                        callbackListener.onSuccess(subscription);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                };
+                sUserId = user.getUserId();
+                FirebaseAuthUtil.getInstance().addValueEventListener(Constants.FIREBASE_SUBSCRIPTION_TABLE, sUserId, subscriptionEventListener);
             }
         } catch (Exception e) {
             e.printStackTrace();

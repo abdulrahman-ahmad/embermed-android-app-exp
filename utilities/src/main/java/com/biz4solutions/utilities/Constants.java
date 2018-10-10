@@ -8,6 +8,7 @@ public class Constants implements Serializable {
     public static final String GOOGLE_MAP_URL = "https://maps.googleapis.com/maps/";
 
     public static final String FILE_DIRECTORY = "Ember";
+    public static final String DOCS_DIRECTORY = "Ember_Documents";
     public static final String SUPPORT_DIRECTORY = "Support";
     public static final String SUPPORT_FILE_NAME = "SupportLog.txt";
     public static final String SUPPORT_LOG_EXTRA_SUBJECT = "Ember Support Log file";
@@ -31,6 +32,7 @@ public class Constants implements Serializable {
 
     public static final String FIREBASE_PROVIDER_LOCATION_TABLE = "ProviderLocation";
     public static final String FIREBASE_USER_TABLE = "User";
+    public static final String FIREBASE_SUBSCRIPTION_TABLE = "Subscription";
     public static final String FIREBASE_REQUEST_TABLE = "Request";
     public static final String FIREBASE_ALERT_TABLE = "Alert";
     public static final String FIREBASE_OPEN_TOK_TABLE = "OpenTok";
@@ -66,4 +68,19 @@ public class Constants implements Serializable {
 
     public static final String EMAIL_REGEX_SIGNUP = "^(\\s*|([A-Z0-9a-z](([A-Z0-9a-z]|\\.(?!\\.))|([A-Z0-9a-z]|\\_(?!\\_))){0,100}+@[A-Z0-9a-z.-]+\\.[A-Za-z]{2,4})+)$";
     public static final int MINIMUM_CLUSTER_SIZE = 2;
+
+
+    public static String BOUNDS_COUNTRY = "US";
+    public static int AUTO_COMPLETE_THRESHOLD = 1;
+
+    public static final String SIGN_UP_TYPE_EMAIL = "EMAIL";
+    static final String SIGN_UP_TYPE_FB = "FB";
+    static final String SIGN_UP_TYPE_GP = "GP";
+    public static final String SELECT_OCCUPATION = "Select Occupation";
+    public static final String SELECT_INSTITUTE = "Select Institute";
+
+    public static String CPR_FILE_NAME = "CprCertificate";
+    public static String MEDICAL_FILE_NAME = "MedicalCertificate";
+
+
 }

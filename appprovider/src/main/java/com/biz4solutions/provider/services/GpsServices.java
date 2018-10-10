@@ -49,7 +49,6 @@ public class GpsServices extends Service implements LocationListener {
     private static final int NOTIFICATION_ID = 200;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-
     @Override
     public void onCreate() {
         System.out.println("aa ------GpsServices------ onCreate");
@@ -152,18 +151,20 @@ public class GpsServices extends Service implements LocationListener {
                     .setContentTitle(service.getString(R.string.info_notification_title))
                     .setOngoing(true)
                     .setAutoCancel(false)
+                    .setDefaults(Notification.DEFAULT_LIGHTS)
+                    .setVibrate(new long[]{0L}) // Passing null here silently fails
                     .setStyle(new NotificationCompat.BigTextStyle().bigText(service.getString(R.string.info_notification_message)))
                     .setContentText(service.getString(R.string.info_notification_message))
                     .setContentIntent(pendingIntent);
             //addActions(service, mNotifyBuilder);
             Notification notification = mNotifyBuilder.build();
-            if (isUpdate) {
+            if (!isUpdate) {
+                service.startForeground(NOTIFICATION_ID, notification);
+            } /*else {
                 if (notificationManager != null) {
                     notificationManager.notify(NOTIFICATION_ID, notification);
                 }
-            } else {
-                service.startForeground(NOTIFICATION_ID, notification);
-            }
+            }*/
         }
     }
 

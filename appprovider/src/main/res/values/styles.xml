@@ -35,4 +35,23 @@
         <item name="cardElevation">2dp</item>
         <item name="cardPreventCornerOverlap">false</item>
     </style>
+
+
+    //for provider registration form
+    <style name="style_header_registration">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/alert_bg_color</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/_12dp</item>
+        <item name="android:minHeight">@dimen/_30dp</item>
+    </style>
+
+    <style name="style_divider_registration">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/text_color</item>
+    </style>
+
 </resources>

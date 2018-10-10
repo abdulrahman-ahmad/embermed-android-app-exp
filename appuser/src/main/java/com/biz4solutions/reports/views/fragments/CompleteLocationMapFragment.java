@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentCompleteLocationMapsBinding;
@@ -36,11 +35,10 @@ public class CompleteLocationMapFragment extends Fragment implements OnMapReadyC
     private final static String LONGITUDE = "LONGITUDE";
     private MainActivity mainActivity;
     private FragmentCompleteLocationMapsBinding binding;
-    private View mapView;
     private GoogleMap googleMap;
     private Marker victimMarker;
     private boolean isMapZoom = false;
-    public int ANIMATE_SPEED_TURN = 500; // 0.5 sec;
+    public int ANIMATE_SPEED_TURN = 1500; // 1.5 sec;
     public int ZOOM_LEVEL = 17;
     private double latitude;
     private double longitude;
@@ -98,7 +96,6 @@ public class CompleteLocationMapFragment extends Fragment implements OnMapReadyC
 
     private void initMapView() {
         SupportMapFragment mMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map_fragment);
-        mapView = mMapFragment.getView();
         mMapFragment.getMapAsync(this);
     }
 
@@ -130,22 +127,6 @@ public class CompleteLocationMapFragment extends Fragment implements OnMapReadyC
         googleMap.getUiSettings().setCompassEnabled(false);
         googleMap.setInfoWindowAdapter(new MyCustomAdapterForItems());
         addVictimMarker(latitude, longitude);
-        try {
-            if (mapView != null && mapView.findViewById(Integer.parseInt("1")) != null) {
-                // Get the button view
-                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-                if (locationButton != null) {
-                    // and next place it, on bottom right (as Google Maps app)
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-                    // position on right bottom
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                    layoutParams.setMargins(0, 0, 30, 30);
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void addVictimMarker(double latitude, double longitude) {
@@ -174,7 +155,7 @@ public class CompleteLocationMapFragment extends Fragment implements OnMapReadyC
                                 e.printStackTrace();
                             }
                         }
-                    }, ANIMATE_SPEED_TURN + ANIMATE_SPEED_TURN);
+                    }, ANIMATE_SPEED_TURN);
 
                 }
             }

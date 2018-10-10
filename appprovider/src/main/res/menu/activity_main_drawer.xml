@@ -13,6 +13,10 @@
             android:icon="@drawable/icn_news_feed"
             android:title="@string/news_feed" />
         <item
+            android:id="@+id/nav_registration"
+            android:icon="@drawable/icn_medical_profile"
+            android:title="@string/registration" />
+        <item
             android:id="@+id/nav_account_settings"
             android:icon="@drawable/icn_account_settings"
             android:title="@string/account_settings" />

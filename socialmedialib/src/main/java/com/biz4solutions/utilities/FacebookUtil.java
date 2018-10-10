@@ -71,7 +71,7 @@ public class FacebookUtil {
                                     userData.setLastName(lastName);
                                     userData.setSocialLoginId(facebookId);
                                     userData.setSocialLoginToken(accessToken);
-                                    userData.setSignupType("FB");
+                                    userData.setSignupType(Constants.SIGN_UP_TYPE_FB);
                                     facebookCallback.onSuccess(userData);
                                 } catch (JSONException e) {
                                     e.printStackTrace();

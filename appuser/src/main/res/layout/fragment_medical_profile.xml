@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_18dp"
+            android:layout_marginTop="@dimen/_15dp"
+            android:layout_marginEnd="@dimen/_20dp"
+            android:orientation="horizontal">
+
+            <AutoCompleteTextView
+                android:id="@+id/actv_medical_profile"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:hint="@string/txt_hint_search_diseases"
+                android:paddingTop="@dimen/_10dp"
+                android:paddingBottom="@dimen/_10dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_16dp" />
+
+            <ImageView
+                android:layout_width="@dimen/_15dp"
+                android:layout_height="@dimen/_15dp"
+                android:layout_gravity="center_vertical"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_search" />
+        </LinearLayout>
+
+        <View
+            style="@style/divider"
+            android:layout_marginStart="@dimen/_15dp"
+            android:layout_marginEnd="@dimen/_15dp" />
+
+        <View
+            android:id="@+id/iv_item_medical_profile_divider"
+            style="@style/divider"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/_10dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_medical_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:nestedScrollingEnabled="false" />
+
+
+        <Button
+            android:id="@+id/btn_submit_medical_profile"
+            style="@style/BtnStyle"
+            android:layout_marginTop="@dimen/_10dp"
+            android:layout_marginBottom="@dimen/_10dp"
+            android:text="@string/save"
+            android:visibility="gone" />
+
+
+    </LinearLayout>
+</layout>

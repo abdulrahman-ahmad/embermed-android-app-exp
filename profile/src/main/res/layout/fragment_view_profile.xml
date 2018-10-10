@@ -4,38 +4,43 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.biz4solutions.viewmodels.ViewProfileViewModel" />
+
+        <variable
+            name="fragment"
+            type="com.biz4solutions.fragments.ViewProfileFragment" />
     </data>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:scrollbars="none">
+        tools:ignore="SpUsage, UnusedAttribute">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/_20dp">
+            android:layout_marginBottom="@dimen/_8dp"
+            android:orientation="vertical">
 
             <ImageView
-                circularImageUrl="@{viewModel.userData.imageUrl}"
+                circularImageUrl="@{viewModel.userData.profileUrl}"
                 android:layout_width="@dimen/_100dp"
                 android:layout_height="@dimen/_100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/_20dp"
-                android:layout_marginBottom="10dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_default_profile_pic" />
+                android:layout_marginBottom="@dimen/_20dp"
+                android:background="@drawable/ic_default_profile_pic"
+                android:contentDescription="@null" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="@dimen/_25dp"
-                android:layout_marginTop="@dimen/_15dp"
                 android:layout_marginRight="@dimen/_25dp"
                 android:orientation="vertical">
 
@@ -49,8 +54,7 @@
                     android:id="@+id/tv_first_name"
                     style="@style/tv_value"
                     android:text="@{viewModel.userData.firstName}"
-                    tools:ignore="SpUsage"
-                    tools:text="@string/first_name" />
+                    tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
 
@@ -63,8 +67,7 @@
                     android:id="@+id/tv_last_name"
                     style="@style/tv_value"
                     android:text="@{viewModel.userData.lastName}"
-                    tools:ignore="SpUsage"
-                    tools:text="@tools:sample/last_names" />
+                    tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
 
@@ -75,8 +78,20 @@
 
                 <TextView
                     android:id="@+id/tv_email"
-                    style="@style/tv_email_value"
+                    style="@style/tv_value"
                     android:text="@{viewModel.userData.email}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/txt_phone_no"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.phoneNumber}"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
@@ -89,20 +104,18 @@
                 <TextView
                     android:id="@+id/tv_dob"
                     style="@style/tv_value"
-                    android:text="@{viewModel.userData.displayDateOfBirth}"
+                    android:text="@{viewModel.displayDateOfBirth}"
                     tools:ignore="SpUsage" />
 
                 <View style="@style/divider" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_7dp"
+                    android:layout_height="@dimen/_50dp"
                     android:gravity="center"
                     android:orientation="horizontal"
-                    android:paddingTop="@dimen/_7dp"
-                    android:paddingBottom="@dimen/_7dp"
-                    android:weightSum="10">
+                    android:paddingTop="@dimen/_6dp"
+                    android:paddingBottom="@dimen/_6dp">
 
                     <TextView
                         style="@style/tv_center_label"
@@ -119,66 +132,80 @@
                         android:text="@{viewModel.userData.gender}"
                         tools:ignore="SpUsage" />
 
-
-                    <ImageView
+                    <Space
                         android:layout_width="@dimen/_18dp"
-                        android:layout_height="@dimen/_18dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_forward_arrow"
-                        android:visibility="invisible" />
+                        android:layout_height="@dimen/_18dp" />
                 </LinearLayout>
 
                 <View
                     style="@style/divider"
-                    android:layout_marginTop="@dimen/_8dp" />
+                    android:layout_margin="0dp" />
 
-                <com.biz4solutions.customs.RippleView
-                    android:id="@+id/ll_profile_change_pwd"
-                    android:layout_width="match_parent"
+                <TextView
+                    style="@style/tv_label"
+                    android:text="@string/txt_address"
+                    tools:ignore="SpUsage" />
+
+                <TextView
+                    style="@style/tv_value"
+                    android:text="@{viewModel.userData.address}"
+                    tools:ignore="SpUsage" />
+
+                <View style="@style/divider" />
+
+                <LinearLayout
+                    android:id="@+id/ll_change_password"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_5dp"
-                    android:gravity="center_vertical"
-                    android:onClick="@{(v)->viewModel.onChangePwdClick(v)}"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/_7dp"
-                    android:paddingBottom="@dimen/_7dp"
-                    android:weightSum="10">
+                    android:orientation="vertical"
+                    android:visibility="@{viewModel.isShowChangePassword() ? View.VISIBLE : View.GONE}">
 
-                    <TextView
-                        style="@style/tv_center_label"
-                        android:layout_width="0dp"
-                        android:layout_weight="4"
-                        android:text="@string/label_change_password"
-                        tools:ignore="SpUsage" />
-
-                    <EditText
-                        android:id="@+id/tv_pwd"
-                        style="@style/tv_center_value"
-                        android:layout_width="0dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_weight="6"
-                        android:background="@null"
-                        android:enabled="false"
+                    <com.biz4solutions.customs.RippleView
+                        android:id="@+id/ll_profile_change_pwd"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_50dp"
                         android:gravity="center_vertical"
-                        android:inputType="textPassword"
-                        android:text="12345678912345"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="@dimen/_25dp"
-                        tools:ignore="SpUsage" />
+                        android:onClick="@{fragment::openChangePasswordFragment}"
+                        android:orientation="horizontal"
+                        android:paddingTop="@dimen/_6dp"
+                        android:paddingBottom="@dimen/_6dp">
 
-                    <ImageView
-                        android:layout_width="@dimen/_18dp"
-                        android:layout_height="@dimen/_18dp"
-                        android:layout_gravity="center_vertical|end"
-                        android:layout_weight="1"
-                        android:background="@drawable/ic_forward_arrow"
-                        android:contentDescription="@null" />
-                </com.biz4solutions.customs.RippleView>
+                        <TextView
+                            style="@style/tv_center_label"
+                            android:layout_width="0dp"
+                            android:layout_weight="4"
+                            android:text="@string/label_change_password"
+                            tools:ignore="SpUsage" />
 
-                <View
-                    style="@style/divider"
-                    android:layout_marginTop="@dimen/_5dp" />
+                        <EditText
+                            android:id="@+id/tv_pwd"
+                            style="@style/tv_center_value"
+                            android:layout_width="0dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_weight="6"
+                            android:background="@null"
+                            android:enabled="false"
+                            android:fontFamily="sans-serif-medium"
+                            android:gravity="center_vertical"
+                            android:inputType="textPassword"
+                            android:text="@string/dummy_number"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/_16dp"
+                            android:textStyle="bold"
+                            tools:ignore="Autofill,LabelFor,SpUsage" />
+
+                        <ImageView
+                            android:layout_width="@dimen/_18dp"
+                            android:layout_height="@dimen/_18dp"
+                            android:layout_gravity="center_vertical|end"
+                            android:background="@drawable/ic_forward_arrow"
+                            android:contentDescription="@null" />
+                    </com.biz4solutions.customs.RippleView>
+
+                    <View
+                        style="@style/divider"
+                        android:layout_margin="0dp" />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

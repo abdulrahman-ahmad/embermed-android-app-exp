@@ -21,7 +21,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,15 +59,13 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
     private final UrgentCaresDataResponse urgentCaresDataResponse;
     private GoogleMap googleMap;
     @SuppressLint("StaticFieldLeak")
-    private View mapView;
     private LocationManager mLocationManager;
     @SuppressWarnings("FieldCanBeLocal")
     private final int UPDATE_MIN_INTERVAL = 5000;    // 5 sec;
     @SuppressWarnings("FieldCanBeLocal")
     private final int UPDATE_MIN_DISTANCE = 0;       // 0 meter
     @SuppressWarnings("FieldCanBeLocal")
-    private final int ANIMATE_SPEED_TURN = 500;      // 0.5 sec;
-    private final int ZOOM_LEVEL = 17;
+    private final int ANIMATE_SPEED_TURN = 1500;      // 1.5 sec;
     private Marker userMarker;
     private MapClusterItem selectedClusterItem;
     private boolean isMapZoom = false;
@@ -76,8 +73,6 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
     private ArrayList<MapClusterItem> clusterItems;
     public final ObservableBoolean showUberLayout;
 
-
-    //todo:Need to check the permission flow
 
     private UrgentCareMapViewModel(Context context, UrgentCaresDataResponse urgentCaresDataResponse) {
         //initMapView();
@@ -91,7 +86,6 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
 
     public void initMapView(SupportMapFragment mapFragment) {
         if (googleMap == null) {
-            mapView = mapFragment.getView();
             mapFragment.getMapAsync(this);
         } else {
             startLocationUpdates();
@@ -130,29 +124,10 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
         googleMap.clear();
         googleMap.getUiSettings().setMapToolbarEnabled(false);
         googleMap.getUiSettings().setCompassEnabled(false);
-//        clusterManager = new ClusterManager<>(getActivity(), googleMap);
 
         ArrayList<UrgentCare> urgentCares = urgentCaresDataResponse.getList();
         showClusterItems(urgentCares);
-        /*if (urgentCares != null) {
-            for (int i = 0; i < urgentCares.size(); i++) {
-                addUrgentCareMarker(urgentCares.get(i).getLatitude(), urgentCares.get(i).getLongitude());
-            }
-        }*/
         try {
-            if (mapView != null &&
-                    mapView.findViewById(Integer.parseInt("1")) != null) {
-                // Get the button view
-                View locationButton = ((View) mapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-                if (locationButton != null) {
-                    // and next place it, on bottom right (as Google Maps app)
-                    RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-                    // position on right bottom
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-                    layoutParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
-                    layoutParams.setMargins(0, 0, 30, 30);
-                }
-            }
             startLocationUpdates();
         } catch (Exception e) {
             e.printStackTrace();
@@ -283,10 +258,9 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
     //click on location btn
     public void onLocationBtnClick() {
         if (userMarker != null && googleMap != null) {
-            animateCamera(userMarker.getPosition(), ZOOM_LEVEL);
+            animateCamera(userMarker.getPosition());
         }
     }
-
 
     private void addCurrentLocationMarker(double latitude, double longitude) {
         try {
@@ -300,7 +274,7 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
                             .position(latLng));
                     if (!isMapZoom) {
                         isMapZoom = true;
-                        animateCamera(latLng, ZOOM_LEVEL);
+                        animateCamera(latLng);
                     }
                 } else {
                     animateMarker(userMarker, latLng);
@@ -311,7 +285,7 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
         }
     }
 
-    private void animateCamera(LatLng position, float zoomLevel) {
+    private void animateCamera(LatLng position) {
         try {
             if (googleMap != null) {
                 CameraPosition cameraPosition =
@@ -319,7 +293,7 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
                                 .target(position)
                                 //.bearing(45)
                                 .tilt(90)
-                                .zoom(zoomLevel)
+                                .zoom((float) 17)
                                 .build();
                 googleMap.animateCamera(
                         CameraUpdateFactory.newCameraPosition(cameraPosition),
@@ -379,8 +353,6 @@ public class UrgentCareMapViewModel extends ViewModel implements OnMapReadyCallb
         super.onCleared();
         if (context != null)
             context = null;
-        if (mapView != null)
-            mapView = null;
     }
 
     //clear all objects & context classes objects

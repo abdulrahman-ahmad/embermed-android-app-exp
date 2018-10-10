@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.StrictMode;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 import android.support.v4.content.ContextCompat;
@@ -35,6 +36,10 @@ public class Application extends MultiDexApplication {
         } else {
             createLoggerFile();
         }
+
+        //for ignoring uri exposure
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
     }
 
     public void createLoggerFile() {

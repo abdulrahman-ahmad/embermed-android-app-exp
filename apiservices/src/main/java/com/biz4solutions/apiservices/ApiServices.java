@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.biz4solutions.interfaces.RestClientResponse;
 import com.biz4solutions.models.Location;
+import com.biz4solutions.models.ProviderRegistration;
 import com.biz4solutions.models.SocialMediaUserData;
 import com.biz4solutions.models.User;
 import com.biz4solutions.models.request.CreateEmsRequest;
@@ -11,6 +12,7 @@ import com.biz4solutions.models.request.FeedbackRequest;
 import com.biz4solutions.models.request.IncidentReport;
 import com.biz4solutions.models.request.LoginRequest;
 import com.biz4solutions.models.request.SignUpRequest;
+import com.biz4solutions.models.request.UserDiseaseListRequest;
 import com.biz4solutions.utilities.Constants;
 
 import java.util.HashMap;
@@ -194,4 +196,63 @@ public class ApiServices {
                 .updateUserProfile(user));
     }
 
+    public void registerProvider(final Context context, ProviderRegistration registration, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .registerProvider(registration));
+    }
+
+    public void getOccupationList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getOccupationList());
+    }
+
+    public void getCprInstituteList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getCprInstituteList());
+    }
+
+    public void getUserProfile(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getUserProfile());
+    }
+
+    public void changePassword(final Context context, HashMap<String, Object> body, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .changePassword(body));
+    }
+
+    public void getProviderRegistrationDetails(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getProviderRegistrationDetails());
+    }
+
+    public void getNewsFeedDetail(final Context context, double latitude, double longitude, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getNewsFeedDetail(latitude, longitude));
+    }
+
+    public void getMedicalSearchDiseaseList(final Context context, String searchText, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getMedicalSearchDiseases(searchText));
+    }
+
+    public void updateMedicalDiseaseList(final Context context, UserDiseaseListRequest request, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .updateMedicalDiseases(request));
+    }
+
+    public void getSelectedMedicalDiseasesList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSelectedMedicalDiseasesList());
+    }
+
+    public void getSubscriptionOffersList(final Context context, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .getSubscriptionOffersList());
+    }
+
+    public void subscribeUser(final Context context, String id, final RestClientResponse restClientResponse) {
+        ApiServiceUtil.getInstance().retrofitWebServiceCall(context, restClientResponse, ApiServiceUtil.getInstance().getRestClient(context)
+                .subscribeUser(id));
+    }
 }

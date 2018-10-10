@@ -1,4 +1,4 @@
-package com.biz4solutions.main.views.fragments;
+package com.biz4solutions.account.fragments;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -9,10 +9,11 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.biz4solutions.R;
-import com.biz4solutions.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.activities.ProfileActivity;
+import com.biz4solutions.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.utilities.NavigationUtil;
 
@@ -44,7 +45,6 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
         return binding.getRoot();
     }
 
-
     private void initActivity() {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
@@ -74,15 +74,18 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
     private void initListeners() {
         binding.cvMyProfile.setOnClickListener(this);
         binding.cvSavedCards.setOnClickListener(this);
+        binding.cvSubscriptions.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == binding.cvMyProfile.getId()) {
-            // mainActivity.openProfileFragment();
-            startActivity(new Intent(mainActivity, ProfileActivity.class));
-        } else if (v.getId() == binding.cvSavedCards.getId()) {
-            //mainActivity.openEditProfileFragment();
+        switch (v.getId()) {
+            case R.id.cv_my_profile:
+                startActivity(new Intent(mainActivity, ProfileActivity.class));
+                break;
+            default:
+                Toast.makeText(mainActivity, R.string.coming_soon, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 }
