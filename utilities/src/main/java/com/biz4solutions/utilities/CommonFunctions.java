@@ -17,6 +17,8 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +26,6 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
@@ -214,6 +215,7 @@ public class CommonFunctions implements Serializable {
         TextView tvTitle = v.findViewById(R.id.dialog_title);
         final TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
         btn_positive.setText(activity.getString(ptBtnTextId));
+        btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.text_hint_color));
         TextView btn_negative = v.findViewById(R.id.dialog_negative_btn);
         btn_negative.setText(activity.getString(ntBtnTextId));
         tvTitle.setText(activity.getString(messageId));
@@ -225,15 +227,35 @@ public class CommonFunctions implements Serializable {
                 alertDialog1.dismiss();
             }
         });
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (input.getText().length() < minLength) {
+                    btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.text_hint_color));
+                } else {
+                    btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         btn_positive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (input.getText().length() == 0) {
-                    Toast.makeText(activity, activity.getString(errorMsgId), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, activity.getString(errorMsgId), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (input.getText().length() < minLength) {
-                    Toast.makeText(activity, activity.getString(validationTxtId), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(activity, activity.getString(validationTxtId), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 hideSoftKeyBoard(activity);
