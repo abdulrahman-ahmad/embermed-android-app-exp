@@ -82,7 +82,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener {
             if (isValidName(binding.edtFirstName.getText().toString().trim(), binding.edtLastName.getText().toString().trim())) {
                 if (isEmailIdValid(binding.edtEmail.getText().toString().trim())) {
                     if (isPasswordValid(binding.edtPassword.getText().toString().trim()/*, binding.edtConfirmPassword.getText().toString().trim()*/, binding.edtPassword.getText().toString().trim())) {
-                        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(),  R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, true, true, new DialogDismissCallBackListener<String>() {
+                        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(),  R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, new DialogDismissCallBackListener<String>() {
                             @Override
                             public void onClose(String result) {
                                 if (result != null && result.length() > 0) {

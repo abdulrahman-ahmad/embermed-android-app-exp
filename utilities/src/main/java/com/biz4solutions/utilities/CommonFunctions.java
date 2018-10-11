@@ -17,8 +17,6 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -172,7 +170,7 @@ public class CommonFunctions implements Serializable {
             return;
         }
         dismissAlertDialog();
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context,R.style.common_alert_dialog);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context, R.style.common_alert_dialog);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
 
@@ -204,29 +202,26 @@ public class CommonFunctions implements Serializable {
         mDialog = alertDialog.show();
     }
 
-    public void showEdittextAlertDialog(final Context context, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<String> callBackListener) {
-        if (!isHighPriority && mDialog != null) {
-            return;
-        }
+    public void showEdittextAlertDialog(final Activity activity, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, final DialogDismissCallBackListener<String> callBackListener) {
         dismissAlertDialog();
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         // Setting Dialog Message
-        View v = LayoutInflater.from(context).inflate(R.layout.dialog_with_edittext_layout, null, false);
+        @SuppressLint("InflateParams")
+        View v = LayoutInflater.from(activity).inflate(R.layout.dialog_with_edittext_layout, null, false);
         builder.setView(v);
         final EditText input = v.findViewById(R.id.dialog_et_code);
-        input.setHint(context.getString(hintTxtId));
+        input.setHint(activity.getString(hintTxtId));
         TextView tvTitle = v.findViewById(R.id.dialog_title);
         final TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
-        btn_positive.setText(context.getString(ptBtnTextId));
+        btn_positive.setText(activity.getString(ptBtnTextId));
         TextView btn_negative = v.findViewById(R.id.dialog_negative_btn);
-        btn_negative.setText(context.getString(ntBtnTextId));
-        tvTitle.setText(context.getString(messageId));
+        btn_negative.setText(activity.getString(ntBtnTextId));
+        tvTitle.setText(activity.getString(messageId));
 
         final AlertDialog alertDialog1 = builder.create();
         btn_negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mDialog = null;
                 alertDialog1.dismiss();
             }
         });
@@ -234,19 +229,18 @@ public class CommonFunctions implements Serializable {
             @Override
             public void onClick(View v) {
                 if (input.getText().length() == 0) {
-                    Toast.makeText(context, context.getString(errorMsgId), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(errorMsgId), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (input.getText().length() < minLength) {
-                    Toast.makeText(context, context.getString(validationTxtId), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, activity.getString(validationTxtId), Toast.LENGTH_SHORT).show();
                     return;
                 }
+                hideSoftKeyBoard(activity);
                 if (callBackListener != null) {
                     callBackListener.onClose(input.getText().toString());
                 }
                 alertDialog1.dismiss();
-                //alertDialog = null;
-                mDialog = null;
             }
         });
 

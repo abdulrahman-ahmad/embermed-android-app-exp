@@ -10,7 +10,6 @@ import com.biz4solutions.customs.taptargetview.TapTarget;
 import com.biz4solutions.customs.taptargetview.TapTargetSequence;
 import com.biz4solutions.customs.taptargetview.TapTargetView;
 import com.biz4solutions.interfaces.OnTargetClickListener;
-import com.biz4solutions.utilities.models.TargetModel;
 
 import java.util.ArrayList;
 
@@ -197,6 +196,42 @@ public class TargetViewUtil {
         return targetModelArrayList;
     }
 
+
+    private class TargetModel {
+        private String title;
+        private View view;
+        private String desc;
+
+        public TargetModel(View view, String title, String desc) {
+            this.title = title;
+            this.view = view;
+            this.desc = desc;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public View getView() {
+            return view;
+        }
+
+        public void setView(View view) {
+            this.view = view;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
+        public void setDesc(String desc) {
+            this.desc = desc;
+        }
+    }
 
 //
 //    public void showTargetView(View v, Activity activity) {
