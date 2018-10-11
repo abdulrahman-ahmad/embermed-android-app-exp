@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,7 +17,8 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.util.DisplayMetrics;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -172,7 +172,7 @@ public class CommonFunctions implements Serializable {
             return;
         }
         dismissAlertDialog();
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context,R.style.common_alert_dialog);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
 
@@ -204,7 +204,7 @@ public class CommonFunctions implements Serializable {
         mDialog = alertDialog.show();
     }
 
-    public void showEdittextAlertDialog(final Context context, final boolean isOnlyAlphaNumeric, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<String> callBackListener) {
+    public void showEdittextAlertDialog(final Context context, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, boolean isNtBtn, boolean isHighPriority, final DialogDismissCallBackListener<String> callBackListener) {
         if (!isHighPriority && mDialog != null) {
             return;
         }
@@ -216,18 +216,18 @@ public class CommonFunctions implements Serializable {
         final EditText input = v.findViewById(R.id.dialog_et_code);
         input.setHint(context.getString(hintTxtId));
         TextView tvTitle = v.findViewById(R.id.dialog_title);
-        TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
+        final TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
         btn_positive.setText(context.getString(ptBtnTextId));
         TextView btn_negative = v.findViewById(R.id.dialog_negative_btn);
         btn_negative.setText(context.getString(ntBtnTextId));
         tvTitle.setText(context.getString(messageId));
+
         final AlertDialog alertDialog1 = builder.create();
         btn_negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mDialog = null;
                 alertDialog1.dismiss();
-
             }
         });
         btn_positive.setOnClickListener(new View.OnClickListener() {

@@ -205,7 +205,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
             return;
         }
 
-        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(), true, R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, true, true, new DialogDismissCallBackListener<String>() {
+        CommonFunctions.getInstance().showEdittextAlertDialog(getActivity(), R.string.title_dialog, R.string.title_dialog_hint, R.string.error_empty_invitation_code, 6, R.string.error_invalid_invitation_code, R.string.txt_btn_submit, R.string.cancel, true, true, new DialogDismissCallBackListener<String>() {
             @Override
             public void onClose(String result) {
                 if (result != null && result.length() > 0) {
@@ -217,7 +217,6 @@ public class LoginFragment extends Fragment implements View.OnClickListener, Cal
                     data.setInvitationCode(result);
                     //System.out.println("aa ----------- SocialMediaUserData=" + data.toString());
                     new ApiServices().socialAppLogin(getActivity(), data, LoginFragment.this);
-
                 }
             }
         });

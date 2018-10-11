@@ -131,5 +131,14 @@
     </style>
 
 
+    <style name="common_alert_dialog" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/_16dp</item>
+        <!-- Used for the buttons -->
+        <item name="colorAccent">@color/colorPrimary</item>
+        <!-- Used for the title and text -->
+        <item name="android:textColorPrimary">@color/bpblack</item>
+        <item name="android:background">@color/white</item>
+    </style>
 
 </resources>
