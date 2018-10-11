@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto">
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -11,10 +12,10 @@
             type="com.biz4solutions.provider.aedmaps.viewmodels.AedMapViewModel" />
     </data>
 
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <fragment
             android:id="@+id/map_fragment"
@@ -35,30 +36,28 @@
                 android:layout_width="@dimen/_40dp"
                 android:layout_height="@dimen/_40dp"
                 android:layout_gravity="end"
-                android:layout_marginBottom="@dimen/_8dp"
                 android:layout_marginEnd="@dimen/_15dp"
+                android:layout_marginBottom="@dimen/_8dp"
                 android:contentDescription="@null"
                 android:onClick="@{()->viewModel.onLocationBtnClick()}"
                 android:src="@drawable/selector_map_current_icon" />
 
             <LinearLayout
-                android:id="@+id/ll_book_uber"
+                android:id="@+id/description_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_30dp"
+                android:background="@color/white"
                 android:gravity="center"
-                android:visibility="@{viewModel.showUberLayout?View.VISIBLE:View.GONE,default=gone}"
-                android:weightSum="1080">
+                android:visibility="@{viewModel.showDescription?View.VISIBLE:View.GONE,default=gone}">
 
-                <Button
-                    android:id="@+id/btn_book_uber"
-                    style="@style/BtnStyle"
-                    android:layout_width="0dp"
-                    android:layout_margin="0dp"
-                    android:layout_weight="550"
-                    android:background="@drawable/ripple_default_button"
-                    android:onClick="@{(v)->viewModel.onBookUberClick(v)}"
-                    android:text="@string/book_uber" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_16dp"
+                    android:text="@{viewModel.description}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_16dp"
+                    tools:ignore="SpUsage" />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
