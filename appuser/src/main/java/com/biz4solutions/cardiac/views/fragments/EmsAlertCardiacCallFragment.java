@@ -1,5 +1,6 @@
 package com.biz4solutions.cardiac.views.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.cardiac.views.activities.GifFullScreenActivity;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
@@ -30,6 +32,7 @@ import com.biz4solutions.utilities.NavigationUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -114,6 +117,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         binding.btnNextCpr.setOnClickListener(this);
         binding.btnPreviousCpr.setOnClickListener(this);
         binding.cprTutorialLink.setOnClickListener(this);
+        binding.cprGifLayout.setOnClickListener(this);
 
         arrivalTimeInMin.set("");
         loaderVisibility.set(true);
@@ -306,16 +310,24 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 playGif();
                 break;
             case R.id.btn_play_cpr:
-                if (isGifPlaying) {
-                    binding.btnPlay.setVisibility(View.VISIBLE);
-                    binding.btnPause.setVisibility(View.GONE);
-                    ((GifDrawable) binding.gifImage.getDrawable()).stop();
-                } else {
-                    binding.btnPlay.setVisibility(View.GONE);
-                    binding.btnPause.setVisibility(View.VISIBLE);
-                    ((GifDrawable) binding.gifImage.getDrawable()).start();
+                if ((binding.gifImage.getDrawable()) != null) {
+                    if (isGifPlaying) {
+                        binding.btnPlay.setVisibility(View.VISIBLE);
+                        binding.btnPause.setVisibility(View.GONE);
+                        ((GifDrawable) binding.gifImage.getDrawable()).stop();
+                    } else {
+                        binding.btnPlay.setVisibility(View.GONE);
+                        binding.btnPause.setVisibility(View.VISIBLE);
+                    }
+                    isGifPlaying = !isGifPlaying;
                 }
-                isGifPlaying = !isGifPlaying;
+                break;
+            case R.id.cpr_gif_layout:
+                binding.btnPlay.setVisibility(View.GONE);
+                binding.btnPause.setVisibility(View.VISIBLE);
+                Intent myIntent = new Intent(mainActivity, GifFullScreenActivity.class);
+                myIntent.putExtra("gifIdArray", (Serializable) gifList); //Optional parameters
+                mainActivity.startActivity(myIntent);
                 break;
         }
     }

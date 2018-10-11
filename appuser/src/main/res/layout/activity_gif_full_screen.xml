@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/btn_close_full"
+                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ripple_default_bg"
+                android:padding="6dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_close"
+                    android:backgroundTint="@color/text_color"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/cpr_title_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="@dimen/cpr_tutorial_title_margin"
+                android:layout_marginEnd="8dp"
+                android:text="@string/cpr_tutorial_title"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/cpr_tutorial_title_size" />
+
+            <LinearLayout
+                android:id="@+id/cpr_gif_layout_full"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/btn_play_cpr_full"
+                android:layout_below="@+id/cpr_title_full"
+                android:layout_marginTop="@dimen/cpr_tutorial_title_margin"
+                android:layout_marginBottom="@dimen/_20dp"
+                android:clipChildren="true"
+                android:clipToPadding="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/gif_image_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5dp"
+                    android:layout_marginBottom="@dimen/_5dp"
+                    android:contentDescription="@null" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_previous_cpr_full"
+                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="@dimen/_25dp"
+                android:layout_toStartOf="@+id/btn_play_cpr_full"
+                android:background="@drawable/ripple_default_bg">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_previous"
+                    android:backgroundTint="@color/text_color"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_play_cpr_full"
+                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="@dimen/_25dp"
+                android:background="@drawable/ripple_default_bg"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/btn_play_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_play"
+                    android:contentDescription="@null"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/btn_pause_full"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_pause"
+                    android:contentDescription="@null" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btn_next_cpr_full"
+                android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/_25dp"
+                android:layout_toEndOf="@+id/btn_play_cpr_full"
+                android:background="@drawable/ripple_default_bg">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_previous"
+                    android:backgroundTint="@color/text_color"
+                    android:contentDescription="@null"
+                    android:rotation="180" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</layout>
