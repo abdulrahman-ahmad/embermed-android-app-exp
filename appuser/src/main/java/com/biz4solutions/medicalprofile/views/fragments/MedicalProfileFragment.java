@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Toast;
+
 import com.biz4solutions.R;
 import com.biz4solutions.databinding.FragmentMedicalProfileBinding;
 import com.biz4solutions.interfaces.CustomOnItemClickListener;
@@ -25,6 +26,7 @@ import com.biz4solutions.medicalprofile.viewmodels.MedicalProfileViewModel;
 import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.NavigationUtil;
+
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -55,19 +57,18 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         return fragment;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments()
-                    .getSerializable(REQUESTED_DATA);
+            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments().getSerializable(REQUESTED_DATA);
         }
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_medical_profile);
