@@ -15,7 +15,6 @@ import com.biz4solutions.R;
 import com.biz4solutions.activities.ProfileActivity;
 import com.biz4solutions.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.main.views.activities.MainActivity;
-import com.biz4solutions.utilities.NavigationUtil;
 
 public class AccountSettingFragment extends Fragment implements View.OnClickListener {
 
@@ -50,14 +49,12 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_account_settings);
             mainActivity.toolbarTitle.setText(R.string.account_settings);
-            NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        NavigationUtil.getInstance().hideBackArrow(mainActivity);
     }
 
     @Override
