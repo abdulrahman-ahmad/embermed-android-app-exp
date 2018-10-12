@@ -116,4 +116,5 @@
     <string name="error_file_not_found">Something went wrong. Please try again later.</string>
     <string name="error_invalid_file_link">Broken file link.</string>
     <string name="error_invalid_selected_file">Please select file from another source.</string>
+    <string name="no_description_available">No description available.</string>
 </resources>

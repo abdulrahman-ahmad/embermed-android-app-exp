@@ -189,7 +189,11 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
             public boolean onClusterItemClick(MapClusterItem clusterItem) {
                 selectedClusterItem = clusterItem;
                 showDescription.set(true);
-                description.set(clusterItem.getDescription());
+                if (clusterItem.getDescription() != null && !clusterItem.getDescription().isEmpty()) {
+                    description.set(clusterItem.getDescription());
+                } else {
+                    description.set(context.getString(R.string.no_description_available));
+                }
                 return false;
             }
         });
