@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class UserDiseaseListRequest {
 
     @SerializedName("userDiseaseDTOs")
-    ArrayList<MedicalDisease> data;
+    private ArrayList<MedicalDisease> data;
 
     public ArrayList<MedicalDisease> getData() {
         return data;

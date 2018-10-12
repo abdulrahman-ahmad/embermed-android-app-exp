@@ -111,5 +111,6 @@
     <string name="txt_buy_now">Buy Now</string>
     <string name="dollar_symbol">$</string>
     <string name="no_plans_available">No plans available.</string>
+    <string name="no_medical_profile_available">No disease available.</string>
 
 </resources>

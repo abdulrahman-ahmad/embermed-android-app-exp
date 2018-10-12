@@ -6,11 +6,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.biz4solutions.apiservices.ApiServices;
 import com.biz4solutions.interfaces.RestClientResponse;
+import com.biz4solutions.main.views.activities.MainActivity;
 import com.biz4solutions.models.MedicalDisease;
 import com.biz4solutions.models.request.UserDiseaseListRequest;
 import com.biz4solutions.models.response.EmptyResponse;
@@ -18,28 +18,20 @@ import com.biz4solutions.models.response.GenericResponse;
 import com.biz4solutions.utilities.CommonFunctions;
 
 import java.util.ArrayList;
+
 @SuppressWarnings("unchecked")
 public class MedicalProfileViewModel extends AndroidViewModel implements RestClientResponse {
-    private ApiServices apiServices;
     private MutableLiveData<ArrayList<MedicalDisease>> diseaseMutableLiveData;
     private MutableLiveData<String> toastMsg;
-    private MutableLiveData<Boolean> isListUpdated;
 
     private MedicalProfileViewModel(@NonNull Application application) {
         super(application);
-        apiServices = new ApiServices();
         diseaseMutableLiveData = new MutableLiveData<>();
-        isListUpdated = new MutableLiveData<>();
         toastMsg = new MutableLiveData<>();
     }
 
     public LiveData<ArrayList<MedicalDisease>> getDiseaseMutableLiveData() {
         return diseaseMutableLiveData;
-    }
-
-
-    public MutableLiveData<Boolean> getIsListUpdated() {
-        return isListUpdated;
     }
 
     public MutableLiveData<String> getToastMsg() {
@@ -51,26 +43,27 @@ public class MedicalProfileViewModel extends AndroidViewModel implements RestCli
             toastMsg.setValue(getApplication().getBaseContext().getString(com.biz4solutions.profile.R.string.error_network_unavailable));
             return;
         }
-        apiServices.getMedicalSearchDiseaseList(getApplication().getBaseContext(), searchText, this);
+        new ApiServices().getMedicalSearchDiseaseList(getApplication().getBaseContext(), searchText, this);
     }
 
-    public void updateDataToServer(final Context context, final ArrayList<MedicalDisease> diseaseArrayList) {
+    public void updateDataToServer(final MainActivity mainActivity, final ArrayList<MedicalDisease> newDiseaseArrayList, final ArrayList<MedicalDisease> backStackList) {
         if (CommonFunctions.getInstance().isOffline(getApplication().getBaseContext())) {
             toastMsg.setValue(getApplication().getBaseContext().getString(com.biz4solutions.profile.R.string.error_network_unavailable));
             return;
         }
-        CommonFunctions.getInstance().loadProgressDialog(context);
+        CommonFunctions.getInstance().loadProgressDialog(mainActivity);
 
         UserDiseaseListRequest request = new UserDiseaseListRequest();
-        request.setData(diseaseArrayList);
+        request.setData(newDiseaseArrayList);
 
-        apiServices.updateMedicalDiseaseList(context, request, new RestClientResponse() {
+        new ApiServices().updateMedicalDiseaseList(mainActivity, request, new RestClientResponse() {
             @Override
             public void onSuccess(Object response, int statusCode) {
                 toastMsg.setValue((((EmptyResponse) response).getMessage()));
                 CommonFunctions.getInstance().dismissProgressDialog();
-                isListUpdated.setValue(true);
-
+                backStackList.clear();
+                backStackList.addAll(newDiseaseArrayList);
+                mainActivity.getSupportFragmentManager().popBackStack();
             }
 
             @Override

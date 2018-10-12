@@ -28,11 +28,11 @@ import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.NavigationUtil;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MedicalProfileFragment extends Fragment implements AdapterView.OnItemClickListener,
-        CustomOnItemClickListener {
+public class MedicalProfileFragment extends Fragment implements AdapterView.OnItemClickListener, CustomOnItemClickListener {
 
     public static final String fragmentName = "MedicalProfileFragment";
     private MainActivity mainActivity;
@@ -40,8 +40,9 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     private MedicalProfileRecyclerAdapter rvAdapter;
     private MedicalAutoCompleteAdapter autoCompleteTvAdapter;
     private MedicalProfileViewModel viewModel;
-    private final static String REQUESTED_DATA = "REQUESTED_DATA";
+    private final static String USER_DISEASE_DATA = "USER_DISEASE_DATA";
     private ArrayList<MedicalDisease> diseaseArrayList;
+    private List<MedicalDisease> newDiseaseArrayList;
     private TimerTask task = null;
     private Timer timer = null;
 
@@ -52,7 +53,7 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     public static MedicalProfileFragment newInstance(ArrayList<MedicalDisease> diseaseArrayList) {
         MedicalProfileFragment fragment = new MedicalProfileFragment();
         Bundle args = new Bundle();
-        args.putSerializable(REQUESTED_DATA, diseaseArrayList);
+        args.putSerializable(USER_DISEASE_DATA, diseaseArrayList);
         fragment.setArguments(args);
         return fragment;
     }
@@ -63,28 +64,26 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         super.onCreate(savedInstanceState);
         mainActivity = (MainActivity) getActivity();
         if (getArguments() != null) {
-            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments().getSerializable(REQUESTED_DATA);
+            diseaseArrayList = (ArrayList<MedicalDisease>) getArguments().getSerializable(USER_DISEASE_DATA);
+            newDiseaseArrayList = new ArrayList<>();
+            if (diseaseArrayList != null && !diseaseArrayList.isEmpty()) {
+                newDiseaseArrayList.addAll(diseaseArrayList);
+            }
         }
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_medical_profile, container, false);
+        viewModel = ViewModelProviders.of(this, new MedicalProfileViewModel.MedicalProfileViewModelFactory(
+                mainActivity.getApplication())).get(MedicalProfileViewModel.class);
         mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_medical_profile);
             mainActivity.toolbarTitle.setText(R.string.medical_profile);
             NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
-        initBinding(inflater, container);
         return binding.getRoot();
-    }
-
-    private void initBinding(@NonNull LayoutInflater inflater, ViewGroup container) {
-        binding = DataBindingUtil
-                .inflate(inflater, R.layout.fragment_medical_profile, container, false);
-        viewModel = ViewModelProviders.of(this,
-                new MedicalProfileViewModel.MedicalProfileViewModelFactory(
-                        mainActivity.getApplication())).get(MedicalProfileViewModel.class);
     }
 
     @Override
@@ -107,20 +106,18 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     private void initViews() {
         //init recycler
         binding.rvMedicalProfile.setLayoutManager(new LinearLayoutManager(mainActivity));
-        if (diseaseArrayList == null || diseaseArrayList.size() == 0) {
-            rvAdapter = new MedicalProfileRecyclerAdapter(new ArrayList<MedicalDisease>(), this,
-                    false);
+        if (newDiseaseArrayList == null || newDiseaseArrayList.size() == 0) {
+            rvAdapter = new MedicalProfileRecyclerAdapter(new ArrayList<MedicalDisease>(), this, false);
         } else {
-            rvAdapter = new MedicalProfileRecyclerAdapter(diseaseArrayList, this, false);
-            binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
+            rvAdapter = new MedicalProfileRecyclerAdapter((ArrayList<MedicalDisease>) newDiseaseArrayList, this, false);
+            //binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
         }
         binding.rvMedicalProfile.setHasFixedSize(true);
         binding.rvMedicalProfile.setAdapter(rvAdapter);
 
         //init AutoCompleteEdittext
         binding.actvMedicalProfile.setThreshold(1);
-        autoCompleteTvAdapter = new MedicalAutoCompleteAdapter(mainActivity,
-                R.layout.item_medical_profile, new ArrayList<MedicalDisease>());
+        autoCompleteTvAdapter = new MedicalAutoCompleteAdapter(mainActivity, R.layout.item_medical_profile, new ArrayList<MedicalDisease>());
         binding.actvMedicalProfile.setAdapter(autoCompleteTvAdapter);
         binding.actvMedicalProfile.setOnItemClickListener(this);
         binding.actvMedicalProfile.addTextChangedListener(new TextWatcher() {
@@ -159,7 +156,6 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
     }
 
     private void initListeners() {
-
         binding.btnSubmitMedicalProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,14 +175,6 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
                     }
                 });
 
-        viewModel.getIsListUpdated().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(@Nullable Boolean aBoolean) {
-                if (aBoolean != null && aBoolean) {
-                    mainActivity.openViewMedicalProfileFragment(diseaseArrayList);
-                }
-            }
-        });
         viewModel.getToastMsg().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
@@ -195,15 +183,13 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         });
     }
 
-
     private void setDataToViewModel() {
+        ArrayList<MedicalDisease> newDiseaseArrayList = new ArrayList<>();
         if (rvAdapter.getMedicalList() != null && rvAdapter.getMedicalList().size() > 0) {
-            //api call
-            CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
-            viewModel.updateDataToServer(mainActivity, rvAdapter.getMedicalList());
-        } else {
-            Toast.makeText(mainActivity, "No diseases selected.", Toast.LENGTH_SHORT).show();
+            newDiseaseArrayList = rvAdapter.getMedicalList();
         }
+        CommonFunctions.getInstance().hideSoftKeyBoard(mainActivity);
+        viewModel.updateDataToServer(mainActivity, newDiseaseArrayList, diseaseArrayList);
     }
 
     @Override
@@ -211,7 +197,7 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         MedicalDisease disease = (MedicalDisease) autoCompleteTvAdapter.getItem(position);
         if (disease != null && disease.getId() != null && !disease.getId().equalsIgnoreCase("0")) {
             rvAdapter.addItems(disease);
-            binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
+            //binding.btnSubmitMedicalProfile.setVisibility(View.VISIBLE);
         }
         binding.actvMedicalProfile.setText("");
     }
@@ -221,16 +207,14 @@ public class MedicalProfileFragment extends Fragment implements AdapterView.OnIt
         super.onDestroyView();
         viewModel.getDiseaseMutableLiveData().removeObservers(this);
         viewModel.getToastMsg().removeObservers(this);
-        viewModel.getIsListUpdated().removeObservers(this);
         NavigationUtil.getInstance().hideBackArrow(mainActivity);
     }
 
     @Override
     public void onCustomItemClick(int position, Object obj) {
-        if (rvAdapter.getMedicalList() == null || rvAdapter.getMedicalList().size() == 0) {
+        /*if (rvAdapter.getMedicalList() == null || rvAdapter.getMedicalList().size() == 0) {
             binding.btnSubmitMedicalProfile.setVisibility(View.GONE);
-        }
+        }*/
     }
-
 
 }

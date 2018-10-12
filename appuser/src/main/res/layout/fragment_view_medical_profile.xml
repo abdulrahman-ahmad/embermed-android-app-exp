@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_view_medical_profile"
+        <LinearLayout
+            android:id="@+id/empty_alert_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:nestedScrollingEnabled="false" />
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:layout_width="@dimen/empty_alert_height"
+                android:layout_height="@dimen/empty_alert_height"
+                android:background="@drawable/empty_alert_bg"
+                android:contentDescription="@null" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:text="@string/no_medical_profile_available"
+                android:textColor="@color/no_alert_text_color"
+                android:textSize="@dimen/_20dp"
+                tools:ignore="SpUsage" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_view_medical_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                tools:ignore="UnusedAttribute"
+                tools:listitem="@layout/item_medical_profile" />
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

@@ -291,6 +291,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     private void callViewMedicalProfileApi() {
         if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -302,14 +303,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (response != null) {
-                    ArrayList<MedicalDisease> diseaseArrayList = (ArrayList<MedicalDisease>) ((GenericResponse) response).getData();
-                    if (diseaseArrayList != null && diseaseArrayList.size() > 0) {
-                        openViewMedicalProfileFragment(diseaseArrayList);
-                    } else {
-                        openMedicalProfileFragment(diseaseArrayList);
-                    }
-                } else {
-                    openMedicalProfileFragment(null);
+                    openViewMedicalProfileFragment((ArrayList<MedicalDisease>) ((GenericResponse) response).getData());
                 }
             }
 
@@ -321,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
+    @SuppressWarnings("unchecked")
     private void callSubscriptionOffersApi() {
         if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
