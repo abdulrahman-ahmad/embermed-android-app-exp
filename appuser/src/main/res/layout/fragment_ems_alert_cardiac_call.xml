@@ -357,7 +357,8 @@
                                         android:background="@drawable/ic_fullscreen"
                                         android:backgroundTint="@color/text_color"
                                         android:contentDescription="@null"
-                                        android:rotation="180" />
+                                        android:rotation="180"
+                                        tools:ignore="TooDeepLayout" />
                                 </LinearLayout>
                             </RelativeLayout>
 

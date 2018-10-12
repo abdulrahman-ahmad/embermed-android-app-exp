@@ -282,6 +282,13 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 binding.yesAnsLayout.setVisibility(View.GONE);
                 binding.ambulanceImage.setVisibility(View.GONE);
                 binding.cprTutorialLayout.setVisibility(View.VISIBLE);
+                if (gifList.size() > 1) {
+                    binding.btnNextCpr.setVisibility(View.VISIBLE);
+                    binding.btnPreviousCpr.setVisibility(View.VISIBLE);
+                } else {
+                    binding.btnNextCpr.setVisibility(View.GONE);
+                    binding.btnPreviousCpr.setVisibility(View.GONE);
+                }
                 playGif();
                 break;
             case R.id.btn_yes:
@@ -327,6 +334,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 binding.btnPause.setVisibility(View.VISIBLE);
                 Intent myIntent = new Intent(mainActivity, GifFullScreenActivity.class);
                 myIntent.putExtra("gifIdArray", (Serializable) gifList); //Optional parameters
+                myIntent.putExtra("gifPosition", gifPosition); //Optional parameters
                 mainActivity.startActivity(myIntent);
                 break;
         }

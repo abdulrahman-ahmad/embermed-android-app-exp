@@ -44,10 +44,16 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
     private void handleIntent(Intent intent) {
         if (intent.hasExtra("gifIdArray")) {
             gifList = (List<Integer>) intent.getSerializableExtra("gifIdArray");
+            gifPosition = intent.getIntExtra("gifPosition", 0);
             if (gifList != null && gifList.size() > 0) {
-                if (gifList.get(0) > 0) {
-                    playGif();
+                if (gifList.size() > 1) {
+                    binding.btnNextCprFull.setVisibility(View.VISIBLE);
+                    binding.btnPreviousCprFull.setVisibility(View.VISIBLE);
+                } else {
+                    binding.btnNextCprFull.setVisibility(View.GONE);
+                    binding.btnPreviousCprFull.setVisibility(View.GONE);
                 }
+                playGif();
             }
         }
     }
@@ -71,7 +77,6 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
                             return false;
                         }
                     })
-
                     .into(binding.gifImageFull);
             isGifPlaying = true;
             binding.btnPlayFull.setVisibility(View.GONE);
@@ -85,7 +90,6 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_next_cpr_full:
-
                 if (gifPosition == gifList.size() - 1) {
                     gifPosition = 0;
                 } else {
