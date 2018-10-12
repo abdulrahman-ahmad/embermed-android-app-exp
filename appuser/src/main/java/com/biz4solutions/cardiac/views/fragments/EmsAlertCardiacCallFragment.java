@@ -30,7 +30,11 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -325,6 +329,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                     } else {
                         binding.btnPlay.setVisibility(View.GONE);
                         binding.btnPause.setVisibility(View.VISIBLE);
+                        ((GifDrawable) binding.gifImage.getDrawable()).start();
                     }
                     isGifPlaying = !isGifPlaying;
                 }
@@ -341,8 +346,26 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
     }
 
     private void playGif() {
-        Glide.with(mainActivity)
+        if ((binding.gifImage.getDrawable()) != null && ((GifDrawable) binding.gifImage.getDrawable()).isRunning()) {
+            ((GifDrawable) binding.gifImage.getDrawable()).stop();
+        }
+        Glide.with(this)
+                .asGif()
                 .load(gifList.get(gifPosition))
+                .addListener(new RequestListener<GifDrawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                        if ((binding.gifImage.getDrawable()) != null) {
+                            ((GifDrawable) binding.gifImage.getDrawable()).startFromFirstFrame();
+                        }
+                        return false;
+                    }
+                })
                 .into(binding.gifImage);
         isGifPlaying = true;
         binding.btnPlay.setVisibility(View.GONE);

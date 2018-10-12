@@ -172,13 +172,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(true);
+
+            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             FirebaseMessagingService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override

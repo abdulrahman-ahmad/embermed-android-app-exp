@@ -117,7 +117,6 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
                         binding.btnPlayFull.setVisibility(View.VISIBLE);
                         binding.btnPauseFull.setVisibility(View.GONE);
                         ((GifDrawable) binding.gifImageFull.getDrawable()).stop();
-
                     } else {
                         binding.btnPlayFull.setVisibility(View.GONE);
                         binding.btnPauseFull.setVisibility(View.VISIBLE);

@@ -199,9 +199,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (isApproved) {
                     navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
                     navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
-                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
                     navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
-                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+                    //need to re-add when functionality
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
                     if (!isOnlyUpdateMenu) {
                         openDashBoardFragment();
                     }
