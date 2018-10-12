@@ -20,8 +20,6 @@ import com.bumptech.glide.request.target.Target;
 import java.util.List;
 
 public class GifFullScreenActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private int gifId;
     private ActivityGifFullScreenBinding binding;
     private boolean isGifPlaying;
     private List<Integer> gifList;
@@ -42,14 +40,14 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
         binding.btnPreviousCprFull.setOnClickListener(this);
     }
 
+    @SuppressWarnings("unchecked")
     private void handleIntent(Intent intent) {
         if (intent.hasExtra("gifIdArray")) {
             gifList = (List<Integer>) intent.getSerializableExtra("gifIdArray");
             if (gifList != null && gifList.size() > 0) {
-                gifId = gifList.get(0);
-            }
-            if (gifId > 0) {
-                playGif();
+                if (gifList.get(0) > 0) {
+                    playGif();
+                }
             }
         }
     }
@@ -125,11 +123,5 @@ public class GifFullScreenActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
     }
 }
