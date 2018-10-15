@@ -39,5 +39,7 @@
     <dimen name="_80dp">128dp</dimen>
     <dimen name="_85dp">136dp</dimen>
     <dimen name="_100dp">160dp</dimen>
+    <dimen name="_105dp">168dp</dimen>
     <dimen name="_140dp">224dp</dimen>
+    <dimen name="_222dp">355.2dp</dimen>
 </resources>

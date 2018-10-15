@@ -16,13 +16,11 @@ import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.aedmaps.viewmodels.AedMapViewModel;
 import com.biz4solutions.provider.databinding.FragmentAedMapBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class AedMapFragment extends Fragment {
 
     public static final String fragmentName = "AedMapFragment";
-    private MainActivity mainActivity;
     private FragmentAedMapBinding binding;
     private final static String URGENT_CARES_RESPONSE = "URGENT_CARES_RESPONSE";
     private UrgentCaresDataResponse urgentCaresDataResponse;
@@ -51,11 +49,10 @@ public class AedMapFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         initBindingView(inflater, container);
-        mainActivity = (MainActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_dashboard);
             mainActivity.toolbarTitle.setText(R.string.aed_maps);
-            NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
         initMapView();
         return binding.getRoot();
@@ -115,9 +112,6 @@ public class AedMapFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mainActivity != null) {
-            NavigationUtil.getInstance().hideBackArrow(mainActivity);
-        }
         //destroys the allocated objects
         viewModel.destroy();
     }

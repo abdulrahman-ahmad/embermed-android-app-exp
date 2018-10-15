@@ -1,7 +1,6 @@
 package com.biz4solutions.medicalprofile.adapters;
 
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -56,16 +55,6 @@ public class MedicalProfileRecyclerAdapter extends RecyclerView.Adapter<MedicalP
         }
     }
 
-    public void setNewMedicalData(ArrayList<MedicalDisease> arrayList) {
-        if (arrayList != null) {
-            medicalList.clear();
-            medicalList = new ArrayList<>();
-            medicalList.addAll(arrayList);
-            notifyDataSetChanged();
-        }
-    }
-
-
     @Override
     public int getItemCount() {
         if (medicalList == null || medicalList.size() == 0) {
@@ -84,28 +73,31 @@ public class MedicalProfileRecyclerAdapter extends RecyclerView.Adapter<MedicalP
 
         private void initBinding(View itemView) {
             binding = DataBindingUtil.bind(itemView);
-            if (isInViewMode) {
-                binding.ivItemMedicalProfileCancel.setVisibility(View.GONE);
-            } else {
-                binding.ivItemMedicalProfileCancel.setVisibility(View.VISIBLE);
-            }
             if (binding != null) {
-                binding.ivItemMedicalProfileCancel.setOnClickListener(this);
+                if (isInViewMode) {
+                    binding.ivItemMedicalProfileCancel.setVisibility(View.GONE);
+                } else {
+                    binding.ivItemMedicalProfileCancel.setVisibility(View.VISIBLE);
+                    if (binding != null) {
+                        binding.ivItemMedicalProfileCancel.setOnClickListener(this);
+                    }
+                }
             }
-
         }
 
         public ItemMedicalProfileBinding getBinding() {
             return binding;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void onClick(View v) {
             if (v.getId() == binding.ivItemMedicalProfileCancel.getId()) {
                 medicalList.remove(getAdapterPosition());
                 notifyDataSetChanged();
-                if (onItemClickListener != null)
+                if (onItemClickListener != null) {
                     onItemClickListener.onCustomItemClick(getAdapterPosition(), null);
+                }
             }
         }
     }

@@ -21,7 +21,6 @@ import com.biz4solutions.preferences.SharedPrefsManager;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.databinding.FragmentAccountSettingBinding;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
-import com.biz4solutions.provider.utilities.NavigationUtil;
 import com.biz4solutions.utilities.CommonFunctions;
 import com.biz4solutions.utilities.Constants;
 
@@ -52,7 +51,6 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
         if (mainActivity != null) {
             mainActivity.navigationView.setCheckedItem(R.id.nav_account_settings);
             mainActivity.toolbarTitle.setText(R.string.account_settings);
-            NavigationUtil.getInstance().showBackArrow(mainActivity);
         }
         User user = SharedPrefsManager.getInstance().retrieveUserPreference(mainActivity, Constants.USER_PREFERENCE, Constants.USER_PREFERENCE_KEY);
         boolean isProviderSubscribed = false;
@@ -68,7 +66,6 @@ public class AccountSettingFragment extends Fragment implements View.OnClickList
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        NavigationUtil.getInstance().hideBackArrow(mainActivity);
     }
 
     @Override

@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static boolean isActivityOpen = false;
     private boolean isOpenTokActivityOpen = false;
     private static final int PERMISSION_REQUEST_CODE = 121254;
+    private static final int PERMISSION_REQUEST_CODE_FOR_AED_LIST = 10122;
     private EmsRequest tempRequest;
     public FeedbackRequest feedbackRequest;
     private boolean isAedApiInProgress = false;
@@ -198,9 +199,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (isApproved) {
                     navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
                     navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
-                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
                     navigationView.getMenu().findItem(R.id.nav_aed_maps).setVisible(true);
-                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
+                    //need to re-add when functionality
+                    navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(false);
+                    navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
                     if (!isOnlyUpdateMenu) {
                         openDashBoardFragment();
                     }
@@ -307,6 +309,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof NewsFeedFragment) {
+                currentFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
             boolean userAllowedAllRequestPermissions = true;
             if (grantResults.length == 0) {
                 userAllowedAllRequestPermissions = false;
@@ -322,7 +329,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case PERMISSION_REQUEST_CODE:
                         startVideoCall(tempRequest);
                         break;
-                    case 102:
+                    case PERMISSION_REQUEST_CODE_FOR_AED_LIST:
                         getAedList();
                         break;
                 }
@@ -925,7 +932,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 String[] perms = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-                requestPermissions(perms, 102);
+                requestPermissions(perms, PERMISSION_REQUEST_CODE_FOR_AED_LIST);
             } else {
                 return true;
             }

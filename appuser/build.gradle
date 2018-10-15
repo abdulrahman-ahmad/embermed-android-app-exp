@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 def projectName = "Ember"
 def type = "User"
 def verCode = 1
-def verName = "0.1.1"
+def verName = "0.1.2"
 def outputPath = "E:\\AndroidDev\\Builds\\" + projectName + "\\"
 def outputName = projectName + "_v_" + verName + "_" + getDate() + ".apk"
 def proguard = false

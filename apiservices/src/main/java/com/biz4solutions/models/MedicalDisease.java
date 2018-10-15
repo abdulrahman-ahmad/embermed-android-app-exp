@@ -1,6 +1,8 @@
 package com.biz4solutions.models;
 
-public class MedicalDisease {
+import java.io.Serializable;
+
+public class MedicalDisease implements Serializable {
     private String id;
     private String name;
 
@@ -18,11 +20,5 @@ public class MedicalDisease {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return name;
-
     }
 }

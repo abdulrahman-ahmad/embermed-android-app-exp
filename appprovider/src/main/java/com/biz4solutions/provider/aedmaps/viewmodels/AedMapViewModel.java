@@ -7,6 +7,7 @@ import android.arch.lifecycle.ViewModelProvider;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.graphics.Point;
 import android.location.Location;
 import android.location.LocationListener;
@@ -17,16 +18,13 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.biz4solutions.models.UrgentCare;
 import com.biz4solutions.models.response.UrgentCaresDataResponse;
-import com.biz4solutions.provider.BuildConfig;
 import com.biz4solutions.provider.R;
 import com.biz4solutions.provider.main.views.activities.MainActivity;
 import com.biz4solutions.provider.utilities.CustomMapClusterRenderer;
@@ -49,7 +47,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import java.util.ArrayList;
 
 /*
- * Created by saurabh.asati on 9/24/2018.
+ * Created by ketan on 9/24/2018.
  */
 public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, LocationListener {
 
@@ -70,12 +68,13 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
     private boolean isMapZoom = false;
     private ClusterManager<MapClusterItem> clusterManager;
     private ArrayList<MapClusterItem> clusterItems;
-    public final ObservableBoolean showUberLayout;
+    public final ObservableBoolean showDescription;
+    public final ObservableField<String> description;
 
     private AedMapViewModel(Context context, UrgentCaresDataResponse urgentCaresDataResponse) {
-        //initMapView();
         this.context = context;
-        showUberLayout = new ObservableBoolean();
+        showDescription = new ObservableBoolean();
+        description = new ObservableField<>();
         this.urgentCaresDataResponse = urgentCaresDataResponse;
         if (googleMap != null) {
             startLocationUpdates();
@@ -142,9 +141,6 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         try {
             if (location != null) {
                 addCurrentLocationMarker(location.getLatitude(), location.getLongitude());
-                if (BuildConfig.DEBUG)
-                    Log.d("location", "lat:" + location.getLatitude() + " lon:" + location.getLongitude());
-
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,11 +151,9 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         if (context == null) {
             return;
         }
-
         if (clusterManager == null) {
             clusterManager = new ClusterManager<>(context, googleMap);
         }
-
         clusterManager.setRenderer(new CustomMapClusterRenderer<>(context, googleMap, clusterManager));
         clusterManager.clearItems();
         clearItems();
@@ -186,22 +180,27 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         googleMap.setOnInfoWindowCloseListener(new GoogleMap.OnInfoWindowCloseListener() {
             @Override
             public void onInfoWindowClose(Marker marker) {
-                showUberLayout.set(false);
+                showDescription.set(false);
+                description.set("");
             }
         });
         clusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MapClusterItem>() {
             @Override
             public boolean onClusterItemClick(MapClusterItem clusterItem) {
                 selectedClusterItem = clusterItem;
-                //showUberLayout.set(true);
-                showUberLayout.set(false); // Client Change - mail - 10 Oct 2018 11:24 AM
+                showDescription.set(true);
+                if (clusterItem.getDescription() != null && !clusterItem.getDescription().isEmpty()) {
+                    description.set(clusterItem.getDescription());
+                } else {
+                    description.set(context.getString(R.string.no_description_available));
+                }
                 return false;
             }
         });
         for (int i = 0; i < urgentCares.size(); i++) {
             UrgentCare item = urgentCares.get(i);
             LatLng latLngCg = new LatLng(item.getLatitude(), item.getLongitude());
-            MapClusterItem urgentCareItem = new MapClusterItem(latLngCg, item.getId(), item.getName());
+            MapClusterItem urgentCareItem = new MapClusterItem(latLngCg, item.getId(), item.getName(), item.getDescription());
             clusterItems.add(urgentCareItem);
             clusterManager.addItem(urgentCareItem);
         }
@@ -245,18 +244,12 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         return false;
     }
 
-    //click on uber btn
-    public void onBookUberClick(View view) {
-        Toast.makeText(view.getContext(), view.getContext().getString(R.string.coming_soon), Toast.LENGTH_SHORT).show();
-    }
-
     //click on location btn
     public void onLocationBtnClick() {
         if (userMarker != null && googleMap != null) {
             animateCamera(userMarker.getPosition());
         }
     }
-
 
     private void addCurrentLocationMarker(double latitude, double longitude) {
         try {
@@ -344,7 +337,6 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         }
     }
 
-
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -378,7 +370,6 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
         public View getInfoContents(Marker marker) {
             return null;
         }
-
     }
 
     @SuppressWarnings("unchecked")
@@ -397,5 +388,4 @@ public class AedMapViewModel extends ViewModel implements OnMapReadyCallback, Lo
             return (T) new AedMapViewModel(context, urgentCaresDataResponse);
         }
     }
-
 }

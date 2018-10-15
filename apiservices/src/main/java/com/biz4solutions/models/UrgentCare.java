@@ -12,6 +12,7 @@ public class UrgentCare implements Serializable {
     private String address;
     private double latitude;
     private double longitude;
+    private String description;
 
     public String getId() {
         return id;
@@ -53,6 +54,14 @@ public class UrgentCare implements Serializable {
         this.longitude = longitude;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "UrgentCare{" +
@@ -61,6 +70,7 @@ public class UrgentCare implements Serializable {
                 ", address='" + address + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

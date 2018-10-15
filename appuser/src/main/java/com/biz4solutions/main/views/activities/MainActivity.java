@@ -172,13 +172,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.getMenu().findItem(R.id.nav_dashboard).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_out).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_log_in).setVisible(false);
-            navigationView.getMenu().findItem(R.id.nav_triage).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_account_settings).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_incident_reports).setVisible(true);
             navigationView.getMenu().findItem(R.id.nav_medical_profile).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(true);
-            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(true);
+
+            navigationView.getMenu().findItem(R.id.nav_subscription).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_triage).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_call_911).setVisible(false);
+            navigationView.getMenu().findItem(R.id.nav_contact_us).setVisible(false);
             FirebaseMessagingService.setFcmToken(MainActivity.this);
             FirebaseCallbackListener<Boolean> callbackListener = new FirebaseCallbackListener<Boolean>() {
                 @Override
@@ -218,6 +219,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         try {
+            Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.main_container);
+            if (currentFragment instanceof NewsFeedFragment) {
+                currentFragment.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                return;
+            }
             boolean userAllowedAllRequestPermissions = true;
             for (int grantResult : grantResults) {
                 if (grantResult == PackageManager.PERMISSION_DENIED) {
@@ -286,6 +292,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    @SuppressWarnings("unchecked")
     private void callViewMedicalProfileApi() {
         if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();
@@ -297,14 +304,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onSuccess(Object response, int statusCode) {
                 CommonFunctions.getInstance().dismissProgressDialog();
                 if (response != null) {
-                    ArrayList<MedicalDisease> diseaseArrayList = (ArrayList<MedicalDisease>) ((GenericResponse) response).getData();
-                    if (diseaseArrayList != null && diseaseArrayList.size() > 0) {
-                        openViewMedicalProfileFragment(diseaseArrayList);
-                    } else {
-                        openMedicalProfileFragment(diseaseArrayList);
-                    }
-                } else {
-                    openMedicalProfileFragment(null);
+                    openViewMedicalProfileFragment((ArrayList<MedicalDisease>) ((GenericResponse) response).getData());
                 }
             }
 
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-
+    @SuppressWarnings("unchecked")
     private void callSubscriptionOffersApi() {
         if (CommonFunctions.getInstance().isOffline(MainActivity.this)) {
             Toast.makeText(MainActivity.this, getString(R.string.error_network_unavailable), Toast.LENGTH_LONG).show();

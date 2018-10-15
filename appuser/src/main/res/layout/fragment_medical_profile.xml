@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="SpUsage">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,6 +22,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
+                android:maxLines="1"
+                android:inputType="textWebEmailAddress"
                 android:background="@android:color/transparent"
                 android:hint="@string/txt_hint_search_diseases"
                 android:paddingTop="@dimen/_10dp"
@@ -44,25 +48,20 @@
             android:id="@+id/iv_item_medical_profile_divider"
             style="@style/divider"
             android:layout_height="2dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="@dimen/_10dp" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_medical_profile"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:nestedScrollingEnabled="false" />
-
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/btn_submit_medical_profile"
             style="@style/BtnStyle"
             android:layout_marginTop="@dimen/_10dp"
             android:layout_marginBottom="@dimen/_10dp"
-            android:text="@string/save"
-            android:visibility="gone" />
-
+            android:text="@string/save" />
 
     </LinearLayout>
 </layout>

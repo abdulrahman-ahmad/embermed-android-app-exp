@@ -11,11 +11,27 @@ public class MapClusterItem implements MarkerClusterItem {
     private Marker marker;
     private LatLng position;
     private String name;
+    private String description;
 
     public MapClusterItem(LatLng position, String userId, String name) {
         this.id = userId;
         this.position = position;
         this.name = name;
+    }
+
+    public MapClusterItem(LatLng position, String userId, String name, String description) {
+        this.id = userId;
+        this.position = position;
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getName() {
@@ -32,7 +48,6 @@ public class MapClusterItem implements MarkerClusterItem {
 
     public void setUserId(String userId) {
         this.id = userId;
-        this.position = position;
     }
 
     @Override
