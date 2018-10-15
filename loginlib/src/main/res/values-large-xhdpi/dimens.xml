@@ -14,8 +14,6 @@
     <dimen name="sign_up_link_margin_top">12dp</dimen>
     <dimen name="sign_up_link_text_size">20dp</dimen>
     <dimen name="sign_up_link_padding">12dp</dimen>
-    <dimen name="login_image_width">411.25dp</dimen>
-    <dimen name="login_image_height">193.75dp</dimen>
     <dimen name="login_margin_top">24dp</dimen>
     <dimen name="login_divider_margin_top">16dp</dimen>
     <dimen name="login_forgot_pass_text_size">15dp</dimen>

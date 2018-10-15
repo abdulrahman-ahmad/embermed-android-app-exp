@@ -1,5 +1,6 @@
 package com.biz4solutions.cardiac.views.fragments;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.biz4solutions.R;
 import com.biz4solutions.apiservices.ApiServices;
+import com.biz4solutions.cardiac.views.activities.GifFullScreenActivity;
 import com.biz4solutions.databinding.FragmentEmsAlertCardiacCallBinding;
 import com.biz4solutions.interfaces.FirebaseCallbackListener;
 import com.biz4solutions.interfaces.OnBackClickListener;
@@ -28,8 +30,13 @@ import com.biz4solutions.utilities.Constants;
 import com.biz4solutions.utilities.FirebaseEventUtil;
 import com.biz4solutions.utilities.NavigationUtil;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.resource.gif.GifDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -114,6 +121,7 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
         binding.btnNextCpr.setOnClickListener(this);
         binding.btnPreviousCpr.setOnClickListener(this);
         binding.cprTutorialLink.setOnClickListener(this);
+        binding.cprGifLayout.setOnClickListener(this);
 
         arrivalTimeInMin.set("");
         loaderVisibility.set(true);
@@ -278,6 +286,13 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 binding.yesAnsLayout.setVisibility(View.GONE);
                 binding.ambulanceImage.setVisibility(View.GONE);
                 binding.cprTutorialLayout.setVisibility(View.VISIBLE);
+                if (gifList.size() > 1) {
+                    binding.btnNextCpr.setVisibility(View.VISIBLE);
+                    binding.btnPreviousCpr.setVisibility(View.VISIBLE);
+                } else {
+                    binding.btnNextCpr.setVisibility(View.GONE);
+                    binding.btnPreviousCpr.setVisibility(View.GONE);
+                }
                 playGif();
                 break;
             case R.id.btn_yes:
@@ -306,23 +321,51 @@ public class EmsAlertCardiacCallFragment extends Fragment implements View.OnClic
                 playGif();
                 break;
             case R.id.btn_play_cpr:
-                if (isGifPlaying) {
-                    binding.btnPlay.setVisibility(View.VISIBLE);
-                    binding.btnPause.setVisibility(View.GONE);
-                    ((GifDrawable) binding.gifImage.getDrawable()).stop();
-                } else {
-                    binding.btnPlay.setVisibility(View.GONE);
-                    binding.btnPause.setVisibility(View.VISIBLE);
-                    ((GifDrawable) binding.gifImage.getDrawable()).start();
+                if ((binding.gifImage.getDrawable()) != null) {
+                    if (isGifPlaying) {
+                        binding.btnPlay.setVisibility(View.VISIBLE);
+                        binding.btnPause.setVisibility(View.GONE);
+                        ((GifDrawable) binding.gifImage.getDrawable()).stop();
+                    } else {
+                        binding.btnPlay.setVisibility(View.GONE);
+                        binding.btnPause.setVisibility(View.VISIBLE);
+                        ((GifDrawable) binding.gifImage.getDrawable()).start();
+                    }
+                    isGifPlaying = !isGifPlaying;
                 }
-                isGifPlaying = !isGifPlaying;
+                break;
+            case R.id.cpr_gif_layout:
+                binding.btnPlay.setVisibility(View.GONE);
+                binding.btnPause.setVisibility(View.VISIBLE);
+                Intent myIntent = new Intent(mainActivity, GifFullScreenActivity.class);
+                myIntent.putExtra("gifIdArray", (Serializable) gifList); //Optional parameters
+                myIntent.putExtra("gifPosition", gifPosition); //Optional parameters
+                mainActivity.startActivity(myIntent);
                 break;
         }
     }
 
     private void playGif() {
-        Glide.with(mainActivity)
+        if ((binding.gifImage.getDrawable()) != null && ((GifDrawable) binding.gifImage.getDrawable()).isRunning()) {
+            ((GifDrawable) binding.gifImage.getDrawable()).stop();
+        }
+        Glide.with(this)
+                .asGif()
                 .load(gifList.get(gifPosition))
+                .addListener(new RequestListener<GifDrawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<GifDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GifDrawable resource, Object model, Target<GifDrawable> target, DataSource dataSource, boolean isFirstResource) {
+                        if ((binding.gifImage.getDrawable()) != null) {
+                            ((GifDrawable) binding.gifImage.getDrawable()).startFromFirstFrame();
+                        }
+                        return false;
+                    }
+                })
                 .into(binding.gifImage);
         isGifPlaying = true;
         binding.btnPlay.setVisibility(View.GONE);

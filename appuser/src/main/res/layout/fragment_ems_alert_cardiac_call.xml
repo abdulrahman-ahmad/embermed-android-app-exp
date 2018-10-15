@@ -318,7 +318,7 @@
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent" />
 
-                            <LinearLayout
+                            <RelativeLayout
                                 android:id="@+id/cpr_gif_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="@dimen/cpr_tutorial_gif_layout_height"
@@ -340,7 +340,27 @@
                                     android:layout_margin="5dp"
                                     android:contentDescription="@null" />
 
-                            </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/btn_full_screen"
+                                    android:layout_width="@dimen/cpr_tutorial_btn_height_width"
+                                    android:layout_height="@dimen/cpr_tutorial_btn_height_width"
+                                    android:layout_marginEnd="@dimen/_4dp"
+                                    android:layout_marginBottom="@dimen/_4dp"
+                                    android:layout_alignParentBottom="true"
+                                    android:padding="@dimen/_4dp"
+                                    android:layout_alignParentEnd="true"
+                                    android:background="@drawable/ripple_default_bg">
+
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:background="@drawable/ic_fullscreen"
+                                        android:backgroundTint="@color/text_color"
+                                        android:contentDescription="@null"
+                                        android:rotation="180"
+                                        tools:ignore="TooDeepLayout" />
+                                </LinearLayout>
+                            </RelativeLayout>
 
                             <LinearLayout
                                 android:id="@+id/btn_previous_cpr"

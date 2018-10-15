@@ -17,11 +17,11 @@
                 android:id="@+id/txt_pull_to_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="@dimen/_16dp"
                 android:gravity="center"
                 android:text="@string/pull_to_refresh"
                 android:textColor="@color/no_alert_text_color"
-                android:textSize="16dp"
+                android:textSize="@dimen/_16dp"
                 android:visibility="invisible" />
 
             <LinearLayout
@@ -41,11 +41,11 @@
                     android:id="@+id/txt_no_alerts_available"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
+                    android:layout_marginTop="@dimen/_20dp"
                     android:gravity="center"
                     android:text="@string/no_alerts_available"
                     android:textColor="@color/no_alert_text_color"
-                    android:textSize="20dp"
+                    android:textSize="@dimen/_20dp"
                     android:visibility="invisible" />
 
             </LinearLayout>

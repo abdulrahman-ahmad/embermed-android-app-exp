@@ -17,10 +17,15 @@ import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.biz4solutions.interfaces.DialogDismissCallBackListener;
 
@@ -166,7 +171,7 @@ public class CommonFunctions implements Serializable {
             return;
         }
         dismissAlertDialog();
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context, R.style.common_alert_dialog);
         // Setting Dialog Message
         alertDialog.setMessage(context.getString(messageId));
 
@@ -196,6 +201,73 @@ public class CommonFunctions implements Serializable {
         alertDialog.setCancelable(false);
         // Showing Alert Message
         mDialog = alertDialog.show();
+    }
+
+    public void showEdittextAlertDialog(final Activity activity, int messageId, int hintTxtId, final int errorMsgId, final int minLength, final int validationTxtId, int ptBtnTextId, int ntBtnTextId, final DialogDismissCallBackListener<String> callBackListener) {
+        dismissAlertDialog();
+        final AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        // Setting Dialog Message
+        @SuppressLint("InflateParams")
+        View v = LayoutInflater.from(activity).inflate(R.layout.dialog_with_edittext_layout, null, false);
+        builder.setView(v);
+        final EditText input = v.findViewById(R.id.dialog_et_code);
+        input.setHint(activity.getString(hintTxtId));
+        TextView tvTitle = v.findViewById(R.id.dialog_title);
+        final TextView btn_positive = v.findViewById(R.id.dialog_positive_btn);
+        btn_positive.setText(activity.getString(ptBtnTextId));
+        btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.text_hint_color));
+        TextView btn_negative = v.findViewById(R.id.dialog_negative_btn);
+        btn_negative.setText(activity.getString(ntBtnTextId));
+        tvTitle.setText(activity.getString(messageId));
+
+        final AlertDialog alertDialog1 = builder.create();
+        btn_negative.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog1.dismiss();
+            }
+        });
+        input.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (input.getText().length() < minLength) {
+                    btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.text_hint_color));
+                } else {
+                    btn_positive.setTextColor(ContextCompat.getColor(activity, R.color.colorPrimary));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        btn_positive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (input.getText().length() == 0) {
+                    //Toast.makeText(activity, activity.getString(errorMsgId), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (input.getText().length() < minLength) {
+                    //Toast.makeText(activity, activity.getString(validationTxtId), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                hideSoftKeyBoard(activity);
+                if (callBackListener != null) {
+                    callBackListener.onClose(input.getText().toString());
+                }
+                alertDialog1.dismiss();
+            }
+        });
+
+        builder.setCancelable(false);
+        alertDialog1.show();
     }
 
     public void dismissAlertDialog() {

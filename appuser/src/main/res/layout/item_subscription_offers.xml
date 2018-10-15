@@ -16,7 +16,7 @@
         android:layout_marginStart="@dimen/_15dp"
         android:layout_marginTop="@dimen/_15dp"
         android:layout_marginEnd="@dimen/_15dp"
-        android:layout_marginBottom="@dimen/_15dp"
+        android:layout_marginBottom="@dimen/_5dp"
         app:cardCornerRadius="@dimen/_15dp"
         app:cardUseCompatPadding="false"
         tools:ignore="SpUsage">
